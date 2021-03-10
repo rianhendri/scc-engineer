@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "950046616669",
+    "project_id": "sccengineer-2544e",
+    "storage_bucket": "sccengineer-2544e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:950046616669:android:f284e3bfc3f4ee7868f1b4",
+        "android_client_info": {
+          "package_name": "com.sccengineer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "950046616669-6gg9sdfvdi0sobpjpqnb8ba7vjdt1ghq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sccengineer",
+            "certificate_hash": "48c37abaee8cc1ab78e0528bd5138a31c1f5e339"
+          }
+        },
+        {
+          "client_id": "950046616669-l69n66mtpqo2r1gp479f4olbgf97qa4e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYnFDu_wxf8cr0Ty0ex-jHnu0Ao8cxKJ8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "950046616669-l69n66mtpqo2r1gp479f4olbgf97qa4e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
