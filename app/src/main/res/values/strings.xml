@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">SCC Engineer</string>
+    <string name="title_pleasesignin">Please Signin</string>
+    <string name="title_login">Login</string>
+    <string name="title_forgot_password">Forgot Password?</string>
+    <string name="title_password">Password :</string>
+    <string name="title_username">User name :</string>
+    <string name="title_session_Expired">Session Expired</string>
 </resources>
