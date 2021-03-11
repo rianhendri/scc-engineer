@@ -35,6 +35,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -70,6 +71,11 @@ extends RecyclerView.Adapter<OnProghome_adapter.Myviewholder> {
 
     @Override
     public void onBindViewHolder(@NonNull Myviewholder myviewholder, int i) {
+        if (onProgHome_items.get(i).isAssist()){
+            myviewholder.mbadgeas.setVisibility(View.VISIBLE);
+        }else {
+            myviewholder.mbadgeas.setVisibility(View.GONE);
+        }
         String newdate = "";
         myviewholder.mscd.setText(onProgHome_items.get(i).getServiceTicketCd());
         myviewholder.mcustname.setText(onProgHome_items.get(i).getCustomerName());
@@ -87,7 +93,7 @@ extends RecyclerView.Adapter<OnProghome_adapter.Myviewholder> {
         String[] separated = newdate.split("T");
         separated[0].trim();; // this will contain "Fruit"
         separated[1].trim();;
-        myviewholder.mstgl.setText(separated[0]+" "+ separated[1]);
+        myviewholder.mstgl.setText("Start: "+separated[0]+" "+ separated[1]);
 
     }
 
@@ -99,13 +105,14 @@ extends RecyclerView.Adapter<OnProghome_adapter.Myviewholder> {
 
     public static class Myviewholder extends RecyclerView.ViewHolder{
         TextView mscd, mcustname, mstgl;
-
+        LinearLayout mbadgeas;
 
         public Myviewholder(@NonNull View itemView) {
             super(itemView);
             mscd = itemView.findViewById(R.id.scd);
             mcustname = itemView.findViewById(R.id.custname);
             mstgl = itemView.findViewById(R.id.stgl);
+            mbadgeas = itemView.findViewById(R.id.bagdeassist);
 
 
 

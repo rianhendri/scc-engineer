@@ -7,6 +7,90 @@
     tools:context=".Home"
     android:background="@color/dwhite"
     android:orientation="vertical">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:background="@color/backgourndgrey"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="bottom"
+        android:elevation="5dp">
+        <ImageView
+            android:gravity="center"
+            android:layout_width="45dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="64dp"
+            android:layout_marginTop="0dp"
+            android:src="@drawable/logoicon" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="SCC Engineer"
+                android:fontFamily="@font/segoeuib"
+                android:textSize="25sp"
+                android:layout_marginLeft="12dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:gravity="center_vertical"/>
+<!--        <ImageView-->
+
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginRight="50dp"-->
+<!--            android:layout_marginBottom="12dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:fontFamily="@font/seguisb"-->
+<!--            android:gravity="start"-->
+<!--            android:paddingLeft="4dp"-->
+<!--            android:paddingTop="0dp"-->
+
+<!--            android:src="@drawable/logotext" />-->
+
+<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--            android:id="@+id/notifikasi"-->
+<!--            android:layout_width="64dp"-->
+<!--            android:layout_height="match_parent">-->
+
+<!--&lt;!&ndash;            <ImageView&ndash;&gt;-->
+<!--&lt;!&ndash;                android:id="@+id/imageView2"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:layout_width="30dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:layout_height="60dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:layout_gravity="center"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:gravity="center"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:src="@drawable/ic_notification"&ndash;&gt;-->
+<!--&lt;!&ndash;                app:layout_constraintBottom_toBottomOf="parent"&ndash;&gt;-->
+<!--&lt;!&ndash;                app:layout_constraintEnd_toEndOf="parent"&ndash;&gt;-->
+<!--&lt;!&ndash;                app:layout_constraintHorizontal_bias="0.411"&ndash;&gt;-->
+<!--&lt;!&ndash;                app:layout_constraintStart_toStartOf="parent"&ndash;&gt;-->
+<!--&lt;!&ndash;                app:layout_constraintTop_toTopOf="parent"&ndash;&gt;-->
+<!--&lt;!&ndash;                app:layout_constraintVertical_bias="0.0" />&ndash;&gt;-->
+
+<!--            <LinearLayout-->
+<!--                android:id="@+id/dot"-->
+<!--                android:layout_width="22dp"-->
+<!--                android:layout_height="22dp"-->
+<!--                android:background="@drawable/notification_red_dot2"-->
+<!--                android:orientation="vertical"-->
+<!--                android:visibility="gone"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintHorizontal_bias="0.619"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                app:layout_constraintVertical_bias="0.421">-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/newnotif"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:fontFamily="@font/segoeuib"-->
+<!--                    android:gravity="center"-->
+<!--                    android:text="44"-->
+<!--                    android:textColor="@color/dwhite"-->
+<!--                    android:textSize="9dp"-->
+<!--                    android:visibility="visible" />-->
+<!--            </LinearLayout>-->
+
+<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+    </LinearLayout>
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -365,6 +449,18 @@
                     android:orientation="horizontal"
                     android:id="@+id/notificationconfig"/>
             </LinearLayout>
+            <TextView
+                android:textSize="12sp"
+                android:textColor="@color/darkgrey"
+                android:gravity="center"
+                android:id="@+id/version_name"
+                android:paddingTop="14dp"
+                android:paddingBottom="4dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Version"
+                android:fontFamily="@font/segoeui"
+                android:layout_marginBottom="24dp"/>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

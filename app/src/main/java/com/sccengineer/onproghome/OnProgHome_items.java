@@ -20,10 +20,11 @@ public class OnProgHome_items {
     }
 
 
-    public OnProgHome_items(String serviceTicketCd, String customerName, String supportStartDateTime) {
+    public OnProgHome_items(String serviceTicketCd, String customerName, String supportStartDateTime, boolean isAssist) {
         ServiceTicketCd = serviceTicketCd;
         CustomerName = customerName;
         SupportStartDateTime = supportStartDateTime;
+        IsAssist = isAssist;
     }
 
     public String getServiceTicketCd() {
@@ -50,12 +51,22 @@ public class OnProgHome_items {
         SupportStartDateTime = supportStartDateTime;
     }
 
+    public boolean isAssist() {
+        return IsAssist;
+    }
+
+    public void setAssist(boolean assist) {
+        IsAssist = assist;
+    }
+
     @SerializedName("ServiceTicketCd")
     private String ServiceTicketCd;
     @SerializedName("CustomerName")
     private String CustomerName;
     @SerializedName("SupportStartDateTime")
     private String SupportStartDateTime;
+    @SerializedName("IsAssist")
+    private boolean IsAssist;
 
 
 }

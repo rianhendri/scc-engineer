@@ -71,6 +71,7 @@ public class MenuAdapter  extends RecyclerView.Adapter<MenuAdapter.Myviewholder>
     public void onBindViewHolder(@NonNull Myviewholder myviewholder, int i) {
 
         myviewholder.mnama_menu.setText(myItem.get(i).getMenuname());
+        Picasso.with(context).load(myItem.get(i).getImg()).into(myviewholder.mimg_menu);
         myviewholder.itemView.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("WrongConstant")
             @Override
@@ -189,6 +190,7 @@ public class MenuAdapter  extends RecyclerView.Adapter<MenuAdapter.Myviewholder>
         public Myviewholder(@NonNull View itemView) {
             super(itemView);
             mnama_menu = itemView.findViewById(R.id.namemenu);
+            mimg_menu = itemView.findViewById(R.id.menuimg);
 
         }
     }

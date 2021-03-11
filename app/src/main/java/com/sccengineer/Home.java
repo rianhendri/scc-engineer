@@ -33,6 +33,8 @@ import com.sccengineer.apihelper.ServiceGenerator;
 import com.sccengineer.menuhome.MenuAdapter;
 import com.sccengineer.menuhome.MenuItem;
 import com.sccengineer.messagecloud.check;
+import com.sccengineer.notifikasihome.NotifhomeAdapter;
+import com.sccengineer.notifikasihome.NotifhomeItems;
 import com.sccengineer.onproghome.OnProgHome_items;
 import com.sccengineer.onproghome.OnProghome_adapter;
 
@@ -58,14 +60,16 @@ public class Home extends AppCompatActivity {
     boolean survey = true;
 
     public static ArrayList<OnProgHome_items> onProgHome_items;
+    ArrayList<NotifhomeItems> notifhomeItems;
     OnProghome_adapter onProghome_adapter;
-    JsonArray listformreq;
+    NotifhomeAdapter notifhomeAdapter;
+    JsonArray listformreq,listformreq2;
     RecyclerView myitem_place;
-    private LinearLayoutManager linearLayoutManager, linearLayoutManager2;
-    RecyclerView mymenu;
+    private LinearLayoutManager linearLayoutManager, linearLayoutManager2, linearLayoutManager3;
+    RecyclerView mymenu, mnotificationconfig;
     ArrayList<MenuItem> menuItemlist;
     MenuAdapter addmenu;
-    TextView mtotalprog,mtotalassigned,mtotalhistory, mnameprog,mnameasigned,mnamehistory, mnameeng, mnewnotif;
+    TextView mversion, mtotalprog,mtotalassigned,mtotalhistory, mnameprog,mnameasigned,mnamehistory, mnameeng, mnewnotif;
     ProgressDialog loading;
     @SuppressLint("WrongConstant")
     @Override
@@ -82,12 +86,20 @@ public class Home extends AppCompatActivity {
         mnameeng = findViewById(R.id.nameeng);
         mnewnotif = findViewById(R.id.newnotif);
         mymenu = findViewById(R.id.menuhome);
+        mversion = findViewById(R.id.version_name);
+        mnotificationconfig = findViewById(R.id.notificationconfig);
         linearLayoutManager = new LinearLayoutManager(Home.this, LinearLayout.HORIZONTAL,false);
 //        linearLayoutManager.setReverseLayout(true);
 //        linearLayoutManager.setStackFromEnd(true);
         myitem_place.setLayoutManager(linearLayoutManager);
         myitem_place.setHasFixedSize(true);
         onProgHome_items = new ArrayList<OnProgHome_items>();
+        linearLayoutManager3 = new LinearLayoutManager(Home.this, LinearLayout.VERTICAL,false);
+//        linearLayoutManager.setReverseLayout(true);
+//        linearLayoutManager.setStackFromEnd(true);
+        mnotificationconfig.setLayoutManager(linearLayoutManager3);
+        mnotificationconfig.setHasFixedSize(true);
+        notifhomeItems = new ArrayList<NotifhomeItems>();
         cekInternet();
         getSessionId();
         check.checknotif=1;
@@ -98,6 +110,8 @@ public class Home extends AppCompatActivity {
         }else {
 
         }
+        String versionName = BuildConfig.VERSION_NAME;
+        mversion.setText("SCC Engineer - "+" Version: "+ versionName);
     }
 //    public boolean appInstalledOrNot(String string2) {
 //        PackageManager packageManager = this.getPackageManager();
@@ -245,7 +259,7 @@ public class Home extends AppCompatActivity {
                     String mshowSettings = data.get("showSettings").toString();
                     if (mshowServiceTicket.equals("true")){
                         menuItem.setMenuname("Service Ticket");
-//                        menuItem.setImg(R.drawable.req);
+                        menuItem.setImg(R.drawable.ticket);
                         menuItem.setShow(mshowServiceTicket);
                         menuItemlist.add(menuItem);
                     }
@@ -260,15 +274,15 @@ public class Home extends AppCompatActivity {
 
                     if (mshowAttendance.equals("true")){
                         menuItem3.setMenuname("Attendance");
-//                        menuItem3.setImg(R.drawable.req);
+                        menuItem3.setImg(R.drawable.scheduling);
                         menuItem3.setShow(mshowAttendance);
                         menuItemlist.add(menuItem3);
                     }
                     if (mshowSettings.equals("true")){
-                        menuItem3.setMenuname("Settings");
-//                        menuItem3.setImg(R.drawable.req);
-                        menuItem3.setShow(mshowSettings);
-                        menuItemlist.add(menuItem3);
+                        menuItem4.setMenuname("Settings");
+                        menuItem4.setImg(R.drawable.settings);
+                        menuItem4.setShow(mshowSettings);
+                        menuItemlist.add(menuItem4);
                     }
 //                    if (mshowSurvey.equals("true")){
 //                        menuItem4.setMenuname(getString(R.string.title_survei));
@@ -323,7 +337,14 @@ public class Home extends AppCompatActivity {
 
 
                     //Notifikasi list
-
+                    listformreq2 = data.getAsJsonArray("notificationList");
+                    Gson gson2 = new Gson();
+                    Type listType2 = new TypeToken<ArrayList<NotifhomeItems>>() {
+                    }.getType();
+                    notifhomeItems = gson2.fromJson(listformreq2.toString(), listType2);
+                    notifhomeAdapter = new NotifhomeAdapter(Home.this, notifhomeItems);
+                    mnotificationconfig.setAdapter(notifhomeAdapter);
+                    mnotificationconfig.setVisibility(View.VISIBLE);
                 }else {
                     //// error message
                     loading.dismiss();
