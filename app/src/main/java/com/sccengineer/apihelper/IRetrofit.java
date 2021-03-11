@@ -32,6 +32,8 @@ public interface IRetrofit {
     public Call<JsonObject> postRawJSONlogin(@Body JsonObject var1);
     @POST("api/engineer/ping")
     public Call<JsonObject> postRawJSONping(@Body JsonObject var1);
+    @POST("api/engineer/config")
+    public Call<JsonObject> postRawJSONconfig(@Body JsonObject var1);
 
     @Multipart
     @POST("api/FormRequest/Add")

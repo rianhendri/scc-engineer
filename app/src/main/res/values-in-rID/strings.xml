@@ -7,4 +7,8 @@
     <string name="title_password">Kata Sandi :</string>
     <string name="title_username">User name :</string>
     <string name="title_session_Expired">Session Telah Berakhir</string>
+    <string name="title_notification">Notifikasi</string>
+    <string name="title_viewall">Lihat</string>
+    <string name="title_excpetation">Failed to connect the server. Please check your internet connection.</string>
+    <string name="title_exit">Klik sekali lagi untuk keluar</string>
 </resources>

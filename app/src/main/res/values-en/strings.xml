@@ -7,4 +7,8 @@
     <string name="title_password">Password :</string>
     <string name="title_username">User name :</string>
     <string name="title_session_Expired">Session Expired</string>
+    <string name="title_notification">Notifications</string>
+    <string name="title_viewall">View All</string>
+    <string name="title_excpetation">Failed to connect the server. Please check your internet connection.</string>
+    <string name="title_exit">Click one more time to exit</string>
 </resources>
