@@ -2,9 +2,11 @@ package com.sccengineer;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -69,8 +71,10 @@ public class Home extends AppCompatActivity {
     RecyclerView mymenu, mnotificationconfig;
     ArrayList<MenuItem> menuItemlist;
     MenuAdapter addmenu;
-    TextView mversion, mtotalprog,mtotalassigned,mtotalhistory, mnameprog,mnameasigned,mnamehistory, mnameeng, mnewnotif;
+    TextView mnotif2, mversion, mtotalprog,mtotalassigned,mtotalhistory, mnameprog,mnameasigned,mnamehistory, mnameeng, mnewnotif;
     ProgressDialog loading;
+    SwipeRefreshLayout mswip;
+    ConstraintLayout mnotif1;
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +91,9 @@ public class Home extends AppCompatActivity {
         mnewnotif = findViewById(R.id.newnotif);
         mymenu = findViewById(R.id.menuhome);
         mversion = findViewById(R.id.version_name);
+        mswip= findViewById(R.id.swiprefresh);
+        mnotif1 = findViewById(R.id.notifikasi);
+        mnotif2 = findViewById(R.id.notif2);
         mnotificationconfig = findViewById(R.id.notificationconfig);
         linearLayoutManager = new LinearLayoutManager(Home.this, LinearLayout.HORIZONTAL,false);
 //        linearLayoutManager.setReverseLayout(true);
@@ -112,6 +119,58 @@ public class Home extends AppCompatActivity {
         }
         String versionName = BuildConfig.VERSION_NAME;
         mversion.setText("SCC Engineer - "+" Version: "+ versionName);
+
+        int color = getResources().getColor(R.color.colorPrimary);
+        mswip.setColorSchemeColors(color);
+        mswip.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                cekInternet();
+
+                if (internet){
+
+                    new Handler().postDelayed(new Runnable() {
+                        @Override public void run() {
+
+                            // Berhenti berputar/refreshing
+
+                            mswip.setRefreshing(false);
+                            reqApi();
+
+                            // fungsi-fungsi lain yang dijalankan saat refresh berhenti
+
+                        }
+                    }, 500);
+
+                }else {
+//                    mswip.setEnabled(false);
+//                    mswip.setRefreshing(false);
+//                    mcontent.setVisibility(View.GONE);
+
+
+                }
+            }
+        });
+
+        mnotif1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent gotonews = new Intent(Home.this, NotificationList.class);
+                    startActivity(gotonews);
+                    overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                    finish();
+            }
+        });
+        mnotif2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent gotonews = new Intent(Home.this, NotificationList.class);
+                startActivity(gotonews);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                finish();
+            }
+        });
+
     }
 //    public boolean appInstalledOrNot(String string2) {
 //        PackageManager packageManager = this.getPackageManager();
@@ -279,7 +338,7 @@ public class Home extends AppCompatActivity {
                         menuItemlist.add(menuItem3);
                     }
                     if (mshowSettings.equals("true")){
-                        menuItem4.setMenuname("Settings");
+                        menuItem4.setMenuname(getString(R.string.title_Setting));
                         menuItem4.setImg(R.drawable.settings);
                         menuItem4.setShow(mshowSettings);
                         menuItemlist.add(menuItem4);

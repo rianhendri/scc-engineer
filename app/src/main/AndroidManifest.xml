@@ -24,8 +24,31 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".NoInternet"></activity>
-        <activity android:name=".Home" />
+        <activity android:name=".ServiceTicket"></activity>
+        <activity android:name=".DetailsNotification">
+            <intent-filter>
+                <action android:name="Notification" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".NotificationList">
+            <intent-filter>
+                <action android:name="Notificatiosn" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Langueage" />
+        <activity android:name=".ChangePassword" />
+        <activity android:name=".Myprofile" />
+        <activity android:name=".Settings" />
+        <activity android:name=".NoInternet" />
+        <activity
+            android:name=".Home"
+            android:excludeFromRecents="true"
+            android:parentActivityName=".SplashScreen"
+            android:taskAffinity="" />
         <activity android:name=".Login" />
         <activity android:name=".SplashScreen">
             <intent-filter>

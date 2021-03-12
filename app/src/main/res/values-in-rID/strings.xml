@@ -11,4 +11,19 @@
     <string name="title_viewall">Lihat</string>
     <string name="title_excpetation">Failed to connect the server. Please check your internet connection.</string>
     <string name="title_exit">Klik sekali lagi untuk keluar</string>
+    <string name="title_changepassword">Ganti Password</string>
+    <string name="title_language">Bahasa</string>
+    <string name="title_logout">Keluar</string>
+    <string name="title_myprofile">Profile Saya</string>
+    <string name="title_Setting">Pengaturan</string>
+    <string name="title_oldpassword">"Password Lama: "</string>
+    <string name="title_newpassword">Password Baru:</string>
+    <string name="title_retypepassword">Retype Password:</string>
+    <string name="title_changepass_succsess">Password berhasil di ubah</string>
+    <string name="title_Passwordwrong">Password tidak sama</string>
+    <string name="title_passwordRequired">Password minimal 6 characters</string>
+    <string name="empetypassword">Password Dibutuhkan</string>
+    <string name="title_nonotif">Tidak ada notifikasi</string>
+    <string name="title_open">Lihat</string>
+    <string name="title_notificationdetail">Notification Details</string>
 </resources>

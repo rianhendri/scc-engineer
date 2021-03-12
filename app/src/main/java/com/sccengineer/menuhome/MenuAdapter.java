@@ -42,6 +42,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sccengineer.R;
+import com.sccengineer.Settings;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -83,7 +84,7 @@ public class MenuAdapter  extends RecyclerView.Adapter<MenuAdapter.Myviewholder>
 //                    context.startActivity(gotonews);
 //                    ((Activity)context).finish();
 //                    ((Activity)context).overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                    Toast.makeText(context, "ticket", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(context, "ticket", Toast.LENGTH_SHORT).show();
                 }
                 if (namemenu.equals("Attendance")){
 //                    Intent gotonews = new Intent(context, PurchaseMenu.class);
@@ -94,16 +95,16 @@ public class MenuAdapter  extends RecyclerView.Adapter<MenuAdapter.Myviewholder>
 //                    context.startActivity(gotonews);
 //                    ((Activity)context).overridePendingTransition(R.anim.right_in, R.anim.left_out);
 //                    ((Activity)context).finish();
-                    Toast.makeText(context, "attendance", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(context, "attendance", Toast.LENGTH_SHORT).show();
 
 
                 }
-                if (namemenu.equals("Settings")){
-//                    Intent gotosurvey = new Intent(context, SurveyList_Activity.class);
-//                    context.startActivity(gotosurvey);
-//                    ((Activity)context).overridePendingTransition(R.anim.right_in, R.anim.left_out);
-//                    ((Activity)context).finish();
-                    Toast.makeText(context, "setting", Toast.LENGTH_SHORT).show();
+                if (namemenu.equals(context.getString(R.string.title_Setting))){
+                    Intent gotosurvey = new Intent(context, Settings.class);
+                    context.startActivity(gotosurvey);
+                    ((Activity)context).overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                    ((Activity)context).finish();
+//                    Toast.makeText(context, "setting", Toast.LENGTH_SHORT).show();
 
                 }
 //                if (namemenu.equals(context.getString(R.string.title_News))){

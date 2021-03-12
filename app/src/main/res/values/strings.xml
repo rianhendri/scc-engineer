@@ -10,4 +10,19 @@
     <string name="title_viewall">View All</string>
     <string name="title_excpetation">Failed to connect the server. Please check your internet connection.</string>
     <string name="title_exit">Click one more time to exit</string>
+    <string name="title_myprofile">My Profile</string>
+    <string name="title_changepassword">Change Password</string>
+    <string name="title_language">Language</string>
+    <string name="title_logout">Logout</string>
+    <string name="title_Setting">Settings</string>
+    <string name="title_oldpassword">Old Password:</string>
+    <string name="title_newpassword">New Password:</string>
+    <string name="title_retypepassword">Retype Password:</string>
+    <string name="title_changepass_succsess">Password is successfully changed</string>
+    <string name="title_Passwordwrong">The retype password is not matched</string>
+    <string name="title_passwordRequired">Password of at least 6 characters</string>
+    <string name="empetypassword">Password Required</string>
+    <string name="title_nonotif">No notification</string>
+    <string name="title_open">Open</string>
+    <string name="title_notificationdetail">Notification Details</string>
 </resources>

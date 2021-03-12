@@ -30,6 +30,18 @@ public interface IRetrofit {
 
     @POST("api/engineer/login")
     public Call<JsonObject> postRawJSONlogin(@Body JsonObject var1);
+    @POST("api/Notification/ReadAll")
+    public Call<JsonObject> ReadAll(@Body JsonObject var1);
+    @POST("api/Notification/Get")
+    public Call<JsonObject> postRawJSONgetnotifget(@Body JsonObject var1);
+    @POST("api/Notification/Read")
+    public Call<JsonObject> Read(@Body JsonObject var1);
+    @POST("api/Notification/List")
+    public Call<JsonObject> notifications(@Body JsonObject var1);
+    @POST("api/engineer/logout")
+    public Call<JsonObject> postRawJSONlogout(@Body JsonObject var1);
+    @POST("api/engineer/changepassword")
+    public Call<JsonObject> changepassword(@Body JsonObject var1);
     @POST("api/engineer/ping")
     public Call<JsonObject> postRawJSONping(@Body JsonObject var1);
     @POST("api/engineer/config")

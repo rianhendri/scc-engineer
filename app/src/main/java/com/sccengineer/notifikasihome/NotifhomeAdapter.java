@@ -24,7 +24,9 @@
 package com.sccengineer.notifikasihome;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -40,6 +42,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.sccengineer.DetailsNotification;
 import com.sccengineer.R;
 
 import java.text.ParseException;
@@ -84,7 +87,7 @@ public class NotifhomeAdapter extends RecyclerView.Adapter<NotifhomeAdapter.Myvi
             myviewholder.mnama_menu.setTypeface(type2);
         }
         myviewholder.mnama_menu.setText(myItem.get(i).getTitle());
-        myviewholder.mdes.setText(myItem.get(i).getShortContent());
+        myviewholder.mdes.setText(myItem.get(i).getContent());
         if (myItem.get(i).getPostedDateTime()!=null){
             String newdate = "";
             oldadate = myItem.get(i).getPostedDateTime();
@@ -106,7 +109,21 @@ public class NotifhomeAdapter extends RecyclerView.Adapter<NotifhomeAdapter.Myvi
 
         }
 
-
+        myviewholder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, DetailsNotification.class);
+                intent.putExtra("home", "homes");
+                intent.putExtra("id", (myItem.get(i)).getGuid());
+                intent.putExtra("username", (myItem.get(i)).getTitle());
+                intent.putExtra("guid", (myItem.get(i)).getGuid());
+                intent.putExtra("title", (myItem.get(i)).getTitle());
+                intent.putExtra("body", (myItem.get(i)).getContent());
+                context.startActivity(intent);
+                ((Activity)context).finish();
+                ((Activity)context).overridePendingTransition(R.anim.right_in, R.anim.left_out);
+            }
+        });
 
 //        myviewholder.itemView.setOnClickListener(new View.OnClickListener() {
 //            @SuppressLint("WrongConstant")

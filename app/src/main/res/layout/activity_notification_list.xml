@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dwhite"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:elevation="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+        <LinearLayout
+            android:id="@+id/backbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="19dp"
+                android:layout_height="60dp"
+                android:layout_gravity="left"
+                android:layout_marginLeft="7dp"
+                android:layout_marginRight="7dp"
+                android:layout_marginTop="0dp"
+                android:gravity="left"
+                android:src="@drawable/back_white" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="64dp"
+                android:fontFamily="@font/seguisb"
+                android:gravity="center_vertical"
+                android:text="@string/title_notification"
+                android:textColor="@color/dwhite"
+                android:textSize="15sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:paddingRight="24dp">
+            <TextView
+                android:id="@+id/readall"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:padding="12dp"
+                android:fontFamily="@font/seguisb"
+                android:textSize="12sp"
+                android:textColor="@color/dwhite"
+                android:text="Read All"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listnotif"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:nestedScrollingEnabled="false"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:visibility="gone" >
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/nonotif"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fontFamily="@font/seguisb"
+        android:gravity="center"
+        android:text="@string/title_nonotif"
+        android:textSize="15sp" />
+
+</LinearLayout>

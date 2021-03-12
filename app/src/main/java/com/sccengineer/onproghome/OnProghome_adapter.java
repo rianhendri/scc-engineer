@@ -94,7 +94,8 @@ extends RecyclerView.Adapter<OnProghome_adapter.Myviewholder> {
         separated[0].trim();; // this will contain "Fruit"
         separated[1].trim();;
         myviewholder.mstgl.setText("Start: "+separated[0]+" "+ separated[1]);
-
+        myviewholder.mpress.setText(onProgHome_items.get(i).getPress());
+        myviewholder.missue.setText(onProgHome_items.get(i).getIssue());
     }
 
     @Override
@@ -104,7 +105,7 @@ extends RecyclerView.Adapter<OnProghome_adapter.Myviewholder> {
     }
 
     public static class Myviewholder extends RecyclerView.ViewHolder{
-        TextView mscd, mcustname, mstgl;
+        TextView mscd, mcustname, mstgl, mpress, missue;
         LinearLayout mbadgeas;
 
         public Myviewholder(@NonNull View itemView) {
@@ -113,8 +114,8 @@ extends RecyclerView.Adapter<OnProghome_adapter.Myviewholder> {
             mcustname = itemView.findViewById(R.id.custname);
             mstgl = itemView.findViewById(R.id.stgl);
             mbadgeas = itemView.findViewById(R.id.bagdeassist);
-
-
+            mpress = itemView.findViewById(R.id.press);
+            missue = itemView.findViewById(R.id.issue);
 
 
         }
