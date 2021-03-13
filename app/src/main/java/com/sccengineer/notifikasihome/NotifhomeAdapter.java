@@ -77,7 +77,7 @@ public class NotifhomeAdapter extends RecyclerView.Adapter<NotifhomeAdapter.Myvi
         Typeface type = Typeface.createFromAsset(context.getAssets(),"font/segoeuib.ttf");
         Typeface type2 = Typeface.createFromAsset(context.getAssets(),"font/segoeui.ttf");
 
-        if (myItem.get(i).isStsRead()){
+        if (!myItem.get(i).isStsRead()){
             myviewholder.mdot.setVisibility(View.VISIBLE);
             myviewholder.mdes.setTypeface(type);
             myviewholder.mnama_menu.setTypeface(type);

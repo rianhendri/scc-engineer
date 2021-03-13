@@ -32,6 +32,8 @@ public interface IRetrofit {
     public Call<JsonObject> postRawJSONlogin(@Body JsonObject var1);
     @POST("api/Notification/ReadAll")
     public Call<JsonObject> ReadAll(@Body JsonObject var1);
+    @POST("api/serviceTicket/list")
+    public Call<JsonObject> ListST(@Body JsonObject var1);
     @POST("api/Notification/Get")
     public Call<JsonObject> postRawJSONgetnotifget(@Body JsonObject var1);
     @POST("api/Notification/Read")

@@ -221,7 +221,7 @@
                             android:textColor="#676767"
                             android:textSize="17sp"
                             android:gravity="center_vertical"
-                            android:text="7"
+                            android:text="-"
                             android:id="@+id/totalprog"/>
                     </LinearLayout>
                     <TextView
@@ -301,7 +301,7 @@
                                 android:textSize="17sp"
                                 android:id="@+id/totalass"
                                 android:gravity="center_vertical"
-                                android:text="7"/>
+                                android:text="-"/>
                         </LinearLayout>
                         <TextView
                             android:layout_width="match_parent"
@@ -368,7 +368,7 @@
                                 android:textSize="17sp"
                                 android:id="@+id/totalhis"
                                 android:gravity="center_vertical"
-                                android:text="7"/>
+                                android:text="-"/>
                         </LinearLayout>
                         <TextView
                             android:layout_width="match_parent"

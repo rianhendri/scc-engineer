@@ -26,4 +26,6 @@
     <string name="title_nonotif">Tidak ada notifikasi</string>
     <string name="title_open">Lihat</string>
     <string name="title_notificationdetail">Notification Details</string>
+    <string name="title_RequestNone">No Assignment</string>
+    <string name="title_ServiceSupport">Assignment</string>
 </resources>

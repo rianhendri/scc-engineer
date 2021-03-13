@@ -317,7 +317,7 @@ public class Home extends AppCompatActivity {
                     String mshowAttendance = data.get("showAttendance").toString();
                     String mshowSettings = data.get("showSettings").toString();
                     if (mshowServiceTicket.equals("true")){
-                        menuItem.setMenuname("Service Ticket");
+                        menuItem.setMenuname("Assignment");
                         menuItem.setImg(R.drawable.ticket);
                         menuItem.setShow(mshowServiceTicket);
                         menuItemlist.add(menuItem);
@@ -405,6 +405,7 @@ public class Home extends AppCompatActivity {
                     mnotificationconfig.setAdapter(notifhomeAdapter);
                     mnotificationconfig.setVisibility(View.VISIBLE);
                 }else {
+                    sesionid();
                     //// error message
                     loading.dismiss();
                     Toast.makeText(Home.this, errornya.toString(), Toast.LENGTH_SHORT).show();

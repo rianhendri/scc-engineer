@@ -42,6 +42,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sccengineer.R;
+import com.sccengineer.ServiceTicket;
 import com.sccengineer.Settings;
 import com.squareup.picasso.Picasso;
 
@@ -78,12 +79,12 @@ public class MenuAdapter  extends RecyclerView.Adapter<MenuAdapter.Myviewholder>
             @Override
             public void onClick(View v) {
                 String namemenu = myItem.get(i).getMenuname();
-                if (namemenu.equals("Service Ticket")){
-//                    Intent gotonews = new Intent(context, FormActivity.class);
+                if (namemenu.equals("Assignment")){
+                    Intent gotonews = new Intent(context, ServiceTicket.class);
 //                    gotonews.putExtra("showaddform",showaddform);
-//                    context.startActivity(gotonews);
-//                    ((Activity)context).finish();
-//                    ((Activity)context).overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                    context.startActivity(gotonews);
+                    ((Activity)context).finish();
+                    ((Activity)context).overridePendingTransition(R.anim.right_in, R.anim.left_out);
 //                    Toast.makeText(context, "ticket", Toast.LENGTH_SHORT).show();
                 }
                 if (namemenu.equals("Attendance")){
