@@ -27,4 +27,6 @@
     <string name="title_notificationdetail">Notification Details</string>
     <string name="title_RequestNone">No Assignment</string>
     <string name="title_ServiceSupport">Assignment</string>
+    <string name="title_save">Save</string>
+    <string name="title_languagechange">Language changed successfully</string>
 </resources>

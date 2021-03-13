@@ -14,8 +14,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class ServiceTicketItems {
 
-
-    public ServiceTicketItems(String serviceTicketCd, String formRequestCd, String formRequestPhotoURL, String formRequestPhotoThumbURL, String date, String pressGuid, String pressName, String description, String status, int statusName, String statusColorCode, String createdBy, String createdDateTime) {
+    public ServiceTicketItems(String serviceTicketCd, String formRequestCd, String formRequestPhotoURL, String formRequestPhotoThumbURL, String date, String pressGuid, String pressName, String description, String status, String statusName, String statusColorCode, String createdBy, String createdDateTime, boolean stsAssist, String assignmentStatusName, String assignmentStatusColorCode, String assignedDateTime, String customerName) {
         this.serviceTicketCd = serviceTicketCd;
         this.formRequestCd = formRequestCd;
         this.formRequestPhotoURL = formRequestPhotoURL;
@@ -29,8 +28,12 @@ public class ServiceTicketItems {
         this.statusColorCode = statusColorCode;
         this.createdBy = createdBy;
         this.createdDateTime = createdDateTime;
+        this.stsAssist = stsAssist;
+        this.assignmentStatusName = assignmentStatusName;
+        this.assignmentStatusColorCode = assignmentStatusColorCode;
+        this.assignedDateTime = assignedDateTime;
+        this.customerName = customerName;
     }
-
     public String getServiceTicketCd() {
         return serviceTicketCd;
     }
@@ -103,11 +106,11 @@ public class ServiceTicketItems {
         this.status = status;
     }
 
-    public int getStatusName() {
+    public String getStatusName() {
         return statusName;
     }
 
-    public void setStatusName(int statusName) {
+    public void setStatusName(String statusName) {
         this.statusName = statusName;
     }
 
@@ -133,6 +136,46 @@ public class ServiceTicketItems {
 
     public void setCreatedDateTime(String createdDateTime) {
         this.createdDateTime = createdDateTime;
+    }
+
+    public boolean isStsAssist() {
+        return stsAssist;
+    }
+
+    public void setStsAssist(boolean stsAssist) {
+        this.stsAssist = stsAssist;
+    }
+
+    public String getAssignmentStatusName() {
+        return assignmentStatusName;
+    }
+
+    public void setAssignmentStatusName(String assignmentStatusName) {
+        this.assignmentStatusName = assignmentStatusName;
+    }
+
+    public String getAssignmentStatusColorCode() {
+        return assignmentStatusColorCode;
+    }
+
+    public void setAssignmentStatusColorCode(String assignmentStatusColorCode) {
+        this.assignmentStatusColorCode = assignmentStatusColorCode;
+    }
+
+    public String getAssignedDateTime() {
+        return assignedDateTime;
+    }
+
+    public void setAssignedDateTime(String assignedDateTime) {
+        this.assignedDateTime = assignedDateTime;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 
     @Expose
@@ -164,18 +207,33 @@ public class ServiceTicketItems {
     private String status;
     @Expose
     @SerializedName("statusName")
-    private int statusName;
+    private String statusName;
     @Expose
     @SerializedName("statusColorCode")
     private String statusColorCode;
     @Expose
     @SerializedName("createdBy")
     private String createdBy;
-
     @Expose
     @SerializedName("createdDateTime")
     private String createdDateTime;
+    @Expose
+    @SerializedName("stsAssist")
+    private boolean stsAssist;
+    @Expose
+    @SerializedName("assignmentStatusName")
+    private String assignmentStatusName;
+    @Expose
+    @SerializedName("assignmentStatusColorCode")
+    private String assignmentStatusColorCode;
+    @Expose
+    @SerializedName("assignedDateTime")
+    private String assignedDateTime;
 
+
+    @Expose
+    @SerializedName("customerName")
+    private String customerName;
 
     public ServiceTicketItems() {
     }

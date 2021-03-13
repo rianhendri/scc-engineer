@@ -16,6 +16,7 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -101,6 +102,12 @@ public class ServiceTicket extends AppCompatActivity {
 //            myitem_place.setPadding(0,0,0,120);
 //
 //        }
+        Bundle bundle2 = this.getIntent().getExtras();
+        if (bundle2 != null) {
+            valuefilter = bundle2.getString("filter");
+
+//            Toast.makeText(DetailsNotification.this, guid,Toast.LENGTH_LONG).show();
+        }
         //setlayout recyler
         linearLayoutManager = new LinearLayoutManager(ServiceTicket.this, LinearLayout.VERTICAL,false);
 //        linearLayoutManager.setReverseLayout(true);

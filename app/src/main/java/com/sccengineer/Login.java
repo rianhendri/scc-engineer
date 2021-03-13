@@ -150,7 +150,7 @@ public class Login extends AppCompatActivity {
                 if (statusnya.equals("OK")){
                     loading.dismiss();
                     JsonObject data = post.getAsJsonObject("data");
-//                    language = data.get("languageCd").getAsString();
+                    language = data.get("languageCd").getAsString();
                     String sessionId = data.get("sessionId").getAsString();
                     String user = data.get("username").getAsString();
                     SharedPreferences sharedPreferences = getSharedPreferences("SESSION_ID", MODE_PRIVATE);
@@ -158,8 +158,8 @@ public class Login extends AppCompatActivity {
                     editor.putString("session_id", sessionId);
                     editor.putString("user",user);
                     editor.apply();
-//                    setLocale(language);
-//                    Toast.makeText(LoginActivity.this, sessionId, Toast.LENGTH_SHORT).show();
+                    setLocale(language);
+//                    Toast.makeText(Login.this, sessionId, Toast.LENGTH_SHORT).show();
 
                     Intent gohome = new Intent(Login.this,Home.class);
                     startActivity(gohome);

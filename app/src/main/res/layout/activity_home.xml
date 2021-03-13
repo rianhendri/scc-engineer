@@ -197,6 +197,7 @@
 
                 </LinearLayout>
                 <LinearLayout
+                    android:id="@+id/stonprog"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -275,6 +276,7 @@
                     android:layout_marginTop="14dp"
                     >
                     <LinearLayout
+                        android:id="@+id/stass"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
@@ -342,6 +344,7 @@
                         </LinearLayout>
                     </LinearLayout>
                     <LinearLayout
+                        android:id="@+id/stdone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"

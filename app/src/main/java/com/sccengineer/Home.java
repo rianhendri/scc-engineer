@@ -75,11 +75,15 @@ public class Home extends AppCompatActivity {
     ProgressDialog loading;
     SwipeRefreshLayout mswip;
     ConstraintLayout mnotif1;
+    LinearLayout mstonprod, mstass, mstdone;
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        mstonprod = findViewById(R.id.stonprog);
+        mstass = findViewById(R.id.stass);
+        mstdone = findViewById(R.id.stdone);
         myitem_place = findViewById(R.id.assignmentprogress);
         mtotalprog = findViewById(R.id.totalprog);
         mtotalassigned = findViewById(R.id.totalass);
@@ -170,7 +174,36 @@ public class Home extends AppCompatActivity {
                 finish();
             }
         });
-
+        mstdone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent gotonews = new Intent(Home.this, ServiceTicket.class);
+                gotonews.putExtra("filter", "HISTORY");
+                startActivity(gotonews);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                finish();
+            }
+        });
+        mstass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent gotonews = new Intent(Home.this, ServiceTicket.class);
+                gotonews.putExtra("filter", "Assigned");
+                startActivity(gotonews);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                finish();
+            }
+        });
+        mstonprod.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent gotonews = new Intent(Home.this, ServiceTicket.class);
+                gotonews.putExtra("filter", "OnProgress");
+                startActivity(gotonews);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                finish();
+            }
+        });
     }
 //    public boolean appInstalledOrNot(String string2) {
 //        PackageManager packageManager = this.getPackageManager();
