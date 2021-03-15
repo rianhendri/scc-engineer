@@ -158,7 +158,7 @@ public class ServiceTicket extends AppCompatActivity {
                             }
 
                         }else {
-//                                    Toast.makeText(getActivity(), String.valueOf(page), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ServiceTicket.this, "Data Sudah di tampilkan semua", Toast.LENGTH_SHORT).show();
 //                                    mfooterload.setVisibility(View.GONE);
 //                                    mdatahabis.setVisibility(View.GONE);
 //                                    mrefreshcoba.setVisibility(View.VISIBLE);

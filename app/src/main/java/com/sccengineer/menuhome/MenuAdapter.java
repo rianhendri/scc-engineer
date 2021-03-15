@@ -81,6 +81,7 @@ public class MenuAdapter  extends RecyclerView.Adapter<MenuAdapter.Myviewholder>
                 String namemenu = myItem.get(i).getMenuname();
                 if (namemenu.equals("Assignment")){
                     Intent gotonews = new Intent(context, ServiceTicket.class);
+                    gotonews.putExtra("home", "homes");
 //                    gotonews.putExtra("showaddform",showaddform);
                     context.startActivity(gotonews);
                     ((Activity)context).finish();

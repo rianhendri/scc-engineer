@@ -30,4 +30,23 @@
     <string name="title_ServiceSupport">Assignment</string>
     <string name="title_save">Save</string>
     <string name="title_languagechange">Language changed successfully</string>
+    <string name="title_detail">Details Service Ticket</string>
+    <string name="title_Requestno">Request No</string>
+    <string name="title_daterequest">Request Date</string>
+    <string name="title_location">Location</string>
+    <string name="title_descriptionproblem">Problem description</string>
+    <string name="title_serviceticket">Service Ticket</string>
+    <string name="title_confirm">Confirmation</string>
+    <string name="title_lastiimpressi">Last Impression:</string>
+    <string name="title_engineernote">Engineer Notes:</string>
+    <string name="title_no">No</string>
+    <string name="title_yes">Yes</string>
+    <string name="title_dialogreopen">Anda Yakin ingin Start Progress?</string>
+    <string name="title_reopendialod">Start Progress</string>
+    <string name="title_update">Update Assingment</string>
+    <string name="title_andaupdate">Anda yakin ingin update?</string>
+    <string name="title_userdetails">User Details:</string>
+    <string name="title_Namalengkap">Full Name:</string>
+    <string name="title_namapt">Company:</string>
+    <string name="title_group">Company Group:</string>
 </resources>

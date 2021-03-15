@@ -30,7 +30,9 @@
  */
 package com.sccengineer.onproghome;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,12 +43,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.sccengineer.DetailsST;
 import com.sccengineer.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
+
+import static com.sccengineer.ServiceTicket.valuefilter;
 
 
 public class OnProghome_adapter
@@ -96,6 +101,21 @@ extends RecyclerView.Adapter<OnProghome_adapter.Myviewholder> {
         myviewholder.mstgl.setText("Start: "+separated[0]+" "+ separated[1]);
         myviewholder.mpress.setText(onProgHome_items.get(i).getPress());
         myviewholder.missue.setText(onProgHome_items.get(i).getIssue());
+        myviewholder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, DetailsST.class);
+                intent.putExtra("home", "homes");
+//                intent.putExtra("id", (onProgHome_items.get(i).getFormRequestCd()));
+                intent.putExtra("noticket", (onProgHome_items.get(i)).getServiceTicketCd());
+                intent.putExtra("pos", valuefilter);
+//                intent.putExtra("user", onProgHome_items.get(i).getCreatedBy());
+                context.startActivity(intent);
+                ((Activity)context).overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                ((Activity)context).finish();
+
+            }
+        });
     }
 
     @Override

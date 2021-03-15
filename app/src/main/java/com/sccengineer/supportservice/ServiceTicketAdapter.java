@@ -87,7 +87,7 @@ extends RecyclerView.Adapter<ServiceTicketAdapter.Myviewholder> {
         if (addFromItem.get(i).getFormRequestPhotoThumbURL()!=null){
             Picasso.with(context).load(addFromItem.get(i).getFormRequestPhotoThumbURL()).into(myviewholder.xgambar_item);
         }else {
-            Picasso.with(context).load(R.drawable.logoemp).into(myviewholder.xgambar_item);
+            Picasso.with(context).load(R.drawable.noimgg).into(myviewholder.xgambar_item);
         }
         myviewholder.mcdst.setText("#"+ addFromItem.get(i).getServiceTicketCd());
         if (addFromItem.get(i).getServiceTicketCd()!=null){
@@ -127,6 +127,8 @@ extends RecyclerView.Adapter<ServiceTicketAdapter.Myviewholder> {
             public void onClick(View v) {
                 Intent intent = new Intent(context, DetailsST.class);
                 intent.putExtra("id", (addFromItem.get(i).getFormRequestCd()));
+                intent.putExtra("home", "homesa");
+                intent.putExtra("filter", valuefilter);
                 intent.putExtra("noticket", (addFromItem.get(i)).getServiceTicketCd());
                 intent.putExtra("pos", valuefilter);
                 intent.putExtra("user", addFromItem.get(i).getCreatedBy());
@@ -148,7 +150,7 @@ extends RecyclerView.Adapter<ServiceTicketAdapter.Myviewholder> {
                     Picasso.with(context).load(addFromItem.get(i).getFormRequestPhotoURL()).into(mimgpopup);
 
                 }else {
-                    Picasso.with(context).load(R.drawable.logoemp).into(mimgpopup);
+                    Picasso.with(context).load(R.drawable.noimgg).into(mimgpopup);
 
                 }
 //                Picasso.with(context).load(addFromItem.get(i).getFormRequestPhotoURL()).into(mimgpopup);

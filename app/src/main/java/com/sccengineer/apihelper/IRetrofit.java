@@ -42,6 +42,8 @@ public interface IRetrofit {
     public Call<JsonObject> notifications(@Body JsonObject var1);
     @POST("api/engineer/logout")
     public Call<JsonObject> postRawJSONlogout(@Body JsonObject var1);
+    @POST("api/serviceTicket/get")
+    public Call<JsonObject> getservice(@Body JsonObject var1);
     @POST("api/engineer/ChangeLanguage")
     public Call<JsonObject> changelanguage(@Body JsonObject var1);
     @POST("api/engineer/changepassword")
@@ -50,7 +52,10 @@ public interface IRetrofit {
     public Call<JsonObject> postRawJSONping(@Body JsonObject var1);
     @POST("api/engineer/config")
     public Call<JsonObject> postRawJSONconfig(@Body JsonObject var1);
-
+    @POST("api/serviceticket/startProgress")
+    public Call<JsonObject> startprog(@Body JsonObject var1);
+    @POST("api/serviceticket/update")
+    public Call<JsonObject> updatea(@Body JsonObject var1);
     @Multipart
     @POST("api/FormRequest/Add")
     public Call<JsonObject> uploadImage(@Part MultipartBody.Part multipart,

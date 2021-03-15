@@ -74,17 +74,29 @@ extends RecyclerView.Adapter<NotificationAdapter.Myviewholder> {
     public void onBindViewHolder(@NonNull Myviewholder myviewholder, int i) {
 
         String string2 = "";
-        if (myItem.get(i).getStsRead()==null){
-            myviewholder.mdot.setAlpha(100);
-            Typeface face =  ResourcesCompat.getFont(context, R.font.segoeuib);
-            myviewholder.mcontent.setTypeface(face);
-            myviewholder.mtitle.setTypeface(face);
+        Typeface type = Typeface.createFromAsset(context.getAssets(),"font/segoeuib.ttf");
+        Typeface type2 = Typeface.createFromAsset(context.getAssets(),"font/segoeui.ttf");
+
+        if (!myItem.get(i).isStsRead()){
+            myviewholder.mdot.setVisibility(View.VISIBLE);
+            myviewholder.mcontent.setTypeface(type);
+            myviewholder.mtitle.setTypeface(type);
         }else {
-            myviewholder.mdot.setAlpha(0);
-            Typeface face =  ResourcesCompat.getFont(context, R.font.segoeui);
-            myviewholder.mcontent.setTypeface(face);
-            myviewholder.mtitle.setTypeface(face);
+            myviewholder.mdot.setVisibility(View.GONE);
+            myviewholder.mcontent.setTypeface(type2);
+            myviewholder.mtitle.setTypeface(type2);
         }
+//        if (myItem.get(i).getStsRead()==null){
+//            myviewholder.mdot.setAlpha(100);
+//            Typeface face =  ResourcesCompat.getFont(context, R.font.segoeuib);
+//            myviewholder.mcontent.setTypeface(face);
+//            myviewholder.mtitle.setTypeface(face);
+//        }else {
+//            myviewholder.mdot.setAlpha(0);
+//            Typeface face =  ResourcesCompat.getFont(context, R.font.segoeui);
+//            myviewholder.mcontent.setTypeface(face);
+//            myviewholder.mtitle.setTypeface(face);
+//        }
         myviewholder.mtitle.setText(myItem.get(i).getTitle());
         myviewholder.mcontent.setText(myItem.get(i).getContent());
         String string3 = myItem.get(i).getPostedDateTime();

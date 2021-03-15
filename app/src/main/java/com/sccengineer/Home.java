@@ -179,6 +179,7 @@ public class Home extends AppCompatActivity {
             public void onClick(View v) {
                 Intent gotonews = new Intent(Home.this, ServiceTicket.class);
                 gotonews.putExtra("filter", "HISTORY");
+                gotonews.putExtra("home", "homes");
                 startActivity(gotonews);
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 finish();
@@ -189,6 +190,7 @@ public class Home extends AppCompatActivity {
             public void onClick(View v) {
                 Intent gotonews = new Intent(Home.this, ServiceTicket.class);
                 gotonews.putExtra("filter", "Assigned");
+                gotonews.putExtra("home", "homes");
                 startActivity(gotonews);
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 finish();
@@ -199,6 +201,7 @@ public class Home extends AppCompatActivity {
             public void onClick(View v) {
                 Intent gotonews = new Intent(Home.this, ServiceTicket.class);
                 gotonews.putExtra("filter", "OnProgress");
+                gotonews.putExtra("home", "homes");
                 startActivity(gotonews);
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 finish();

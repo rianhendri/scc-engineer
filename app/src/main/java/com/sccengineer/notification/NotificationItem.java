@@ -17,27 +17,13 @@ public class NotificationItem {
     }
 
 
-    public NotificationItem(String username, String content, String guid,
-                            String postedDateTime, String title, String stsRead, String readDateTime) {
-        Username = username;
+    public NotificationItem(String content, String guid, String postedDateTime, String title, String readDateTime, boolean stsRead) {
         Content = content;
         Guid = guid;
         PostedDateTime = postedDateTime;
         Title = title;
-        StsRead = stsRead;
         ReadDateTime = readDateTime;
-    }
-
-    @Expose
-    @SerializedName("Username")
-    private String Username;
-
-    public String getUsername() {
-        return Username;
-    }
-
-    public void setUsername(String username) {
-        Username = username;
+        StsRead = stsRead;
     }
 
     public String getContent() {
@@ -72,20 +58,20 @@ public class NotificationItem {
         Title = title;
     }
 
-    public String getStsRead() {
-        return StsRead;
-    }
-
-    public void setStsRead(String stsRead) {
-        StsRead = stsRead;
-    }
-
     public String getReadDateTime() {
         return ReadDateTime;
     }
 
     public void setReadDateTime(String readDateTime) {
         ReadDateTime = readDateTime;
+    }
+
+    public boolean isStsRead() {
+        return StsRead;
+    }
+
+    public void setStsRead(boolean stsRead) {
+        StsRead = stsRead;
     }
 
     @Expose
@@ -100,13 +86,12 @@ public class NotificationItem {
     @Expose
     @SerializedName("Title")
     private String Title;
-    @Expose
-    @SerializedName("StsRead")
-    private String StsRead;
+
     @Expose
     @SerializedName("ReadDateTime")
     private String ReadDateTime;
-
+    @SerializedName("StsRead")
+    private boolean StsRead;
 
 
 
