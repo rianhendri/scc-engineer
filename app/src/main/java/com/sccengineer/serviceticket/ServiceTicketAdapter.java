@@ -32,6 +32,7 @@
  */
 package com.sccengineer.serviceticket;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -50,16 +51,23 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.reflect.TypeToken;
+import com.sccengineer.DetailsST;
 import com.sccengineer.R;
 import com.squareup.picasso.Picasso;
 
+import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import static com.sccengineer.DetailsST.msendpartlist;
 import static com.sccengineer.DetailsST.seconds;
 import static com.sccengineer.DetailsST.usetime;
 
@@ -78,6 +86,10 @@ extends RecyclerView.Adapter<ServiceTicketAdapter.Myviewholder> {
     Handler handler;
     int Seconds, Minutes, MilliSeconds, Jam ;
     boolean showmore = true;
+    JsonArray mjsonspar;
+    ArrayList<STSendSparepart_item> listsparser;
+    STSendSparepart_adapter ticketadapter;
+    LinearLayoutManager linearLayoutManager1;
     public ServiceTicketAdapter(Context c, ArrayList<ServicesTicketItem> p){
         context = c;
         myItem = p;
@@ -93,6 +105,7 @@ extends RecyclerView.Adapter<ServiceTicketAdapter.Myviewholder> {
     }
 
 
+    @SuppressLint("WrongConstant")
     @Override
     public void onBindViewHolder(@NonNull Myviewholder myviewholder, int i) {
         TextView textView = myviewholder.mstatustik;
@@ -100,7 +113,8 @@ extends RecyclerView.Adapter<ServiceTicketAdapter.Myviewholder> {
         stringBuilder.append("#");
         stringBuilder.append(String.valueOf((int)((ServicesTicketItem)this.myItem.get(i)).getPosition()));
         textView.setText((CharSequence)stringBuilder.toString());
-
+        myviewholder.mstatus.setText(myItem.get(i).getStatusName());
+        myviewholder.mservicetype.setText(myItem.get(i).getServiceTypeName());
         if (myItem.get(i).getFeedbackPhotoFullURL()==null){
             myviewholder.murlfoto.setVisibility(View.GONE);
         }else {
@@ -346,6 +360,22 @@ extends RecyclerView.Adapter<ServiceTicketAdapter.Myviewholder> {
 //                }
 //            }
 //        });
+        linearLayoutManager1 = new LinearLayoutManager(context, LinearLayout.VERTICAL,false);
+        myviewholder.mlistspart.setLayoutManager(linearLayoutManager1);
+        myviewholder.mlistspart.setHasFixedSize(true);
+        listsparser = new ArrayList();
+//        Gson gson = new Gson();
+//        Type type = new TypeToken<ArrayList<STSendSparepart_item>>(){}.getType();
+//        listsparser = gson.fromJson(mjsonspar.toString(), type);
+        if (myItem.get(i).getStSendSparepart_items()!=null){
+            ticketadapter = new STSendSparepart_adapter(context,myItem.get(i).getStSendSparepart_items());
+            myviewholder.mlistspart.setAdapter(ticketadapter);
+            myItem.get(i).getStSendSparepart_items();
+            myviewholder.mlayoutspar.setVisibility(View.VISIBLE);
+        }else {
+            myviewholder.mlayoutspar.setVisibility(View.GONE);
+
+        }
 
     }
 
@@ -357,17 +387,21 @@ extends RecyclerView.Adapter<ServiceTicketAdapter.Myviewholder> {
 
     public static class Myviewholder extends RecyclerView.ViewHolder{
 
-        TextView massigndate;
+        TextView massigndate,mstatus;
         TextView mbar1,mbar2,mbar3,mbar4,mcomment,mendtime,mengineer,mservicetype,mstarttime
                 ,mstatusservice,mstatustik;
         TextView mtimer,msupport,massengineer,mlastimpresi, mactionprogress, mfeedbackfoto, mestima, mreadmore, mnotes;
 //        ExpandableTextView mnotes;
         ImageView mposbar;
         RatingBar mrating;
-        LinearLayout mlayoutstart,mlasyass,mlayimpres,mlayoutnotes,mlayac, murlfoto, mlayestima, mread;
+        RecyclerView mlistspart;
+        LinearLayout mlayoutstart,mlasyass,mlayimpres,mlayoutnotes,mlayac, murlfoto, mlayestima, mread, mlayoutspar;
         public Myviewholder(@NonNull View view) {
             super(view);
-
+            mlistspart = view.findViewById(R.id.listsper);
+            mlayoutspar = view.findViewById(R.id.layoutspar);
+            mstatus = view.findViewById(R.id.statushistory);
+            mservicetype = view.findViewById(R.id.servicetype);
             mread = view.findViewById(R.id.read);
             massigndate = (TextView)view.findViewById(R.id.assigndate);
             mengineer = (TextView)view.findViewById(R.id.engineer);

@@ -12,13 +12,14 @@ package com.sccengineer.serviceticket;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+
 public class ServicesTicketItem {
 
     public ServicesTicketItem() {
     }
 
-
-    public ServicesTicketItem(String assignedDateTime, String bar1Text, String bar2Text, String bar3Text, boolean bar4Red, String bar4Text, int barPosition, String engineerName, String feedbackComments, int feedbackRating, String issueCategoryName, int position, String serviceTypeName, String statusName, String supportEndDateTime, String supportStartDateTime, String unitCategoryName, String assist, int lastImpression, String description, boolean showOnProgressAction, String onProgressActionName, String feedbackPhotoFullURL, String waitingEstimationDate) {
+    public ServicesTicketItem(String assignedDateTime, String bar1Text, String bar2Text, String bar3Text, boolean bar4Red, String bar4Text, int barPosition, String engineerName, String feedbackComments, int feedbackRating, String issueCategoryName, int position, String serviceTypeName, String statusName, String supportEndDateTime, String supportStartDateTime, String unitCategoryName, String assist, int lastImpression, String description, boolean showOnProgressAction, String onProgressActionName, String feedbackPhotoFullURL, String waitingEstimationDate, ArrayList<STSendSparepart_item> stSendSparepart_items) {
         AssignedDateTime = assignedDateTime;
         Bar1Text = bar1Text;
         Bar2Text = bar2Text;
@@ -43,6 +44,7 @@ public class ServicesTicketItem {
         OnProgressActionName = onProgressActionName;
         FeedbackPhotoFullURL = feedbackPhotoFullURL;
         WaitingEstimationDate = waitingEstimationDate;
+        this.stSendSparepart_items = stSendSparepart_items;
     }
 
     public String getAssignedDateTime() {
@@ -237,6 +239,14 @@ public class ServicesTicketItem {
         WaitingEstimationDate = waitingEstimationDate;
     }
 
+    public ArrayList<STSendSparepart_item> getStSendSparepart_items() {
+        return stSendSparepart_items;
+    }
+
+    public void setStSendSparepart_items(ArrayList<STSendSparepart_item> stSendSparepart_items) {
+        this.stSendSparepart_items = stSendSparepart_items;
+    }
+
     @Expose
     @SerializedName("AssignedDateTime")
     private String AssignedDateTime;
@@ -312,5 +322,8 @@ public class ServicesTicketItem {
     @Expose
     @SerializedName("WaitingEstimationDate")
     private String WaitingEstimationDate;
+    @Expose
+    @SerializedName("SpareParts")
+    private ArrayList<STSendSparepart_item> stSendSparepart_items = null;
 }
 
