@@ -30,10 +30,12 @@
  */
 package com.sccengineer.supportservice;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
@@ -43,12 +45,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 //import com.sccengineer.DetailsFormActivity;
 import com.sccengineer.DetailsST;
+import com.sccengineer.Location;
 import com.sccengineer.R;
 import com.squareup.picasso.Picasso;
 
@@ -62,11 +68,11 @@ import static com.sccengineer.ServiceTicket.valuefilter;
 //import static com.smartcarecenter.FormActivity.valuefilter;
 
 public class ServiceTicketAdapter
-extends RecyclerView.Adapter<ServiceTicketAdapter.Myviewholder> {
+extends RecyclerView.Adapter<ServiceTicketAdapter.Myviewholder> implements ActivityCompat.OnRequestPermissionsResultCallback{
     ArrayList<ServiceTicketItems> addFromItem;
     Context context;
     ImageView mimgpopup;
-
+    boolean toastnya = false;
     public ServiceTicketAdapter(Context context, ArrayList<ServiceTicketItems> addFromItem) {
         this.context = context;
         this.addFromItem = addFromItem;
@@ -136,6 +142,8 @@ extends RecyclerView.Adapter<ServiceTicketAdapter.Myviewholder> {
                 ((Activity)context).overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 ((Activity)context).finish();
 
+
+
             }
         });
         myviewholder.xgambar_item.setOnClickListener(new View.OnClickListener() {
@@ -164,6 +172,7 @@ extends RecyclerView.Adapter<ServiceTicketAdapter.Myviewholder> {
         }
 
     }
+
 
     @Override
     public int getItemCount() {
@@ -210,6 +219,16 @@ extends RecyclerView.Adapter<ServiceTicketAdapter.Myviewholder> {
         }
         notifyDataSetChanged();
 
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        if (requestCode == 100 && grantResults.length>0 && (grantResults[0]+grantResults[1]
+                == PackageManager.PERMISSION_GRANTED)){
+//            getCurrentLocation();
+        }else {
+            Toast.makeText(context, "Permission Denied", Toast.LENGTH_SHORT).show();
+        }
     }
 }
 

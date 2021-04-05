@@ -44,6 +44,8 @@ public interface IRetrofit {
     public Call<JsonObject> postRawJSONlogout(@Body JsonObject var1);
     @POST("api/serviceTicket/get")
     public Call<JsonObject> getservice(@Body JsonObject var1);
+    @POST("api/serviceTicket/getsparepartlist")
+    public Call<JsonObject> getpart(@Body JsonObject var1);
     @POST("api/engineer/ChangeLanguage")
     public Call<JsonObject> changelanguage(@Body JsonObject var1);
     @POST("api/engineer/changepassword")

@@ -1262,6 +1262,130 @@
 
                             </LinearLayout>
                             <LinearLayout
+                                android:id="@+id/layoutsper"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:paddingLeft="12dp"
+                                android:paddingRight="12dp"
+                                android:layout_marginTop="8dp">
+                                <LinearLayout
+
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="start"
+                                    android:orientation="horizontal" >
+
+
+                                    <LinearLayout
+
+                                        android:layout_width="match_parent"
+                                        android:layout_weight="1"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="vertical">
+                                        <TextView
+
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/segoeuib"
+                                            android:textColor="@color/black"
+                                            android:text="Spare Part"
+                                            android:textSize="11sp"
+                                            />
+                                        <View
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="1dp"
+                                            android:background="@color/transparent" />
+                                    </LinearLayout>
+                                    <LinearLayout
+                                        android:layout_width="70dp"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal">
+                                        <LinearLayout
+                                            android:id="@+id/searchsper"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:orientation="vertical">
+                                            <TextView
+                                                android:id="@+id/sparename"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:fontFamily="@font/segoeui"
+                                                android:textColor="@color/colorPrimaryDark"
+                                                android:text="@string/title_addsparepart"
+                                                android:textSize="11sp"
+                                                />
+                                            <View
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="1dp"
+                                                android:background="@color/colorPrimaryDark" />
+                                        </LinearLayout>
+
+
+                                        <TextView
+                                            android:visibility="gone"
+                                            android:layout_width="70dp"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/seguisb"
+                                            android:textSize="13sp"
+                                            android:text="Add"
+                                            android:gravity="center"
+                                            android:background="@drawable/bg_cornerblue_line"/>
+                                    </LinearLayout>
+
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:background="@color/green">
+                                    <TextView
+                                        android:id="@+id/nospart"
+                                        android:layout_width="20dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="8dp"
+                                        android:layout_marginTop="8dp"
+                                        android:layout_marginBottom="8dp"
+                                        android:fontFamily="@font/segoeui"
+                                        android:textSize="11dp"
+                                        android:text="No."
+                                        android:textColor="@color/dwhite"/>
+                                    <TextView
+                                        android:id="@+id/codecd"
+                                        android:layout_width="70dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="8dp"
+                                        android:layout_marginRight="8dp"
+                                        android:layout_marginTop="8dp"
+                                        android:layout_marginBottom="8dp"
+                                        android:fontFamily="@font/segoeui"
+                                        android:textSize="11dp"
+                                        android:text="Code"
+                                        android:textColor="@color/dwhite"/>
+                                    <TextView
+                                        android:id="@+id/namespar"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="8dp"
+                                        android:layout_marginRight="8dp"
+                                        android:layout_marginTop="8dp"
+                                        android:layout_marginBottom="8dp"
+                                        android:fontFamily="@font/segoeui"
+                                        android:textSize="11dp"
+                                        android:text="Name"
+                                        android:textColor="@color/dwhite"/>
+                                </LinearLayout>
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:id="@+id/listsper"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    app:layout_constraintBottom_toTopOf="@+id/addform"
+                                    android:scrollbars="none"
+                                    android:nestedScrollingEnabled="false">
+                                </androidx.recyclerview.widget.RecyclerView>
+
+                            </LinearLayout>
+                            <LinearLayout
                                 android:id="@+id/layoutnote"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"

@@ -1,10 +1,13 @@
 package com.sccengineer;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -17,13 +20,17 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.Html;
 import android.text.InputType;
@@ -37,19 +44,33 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.sccengineer.apihelper.IRetrofit;
 import com.sccengineer.apihelper.ServiceGenerator;
+import com.sccengineer.listsparepart.Sparepart_adapter;
+import com.sccengineer.listsparepart.Sparepart_item;
 import com.sccengineer.messagecloud.check;
+import com.sccengineer.notification.NotificationAdapter;
+import com.sccengineer.notification.NotificationItem;
 import com.sccengineer.serviceticket.ServiceTicketAdapter;
 import com.sccengineer.serviceticket.ServicesTicketItem;
+import com.sccengineer.spartsend.SendSparepart_adapter;
+import com.sccengineer.spartsend.SendSparepart_item;
 import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Type;
@@ -77,7 +98,7 @@ public class DetailsST extends AppCompatActivity {
     String MhaveToUpdate = "";
     String MsessionExpired = "";
     boolean internet = true;
-    private LinearLayoutManager linearLayoutManager;
+    public static LinearLayoutManager linearLayoutManager,linearLayoutManager2;
     ArrayList<ServicesTicketItem> listticket;
     ServiceTicketAdapter ticketadapter;
     ProgressDialog loading;
@@ -92,7 +113,7 @@ public class DetailsST extends AppCompatActivity {
     String mformRequestCd = "";
     String mreopen = "";
     ImageView mimgpopup;
-    LinearLayout mlayoutticket,mlayoutunit1, mlayoutunit2, mlayoutunit3, mreinfolay;
+    LinearLayout mlayoutticket,mlayoutunit1, mlayoutunit2, mlayoutunit3, mreinfolay,mspar;
     private LinearLayoutManager mlinear;
     String mphotoURL = "";
     String mpressGuid = "";
@@ -144,12 +165,33 @@ public class DetailsST extends AppCompatActivity {
     long TimeBuff = seconds ;
     Handler handler;
     int Seconds, Minutes, MilliSeconds, Jam ;
+    FusedLocationProviderClient fusedLocationProviderClient;
+    boolean reopen = true;
+    boolean lempar = true;
+
+    ProgressBar mloadpart;
+    public static RecyclerView mpartlist, msendpartlist;
+    EditText msearch;
+    public static TextView msparenaem;
+    String sear = "";
+    Sparepart_adapter sparepart_adapter;
+    ArrayList<Sparepart_item> sparepart_items;
+    public static SendSparepart_adapter sendsparepart_adapter;
+    public static ArrayList<SendSparepart_item> sendsparepart_items;
+    public static JsonArray listnotif, sendspart;
+    boolean load = true;
+    public static JsonArray myCustomArray;
+    public static String jsonarayitem = "";
+    public static Dialog dialog;
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_s_t);
         //panelupdate
+        msendpartlist = findViewById(R.id.listsper);
+        msparenaem = findViewById(R.id.sparename);
+        mspar = findViewById(R.id.searchsper);
         mstatustick = findViewById(R.id.statustick);
         mtimer = findViewById(R.id.timer);
         msupport = findViewById(R.id.support);
@@ -203,6 +245,7 @@ public class DetailsST extends AppCompatActivity {
         mlocation = findViewById(R.id.locationsn);
         mtextalert = findViewById(R.id.textalert);
         mbackgroundalert = findViewById(R.id.backgroundalert);
+        dialog = new Dialog(   DetailsST.this);
 //        mtimerconfirm = findViewById(R.id.timer);
 //        mreopenbtn = findViewById(R.id.reopen);
         mrequestby = findViewById(R.id.requestby);
@@ -215,7 +258,21 @@ public class DetailsST extends AppCompatActivity {
         mservice_layout.setLayoutManager(linearLayoutManager);
         mservice_layout.setHasFixedSize(true);
         listticket = new ArrayList();
-
+        linearLayoutManager2 = new LinearLayoutManager(DetailsST.this, LinearLayout.VERTICAL,false);
+        msendpartlist.setLayoutManager(linearLayoutManager2);
+        msendpartlist.setHasFixedSize(true);
+        sendsparepart_items = new ArrayList();
+        if (ActivityCompat.checkSelfPermission(DetailsST.this,
+                Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(DetailsST.this
+                ,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+//            getCurrentLocation();
+            lempar = false;
+        }else {
+            ActivityCompat.requestPermissions(DetailsST.this
+                    , new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
+                    },100);
+        }
         //getsessionId
         seconds=0;
         Bundle bundle2 = getIntent().getExtras();
@@ -228,9 +285,11 @@ public class DetailsST extends AppCompatActivity {
             valuefilter = bundle2.getString("pos");
 
         }
+
         getSessionId();
         cekInternet();
         if (internet){
+            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(DetailsST.this);
             loadData();
             if (guid==null){
 
@@ -254,13 +313,34 @@ public class DetailsST extends AppCompatActivity {
         mstartprogress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialogreopen();
+                if (ActivityCompat.checkSelfPermission(DetailsST.this,
+                        Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                        && ActivityCompat.checkSelfPermission(DetailsST.this
+                        ,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+//                    getCurrentLocation();
+                    showDialogreopen();
+                }else {
+                    ActivityCompat.requestPermissions(DetailsST.this
+                            , new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
+                            },100);
+                }
+
             }
         });
         mupdatebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updatea();
+                if (ActivityCompat.checkSelfPermission(DetailsST.this,
+                        Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                        && ActivityCompat.checkSelfPermission(DetailsST.this
+                        ,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+//                    getCurrentLocation();
+                    showDialogrupdate();
+                }else {
+                    ActivityCompat.requestPermissions(DetailsST.this
+                            , new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
+                            },100);
+                }
             }
         });
 //        mcs.setOnClickListener(new View.OnClickListener() {
@@ -362,6 +442,13 @@ public class DetailsST extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
+            }
+        });
+        startTimer();
+        mspar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogspar();
             }
         });
     }
@@ -567,19 +654,19 @@ public class DetailsST extends AppCompatActivity {
 //                        mreinfolay.setVisibility(View.GONE);
 //                    }
                     String showalert = data.get("showMessage").toString();
-//                    if (data.get("confirmCountDown").toString().equals("false")){
-//
-//                    }else{
-//                        int hour = data.get("confirmHours").getAsInt();
-//                        int minutes = data.get("confirmMinutes").getAsInt();
-//                        int secondss = data.get("confirmSeconds").getAsInt();
+//                    if (data.get("updatePanelUseTimer").getAsBoolean()){
+//                        int hour = data.get("updatePanelTimerStartHours").getAsInt();
+//                        int minutes = data.get("updatePanelTimerStartMinutes").getAsInt();
+//                        int secondss = data.get("updatePanelTimerStartSeconds").getAsInt();
 //                        int totalsecond = (hour*60*60*1000)+(minutes*60*1000)+(secondss*1000);
 //                        START_TIME_IN_MILLIS = totalsecond;
 //                        mTimeLeftInMillis=START_TIME_IN_MILLIS;
 //                        //timer
 ////                        Toast.makeText(DetailsFormActivity.this, String.valueOf(mTimeLeftInMillis),Toast.LENGTH_LONG).show();
-////                        startTimer();
-////                        updateCountDownText();
+//                        startTimer();
+//                        updateCountDownText();
+//                    }else{
+//
 //                    }
                     //check alert
                     if (showalert.equals("true")){
@@ -759,6 +846,14 @@ public class DetailsST extends AppCompatActivity {
 
                     }else {
                         JsonObject updatepanel = data.getAsJsonObject("updatePanelLatestAction");
+                        //sparepartupdatepanel
+                        myCustomArray = updatepanel.getAsJsonArray("SpareParts");
+                        Gson gson = new Gson();
+                        Type listType = new TypeToken<ArrayList<SendSparepart_item>>() {
+                        }.getType();
+                        sendsparepart_items = gson.fromJson(myCustomArray.toString(), listType);
+                        sendsparepart_adapter = new SendSparepart_adapter(DetailsST.this, sendsparepart_items);
+                        msendpartlist.setAdapter(sendsparepart_adapter);
                         //timer Update
 
 //                        usetimea = updatepanel.getAsString()
@@ -771,36 +866,8 @@ public class DetailsST extends AppCompatActivity {
                             seconds = (hours*60*60*1000)+(minute*60*1000)+(second*1000);
                             TimeBuff = seconds;
                             UpdateTime = TimeBuff + MillisecondTime;
+                            startTimer();
 
-
-                           handler = new Handler() ;
-                            StartTime = SystemClock.uptimeMillis();
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    MillisecondTime = SystemClock.uptimeMillis() - StartTime;
-//            mest.setText(String.valueOf(MillisecondTime));
-
-
-                                    Seconds = (int) (UpdateTime / 1000);
-                                    Jam = (Seconds/60/60);
-                                    if (TimeBuff>=3600000){
-                                        Minutes = (Seconds/60)-(Jam*60);
-                                    }else {
-                                        Minutes = Seconds / 60;
-                                    }
-                                    Seconds = Seconds % 60;
-                                    MilliSeconds = (int) (UpdateTime % 1000);
-
-                                    mtimer.setText(String.format("%02d", Jam) + ":"
-                                            + String.format("%02d", Minutes) + ":"
-                                            + String.format("%02d", Seconds));
-
-
-
-                                    handler.postDelayed(this, 0);
-                                }
-                            }, 1000);
                         }else {
                             msupport.setVisibility(View.VISIBLE);
                             mtimer.setVisibility(View.GONE);
@@ -942,8 +1009,10 @@ public class DetailsST extends AppCompatActivity {
                         //bbutton
                         if (data.get("allowToStartProgress").getAsBoolean()){
                             mstartprogress.setVisibility(View.VISIBLE);
+                            reopen = true;
                         }else {
                             mstartprogress.setVisibility(View.GONE);
+                            reopen = false;
                         }
                         if (data.get("allowToUpdate").getAsBoolean()){
                             mupdatebtn.setVisibility(View.VISIBLE);
@@ -1066,6 +1135,68 @@ public class DetailsST extends AppCompatActivity {
             }
         });
     }
+    public void loadpartnya(){
+        mloadpart.setVisibility(View.VISIBLE);
+//        loading = ProgressDialog.show(DetailsST.this, "", "loading...", true);
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("sessionId",sesionid_new);
+        jsonObject.addProperty("search",sear);
+        jsonObject.addProperty("page",1);
+        jsonObject.addProperty("ver",ver);
+//        Toast.makeText(DetailsFormActivity.this,jsonObject.toString(), Toast.LENGTH_SHORT).show();
+        IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, baseurl);
+        Call<JsonObject> panggilkomplek = jsonPostService.getpart(jsonObject);
+        panggilkomplek.enqueue(new Callback<JsonObject>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                String errornya = "";
+                JsonObject homedata=response.body();
+                String statusnya = homedata.get("status").getAsString();
+                if (homedata.get("errorMessage").toString().equals("null")) {
+
+
+                }else {
+                    errornya = homedata.get("errorMessage").getAsString();
+                }
+                MhaveToUpdate = homedata.get("haveToUpdate").toString();
+                MsessionExpired = homedata.get("sessionExpired").toString();
+                if (statusnya.equals("OK")){
+                    mloadpart.setVisibility(View.GONE);
+                    sesionid();
+                    JsonObject data = homedata.getAsJsonObject("data");
+                    listnotif = data.getAsJsonArray("sparePartList");
+                    Gson gson = new Gson();
+                    Type listType = new TypeToken<ArrayList<Sparepart_item>>() {
+                    }.getType();
+                    sparepart_items = gson.fromJson(listnotif.toString(), listType);
+                    sparepart_adapter = new Sparepart_adapter(DetailsST.this, sparepart_items);
+                    mpartlist.setAdapter(sparepart_adapter);
+                    Log.d("data4",homedata.toString());
+                    loading.dismiss();
+                    load=true;
+
+                }else {
+                    load=true;
+                    mloadpart.setVisibility(View.GONE);
+                    sesionid();
+                    loading.dismiss();
+                    Toast.makeText(DetailsST.this, errornya,Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Toast.makeText(DetailsST.this, getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
+                cekInternet();
+                loading.dismiss();
+                load=true;
+                mloadpart.setVisibility(View.GONE);
+
+            }
+        });
+    }
 //    public void cancelreq(){
 //        loading = ProgressDialog.show(DetailsFormActivity.this, "", getString(R.string.title_loading), true);
 //        JsonObject jsonObject = new JsonObject();
@@ -1170,6 +1301,7 @@ public class DetailsST extends AppCompatActivity {
         jsonObject.addProperty("statusCd",mpressIda);
         jsonObject.addProperty("lastImpression",mlastimpresiST.getText().toString());
         jsonObject.addProperty("notes",mdescripst.getText().toString());
+        jsonObject.add("sparePart",myCustomArray);
         jsonObject.addProperty("ver",ver);
         IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, baseurl);
         Call<JsonObject> panggilkomplek = jsonPostService.updatea(jsonObject);
@@ -1209,6 +1341,8 @@ public class DetailsST extends AppCompatActivity {
 
             }
         });
+
+        Log.d("jsonnya",jsonObject.toString());
     }
     public void getSessionId(){
 
@@ -1237,45 +1371,7 @@ public class DetailsST extends AppCompatActivity {
 
     }
     //    @Override
-    public void onBackPressed() {
-//        super.onBackPressed();
-        if (home.equals("homes")){
-            Intent back = new Intent(DetailsST.this,Home.class);
-//            back.putExtra("pos",valuefilter);
-            startActivity(back);
-            overridePendingTransition(R.anim.left_in, R.anim.right_out);
-            finish();
-        }else {
-            if (check.checknotif==1){
-                if (username==null){
-                    if (check.checklistform==1){
-                        list2.clear();
-                        refresh=true;
-                    }
-                    super.onBackPressed();
-                    finish();
 
-                }else {
-                    super.onBackPressed();
-//            refresh=true;
-                    Intent back = new Intent(DetailsST.this,ServiceTicket.class);
-                    back.putExtra("pos",valuefilter);
-                    startActivity(back);
-                    overridePendingTransition(R.anim.left_in, R.anim.right_out);
-                    finish();
-                }
-            }else {
-                Intent back = new Intent(DetailsST.this,Home.class);
-                back.putExtra("pos",valuefilter);
-                startActivity(back);
-                overridePendingTransition(R.anim.left_in, R.anim.right_out);
-                finish();
-            }
-        }
-
-
-
-    }
     public boolean appInstalledOrNot(String string2) {
         PackageManager packageManager = this.getPackageManager();
 
@@ -1290,28 +1386,143 @@ public class DetailsST extends AppCompatActivity {
         return installed;
     }
     private void startTimer() {
-        mCountDownTimer = new CountDownTimer(mTimeLeftInMillis, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                mTimeLeftInMillis = millisUntilFinished;
-//                updateCountDownText();
-            }
+        if (seconds==0){
 
-            @Override
-            public void onFinish() {
-//                mtimerconfirm.setText("00:00:00");
+        }else {
+            handler = new Handler() ;
+            StartTime = SystemClock.uptimeMillis();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    MillisecondTime = SystemClock.uptimeMillis() - StartTime;
+//            mest.setText(String.valueOf(MillisecondTime));
 
-            }
-        }.start();
+
+                    Seconds = (int) (UpdateTime / 1000);
+                    Jam = (Seconds/60/60);
+                    if (TimeBuff>=3600000){
+                        Minutes = (Seconds/60)-(Jam*60);
+                    }else {
+                        Minutes = Seconds / 60;
+                    }
+                    Seconds = Seconds % 60;
+                    MilliSeconds = (int) (UpdateTime % 1000);
+
+                    mtimer.setText(String.format("%02d", Jam) + ":"
+                            + String.format("%02d", Minutes) + ":"
+                            + String.format("%02d", Seconds));
+
+
+
+                    handler.postDelayed(this, 1000);
+                }
+            }, 2000);
+        }
+
+//        mCountDownTimer = new CountDownTimer(mTimeLeftInMillis, 1000) {
+//            @Override
+//            public void onTick(long millisUntilFinished) {
+//                mTimeLeftInMillis = millisUntilFinished;
+////                updateCountDownText();
+//            }
+//
+//            @Override
+//            public void onFinish() {
+////                mtimerconfirm.setText("00:00:00");
+//
+//            }
+//        }.start();
 
     }
-//    private void updateCountDownText() {
-//        int hours = (int) (mTimeLeftInMillis / 1000) / 3600;
-//        int minutes = (int) ((mTimeLeftInMillis / 1000) % 3600) / 60;
-//        int seconds = (int) (mTimeLeftInMillis / 1000) % 60;
-//        String timeLeftFormatted = String.format(Locale.getDefault(), "%02d:%02d:%02d",hours, minutes, seconds);
-//        mtimerconfirm.setText(getString(R.string.title_confirm)+" ("+timeLeftFormatted+")");
-//    }
+    private void updateCountDownText() {
+        int hours = (int) (mTimeLeftInMillis / 1000) / 3600;
+        int minutes = (int) ((mTimeLeftInMillis / 1000) % 3600) / 60;
+        int seconds = (int) (mTimeLeftInMillis / 1000) % 60;
+        String timeLeftFormatted = String.format(Locale.getDefault(), "%02d:%02d:%02d",hours, minutes, seconds);
+        mtimerconfirm.setText(getString(R.string.title_confirm)+" ("+timeLeftFormatted+")");
+    }
+    @SuppressLint("WrongConstant")
+    public void dialogspar(){
+//        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+//                this);
+//
+//        // set title dialog
+//        alertDialogBuilder.setTitle(getString(R.string.title_update));
+//
+//        // set pesan dari dialog
+//        alertDialogBuilder
+//                .setMessage(getString(R.string.title_andaupdate))
+//                .setIcon(R.mipmap.ic_launcher)
+//                .setCancelable(false)
+//                .setPositiveButton(getString(R.string.title_yes),new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog,int id) {
+//                        // jika tombol diklik, maka akan menutup activity ini
+//                        updatea();
+//                    }
+//                })
+//                .setNegativeButton(getString(R.string.title_no),new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        // jika tombol ini diklik, akan menutup dialog
+//                        // dan tidak terjadi apa2
+//                        dialog.cancel();
+//                    }
+//                });
+//
+//        // membuat alert dialog dari builder
+//        AlertDialog alertDialog = alertDialogBuilder.create();
+//
+//        // menampilkan alert dialog
+//        alertDialog.show();
+
+        dialog.setContentView(R.layout.dialogspar);
+        dialog.setTitle("Title...");
+
+        // set the custom dialog components - text, image and button
+        msearch = dialog.findViewById(R.id.searchitem);
+        mpartlist = dialog.findViewById(R.id.listadditemfoc);
+        mloadpart = dialog.findViewById(R.id.loadingfooter);
+        linearLayoutManager = new LinearLayoutManager(DetailsST.this, LinearLayout.VERTICAL,false);
+//        linearLayoutManager.setReverseLayout(true);
+//        linearLayoutManager.setStackFromEnd(true);
+        mpartlist.setLayoutManager(linearLayoutManager);
+        mpartlist.setHasFixedSize(true);
+        sparepart_items = new ArrayList();
+        msearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (load){
+                    if (msearch.length()>=2){
+                        load=false;
+                        sear = msearch.getText().toString();
+
+                       loadpartnya();
+
+                    }
+                }else {
+
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+//        TextView text = (TextView) dialog.findViewById(R.id.text);
+//        text.setText("Android custom dialog example!");
+//        ImageView image = (ImageView) dialog.findViewById(R.id.image);
+//        image.setImageResource(R.drawable.ic_checked_data);
+
+
+
+        dialog.show();
+    }
     public void ReadNotif(){
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("guid",guid);
@@ -1353,5 +1564,111 @@ public class DetailsST extends AppCompatActivity {
 
             }
         });
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode == 100 && grantResults.length>0 && (grantResults[0]+grantResults[1]
+                == PackageManager.PERMISSION_GRANTED)){
+//            getCurrentLocation();
+            if (reopen){
+                showDialogreopen();
+            }else {
+                showDialogrupdate();
+            }
+
+        }else {
+            if (lempar){
+
+                Intent back = new Intent(DetailsST.this,Home.class);
+//            back.putExtra("pos",valuefilter);
+                startActivity(back);
+                overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                finish();
+            }else {
+
+            }
+            Toast.makeText(this, "Akese Lokasi Diperlukan", Toast.LENGTH_LONG).show();
+
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+//    private void getCurrentLocation() {
+//        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+//
+//        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+//                || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+//            fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+//                @Override
+//                public void onComplete(@NonNull Task<Location> task) {
+//
+//                    android.location.Location location = task.getResult();
+//                    if (location != null) {
+////                        mlati.setText(String.valueOf(location.getLatitude()));
+////                        mlongi.setText(String.valueOf(location.getLongitude()));
+//                    } else {
+//                        LocationRequest locationRequest = new LocationRequest()
+//                                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+//                                .setInterval(1000)
+//                                .setFastestInterval(1000)
+//                                .setNumUpdates(1);
+//                        LocationCallback locationCallback = new LocationCallback() {
+//                            @Override
+//                            public void onLocationResult(@NonNull LocationResult locationResult) {
+//                                android.location.Location location1 = locationResult.getLastLocation();
+////                                mlati.setText(String.valueOf(location1.getLatitude()));
+////                                mlongi.setText(String.valueOf(location1.getLongitude()));
+//                            }
+//                        };
+//                        fusedLocationProviderClient.requestLocationUpdates(locationRequest,
+//                                locationCallback, Looper.myLooper());
+//                    }
+//
+//                }
+//            });
+//        } else {
+//            startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+//                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+//        }
+//    }
+    public void onBackPressed() {
+//        super.onBackPressed();
+        if (home.equals("homes")){
+            Intent back = new Intent(DetailsST.this,Home.class);
+//            back.putExtra("pos",valuefilter);
+            startActivity(back);
+            overridePendingTransition(R.anim.left_in, R.anim.right_out);
+            finish();
+        }else {
+            if (check.checknotif==1){
+                if (username==null){
+                    if (check.checklistform==1){
+                        list2.clear();
+                        refresh=true;
+                    }
+                    super.onBackPressed();
+                    finish();
+
+                }else {
+                    super.onBackPressed();
+//            refresh=true;
+                    Intent back = new Intent(DetailsST.this,ServiceTicket.class);
+                    back.putExtra("pos",valuefilter);
+                    startActivity(back);
+                    overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                    finish();
+                }
+            }else {
+                Intent back = new Intent(DetailsST.this,Home.class);
+                back.putExtra("pos",valuefilter);
+                startActivity(back);
+                overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                finish();
+            }
+        }
+
+
+
     }
 }

@@ -5,7 +5,7 @@
     <string name="title_login">Login</string>
     <string name="title_forgot_password">Forgot Password?</string>
     <string name="title_password">Password :</string>
-    <string name="title_username">User name :</string>
+    <string name="title_username">Username :</string>
     <string name="title_session_Expired">Session Expired</string>
     <string name="title_notification">Notifications</string>
     <string name="title_viewall">View All</string>
@@ -49,4 +49,5 @@
     <string name="title_Namalengkap">Full Name:</string>
     <string name="title_namapt">Company:</string>
     <string name="title_group">Company Group:</string>
+    <string name="title_addsparepart">Add sparepart</string>
 </resources>

@@ -74,6 +74,7 @@ public class NotificationList extends AppCompatActivity {
         mlistnotif.setLayoutManager(linearLayoutManager);
         mlistnotif.setHasFixedSize(true);
     notiflist = new ArrayList();
+
     Bundle bundle2 = this.getIntent().getExtras();
         if (bundle2 != null) {
         this.id = bundle2.getString("id");
