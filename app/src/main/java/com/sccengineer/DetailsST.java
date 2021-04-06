@@ -1571,11 +1571,11 @@ public class DetailsST extends AppCompatActivity {
         if (requestCode == 100 && grantResults.length>0 && (grantResults[0]+grantResults[1]
                 == PackageManager.PERMISSION_GRANTED)){
 //            getCurrentLocation();
-            if (reopen){
-                showDialogreopen();
-            }else {
-                showDialogrupdate();
-            }
+//            if (reopen){
+//                showDialogreopen();
+//            }else {
+//                showDialogrupdate();
+//            }
 
         }else {
             if (lempar){
