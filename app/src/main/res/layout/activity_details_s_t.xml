@@ -1193,8 +1193,44 @@
                                     android:layout_margin="4dp"
                                     android:background="@color/softgrey" />
                             </LinearLayout>
+
                             <LinearLayout
-                                android:id="@+id/layoutstatus"
+                            android:id="@+id/layoutstatus"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingLeft="12dp"
+                            android:paddingRight="12dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/seguisb"
+                                android:paddingLeft="4dp"
+                                android:text="Status:"
+                                android:textColor="@color/black"
+                                android:textSize="12sp" />
+
+                            <Spinner
+                                android:id="@+id/statusST"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:enabled="false"
+                                android:fontFamily="@font/segoeui"
+                                android:paddingLeft="4dp"
+                                android:text="Lorem Ipsum"
+                                android:textColor="@color/black"
+                                android:textSize="13sp" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_margin="4dp"
+                                android:background="@color/softgrey" />
+                        </LinearLayout>
+                            <LinearLayout
+                                android:visibility="gone"
+                                android:id="@+id/layoutdate"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"
@@ -1202,6 +1238,7 @@
                                 android:paddingRight="12dp">
 
                                 <TextView
+                                    android:id="@+id/labeldate"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/seguisb"
@@ -1210,14 +1247,14 @@
                                     android:textColor="@color/black"
                                     android:textSize="12sp" />
 
-                                <Spinner
-                                    android:id="@+id/statusST"
+                                <TextView
+                                    android:id="@+id/datestatus"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:enabled="false"
                                     android:fontFamily="@font/segoeui"
                                     android:paddingLeft="4dp"
-                                    android:text="Lorem Ipsum"
+                                    android:text="-"
                                     android:textColor="@color/black"
                                     android:textSize="13sp" />
 

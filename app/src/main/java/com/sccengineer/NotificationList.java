@@ -122,7 +122,7 @@ public class NotificationList extends AppCompatActivity {
         loading = ProgressDialog.show(NotificationList.this, "", "loading...", true);
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("sessionId",sesionid_new);
-        jsonObject.addProperty("ver",ver);
+        jsonObject.addProperty("ver",BuildConfig.VERSION_NAME);
         IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, baseurl);
         Call<JsonObject> panggilkomplek = jsonPostService.notifications(jsonObject);
         panggilkomplek.enqueue(new Callback<JsonObject>() {
@@ -211,6 +211,7 @@ public class NotificationList extends AppCompatActivity {
     public void ReadAll(){
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("sessionId",sesionid_new);
+        jsonObject.addProperty("ver",BuildConfig.VERSION_NAME);
         IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, baseurl);
         Call<JsonObject> panggilkomplek = jsonPostService.ReadAll(jsonObject);
         panggilkomplek.enqueue(new Callback<JsonObject>() {

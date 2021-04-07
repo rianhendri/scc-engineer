@@ -94,7 +94,7 @@ public class DetailsNotification extends AppCompatActivity {
         cekInternet();
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("guid", guid);
-        jsonObject.addProperty("ver",ver);
+        jsonObject.addProperty("ver",BuildConfig.VERSION_NAME);
         IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, baseurl);
         Call<JsonObject> panggilkomplek = jsonPostService.postRawJSONgetnotifget(jsonObject);
         panggilkomplek.enqueue(new Callback<JsonObject>() {
@@ -218,6 +218,7 @@ public class DetailsNotification extends AppCompatActivity {
     public void ReadNotif(){
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("guid",guid);
+        jsonObject.addProperty("ver",BuildConfig.VERSION_NAME);
         IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, baseurl);
         Call<JsonObject> panggilkomplek = jsonPostService.Read(jsonObject);
         panggilkomplek.enqueue(new Callback<JsonObject>() {

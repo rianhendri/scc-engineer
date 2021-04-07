@@ -367,13 +367,14 @@ extends RecyclerView.Adapter<ServiceTicketAdapter.Myviewholder> {
 //        Gson gson = new Gson();
 //        Type type = new TypeToken<ArrayList<STSendSparepart_item>>(){}.getType();
 //        listsparser = gson.fromJson(mjsonspar.toString(), type);
-        if (myItem.get(i).getStSendSparepart_items()!=null){
+        if (myItem.get(i).getStSendSparepart_items().toString().equals("[]")){
+            myviewholder.mlayoutspar.setVisibility(View.GONE);
+        }else {
             ticketadapter = new STSendSparepart_adapter(context,myItem.get(i).getStSendSparepart_items());
             myviewholder.mlistspart.setAdapter(ticketadapter);
             myItem.get(i).getStSendSparepart_items();
             myviewholder.mlayoutspar.setVisibility(View.VISIBLE);
-        }else {
-            myviewholder.mlayoutspar.setVisibility(View.GONE);
+
 
         }
 

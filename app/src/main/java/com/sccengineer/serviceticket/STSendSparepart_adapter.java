@@ -68,7 +68,7 @@ extends RecyclerView.Adapter<STSendSparepart_adapter.Myviewholder> {
     @NonNull
     @Override
     public Myviewholder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        return new Myviewholder(LayoutInflater.from(context).inflate(R.layout.item_sparepart2,
+        return new Myviewholder(LayoutInflater.from(context).inflate(R.layout.item_sparepart3,
                 viewGroup, false));
 
     }
@@ -76,54 +76,55 @@ extends RecyclerView.Adapter<STSendSparepart_adapter.Myviewholder> {
 
     @Override
     public void onBindViewHolder(@NonNull Myviewholder myviewholder, int i) {
+        myviewholder.mdelete.setVisibility(View.GONE);
         if (addFoclistitem.get(i).getSparePartName()!=null){
             addFoclistitem.get(i).setName(addFoclistitem.get(i).getSparePartName());
         }
         myviewholder.mnamespar.setText(addFoclistitem.get(i).getName());
         myviewholder.mno.setText(String.valueOf(i+1));
         myviewholder.mcd.setText(addFoclistitem.get(i).getSparePartCd());
-        myviewholder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                msparenaem.setText(addFoclistitem.get(i).getName());
-//                dialog.dismiss();
-            }
-        });
-        myviewholder.mdelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (sendsparepart_items.size() >= 0) {
-                    sendsparepart_items.remove(i);
-                    notifyItemRemoved(i);
-                    notifyItemRangeChanged(i, sendsparepart_items.size());
-                    Gson gson = new GsonBuilder().create();
-                    myCustomArray = gson.toJsonTree(sendsparepart_items).getAsJsonArray();
-                    jsonarayitem = myCustomArray.toString();
-                    Log.d("sizecart_22", String.valueOf(jsonarayitem));
-//                    totalqty = 0;
-//                    totalprice = 0.0;
-                    for (int x = 0 ; x < sendsparepart_items.size(); x++) {
-
-
-                    }
-//                    mtotalitem.setText(String.valueOf(addFoclistreq.size()));
-//                    grandTotalplus = 0;
-//                    intSum = 0;
-//                    for (int i = 0; i < list.size(); i++) {
-//                        grandTotalplus = grandTotalplus + list.get(i).getTotal();
-//                    }
-                    if (sendsparepart_items.size()==0){
-                        msendpartlist.setVisibility(View.GONE);
-                    }
-
-
-
-                }else {
+//        myviewholder.itemView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                msparenaem.setText(addFoclistitem.get(i).getName());
+////                dialog.dismiss();
+//            }
+//        });
+//        myviewholder.mdelete.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (sendsparepart_items.size() >= 0) {
+//                    sendsparepart_items.remove(i);
+//                    notifyItemRemoved(i);
+//                    notifyItemRangeChanged(i, sendsparepart_items.size());
+//                    Gson gson = new GsonBuilder().create();
+//                    myCustomArray = gson.toJsonTree(sendsparepart_items).getAsJsonArray();
+//                    jsonarayitem = myCustomArray.toString();
+//                    Log.d("sizecart_22", String.valueOf(jsonarayitem));
+////                    totalqty = 0;
+////                    totalprice = 0.0;
+//                    for (int x = 0 ; x < sendsparepart_items.size(); x++) {
 //
-                }
-
-            }
-        });
+//
+//                    }
+////                    mtotalitem.setText(String.valueOf(addFoclistreq.size()));
+////                    grandTotalplus = 0;
+////                    intSum = 0;
+////                    for (int i = 0; i < list.size(); i++) {
+////                        grandTotalplus = grandTotalplus + list.get(i).getTotal();
+////                    }
+//                    if (sendsparepart_items.size()==0){
+//                        msendpartlist.setVisibility(View.GONE);
+//                    }
+//
+//
+//
+//                }else {
+////
+//                }
+//
+//            }
+//        });
     }
 
     @Override

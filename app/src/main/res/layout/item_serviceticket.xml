@@ -632,6 +632,13 @@
 				android:layout_weight="1"
 				android:layout_height="wrap_content"
 				android:orientation="vertical">
+
+			</LinearLayout>
+			<LinearLayout
+				android:id="@+id/layoutspar"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical">
 				<TextView
 
 					android:layout_width="wrap_content"
@@ -645,12 +652,6 @@
 					android:layout_width="wrap_content"
 					android:layout_height="1dp"
 					android:background="@color/transparent" />
-			</LinearLayout>
-			<LinearLayout
-				android:id="@+id/layoutspar"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:orientation="vertical">
 				<LinearLayout
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"

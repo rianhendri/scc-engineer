@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -41,6 +42,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -77,6 +79,8 @@ import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -148,10 +152,10 @@ public class DetailsST extends AppCompatActivity {
     public static String Nowaform = "0";
     //updatepanel;
     ImageView mprosbarr;
-    TextView msupport,mbar1,mbar2,mbar3,mbar4,mactionprogress,mestimasi,mstarttime,mendtime,massigndate,mengineer,masengineer, mstatustick, mtimer;
+    TextView mdatestatus,mlalbeldate,msupport,mbar1,mbar2,mbar3,mbar4,mactionprogress,mestimasi,mstarttime,mendtime,massigndate,mengineer,masengineer, mstatustick, mtimer;
     EditText mlastimpresiST, mdescripst;
     Spinner mservicetypeST, mstatusST;
-    LinearLayout mlayestima,mstartprogress, mupdatebtn, mlayoutimpress, mlayoutnote, mlayoutstatus, mlayoutservicest, mlayoutupdatepanel;
+    LinearLayout mlayoutdate,mlayoutsper,mlayestima,mstartprogress, mupdatebtn, mlayoutimpress, mlayoutnote, mlayoutstatus, mlayoutservicest, mlayoutupdatepanel;
     JsonArray listsn;
     List<String> snid = new ArrayList();
     List<String> snname = new ArrayList();
@@ -159,6 +163,7 @@ public class DetailsST extends AppCompatActivity {
     JsonArray listsna;
     List<String> snida = new ArrayList();
     List<String> snnamea = new ArrayList();
+    List<Boolean> estimatedate = new ArrayList();
     String mpressIda = "";
     String home="homesa";
     long MillisecondTime, StartTime, UpdateTime = 0L ;
@@ -183,12 +188,19 @@ public class DetailsST extends AppCompatActivity {
     public static JsonArray myCustomArray;
     public static String jsonarayitem = "";
     public static Dialog dialog;
+    private DatePickerDialog datePickerDialog;
+    private SimpleDateFormat dateFormatter2;
+    private Calendar newDate= Calendar.getInstance();
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_s_t);
         //panelupdate
+        mlayoutdate = findViewById(R.id.layoutdate);
+        mdatestatus = findViewById(R.id.datestatus);
+        mlalbeldate = findViewById(R.id.labeldate);
+        mlayoutsper = findViewById(R.id.layoutsper);
         msendpartlist = findViewById(R.id.listsper);
         msparenaem = findViewById(R.id.sparename);
         mspar = findViewById(R.id.searchsper);
@@ -437,6 +449,20 @@ public class DetailsST extends AppCompatActivity {
 //                operatorname.clear();
 //                operatorcd.clear();
                 mpressIda = snida.get(position);
+                if (estimatedate.get(position).booleanValue()){
+                    mlayoutdate.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            showDateDialog();
+                        }
+                    });
+                    mlayoutdate.setVisibility(View.VISIBLE);
+                    String string2 = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+                    mdatestatus.setText((CharSequence)string2);
+//                    Log.d("date55", String.valueOf(newDate.getTime()));
+                }else {
+                    mlayoutdate.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -621,7 +647,7 @@ public class DetailsST extends AppCompatActivity {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("sessionId",sesionid_new);
         jsonObject.addProperty("serviceTicketCd",noreq);
-        jsonObject.addProperty("ver",ver);
+        jsonObject.addProperty("ver",BuildConfig.VERSION_NAME);
 //        Toast.makeText(DetailsFormActivity.this,jsonObject.toString(), Toast.LENGTH_SHORT).show();
         IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, baseurl);
         Call<JsonObject> panggilkomplek = jsonPostService.getservice(jsonObject);
@@ -644,7 +670,12 @@ public class DetailsST extends AppCompatActivity {
 
                     sesionid();
                     JsonObject data = homedata.getAsJsonObject("data");
-
+                    // layoutsper
+                    if (data.get("updatePanelShowSparePart").getAsBoolean()){
+                        mlayoutsper.setVisibility(View.VISIBLE);
+                    }else {
+                        mlayoutsper.setVisibility(View.GONE);
+                    }
 
 //                    inforeopen = data.get("allowToReopenCase").getAsBoolean();
 //                    if (inforeopen){
@@ -847,6 +878,7 @@ public class DetailsST extends AppCompatActivity {
                     }else {
                         JsonObject updatepanel = data.getAsJsonObject("updatePanelLatestAction");
                         //sparepartupdatepanel
+                        mlalbeldate.setText(updatepanel.get("WaitingEstimationLabel").getAsString());
                         myCustomArray = updatepanel.getAsJsonArray("SpareParts");
                         Gson gson = new Gson();
                         Type listType = new TypeToken<ArrayList<SendSparepart_item>>() {
@@ -1061,6 +1093,7 @@ public class DetailsST extends AppCompatActivity {
                             for (int i = 0; i < listsna.size(); ++i) {
                                 JsonObject jsonObject2 = (JsonObject)listsna.get(i);
                                 String string4 = jsonObject2.getAsJsonObject().get("Text").getAsString();
+                                Boolean string7 = jsonObject2.getAsJsonObject().get("ShowEstimateDateInput").getAsBoolean();
                                 String string5 = "";
                                 if (jsonObject2.getAsJsonObject().get("Value").toString().equals("null")){
                                     string5 = "-";
@@ -1071,7 +1104,7 @@ public class DetailsST extends AppCompatActivity {
 //                        Integer previmpress = jsonObject2.getAsJsonObject().get("previousImpression").getAsInt();
                                 snnamea.add(string4);
                                 snida.add(string5);
-
+                                estimatedate.add(string7);
                                 for (int j = 0; j < snida.size(); ++j) {
                                     if (snida.get(i).equals(mpressIda)){
                                         posa=j;
@@ -1142,7 +1175,7 @@ public class DetailsST extends AppCompatActivity {
         jsonObject.addProperty("sessionId",sesionid_new);
         jsonObject.addProperty("search",sear);
         jsonObject.addProperty("page",1);
-        jsonObject.addProperty("ver",ver);
+        jsonObject.addProperty("ver",BuildConfig.VERSION_NAME);
 //        Toast.makeText(DetailsFormActivity.this,jsonObject.toString(), Toast.LENGTH_SHORT).show();
         IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, baseurl);
         Call<JsonObject> panggilkomplek = jsonPostService.getpart(jsonObject);
@@ -1251,7 +1284,7 @@ public class DetailsST extends AppCompatActivity {
         jsonObject.addProperty("serviceTicketCd",noreq);
         jsonObject.addProperty("serviceTypeCd",mpressId);
         jsonObject.addProperty("notes",mdescripst.getText().toString());
-        jsonObject.addProperty("ver",ver);
+        jsonObject.addProperty("ver",BuildConfig.VERSION_NAME);
         IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, baseurl);
         Call<JsonObject> panggilkomplek = jsonPostService.startprog(jsonObject);
         panggilkomplek.enqueue(new Callback<JsonObject>() {
@@ -1294,15 +1327,15 @@ public class DetailsST extends AppCompatActivity {
     public void updatea(){
         loading = ProgressDialog.show(DetailsST.this, "", "loading...", true);
         JsonObject jsonObject = new JsonObject();
-
         jsonObject.addProperty("sessionId",sesionid_new);
         jsonObject.addProperty("serviceTicketCd",noreq);
         jsonObject.addProperty("serviceTypeCd",mpressId);
         jsonObject.addProperty("statusCd",mpressIda);
         jsonObject.addProperty("lastImpression",mlastimpresiST.getText().toString());
         jsonObject.addProperty("notes",mdescripst.getText().toString());
+        jsonObject.addProperty("waitingEstimationDate",mdatestatus.getText().toString());
         jsonObject.add("sparePart",myCustomArray);
-        jsonObject.addProperty("ver",ver);
+        jsonObject.addProperty("ver",BuildConfig.VERSION_NAME);
         IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, baseurl);
         Call<JsonObject> panggilkomplek = jsonPostService.updatea(jsonObject);
         panggilkomplek.enqueue(new Callback<JsonObject>() {
@@ -1526,6 +1559,7 @@ public class DetailsST extends AppCompatActivity {
     public void ReadNotif(){
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("guid",guid);
+        jsonObject.addProperty("ver",BuildConfig.VERSION_NAME);
         IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, baseurl);
         Call<JsonObject> panggilkomplek = jsonPostService.Read(jsonObject);
         panggilkomplek.enqueue(new Callback<JsonObject>() {
@@ -1670,5 +1704,47 @@ public class DetailsST extends AppCompatActivity {
 
 
 
+    }
+    private void showDateDialog(){
+
+        /**
+         * Calendar untuk mendapatkan tanggal sekarang
+         */
+        Calendar newCalendar = Calendar.getInstance();
+
+        /**
+         * Initiate DatePicker dialog
+         */
+        datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+                /**
+                 * Method ini dipanggil saat kita selesai memilih tanggal di DatePicker
+                 */
+
+                /**
+                 * Set Calendar untuk menampung tanggal yang dipilih
+                 */
+//                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
+
+                /**
+                 * Update TextView dengan tanggal yang kita pilih
+                 */
+                dateFormatter2 = new SimpleDateFormat("yyyy-MM-dd");
+                mdatestatus.setText(dateFormatter2.format(newDate.getTime()));
+                Log.d("date55", String.valueOf(newDate.getTime()));
+            }
+
+        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+
+        /**
+         * Tampilkan DatePicker dialog
+         */
+
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
+        datePickerDialog.show();
     }
 }

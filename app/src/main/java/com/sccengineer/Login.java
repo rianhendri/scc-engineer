@@ -70,7 +70,14 @@ public class Login extends AppCompatActivity {
         if (ActivityCompat.checkSelfPermission(Login.this,
                 Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
             telephonyManager = (TelephonyManager) getSystemService(Login.this.TELEPHONY_SERVICE);
-            imeiHp=telephonyManager.getDeviceId();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                imeiHp = android.provider.Settings.Secure.getString(
+                        Login.this.getContentResolver(),
+                        android.provider.Settings.Secure.ANDROID_ID);
+            } else {
+                imeiHp = telephonyManager.getDeviceId();
+            }
+//            imeiHp=telephonyManager.getDeviceId();
             Log.d("imei",imeiHp);
         }else {
             ActivityCompat.requestPermissions(Login.this
@@ -108,7 +115,13 @@ public class Login extends AppCompatActivity {
                 if (ActivityCompat.checkSelfPermission(Login.this,
                         Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
                     telephonyManager = (TelephonyManager) getSystemService(Login.this.TELEPHONY_SERVICE);
-                    imeiHp=telephonyManager.getDeviceId();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        imeiHp = android.provider.Settings.Secure.getString(
+                                Login.this.getContentResolver(),
+                                android.provider.Settings.Secure.ANDROID_ID);
+                    } else {
+                        imeiHp = telephonyManager.getDeviceId();
+                    }
                     Log.d("imei",imeiHp);
                     Log.d("token1",token);
                     if (internet){
@@ -155,7 +168,7 @@ public class Login extends AppCompatActivity {
         jsonObject.addProperty("username",musername.getText().toString());
         jsonObject.addProperty("password",mpassword.getText().toString());
         jsonObject.addProperty("firebaseToken",token);
-        jsonObject.addProperty("ver",ver);
+        jsonObject.addProperty("ver",BuildConfig.VERSION_NAME);
         jsonObject.addProperty("model",ModelHp);
         jsonObject.addProperty("osversion",osHp);
         jsonObject.addProperty("imei",imeiHp);
@@ -213,6 +226,7 @@ public class Login extends AppCompatActivity {
 
             }
         });
+        Log.d("jsonlogin",jsonObject.toString());
 
     }
     public void setLocale(String lang) {
