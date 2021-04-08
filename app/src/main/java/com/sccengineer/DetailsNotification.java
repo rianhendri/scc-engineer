@@ -122,7 +122,9 @@ public class DetailsNotification extends AppCompatActivity {
 
                 }else {
                     sesionid();
-                    Toast.makeText(DetailsNotification.this, errornya,Toast.LENGTH_LONG).show();
+                    if (MsessionExpired.equals("true")) {
+                        Toast.makeText(DetailsNotification.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 
@@ -247,7 +249,9 @@ public class DetailsNotification extends AppCompatActivity {
                 }else {
                     sesionid();
 //                    loading.dismiss();
-                    Toast.makeText(DetailsNotification.this,errornya,Toast.LENGTH_LONG).show();
+                    if (MsessionExpired.equals("true")) {
+                        Toast.makeText(DetailsNotification.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 

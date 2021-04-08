@@ -83,7 +83,16 @@
 				android:padding="0dp"
 				android:text="12 Desember 2021"
 				android:textColor="@color/black"
-				android:textSize="13sp" />
+				android:textSize="11sp" />
+			<TextView
+				android:id="@+id/sts"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:fontFamily="@font/seguisb"
+				android:padding="0dp"
+				android:text="12 Desember 2021"
+				android:textColor="@color/black"
+				android:textSize="11sp" />
 			<TextView
 				android:id="@+id/issue"
 				android:layout_width="match_parent"

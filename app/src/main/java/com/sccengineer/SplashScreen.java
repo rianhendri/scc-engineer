@@ -94,7 +94,9 @@ public class SplashScreen extends AppCompatActivity {
 
                                 }else{
                                     sesionid();
-                                    Toast.makeText(SplashScreen.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+                                    if (MsessionExpired.equals("true")) {
+                                        Toast.makeText(SplashScreen.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+                                    }
 //                              Toast.makeText(EditProfile.this, sesionid_new.toString(), Toast.LENGTH_SHORT).show();
 
                                 }

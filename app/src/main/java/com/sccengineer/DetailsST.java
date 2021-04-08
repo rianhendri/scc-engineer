@@ -171,6 +171,8 @@ public class DetailsST extends AppCompatActivity {
     Handler handler;
     int Seconds, Minutes, MilliSeconds, Jam ;
     FusedLocationProviderClient fusedLocationProviderClient;
+    String lati="";
+    String longi="";
     boolean reopen = true;
     boolean lempar = true;
 
@@ -278,7 +280,11 @@ public class DetailsST extends AppCompatActivity {
                 Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(DetailsST.this
                 ,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-//            getCurrentLocation();
+            if (internet){
+                fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(DetailsST.this);
+                getCurrentLocation();
+            }
+
             lempar = false;
         }else {
             ActivityCompat.requestPermissions(DetailsST.this
@@ -329,7 +335,7 @@ public class DetailsST extends AppCompatActivity {
                         Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
                         && ActivityCompat.checkSelfPermission(DetailsST.this
                         ,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-//                    getCurrentLocation();
+                    getCurrentLocation();
                     showDialogreopen();
                 }else {
                     ActivityCompat.requestPermissions(DetailsST.this
@@ -346,7 +352,7 @@ public class DetailsST extends AppCompatActivity {
                         Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
                         && ActivityCompat.checkSelfPermission(DetailsST.this
                         ,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-//                    getCurrentLocation();
+                    getCurrentLocation();
                     showDialogrupdate();
                 }else {
                     ActivityCompat.requestPermissions(DetailsST.this
@@ -1155,7 +1161,9 @@ public class DetailsST extends AppCompatActivity {
                 }else {
                     sesionid();
                     loading.dismiss();
-                    Toast.makeText(DetailsST.this, errornya,Toast.LENGTH_LONG).show();
+                    if (MsessionExpired.equals("true")) {
+                        Toast.makeText(DetailsST.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 
@@ -1215,7 +1223,9 @@ public class DetailsST extends AppCompatActivity {
                     mloadpart.setVisibility(View.GONE);
                     sesionid();
                     loading.dismiss();
-                    Toast.makeText(DetailsST.this, errornya,Toast.LENGTH_LONG).show();
+                    if (MsessionExpired.equals("true")) {
+                        Toast.makeText(DetailsST.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 
@@ -1311,7 +1321,9 @@ public class DetailsST extends AppCompatActivity {
                 }else {
                     sesionid();
                     loading.dismiss();
-                    Toast.makeText(DetailsST.this,errornya,Toast.LENGTH_LONG).show();
+                    if (MsessionExpired.equals("true")) {
+                        Toast.makeText(DetailsST.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 
@@ -1323,6 +1335,7 @@ public class DetailsST extends AppCompatActivity {
 
             }
         });
+        Log.d("jsonstart",jsonObject.toString());
     }
     public void updatea(){
         loading = ProgressDialog.show(DetailsST.this, "", "loading...", true);
@@ -1336,6 +1349,8 @@ public class DetailsST extends AppCompatActivity {
         jsonObject.addProperty("waitingEstimationDate",mdatestatus.getText().toString());
         jsonObject.add("sparePart",myCustomArray);
         jsonObject.addProperty("ver",BuildConfig.VERSION_NAME);
+        jsonObject.addProperty("longitude",lati);
+        jsonObject.addProperty("latitude",longi);
         IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, baseurl);
         Call<JsonObject> panggilkomplek = jsonPostService.updatea(jsonObject);
         panggilkomplek.enqueue(new Callback<JsonObject>() {
@@ -1362,7 +1377,9 @@ public class DetailsST extends AppCompatActivity {
                 }else {
                     sesionid();
                     loading.dismiss();
-                    Toast.makeText(DetailsST.this,errornya,Toast.LENGTH_LONG).show();
+                    if (MsessionExpired.equals("true")) {
+                        Toast.makeText(DetailsST.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 
@@ -1586,7 +1603,9 @@ public class DetailsST extends AppCompatActivity {
                 }else {
                     sesionid();
                     loading.dismiss();
-                    Toast.makeText(DetailsST.this,errornya,Toast.LENGTH_LONG).show();
+                    if (MsessionExpired.equals("true")) {
+                        Toast.makeText(DetailsST.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 
@@ -1604,7 +1623,7 @@ public class DetailsST extends AppCompatActivity {
                                            @NonNull int[] grantResults) {
         if (requestCode == 100 && grantResults.length>0 && (grantResults[0]+grantResults[1]
                 == PackageManager.PERMISSION_GRANTED)){
-//            getCurrentLocation();
+            getCurrentLocation();
 //            if (reopen){
 //                showDialogreopen();
 //            }else {
@@ -1628,44 +1647,51 @@ public class DetailsST extends AppCompatActivity {
     }
 
     @SuppressLint("MissingPermission")
-//    private void getCurrentLocation() {
-//        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-//
-//        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-//                || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-//            fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
-//                @Override
-//                public void onComplete(@NonNull Task<Location> task) {
-//
-//                    android.location.Location location = task.getResult();
-//                    if (location != null) {
-////                        mlati.setText(String.valueOf(location.getLatitude()));
-////                        mlongi.setText(String.valueOf(location.getLongitude()));
-//                    } else {
-//                        LocationRequest locationRequest = new LocationRequest()
-//                                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-//                                .setInterval(1000)
-//                                .setFastestInterval(1000)
-//                                .setNumUpdates(1);
-//                        LocationCallback locationCallback = new LocationCallback() {
-//                            @Override
-//                            public void onLocationResult(@NonNull LocationResult locationResult) {
-//                                android.location.Location location1 = locationResult.getLastLocation();
-////                                mlati.setText(String.valueOf(location1.getLatitude()));
-////                                mlongi.setText(String.valueOf(location1.getLongitude()));
-//                            }
-//                        };
-//                        fusedLocationProviderClient.requestLocationUpdates(locationRequest,
-//                                locationCallback, Looper.myLooper());
-//                    }
-//
-//                }
-//            });
-//        } else {
-//            startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-//                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-//        }
-//    }
+    private void getCurrentLocation() {
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+                || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+                @Override
+                public void onComplete(@NonNull Task<Location> task) {
+
+                    android.location.Location location = task.getResult();
+                    if (location != null) {
+                        lati=String.valueOf(location.getLatitude());
+                        longi = String.valueOf(location.getLongitude());
+                        Log.d("long2i",lati+longi);
+//                        mlati.setText(String.valueOf(location.getLatitude()));
+//                        mlongi.setText(String.valueOf(location.getLongitude()));
+                    } else {
+                        LocationRequest locationRequest = new LocationRequest()
+                                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                                .setInterval(1000)
+                                .setFastestInterval(1000)
+                                .setNumUpdates(1);
+                        LocationCallback locationCallback = new LocationCallback() {
+                            @Override
+                            public void onLocationResult(@NonNull LocationResult locationResult) {
+                                android.location.Location location1 = locationResult.getLastLocation();
+//                                mlati.setText(String.valueOf(location1.getLatitude()));
+//                                mlongi.setText(String.valueOf(location1.getLongitude()));
+                                lati=String.valueOf(location1.getLatitude());
+                                longi = String.valueOf(location1.getLongitude());
+                                Log.d("long2i",lati+"-"+longi);
+                            }
+                        };
+                        fusedLocationProviderClient.requestLocationUpdates(locationRequest,
+                                locationCallback, Looper.myLooper());
+                    }
+
+                }
+            });
+
+        } else {
+            startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+        }
+    }
     public void onBackPressed() {
 //        super.onBackPressed();
         if (home.equals("homes")){

@@ -179,7 +179,7 @@ public class Home extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent gotonews = new Intent(Home.this, ServiceTicket.class);
-                gotonews.putExtra("filter", "HISTORY");
+                gotonews.putExtra("filter", "Assigned");
                 gotonews.putExtra("home", "homes");
                 startActivity(gotonews);
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
@@ -190,7 +190,7 @@ public class Home extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent gotonews = new Intent(Home.this, ServiceTicket.class);
-                gotonews.putExtra("filter", "Assigned");
+                gotonews.putExtra("filter", "OnProgress");
                 gotonews.putExtra("home", "homes");
                 startActivity(gotonews);
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
@@ -201,7 +201,7 @@ public class Home extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent gotonews = new Intent(Home.this, ServiceTicket.class);
-                gotonews.putExtra("filter", "OnProgress");
+                gotonews.putExtra("filter", "ALLWAITING");
                 gotonews.putExtra("home", "homes");
                 startActivity(gotonews);
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
@@ -304,9 +304,9 @@ public class Home extends AppCompatActivity {
                     loading.dismiss();
                     sesionid();
                     JsonObject data = homedata.getAsJsonObject("data");
-                    JsonObject dataprog = data.getAsJsonObject("onProgressBadge");
-                    JsonObject dataassigned = data.getAsJsonObject("assignedBadge");
-                    JsonObject datahistory = data.getAsJsonObject("historyBadge");
+                    JsonObject dataprog = data.getAsJsonObject("waitingBadge");
+                    JsonObject dataassigned = data.getAsJsonObject("onProgressBadge");
+                    JsonObject datahistory = data.getAsJsonObject("assignedBadge");
                     listformreq = dataprog.getAsJsonArray("List");
 //                    mrecord.setText("Record: "+totalrec);
                     Gson gson = new Gson();
@@ -446,7 +446,10 @@ public class Home extends AppCompatActivity {
                     sesionid();
                     //// error message
                     loading.dismiss();
-                    Toast.makeText(Home.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+                    if (MsessionExpired.equals("true")) {
+                        Toast.makeText(Home.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+                    }
+
                 }
             }
 

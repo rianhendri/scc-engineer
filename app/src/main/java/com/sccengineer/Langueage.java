@@ -163,7 +163,9 @@ public class Langueage extends AppCompatActivity {
                     if (errornya.equals((Object)"null")) {
                         cekInternet();
                     }else {
-                        Toast.makeText(Langueage.this, errornya.toString(), (Toast.LENGTH_SHORT)).show();
+                        if (MsessionExpired.equals("true")) {
+                            Toast.makeText(Langueage.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+                        }
                         cekInternet();
                     }
 

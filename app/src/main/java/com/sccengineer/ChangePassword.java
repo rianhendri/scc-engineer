@@ -196,7 +196,9 @@ public class ChangePassword extends AppCompatActivity {
                     if (errornya.equals((Object)"null")) {
                         cekInternet();
                     }else {
-                        Toast.makeText(ChangePassword.this, errornya.toString(), (Toast.LENGTH_SHORT)).show();
+                        if (MsessionExpired.equals("true")) {
+                            Toast.makeText(ChangePassword.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+                        }
                         cekInternet();
                     }
 

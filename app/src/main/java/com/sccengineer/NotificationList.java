@@ -164,7 +164,9 @@ public class NotificationList extends AppCompatActivity {
                 }else {
                     sesionid();
                     loading.dismiss();
-                    Toast.makeText(NotificationList.this, errornya,Toast.LENGTH_LONG).show();
+                    if (MsessionExpired.equals("true")) {
+                        Toast.makeText(NotificationList.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 
@@ -236,7 +238,9 @@ public class NotificationList extends AppCompatActivity {
                 }else {
                     sesionid();
                     loading.dismiss();
-                    Toast.makeText(NotificationList.this,errornya,Toast.LENGTH_LONG).show();
+                    if (MsessionExpired.equals("true")) {
+                        Toast.makeText(NotificationList.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 

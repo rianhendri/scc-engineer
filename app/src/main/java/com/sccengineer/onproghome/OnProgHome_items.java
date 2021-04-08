@@ -19,14 +19,14 @@ public class OnProgHome_items {
     public OnProgHome_items() {
     }
 
-
-    public OnProgHome_items(String serviceTicketCd, String customerName, String supportStartDateTime, boolean isAssist, String press, String issue) {
+    public OnProgHome_items(String serviceTicketCd, String customerName, String waitingDueDate, boolean isAssist, String press, String issue, String statusName) {
         ServiceTicketCd = serviceTicketCd;
         CustomerName = customerName;
-        SupportStartDateTime = supportStartDateTime;
+        WaitingDueDate = waitingDueDate;
         IsAssist = isAssist;
         Press = press;
         Issue = issue;
+        StatusName = statusName;
     }
 
     public String getServiceTicketCd() {
@@ -45,12 +45,12 @@ public class OnProgHome_items {
         CustomerName = customerName;
     }
 
-    public String getSupportStartDateTime() {
-        return SupportStartDateTime;
+    public String getWaitingDueDate() {
+        return WaitingDueDate;
     }
 
-    public void setSupportStartDateTime(String supportStartDateTime) {
-        SupportStartDateTime = supportStartDateTime;
+    public void setWaitingDueDate(String waitingDueDate) {
+        WaitingDueDate = waitingDueDate;
     }
 
     public boolean isAssist() {
@@ -77,18 +77,28 @@ public class OnProgHome_items {
         Issue = issue;
     }
 
+    public String getStatusName() {
+        return StatusName;
+    }
+
+    public void setStatusName(String statusName) {
+        StatusName = statusName;
+    }
+
     @SerializedName("ServiceTicketCd")
     private String ServiceTicketCd;
     @SerializedName("CustomerName")
     private String CustomerName;
-    @SerializedName("SupportStartDateTime")
-    private String SupportStartDateTime;
+    @SerializedName("WaitingDueDate")
+    private String WaitingDueDate;
     @SerializedName("IsAssist")
     private boolean IsAssist;
     @SerializedName("Press")
     private String Press;
     @SerializedName("Issue")
     private String Issue;
+    @SerializedName("StatusName")
+    private String StatusName;
 }
 
 

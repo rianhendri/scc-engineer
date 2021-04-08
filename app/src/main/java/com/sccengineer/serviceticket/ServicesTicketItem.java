@@ -19,7 +19,7 @@ public class ServicesTicketItem {
     public ServicesTicketItem() {
     }
 
-    public ServicesTicketItem(String assignedDateTime, String bar1Text, String bar2Text, String bar3Text, boolean bar4Red, String bar4Text, int barPosition, String engineerName, String feedbackComments, int feedbackRating, String issueCategoryName, int position, String serviceTypeName, String statusName, String supportEndDateTime, String supportStartDateTime, String unitCategoryName, String assist, int lastImpression, String description, boolean showOnProgressAction, String onProgressActionName, String feedbackPhotoFullURL, String waitingEstimationDate, ArrayList<STSendSparepart_item> stSendSparepart_items) {
+    public ServicesTicketItem(String assignedDateTime, String bar1Text, String bar2Text, String bar3Text, boolean bar4Red, String bar4Text, int barPosition, String engineerName, String feedbackComments, int feedbackRating, String issueCategoryName, int position, String serviceTypeName, String statusName, String supportEndDateTime, String supportStartDateTime, String unitCategoryName, String assist, int lastImpression, String description, boolean showOnProgressAction, String onProgressActionName, String feedbackPhotoFullURL, String waitingEstimationDate, ArrayList<STSendSparepart_item> stSendSparepart_items, ArrayList<STType_item> stType_items) {
         AssignedDateTime = assignedDateTime;
         Bar1Text = bar1Text;
         Bar2Text = bar2Text;
@@ -45,6 +45,7 @@ public class ServicesTicketItem {
         FeedbackPhotoFullURL = feedbackPhotoFullURL;
         WaitingEstimationDate = waitingEstimationDate;
         this.stSendSparepart_items = stSendSparepart_items;
+        this.stType_items = stType_items;
     }
 
     public String getAssignedDateTime() {
@@ -247,6 +248,14 @@ public class ServicesTicketItem {
         this.stSendSparepart_items = stSendSparepart_items;
     }
 
+    public ArrayList<STType_item> getStType_items() {
+        return stType_items;
+    }
+
+    public void setStType_items(ArrayList<STType_item> stType_items) {
+        this.stType_items = stType_items;
+    }
+
     @Expose
     @SerializedName("AssignedDateTime")
     private String AssignedDateTime;
@@ -325,5 +334,8 @@ public class ServicesTicketItem {
     @Expose
     @SerializedName("SpareParts")
     private ArrayList<STSendSparepart_item> stSendSparepart_items = null;
+    @Expose
+    @SerializedName("Types")
+    private ArrayList<STType_item> stType_items = null;
 }
 

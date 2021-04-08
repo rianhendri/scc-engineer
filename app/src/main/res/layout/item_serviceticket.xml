@@ -635,6 +635,87 @@
 
 			</LinearLayout>
 			<LinearLayout
+				android:id="@+id/layouttype"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical">
+				<TextView
+
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:fontFamily="@font/segoeuib"
+					android:textColor="@color/black"
+					android:text="Service Type"
+					android:textSize="11sp"
+					/>
+				<View
+					android:layout_width="wrap_content"
+					android:layout_height="1dp"
+					android:background="@color/transparent" />
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:orientation="horizontal"
+					android:background="@drawable/bg_grey">
+					<TextView
+
+						android:layout_width="20dp"
+						android:layout_height="wrap_content"
+						android:layout_marginLeft="8dp"
+						android:layout_marginTop="8dp"
+						android:layout_marginBottom="8dp"
+						android:fontFamily="@font/segoeui"
+						android:textSize="11dp"
+						android:text="No."
+						android:textColor="@color/black"/>
+					<TextView
+
+						android:layout_width="70dp"
+						android:layout_height="wrap_content"
+						android:layout_marginLeft="8dp"
+						android:layout_marginRight="8dp"
+						android:layout_marginTop="8dp"
+						android:layout_marginBottom="8dp"
+						android:fontFamily="@font/segoeui"
+						android:textSize="11dp"
+						android:text="Type"
+						android:textColor="@color/black"/>
+					<TextView
+
+						android:layout_width="70dp"
+						android:layout_height="wrap_content"
+						android:layout_marginLeft="8dp"
+						android:layout_marginRight="8dp"
+						android:layout_marginTop="8dp"
+						android:layout_marginBottom="8dp"
+						android:fontFamily="@font/segoeui"
+						android:textSize="11dp"
+						android:text="Start"
+						android:textColor="@color/black"/>
+					<TextView
+
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_marginLeft="8dp"
+						android:layout_marginRight="8dp"
+						android:layout_marginTop="8dp"
+						android:layout_marginBottom="8dp"
+						android:fontFamily="@font/segoeui"
+						android:textSize="11dp"
+						android:text="End"
+						android:textColor="@color/black"/>
+				</LinearLayout>
+				<androidx.recyclerview.widget.RecyclerView
+					android:id="@+id/listtype"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					app:layout_constraintBottom_toTopOf="@+id/addform"
+					android:scrollbars="none"
+					android:nestedScrollingEnabled="false"
+					android:layout_marginBottom="16dp">
+				</androidx.recyclerview.widget.RecyclerView>
+			</LinearLayout>
+			<LinearLayout
 				android:id="@+id/layoutspar"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"

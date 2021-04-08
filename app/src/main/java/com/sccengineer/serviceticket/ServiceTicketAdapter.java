@@ -88,8 +88,10 @@ extends RecyclerView.Adapter<ServiceTicketAdapter.Myviewholder> {
     boolean showmore = true;
     JsonArray mjsonspar;
     ArrayList<STSendSparepart_item> listsparser;
+    ArrayList<STType_item> stType_items;
     STSendSparepart_adapter ticketadapter;
-    LinearLayoutManager linearLayoutManager1;
+    StType_adapter sttype;
+    LinearLayoutManager linearLayoutManager1,linearLayoutManagertyp;
     public ServiceTicketAdapter(Context c, ArrayList<ServicesTicketItem> p){
         context = c;
         myItem = p;
@@ -377,6 +379,20 @@ extends RecyclerView.Adapter<ServiceTicketAdapter.Myviewholder> {
 
 
         }
+        linearLayoutManagertyp = new LinearLayoutManager(context, LinearLayout.VERTICAL,false);
+        myviewholder.mtype.setLayoutManager(linearLayoutManagertyp);
+        myviewholder.mtype.setHasFixedSize(true);
+        stType_items = new ArrayList();
+        if (myItem.get(i).getStType_items().toString().equals("[]")){
+            myviewholder.mlayouttypr.setVisibility(View.GONE);
+        }else {
+            sttype = new StType_adapter(context,myItem.get(i).getStType_items());
+            myviewholder.mtype.setAdapter(sttype);
+            myItem.get(i).getStSendSparepart_items();
+            myviewholder.mlayouttypr.setVisibility(View.VISIBLE);
+
+
+        }
 
     }
 
@@ -395,11 +411,14 @@ extends RecyclerView.Adapter<ServiceTicketAdapter.Myviewholder> {
 //        ExpandableTextView mnotes;
         ImageView mposbar;
         RatingBar mrating;
-        RecyclerView mlistspart;
-        LinearLayout mlayoutstart,mlasyass,mlayimpres,mlayoutnotes,mlayac, murlfoto, mlayestima, mread, mlayoutspar;
+        RecyclerView mlistspart,mtype;
+        LinearLayout mlayouttypr,mlayoutstart,mlasyass,mlayimpres,mlayoutnotes,mlayac, murlfoto, mlayestima, mread, mlayoutspar;
         public Myviewholder(@NonNull View view) {
             super(view);
+
+            mlayouttypr = view.findViewById(R.id.layouttype);
             mlistspart = view.findViewById(R.id.listsper);
+            mtype = view.findViewById(R.id.listtype);
             mlayoutspar = view.findViewById(R.id.layoutspar);
             mstatus = view.findViewById(R.id.statushistory);
             mservicetype = view.findViewById(R.id.servicetype);

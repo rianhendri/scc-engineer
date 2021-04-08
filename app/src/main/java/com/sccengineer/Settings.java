@@ -155,7 +155,9 @@ public class Settings extends AppCompatActivity {
                 }else {
                     sesionid();
                     loading.dismiss();
-                    Toast.makeText(Settings.this,errornya,Toast.LENGTH_LONG).show();
+                    if (MsessionExpired.equals("true")) {
+                        Toast.makeText(Settings.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 

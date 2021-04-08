@@ -84,7 +84,7 @@ extends RecyclerView.Adapter<OnProghome_adapter.Myviewholder> {
         String newdate = "";
         myviewholder.mscd.setText(onProgHome_items.get(i).getServiceTicketCd());
         myviewholder.mcustname.setText(onProgHome_items.get(i).getCustomerName());
-        String oldadate = onProgHome_items.get(i).getSupportStartDateTime();
+        String oldadate = onProgHome_items.get(i).getWaitingDueDate();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
         SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         try {
@@ -98,9 +98,10 @@ extends RecyclerView.Adapter<OnProghome_adapter.Myviewholder> {
         String[] separated = newdate.split("T");
         separated[0].trim();; // this will contain "Fruit"
         separated[1].trim();;
-        myviewholder.mstgl.setText("Start: "+separated[0]+" "+ separated[1]);
+        myviewholder.mstgl.setText("Due Date: "+separated[0]+" "+ separated[1]);
         myviewholder.mpress.setText(onProgHome_items.get(i).getPress());
-        myviewholder.missue.setText(onProgHome_items.get(i).getIssue());
+        myviewholder.missue.setText("Issue: "+onProgHome_items.get(i).getIssue());
+        myviewholder.mstatus.setText("Status: "+onProgHome_items.get(i).getStatusName());
         myviewholder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,12 +126,13 @@ extends RecyclerView.Adapter<OnProghome_adapter.Myviewholder> {
     }
 
     public static class Myviewholder extends RecyclerView.ViewHolder{
-        TextView mscd, mcustname, mstgl, mpress, missue;
+        TextView mscd, mcustname, mstgl, mpress, missue,mstatus;
         LinearLayout mbadgeas;
 
         public Myviewholder(@NonNull View itemView) {
             super(itemView);
             mscd = itemView.findViewById(R.id.scd);
+            mstatus = itemView.findViewById(R.id.sts);
             mcustname = itemView.findViewById(R.id.custname);
             mstgl = itemView.findViewById(R.id.stgl);
             mbadgeas = itemView.findViewById(R.id.bagdeassist);
