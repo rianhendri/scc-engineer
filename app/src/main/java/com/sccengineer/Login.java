@@ -67,22 +67,22 @@ public class Login extends AppCompatActivity {
         mforgotpassword = findViewById(R.id.forgotpassword);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        if (ActivityCompat.checkSelfPermission(Login.this,
-                Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
-            telephonyManager = (TelephonyManager) getSystemService(Login.this.TELEPHONY_SERVICE);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                imeiHp = android.provider.Settings.Secure.getString(
-                        Login.this.getContentResolver(),
-                        android.provider.Settings.Secure.ANDROID_ID);
-            } else {
-                imeiHp = telephonyManager.getDeviceId();
-            }
-//            imeiHp=telephonyManager.getDeviceId();
-            Log.d("imei",imeiHp);
-        }else {
-            ActivityCompat.requestPermissions(Login.this
-                    , new String[]{Manifest.permission.READ_PHONE_STATE},100);
-        }
+//        if (ActivityCompat.checkSelfPermission(Login.this,
+//                Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
+//            telephonyManager = (TelephonyManager) getSystemService(Login.this.TELEPHONY_SERVICE);
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//                imeiHp = android.provider.Settings.Secure.getString(
+//                        Login.this.getContentResolver(),
+//                        android.provider.Settings.Secure.ANDROID_ID);
+//            } else {
+//                imeiHp = telephonyManager.getDeviceId();
+//            }
+////            imeiHp=telephonyManager.getDeviceId();
+//            Log.d("imei",imeiHp);
+//        }else {
+//            ActivityCompat.requestPermissions(Login.this
+//                    , new String[]{Manifest.permission.READ_PHONE_STATE},100);
+//        }
         getVersionHp();
         cekInternet();
         FirebaseInstanceId.getInstance().getInstanceId()
@@ -111,7 +111,11 @@ public class Login extends AppCompatActivity {
         mlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+//                if (internet){
+//                    loginApi();
+//                }else {
+//                    cekInternet();
+//                }
                 if (ActivityCompat.checkSelfPermission(Login.this,
                         Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
                     telephonyManager = (TelephonyManager) getSystemService(Login.this.TELEPHONY_SERVICE);
@@ -209,11 +213,11 @@ public class Login extends AppCompatActivity {
 
                     //// error message
                     loading.dismiss();
-                    if (MsessionExpired.equals("true")) {
-                        Toast.makeText(Login.this, errornya.toString(), Toast.LENGTH_SHORT).show();
-                    }
+//                    if (MsessionExpired.equals("true")) {
+//                        Toast.makeText(Login.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+//                    }
 //                    Toast.makeText(EditProfile.this, sesionid_new.toString(), Toast.LENGTH_SHORT).show();
-
+                    Toast.makeText(Login.this, errornya.toString(), Toast.LENGTH_SHORT).show();
                 }
 
 

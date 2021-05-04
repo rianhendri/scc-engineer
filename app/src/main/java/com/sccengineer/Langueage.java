@@ -163,9 +163,11 @@ public class Langueage extends AppCompatActivity {
                     if (errornya.equals((Object)"null")) {
                         cekInternet();
                     }else {
-                        if (MsessionExpired.equals("true")) {
-                            Toast.makeText(Langueage.this, errornya.toString(), Toast.LENGTH_SHORT).show();
-                        }
+                        Toast.makeText(Langueage.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+
+//                        if (MsessionExpired.equals("true")) {
+//                            Toast.makeText(Langueage.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+//                        }
                         cekInternet();
                     }
 
@@ -201,7 +203,7 @@ public class Langueage extends AppCompatActivity {
         }else {
             startActivity(new Intent(Langueage.this, Login.class));
             finish();
-            Toast.makeText(Langueage.this, getString(R.string.title_session_Expired),Toast.LENGTH_LONG).show();
+//            Toast.makeText(Langueage.this, getString(R.string.title_session_Expired),Toast.LENGTH_LONG).show();
         }
 
     }

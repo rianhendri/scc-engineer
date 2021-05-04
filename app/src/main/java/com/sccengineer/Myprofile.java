@@ -163,7 +163,7 @@ public class Myprofile extends AppCompatActivity {
         }else {
             startActivity(new Intent(Myprofile.this, Login.class));
             finish();
-            Toast.makeText(Myprofile.this, getString(R.string.title_session_Expired),Toast.LENGTH_LONG).show();
+//            Toast.makeText(Myprofile.this, getString(R.string.title_session_Expired),Toast.LENGTH_LONG).show();
         }
 
     }

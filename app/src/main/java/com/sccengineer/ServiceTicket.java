@@ -369,9 +369,11 @@ public class ServiceTicket extends AppCompatActivity {
                     }
                 } else {
                     sesionid();
-                    if (MsessionExpired.equals("true")) {
-                        Toast.makeText(ServiceTicket.this, errornya.toString(), Toast.LENGTH_SHORT).show();
-                    }
+//                    if (MsessionExpired.equals("true")) {
+////                        Toast.makeText(ServiceTicket.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+////                    }
+                    Toast.makeText(ServiceTicket.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+
                 }
             }
 
@@ -439,9 +441,10 @@ public class ServiceTicket extends AppCompatActivity {
                 }else {
 
                     mfooterload.setVisibility(View.GONE);
-                    if (MsessionExpired.equals("true")) {
-                        Toast.makeText(ServiceTicket.this, errornya.toString(), Toast.LENGTH_SHORT).show();
-                    }
+//                    if (MsessionExpired.equals("true")) {
+//                        Toast.makeText(ServiceTicket.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+//                    }
+                    Toast.makeText(ServiceTicket.this, errornya.toString(), Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -500,7 +503,7 @@ public class ServiceTicket extends AppCompatActivity {
         }else {
             startActivity(new Intent(ServiceTicket.this, Login.class));
             finish();
-            Toast.makeText(ServiceTicket.this, getString(R.string.title_session_Expired),Toast.LENGTH_LONG).show();
+//            Toast.makeText(ServiceTicket.this, getString(R.string.title_session_Expired),Toast.LENGTH_LONG).show();
         }
 
     }

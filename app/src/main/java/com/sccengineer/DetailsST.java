@@ -152,10 +152,10 @@ public class DetailsST extends AppCompatActivity {
     public static String Nowaform = "0";
     //updatepanel;
     ImageView mprosbarr;
-    TextView mdatestatus,mlalbeldate,msupport,mbar1,mbar2,mbar3,mbar4,mactionprogress,mestimasi,mstarttime,mendtime,massigndate,mengineer,masengineer, mstatustick, mtimer;
+    TextView mlinkgenerate,mdatestatus,mlalbeldate,msupport,mbar1,mbar2,mbar3,mbar4,mactionprogress,mestimasi,mstarttime,mendtime,massigndate,mengineer,masengineer, mstatustick, mtimer;
     EditText mlastimpresiST, mdescripst;
     Spinner mservicetypeST, mstatusST;
-    LinearLayout mlayoutdate,mlayoutsper,mlayestima,mstartprogress, mupdatebtn, mlayoutimpress, mlayoutnote, mlayoutstatus, mlayoutservicest, mlayoutupdatepanel;
+    LinearLayout mlayountlink,mlayoutdate,mlayoutsper,mlayestima,mstartprogress, mupdatebtn, mlayoutimpress, mlayoutnote, mlayoutstatus, mlayoutservicest, mlayoutupdatepanel;
     JsonArray listsn;
     List<String> snid = new ArrayList();
     List<String> snname = new ArrayList();
@@ -193,12 +193,16 @@ public class DetailsST extends AppCompatActivity {
     private DatePickerDialog datePickerDialog;
     private SimpleDateFormat dateFormatter2;
     private Calendar newDate= Calendar.getInstance();
+    boolean cekdate= false;
+    String notesapi = "";
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_s_t);
         //panelupdate
+        mlayountlink = findViewById(R.id.linkbtn);
+        mlinkgenerate = findViewById(R.id.linkgenerate);
         mlayoutdate = findViewById(R.id.layoutdate);
         mdatestatus = findViewById(R.id.datestatus);
         mlalbeldate = findViewById(R.id.labeldate);
@@ -321,7 +325,13 @@ public class DetailsST extends AppCompatActivity {
         Log.d(TAG,"noreq:"+noreq);
 
 
-
+        mlayountlink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mdescripst.setMinLines(15);
+                mdescripst.setText(notesapi);
+            }
+        });
         mback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -353,7 +363,16 @@ public class DetailsST extends AppCompatActivity {
                         && ActivityCompat.checkSelfPermission(DetailsST.this
                         ,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     getCurrentLocation();
-                    showDialogrupdate();
+                    if (cekdate){
+                        if (mdatestatus.getText().toString().equals("-")){
+                            Toast.makeText(DetailsST.this, "Tanggal due date wajib diisi", Toast.LENGTH_SHORT).show();
+                        }else {
+                            showDialogrupdate();
+                        }
+                    }else {
+                        showDialogrupdate();
+                    }
+
                 }else {
                     ActivityCompat.requestPermissions(DetailsST.this
                             , new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
@@ -456,6 +475,7 @@ public class DetailsST extends AppCompatActivity {
 //                operatorcd.clear();
                 mpressIda = snida.get(position);
                 if (estimatedate.get(position).booleanValue()){
+                    cekdate = true;
                     mlayoutdate.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -464,10 +484,11 @@ public class DetailsST extends AppCompatActivity {
                     });
                     mlayoutdate.setVisibility(View.VISIBLE);
                     String string2 = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-                    mdatestatus.setText((CharSequence)string2);
+//                    mdatestatus.setText((CharSequence)string2);
 //                    Log.d("date55", String.valueOf(newDate.getTime()));
                 }else {
                     mlayoutdate.setVisibility(View.GONE);
+                    cekdate = false;
                 }
             }
 
@@ -665,6 +686,7 @@ public class DetailsST extends AppCompatActivity {
                 String errornya = "";
                 JsonObject homedata=response.body();
                 String statusnya = homedata.get("status").getAsString();
+                Log.d("loaddatanya",homedata.toString());
                 if (homedata.get("errorMessage").toString().equals("null")) {
 
                 }else {
@@ -676,6 +698,15 @@ public class DetailsST extends AppCompatActivity {
 
                     sesionid();
                     JsonObject data = homedata.getAsJsonObject("data");
+                    //setnoteupdatepanels
+                    if (data.get("generateNotes").toString().equals("null")){
+                        mlinkgenerate.setVisibility(View.GONE);
+                    }else {
+                        notesapi = data.get("generateNotes").getAsString();
+
+                        mlinkgenerate.setVisibility(View.VISIBLE);
+                    }
+
                     // layoutsper
                     if (data.get("updatePanelShowSparePart").getAsBoolean()){
                         mlayoutsper.setVisibility(View.VISIBLE);
@@ -883,6 +914,7 @@ public class DetailsST extends AppCompatActivity {
 
                     }else {
                         JsonObject updatepanel = data.getAsJsonObject("updatePanelLatestAction");
+
                         //sparepartupdatepanel
                         mlalbeldate.setText(updatepanel.get("WaitingEstimationLabel").getAsString());
                         myCustomArray = updatepanel.getAsJsonArray("SpareParts");
@@ -1161,9 +1193,10 @@ public class DetailsST extends AppCompatActivity {
                 }else {
                     sesionid();
                     loading.dismiss();
-                    if (MsessionExpired.equals("true")) {
-                        Toast.makeText(DetailsST.this, errornya.toString(), Toast.LENGTH_SHORT).show();
-                    }
+                    Toast.makeText(DetailsST.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+//                    if (MsessionExpired.equals("true")) {
+//                        Toast.makeText(DetailsST.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+//                    }
                 }
             }
 
@@ -1223,9 +1256,10 @@ public class DetailsST extends AppCompatActivity {
                     mloadpart.setVisibility(View.GONE);
                     sesionid();
                     loading.dismiss();
-                    if (MsessionExpired.equals("true")) {
-                        Toast.makeText(DetailsST.this, errornya.toString(), Toast.LENGTH_SHORT).show();
-                    }
+                    Toast.makeText(DetailsST.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+//                    if (MsessionExpired.equals("true")) {
+//                        Toast.makeText(DetailsST.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+//                    }
                 }
             }
 
@@ -1321,9 +1355,7 @@ public class DetailsST extends AppCompatActivity {
                 }else {
                     sesionid();
                     loading.dismiss();
-                    if (MsessionExpired.equals("true")) {
-                        Toast.makeText(DetailsST.this, errornya.toString(), Toast.LENGTH_SHORT).show();
-                    }
+                    Toast.makeText(DetailsST.this, errornya.toString(), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -1361,6 +1393,7 @@ public class DetailsST extends AppCompatActivity {
                 String errornya = "";
                 JsonObject homedata=response.body();
                 String statusnya = homedata.get("status").getAsString();
+                Log.d("jsonnya",homedata.toString());
                 if (homedata.get("errorMessage").toString().equals("null")) {
 
                 }else {
@@ -1377,9 +1410,10 @@ public class DetailsST extends AppCompatActivity {
                 }else {
                     sesionid();
                     loading.dismiss();
-                    if (MsessionExpired.equals("true")) {
-                        Toast.makeText(DetailsST.this, errornya.toString(), Toast.LENGTH_SHORT).show();
-                    }
+                    Toast.makeText(DetailsST.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+//                    if (MsessionExpired.equals("true")) {
+//                        Toast.makeText(DetailsST.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+//                    }
                 }
             }
 
@@ -1416,7 +1450,7 @@ public class DetailsST extends AppCompatActivity {
         }else {
             startActivity(new Intent(DetailsST.this, Login.class));
             finish();
-            Toast.makeText(DetailsST.this, getString(R.string.title_session_Expired),Toast.LENGTH_LONG).show();
+//            Toast.makeText(DetailsST.this, getString(R.string.title_session_Expired),Toast.LENGTH_LONG).show();
         }
 
     }
@@ -1603,9 +1637,10 @@ public class DetailsST extends AppCompatActivity {
                 }else {
                     sesionid();
                     loading.dismiss();
-                    if (MsessionExpired.equals("true")) {
-                        Toast.makeText(DetailsST.this, errornya.toString(), Toast.LENGTH_SHORT).show();
-                    }
+                    Toast.makeText(DetailsST.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+//                    if (MsessionExpired.equals("true")) {
+//                        Toast.makeText(DetailsST.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+//                    }
                 }
             }
 

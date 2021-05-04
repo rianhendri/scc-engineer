@@ -247,7 +247,7 @@ public class Home extends AppCompatActivity {
         }else {
             startActivity(new Intent(Home.this, Login.class));
             finish();
-            Toast.makeText(Home.this, getString(R.string.title_session_Expired),Toast.LENGTH_LONG).show();
+//            Toast.makeText(Home.this, getString(R.string.title_session_Expired),Toast.LENGTH_LONG).show();
         }
 
     }
@@ -446,10 +446,10 @@ public class Home extends AppCompatActivity {
                     sesionid();
                     //// error message
                     loading.dismiss();
-                    if (MsessionExpired.equals("true")) {
-                        Toast.makeText(Home.this, errornya.toString(), Toast.LENGTH_SHORT).show();
-                    }
-
+//                    if (MsessionExpired.equals("true")) {
+//                        Toast.makeText(Home.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+//                    }
+                    Toast.makeText(Home.this, errornya.toString(), Toast.LENGTH_SHORT).show();
                 }
             }
 

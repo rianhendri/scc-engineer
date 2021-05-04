@@ -322,8 +322,9 @@
                         android:overScrollMode="always"
                         android:padding="8dp"
                         android:scrollHorizontally="false"
-                        android:scrollbarStyle="insideInset"
                         android:scrollbars="vertical"
+                        android:scrollbarFadeDuration="0"
+                        android:scrollbarAlwaysDrawVerticalTrack="true"
                         android:text=""
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/black"
@@ -1427,40 +1428,76 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"
+                                android:layout_marginTop="24dp"
                                 android:layout_marginBottom="12dp"
                                 android:layout_marginRight="12dp"
                                 android:layout_marginLeft="12dp">
-
-                                <TextView
+                                <LinearLayout
+                                    android:id="@+id/linkbtn"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginBottom="8dp"
-                                    android:layout_marginTop="4dp"
-                                    android:fontFamily="@font/seguisb"
-                                    android:paddingLeft="4dp"
-                                    android:text="Engineer Note:"
-                                    android:textColor="@color/black"
-                                    android:textSize="12sp" />
+                                    android:orientation="horizontal">
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginBottom="8dp"
+                                        android:layout_marginTop="4dp"
+                                        android:fontFamily="@font/seguisb"
+                                        android:paddingLeft="4dp"
+                                        android:text="Engineer Notes: "
+                                        android:textColor="@color/black"
+                                        android:textSize="12sp" />
+                                    <TextView
+                                        android:visibility="gone"
+                                        android:id="@+id/linkgenerate"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginBottom="8dp"
+                                        android:layout_marginTop="4dp"
+                                        android:fontFamily="@font/seguisb"
+                                        android:paddingLeft="4dp"
+                                        android:text="@string/title_generat"
+                                        android:textColor="@color/colorPrimaryDark"
+                                        android:textSize="12sp"
+                                        android:selectAllOnFocus="false"
+                                        android:linksClickable="false"
+                                        android:autoLink="all"/>
+                                </LinearLayout>
 
-                                <EditText
-                                    android:id="@+id/descripst"
+                                <androidx.core.widget.NestedScrollView
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="150dp"
                                     android:background="@drawable/bgwhite_cornerblack"
-
-                                    android:fontFamily="@font/segoeui"
-                                    android:gravity="top|left"
-                                    android:inputType="textMultiLine"
-                                    android:lines="6"
-                                    android:overScrollMode="always"
-                                    android:padding="8dp"
+                                    android:scrollbarAlwaysDrawVerticalTrack="true"
                                     android:scrollHorizontally="false"
                                     android:scrollbarStyle="insideInset"
                                     android:scrollbars="vertical"
-                                    android:text=""
-                                    android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:textColor="@color/black"
-                                    android:textSize="13sp" />
+                                    android:overScrollMode="always"
+                                    android:fadeScrollbars="false">
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:orientation="vertical">
+                                        <EditText
+                                            android:id="@+id/descripst"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:gravity="start|top"
+                                            android:padding="13dp"
+                                            android:minLines="7"
+                                            android:layout_weight="1"
+                                            android:textSize="13sp"
+                                            android:background="@color/transparent"
+                                            android:scrollHorizontally="false"
+                                            android:scrollbarAlwaysDrawVerticalTrack="true"
+                                            android:scrollbarStyle="insideInset"
+                                            android:scrollbars="vertical"
+                                            android:overScrollMode="always"
+
+                                            android:inputType="textMultiLine" />
+                                    </LinearLayout>
+                                </androidx.core.widget.NestedScrollView>
+
 
 
                             </LinearLayout>

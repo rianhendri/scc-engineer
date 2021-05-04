@@ -164,9 +164,11 @@ public class NotificationList extends AppCompatActivity {
                 }else {
                     sesionid();
                     loading.dismiss();
-                    if (MsessionExpired.equals("true")) {
-                        Toast.makeText(NotificationList.this, errornya.toString(), Toast.LENGTH_SHORT).show();
-                    }
+//                    if (MsessionExpired.equals("true")) {
+//                        Toast.makeText(NotificationList.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+//                    }
+                    Toast.makeText(NotificationList.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+
                 }
             }
 
@@ -199,7 +201,7 @@ public class NotificationList extends AppCompatActivity {
         }else {
             startActivity(new Intent(NotificationList.this, Login.class));
             finish();
-            Toast.makeText(NotificationList.this, getString(R.string.title_session_Expired),Toast.LENGTH_LONG).show();
+//            Toast.makeText(NotificationList.this, getString(R.string.title_session_Expired),Toast.LENGTH_LONG).show();
         }
 
     }
@@ -238,9 +240,11 @@ public class NotificationList extends AppCompatActivity {
                 }else {
                     sesionid();
                     loading.dismiss();
-                    if (MsessionExpired.equals("true")) {
-                        Toast.makeText(NotificationList.this, errornya.toString(), Toast.LENGTH_SHORT).show();
-                    }
+//                    if (MsessionExpired.equals("true")) {
+//                        Toast.makeText(NotificationList.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+//                    }
+                    Toast.makeText(NotificationList.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+
                 }
             }
 

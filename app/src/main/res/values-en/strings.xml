@@ -50,4 +50,6 @@
     <string name="title_namapt">Company:</string>
     <string name="title_group">Company Group:</string>
     <string name="title_addsparepart">Add sparepart</string>
+    <string name="title_generat">" <u>Generate</u>"</string>
+    <string name="title_activity_maps">Map</string>
 </resources>
