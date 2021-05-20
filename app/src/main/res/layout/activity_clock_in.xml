@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ClockInActivity"
+    android:gravity="center"
+    android:background="#e7f1f5"
+    android:padding="0dp"
+    android:orientation="vertical">
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/checkclock"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+        <ProgressBar
+
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Check Clockin"
+            android:textColor="@color/darkgrey2"
+            android:fontFamily="@font/seguisb"
+            />
+    </LinearLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="17sp"
+                android:gravity="center"
+                android:layout_marginBottom="12dp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/seguisb"
+                android:text="Selamat Datang"
+                />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:gravity="center"
+                >
+
+                <ImageView
+                    android:layout_width="190dp"
+                    android:layout_height="190dp"
+                    android:src="@drawable/bgclock"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+                <com.imankur.analogclockview.AnalogClock
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/clockin"
+                android:layout_marginTop="12dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/segoeui"
+                android:textSize="12sp"
+                android:paddingRight="24dp"
+                android:paddingLeft="24dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:textColor="@color/black"
+                android:background="@drawable/bg_cornergrey"
+                android:text="Clock In"
+                />
+            <TextView
+                android:layout_marginTop="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:fontFamily="@font/segoeuib"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:text="Clock Out Terakhir : 16:00"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:layout_marginTop="12dp"
+                android:background="@color/colorPrimaryDark">
+                <LinearLayout
+                    android:id="@+id/notifikasi"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/seguisb"
+                        android:textSize="15sp"
+                        android:layout_weight="1"
+                        android:layout_marginTop="22dp"
+                        android:layout_marginBottom="12dp"
+                        android:text="@string/title_notification"
+                        android:textColor="@color/dwhite"/>
+                    <TextView
+                        android:id="@+id/notif2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/seguisb"
+                        android:textSize="13sp"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:layout_marginTop="22dp"
+                        android:layout_marginBottom="12dp"
+                        android:text="@string/title_viewall"
+                        android:textColor="#fff"/>
+                    <TextView
+
+                        android:id="@+id/newnotif"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/segoeuib"
+                        android:gravity="center"
+
+                        android:layout_marginTop="22dp"
+                        android:layout_marginBottom="12dp"
+                        android:text="(44)"
+                        android:textColor="@color/dwhite"
+                        android:textSize="13sp"
+
+                        android:visibility="visible" />
+                </LinearLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:id="@+id/notificationconfig"/>
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

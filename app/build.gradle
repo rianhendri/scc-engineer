@@ -8,8 +8,8 @@ android {
         applicationId "com.sccengineer"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 5
-        versionName "1.0.4"
+        versionCode 6
+        versionName "1.0.5"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -81,6 +81,8 @@ dependencies {
     implementation 'com.google.android.material:material:1.2.0-alpha06'
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.ms-square:expandableTextView:0.1.4'
+
+    implementation 'com.imankur.library:analogclockview:1.0.0'
 //    implementation  'com.doku.sdkocov2:sdkocov2-release:1.0@aar'
 //    implementation 'com.android.support:multidex:1.0.3'
 

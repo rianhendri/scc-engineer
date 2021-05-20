@@ -48,6 +48,7 @@ import static com.sccengineer.apihelper.ServiceGenerator.baseurl;
 import static com.sccengineer.apihelper.ServiceGenerator.ver;
 
 public class ServiceTicket extends AppCompatActivity {
+    boolean load = true;
     private static final String TAG = "FormActivity";
     public static boolean refresh = false;
     public static String valuefilter = "-";
@@ -117,9 +118,9 @@ public class ServiceTicket extends AppCompatActivity {
         list2 = new ArrayList<ServiceTicketItems>();
         getSessionId();
         cekInternet();
-        refreshnotif();
+//        refreshnotif();
         if (internet){
-            loadData();
+
             loadSpin();
         }else {
 
@@ -246,7 +247,12 @@ public class ServiceTicket extends AppCompatActivity {
     }
     public void loadData(){
         page=1;
-        mfooterload.setVisibility(View.VISIBLE);
+        if (load){
+            load = false;
+        }else {
+            mfooterload.setVisibility(View.VISIBLE);
+            load = true;
+        }
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("sessionId",sesionid_new);
         jsonObject.addProperty("page",page);
@@ -321,7 +327,7 @@ public class ServiceTicket extends AppCompatActivity {
         });
     }
     public void loadSpin(){
-
+        mfooterload.setVisibility(View.VISIBLE);
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("sessionId",sesionid_new);
         jsonObject.addProperty("page",page);
@@ -345,6 +351,7 @@ public class ServiceTicket extends AppCompatActivity {
                 MhaveToUpdate = homedata.get("haveToUpdate").toString();
                 MsessionExpired = homedata.get("sessionExpired").toString();
                 if (statusnya.equals("OK")){
+                    loadData();
                     sesionid();
                     JsonObject data = homedata.getAsJsonObject("data");
                     listformreq = data.getAsJsonArray("frList");
@@ -531,7 +538,7 @@ public class ServiceTicket extends AppCompatActivity {
                 }
 
             }
-        }, 700);
+        }, 100);
 
     }
 }

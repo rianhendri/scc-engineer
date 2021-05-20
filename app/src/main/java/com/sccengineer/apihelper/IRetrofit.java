@@ -54,6 +54,12 @@ public interface IRetrofit {
     public Call<JsonObject> postRawJSONping(@Body JsonObject var1);
     @POST("api/engineer/config")
     public Call<JsonObject> postRawJSONconfig(@Body JsonObject var1);
+    @POST("api/attendance/prepareClockIn")
+    public Call<JsonObject> prefclock(@Body JsonObject var1);
+    @POST("api/attendance/clockOut")
+    public Call<JsonObject> clockout(@Body JsonObject var1);
+    @POST("api/attendance/clockIn")
+    public Call<JsonObject> clockin(@Body JsonObject var1);
     @POST("api/serviceticket/startProgress")
     public Call<JsonObject> startprog(@Body JsonObject var1);
     @POST("api/serviceticket/update")

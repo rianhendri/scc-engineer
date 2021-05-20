@@ -158,7 +158,7 @@ public class SplashScreen extends AppCompatActivity {
     public void sesionid() {
         if (MsessionExpired.equals("false")) {
             if (MhaveToUpdate.equals("false")) {
-                startActivity(new Intent(SplashScreen.this, Home.class));
+                startActivity(new Intent(SplashScreen.this, ClockInActivity.class));
                 finish();
 
             }

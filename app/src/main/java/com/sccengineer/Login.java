@@ -190,7 +190,7 @@ public class Login extends AppCompatActivity {
                 }
                 MsessionExpired = post.get("sessionExpired").toString();
                 MhaveToUpdate = post.get("haveToUpdate").toString();
-
+                Log.d("jsonlogin1",post.toString());
                 ////////////
                 if (statusnya.equals("OK")){
                     loading.dismiss();
@@ -206,7 +206,7 @@ public class Login extends AppCompatActivity {
                     setLocale(language);
 //                    Toast.makeText(Login.this, sessionId, Toast.LENGTH_SHORT).show();
 
-                    Intent gohome = new Intent(Login.this,Home.class);
+                    Intent gohome = new Intent(Login.this,ClockInActivity.class);
                     startActivity(gohome);
                     finish();
                 }else{
@@ -258,4 +258,5 @@ public class Login extends AppCompatActivity {
 
         }
     }
+
 }

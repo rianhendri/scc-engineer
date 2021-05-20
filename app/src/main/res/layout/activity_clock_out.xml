@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ClockOutActivity"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/colorPrimaryDark">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/segoeuib"
+        android:textSize="24sp"
+        android:text="Clock Out Berhasil"
+        android:textColor="@color/dwhite"
+    />
+    <TextView
+        android:id="@+id/clockouttime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/segoeui"
+        android:textSize="15sp"
+        android:text="Anda clock out pada jam 16:00 "
+        android:textColor="@color/dwhite"
+        android:layout_marginBottom="24dp"
+        />
+    <TextView
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/segoeui"
+        android:textSize="15sp"
+        android:text="Total Summary: 99"
+        android:textColor="@color/dwhite"
+        />
+    <TextView
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/segoeui"
+        android:textSize="15sp"
+        android:text="Total Assignment: 99"
+        android:textColor="@color/dwhite"
+        />
+    <TextView
+        android:id="@+id/clockin"
+        android:layout_marginTop="55dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/segoeui"
+        android:textSize="12sp"
+        android:paddingRight="24dp"
+        android:paddingLeft="24dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:textColor="@color/black"
+        android:background="@drawable/bgwhitecorner"
+        android:text="Back to Home"
+        />
+</LinearLayout>

@@ -1,5 +1,6 @@
 package com.sccengineer;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -9,17 +10,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +34,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -42,7 +56,10 @@ import com.sccengineer.onproghome.OnProgHome_items;
 import com.sccengineer.onproghome.OnProghome_adapter;
 
 import java.lang.reflect.Type;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -61,7 +78,7 @@ public class Home extends AppCompatActivity {
     public static String news_new = "";
     boolean notes = true;
     boolean survey = true;
-
+    LinearLayout mclockout;
     public static ArrayList<OnProgHome_items> onProgHome_items;
     ArrayList<NotifhomeItems> notifhomeItems;
     OnProghome_adapter onProghome_adapter;
@@ -72,16 +89,23 @@ public class Home extends AppCompatActivity {
     RecyclerView mymenu, mnotificationconfig;
     ArrayList<MenuItem> menuItemlist;
     MenuAdapter addmenu;
-    TextView mnotif2, mversion, mtotalprog,mtotalassigned,mtotalhistory, mnameprog,mnameasigned,mnamehistory, mnameeng, mnewnotif;
+    TextView mclockintime,mrolehome,mnotif2, mversion, mtotalprog,mtotalassigned,mtotalhistory, mnameprog,mnameasigned,mnamehistory, mnameeng, mnewnotif;
     ProgressDialog loading;
     SwipeRefreshLayout mswip;
-    ConstraintLayout mnotif1;
+    LinearLayout mnotif1;
     LinearLayout mstonprod, mstass, mstdone;
+
+    String longi = "";
+    String lati = "";
+    FusedLocationProviderClient fusedLocationProviderClient;
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        mclockout = findViewById(R.id.clockout);
+        mclockintime = findViewById(R.id.clockintime);
+        mrolehome = findViewById(R.id.rolehome);
         mstonprod = findViewById(R.id.stonprog);
         mstass = findViewById(R.id.stass);
         mstdone = findViewById(R.id.stdone);
@@ -122,6 +146,22 @@ public class Home extends AppCompatActivity {
         }else {
 
         }
+        mclockout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+                if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                    fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(Home.this);
+                    getCurrentLocation();
+                    clockout();
+//                DialogForm();
+//                    Toast.makeText(ClockInActivity.this, "GPS is Enabled in your devide", Toast.LENGTH_SHORT).show();
+                }else{
+                    showGPSDisabledAlertToUser();
+                }
+
+            }
+        });
         String versionName = BuildConfig.VERSION_NAME;
         mversion.setText("SCC Engineer - "+" Version: "+ versionName);
 
@@ -258,6 +298,73 @@ public class Home extends AppCompatActivity {
         Log.d("session",sesionid_new);
 
     }
+    @SuppressLint("MissingPermission")
+    private void getCurrentLocation() {
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+                || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<android.location.Location>() {
+                @Override
+                public void onComplete(@NonNull Task<Location> task) {
+
+                    android.location.Location location = task.getResult();
+                    if (location != null) {
+                        lati=String.valueOf(location.getLatitude());
+                        longi = String.valueOf(location.getLongitude());
+                        Log.d("long2i",lati+longi);
+//                        mlati.setText(String.valueOf(location.getLatitude()));
+//                        mlongi.setText(String.valueOf(location.getLongitude()));
+                    } else {
+                        LocationRequest locationRequest = new LocationRequest()
+                                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                                .setInterval(1000)
+                                .setFastestInterval(1000)
+                                .setNumUpdates(1);
+                        LocationCallback locationCallback = new LocationCallback() {
+                            @Override
+                            public void onLocationResult(@NonNull LocationResult locationResult) {
+                                android.location.Location location1 = locationResult.getLastLocation();
+//                                mlati.setText(String.valueOf(location1.getLatitude()));
+//                                mlongi.setText(String.valueOf(location1.getLongitude()));
+                                lati=String.valueOf(location1.getLatitude());
+                                longi = String.valueOf(location1.getLongitude());
+                                Log.d("long2i",lati+"-"+longi);
+                            }
+                        };
+                        fusedLocationProviderClient.requestLocationUpdates(locationRequest,
+                                locationCallback, Looper.myLooper());
+                    }
+
+                }
+            });
+
+        } else {
+            startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+        }
+    }
+    private void showGPSDisabledAlertToUser(){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage("Lokasi perlu diaktifkan")
+                .setCancelable(false)
+                .setPositiveButton("Go to GPS",
+                        new DialogInterface.OnClickListener(){
+                            public void onClick(DialogInterface dialog, int id){
+                                Intent callGPSSettingIntent = new Intent(
+                                        android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                startActivity(callGPSSettingIntent);
+                            }
+                        });
+        alertDialogBuilder.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int id){
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
+    }
     public void cekInternet(){
         /// cek internet apakah internet terhubung atau tidak
         ConnectivityManager connectivityManager = (ConnectivityManager)Home.this.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -292,6 +399,7 @@ public class Home extends AppCompatActivity {
                 String errornya = "";
                 JsonObject homedata=response.body();
                 String statusnya = homedata.get("status").getAsString();
+                Log.d("configeng",homedata.toString());
                 if (homedata.get("errorMessage").toString().equals("null")) {
 
                 }else {
@@ -304,6 +412,31 @@ public class Home extends AppCompatActivity {
                     loading.dismiss();
                     sesionid();
                     JsonObject data = homedata.getAsJsonObject("data");
+                    if (data.get("alreadyClockIn").getAsBoolean()){
+                        String string2 = data.get("clockInDateTime").getAsString();;
+
+
+                        String string7 = data.get("clockInDateTime").getAsString();
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm", Locale.getDefault());
+                        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
+                        String string5 = "";
+                        String string6="";
+                        try {
+                            string6 = simpleDateFormat2.format(simpleDateFormat.parse(string7));
+                            string5 = simpleDateFormat.format(simpleDateFormat.parse(string7));
+                            String[] separated = string5.split("T");
+                            String time = separated[1];
+                            String date = separated[0];
+                            mclockintime.setText("Clock In: "+string6+" "+time);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        mrolehome.setText("Role: "+data.get("roleName").getAsString());
+
+                    }else {
+
+                    }
+
                     JsonObject dataprog = data.getAsJsonObject("waitingBadge");
                     JsonObject dataassigned = data.getAsJsonObject("onProgressBadge");
                     JsonObject datahistory = data.getAsJsonObject("assignedBadge");
@@ -480,5 +613,93 @@ public class Home extends AppCompatActivity {
 
 
 
+    }
+    public void clockoutnya(){
+        loading = ProgressDialog.show(this, "", "", true);
+
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("sessionId",sesionid_new);
+        jsonObject.addProperty("ver",BuildConfig.VERSION_NAME);
+        jsonObject.addProperty("longitude",longi);
+        jsonObject.addProperty("latitude",lati);
+        IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, baseurl);
+        Call<JsonObject> panggilkomplek = jsonPostService.clockout(jsonObject);
+        panggilkomplek.enqueue(new Callback<JsonObject>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                String errornya = "";
+                JsonObject homedata=response.body();
+                String statusnya = homedata.get("status").getAsString();
+                Log.d("CLOCKOUTNYA",homedata.toString());
+                if (homedata.get("errorMessage").toString().equals("null")) {
+
+                }else {
+                    errornya = homedata.get("errorMessage").getAsString();
+                }
+                MhaveToUpdate = homedata.get("haveToUpdate").toString();
+                MsessionExpired = homedata.get("sessionExpired").toString();
+//                jsonObject.addProperty("ver",ver);
+                if (statusnya.equals("OK")) {
+                    loading.dismiss();
+                    sesionid();
+                    JsonObject data = homedata.getAsJsonObject("data");
+                    Intent gohome = new Intent(Home.this,ClockOutActivity.class);
+                    startActivity(gohome);
+                    finish();
+                }else {
+
+                    sesionid();
+                    //// error message
+                    loading.dismiss();
+//                    if (MsessionExpired.equals("true")) {
+//                        Toast.makeText(Home.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+//                    }
+                    Toast.makeText(Home.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Toast.makeText(Home.this, getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
+                cekInternet();
+                loading.dismiss();
+            }
+        });
+        Log.d("reqclockout",jsonObject.toString());
+    }
+    private void clockout() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                this);
+
+        // set title dialog
+//        alertDialogBuilder.setTitle(getString(R.string.title_reopendialod));
+
+        // set pesan dari dialog
+        alertDialogBuilder
+                .setMessage("Anda yakin ingin Clock Out?")
+                .setIcon(R.mipmap.ic_launcher)
+                .setCancelable(false)
+                .setPositiveButton(getString(R.string.title_yes),new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int id) {
+                        // jika tombol diklik, maka akan menutup activity ini
+                        clockoutnya();
+
+                    }
+                })
+                .setNegativeButton(getString(R.string.title_no),new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // jika tombol ini diklik, akan menutup dialog
+                        // dan tidak terjadi apa2
+                        dialog.cancel();
+                    }
+                });
+
+        // membuat alert dialog dari builder
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // menampilkan alert dialog
+        alertDialog.show();
     }
 }

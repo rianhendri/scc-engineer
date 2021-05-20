@@ -41,6 +41,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.sccengineer.AttendanceActivity;
 import com.sccengineer.Location;
 import com.sccengineer.MapsActivity;
 import com.sccengineer.R;
@@ -91,14 +92,14 @@ public class MenuAdapter  extends RecyclerView.Adapter<MenuAdapter.Myviewholder>
 //                    Toast.makeText(context, "ticket", Toast.LENGTH_SHORT).show();
                 }
                 if (namemenu.equals("Attendance")){
-//                    Intent gotonews = new Intent(context, Location.class);
+                    Intent gotonews = new Intent(context, AttendanceActivity.class);
 //                    gotonews.putExtra("mshowPurchaseOrderPO",mshowPurchaseOrderPO);
 //                    gotonews.putExtra("mshowPurchaseOrderPO",mshowPurchaseOrderFOC);
 //                    gotonews.putExtra("showaddpo",showaddpo);
 //                    gotonews.putExtra("showaddfoc",showaddfoc);
-//                    context.startActivity(gotonews);
-//                    ((Activity)context).overridePendingTransition(R.anim.right_in, R.anim.left_out);
-//                    ((Activity)context).finish();
+                    context.startActivity(gotonews);
+                    ((Activity)context).overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                    ((Activity)context).finish();
 //                    Toast.makeText(context, "attendance", Toast.LENGTH_SHORT).show();
 
 
