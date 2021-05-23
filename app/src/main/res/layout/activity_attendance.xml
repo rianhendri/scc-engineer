@@ -7,12 +7,12 @@
     android:orientation="vertical"
     tools:context=".AttendanceActivity">
     <LinearLayout
+        android:id="@+id/backbtn"
         android:orientation="horizontal"
         android:background="@color/dwhite"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
-            android:id="@+id/backbtn"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="horizontal">
@@ -43,26 +43,37 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="@color/dwhite">
-        <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@drawable/ic_right_arrowgrey"
-            android:rotation="180"
-            android:layout_marginRight="12dp"/>
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:orientation="vertical">
-            <TextView
+            android:id="@+id/prefbtn"
+            android:layout_width="90dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/previcn"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginRight="12dp"
+                android:rotation="180"
+                android:src="@drawable/ic_right_arrow" />
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="13sp"
-                android:fontFamily="@font/seguisb"
-                android:text="September"
-                android:textColor="@color/darkgrey"/>
+                android:gravity="center"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/bulanprev"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/seguisb"
+                    android:text="September"
+                    android:textColor="@color/darkgrey"/>
+            </LinearLayout>
         </LinearLayout>
+
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -70,13 +81,15 @@
             android:layout_weight="1"
             android:orientation="vertical">
             <TextView
+                android:id="@+id/bulanutama"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="15sp"
                 android:fontFamily="@font/segoeuib"
-                android:text="Oktober"
+                android:text="November"
                 android:textColor="@color/colorPrimaryDark"/>
             <TextView
+                android:id="@+id/tahun"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="9sp"
@@ -90,25 +103,34 @@
                 android:background="#FF9800"/>
         </LinearLayout>
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <TextView
+            android:id="@+id/nextbtn"
+            android:layout_width="90dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/seguisb"
-                android:text="November"
-                android:textColor="@color/darkgrey"
-                android:textSize="13sp" />
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/bulannext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/seguisb"
+                    android:text="Desember"
+                    android:textColor="@color/darkgrey"
+                    android:textSize="13sp" />
+            </LinearLayout>
+            <ImageView
+                android:id="@+id/nexticn"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_right_arrowgrey"
+                android:layout_marginRight="12dp"/>
         </LinearLayout>
-        <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@drawable/ic_right_arrow"
-            android:layout_marginRight="12dp"/>
+
     </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listjadwal"

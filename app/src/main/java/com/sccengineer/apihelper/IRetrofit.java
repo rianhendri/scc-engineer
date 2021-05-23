@@ -60,6 +60,8 @@ public interface IRetrofit {
     public Call<JsonObject> clockout(@Body JsonObject var1);
     @POST("api/attendance/clockIn")
     public Call<JsonObject> clockin(@Body JsonObject var1);
+    @POST("api/attendance/list")
+    public Call<JsonObject> attendancelist(@Body JsonObject var1);
     @POST("api/serviceticket/startProgress")
     public Call<JsonObject> startprog(@Body JsonObject var1);
     @POST("api/serviceticket/update")

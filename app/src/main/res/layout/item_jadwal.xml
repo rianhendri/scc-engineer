@@ -8,6 +8,7 @@
 	android:padding="12dp"
 	android:layout_marginBottom="4dp"
 	android:layout_marginTop="4dp"
+	android:id="@+id/bghriini"
 	>
 	<LinearLayout
 		android:layout_width="match_parent"
@@ -15,6 +16,7 @@
 		android:orientation="horizontal"
 		android:gravity="center_vertical">
 		<TextView
+			android:id="@+id/tanggal"
 			android:layout_width="50dp"
 			android:layout_height="50dp"
 			android:layout_marginRight="12dp"
@@ -24,73 +26,97 @@
 			android:padding="4dp"
 			android:fontFamily="@font/segoeuib"
 			android:lines="2"
+			android:textAllCaps="true"
 			android:background="@drawable/bg_cornerwhite2"
-			android:text="14 FRI"/>
+			android:text="-"/>
+		<TextView
+			android:visibility="gone"
+			android:id="@+id/nodata"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:gravity="end"
+			android:fontFamily="@font/seguisbi"
+			android:text="No Data"/>
 		<LinearLayout
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:orientation="vertical">
-			<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:fontFamily="@font/segoeuib"
-			android:text="Clock In"
-				android:textSize="13sp"
-			android:textColor="@color/black"
-			/>
-			<TextView
+			android:id="@+id/layoutnya"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:orientation="horizontal">
+			<LinearLayout
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:fontFamily="@font/segoeuib"
-				android:text="08:00"
-				android:textSize="12sp"
-				android:textColor="@color/black"
-				/>
+				android:layout_weight="1"
+				android:orientation="vertical">
+				<TextView
+					android:id="@+id/clockinjadwaltext"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:fontFamily="@font/segoeuib"
+					android:text="Clock In"
+					android:textSize="13sp"
+					android:textColor="@color/black"
+					/>
+				<TextView
+					android:id="@+id/clockinjadwal"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:fontFamily="@font/segoeuib"
+					android:text="08:00"
+					android:textSize="12sp"
+					android:textColor="@color/black"
+					/>
+			</LinearLayout>
+			<LinearLayout
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:orientation="vertical">
+				<TextView
+					android:id="@+id/clockoutjadwaltext"
+
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:fontFamily="@font/segoeuib"
+					android:text="Clock Out"
+					android:textSize="13sp"
+					android:textColor="@color/black"
+					/>
+				<TextView
+					android:id="@+id/clockoutjadwal"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:fontFamily="@font/segoeuib"
+					android:text="16:00"
+					android:textSize="12sp"
+					android:textColor="@color/black"
+					/>
+			</LinearLayout>
+			<LinearLayout
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:orientation="vertical">
+				<TextView
+					android:id="@+id/hoursjadwaltext"
+
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:fontFamily="@font/segoeuib"
+					android:text="Hours"
+					android:textSize="13sp"
+					android:textColor="@color/black"
+					/>
+				<TextView
+					android:id="@+id/hoursjadwal"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:fontFamily="@font/segoeuib"
+					android:text="8 Hours 59 Minutes"
+					android:textSize="12sp"
+					android:textColor="@color/black"
+					/>
+			</LinearLayout>
 		</LinearLayout>
-		<LinearLayout
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:orientation="vertical">
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:fontFamily="@font/segoeuib"
-				android:text="Clock Out"
-				android:textSize="13sp"
-				android:textColor="@color/black"
-				/>
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:fontFamily="@font/segoeuib"
-				android:text="16:00"
-				android:textSize="12sp"
-				android:textColor="@color/black"
-				/>
-		</LinearLayout>
-		<LinearLayout
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:orientation="vertical">
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:fontFamily="@font/segoeuib"
-				android:text="Hours"
-				android:textSize="13sp"
-				android:textColor="@color/black"
-				/>
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:fontFamily="@font/segoeuib"
-				android:text="8 Hours"
-				android:textSize="12sp"
-				android:textColor="@color/black"
-				/>
-		</LinearLayout>
+
 	</LinearLayout>
 </LinearLayout>

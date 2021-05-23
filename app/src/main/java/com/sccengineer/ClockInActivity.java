@@ -65,9 +65,12 @@ import com.sccengineer.onproghome.OnProgHome_items;
 import com.sccengineer.onproghome.OnProghome_adapter;
 
 import java.lang.reflect.Type;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Clock;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -77,7 +80,7 @@ import static com.sccengineer.apihelper.ServiceGenerator.baseurl;
 
 public class ClockInActivity extends AppCompatActivity {
     ProgressDialog loading;
-    LinearLayout mcheck;
+    LinearLayout mcheck, mrefresh;
     String MhaveToUpdate = "";
     String MsessionExpired = "";
     Boolean internet = false;
@@ -102,12 +105,15 @@ public class ClockInActivity extends AppCompatActivity {
     String longi = "";
     String lati = "";
     FusedLocationProviderClient fusedLocationProviderClient;
+    TextView mlatesclock;
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clock_in);
+        mrefresh = findViewById(R.id.refresh);
         mcheck = findViewById(R.id.checkclock);
+        mlatesclock = findViewById(R.id.latesclock);
         myitem_place = findViewById(R.id.notificationconfig);
         mclockin = findViewById(R.id.clockin);
         mnewnotif = findViewById(R.id.newnotif);
@@ -122,13 +128,17 @@ public class ClockInActivity extends AppCompatActivity {
         getSessionId();
         check.checknotif=1;
         if (internet){
-            LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-                fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(ClockInActivity.this);
-                getCurrentLocation();
-//                DialogForm();
-//                    Toast.makeText(ClockInActivity.this, "GPS is Enabled in your devide", Toast.LENGTH_SHORT).show();
-            }else{
+            if (ActivityCompat.checkSelfPermission(ClockInActivity.this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(ClockInActivity.this
+                    ,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                if (internet){
+                    fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(ClockInActivity.this);
+                    getCurrentLocation();
+                }
+
+//                lempar = false;
+            }else {
                 showGPSDisabledAlertToUser();
             }
             reqApi();
@@ -139,31 +149,35 @@ public class ClockInActivity extends AppCompatActivity {
         mclockin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (ActivityCompat.checkSelfPermission(ClockInActivity.this,
-//                        Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-//                        && ActivityCompat.checkSelfPermission(ClockInActivity.this
-//                        ,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-//                    if (internet){
-//                        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(ClockInActivity.this);
-//                        getCurrentLocation();
-//                    }
-//
-////                lempar = false;
-//                }else {
-//                    ActivityCompat.requestPermissions(ClockInActivity.this
-//                            , new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
-//                            },100);
-//                }
-                LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-                if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-                    fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(ClockInActivity.this);
-                    getCurrentLocation();
-                    DialogForm();
-//                    Toast.makeText(ClockInActivity.this, "GPS is Enabled in your devide", Toast.LENGTH_SHORT).show();
-                }else{
+                if (ActivityCompat.checkSelfPermission(ClockInActivity.this,
+                        Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                        && ActivityCompat.checkSelfPermission(ClockInActivity.this
+                        ,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    if (internet){
+                        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(ClockInActivity.this);
+                        getCurrentLocation();
+                    }
+
+//                lempar = false;
+                }else {
                     showGPSDisabledAlertToUser();
                 }
+//                LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+//                if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+//                    fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(ClockInActivity.this);
+//                    getCurrentLocation();
+//                    DialogForm();
+////                    Toast.makeText(ClockInActivity.this, "GPS is Enabled in your devide", Toast.LENGTH_SHORT).show();
+//                }else{
+//                    showGPSDisabledAlertToUser();
+//                }
 
+            }
+        });
+        mrefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                reqApi();
             }
         });
         }
@@ -174,9 +188,9 @@ public class ClockInActivity extends AppCompatActivity {
                 .setPositiveButton("Go to GPS",
                         new DialogInterface.OnClickListener(){
                             public void onClick(DialogInterface dialog, int id){
-                                Intent callGPSSettingIntent = new Intent(
-                                        android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                                startActivity(callGPSSettingIntent);
+                                ActivityCompat.requestPermissions(ClockInActivity.this
+                                        , new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
+                                        },100);
                             }
                         });
         alertDialogBuilder.setNegativeButton("Cancel",
@@ -222,52 +236,7 @@ public class ClockInActivity extends AppCompatActivity {
         // menampilkan alert dialog
         alertDialog.show();
     }
-    @SuppressLint("MissingPermission")
-    private void getCurrentLocation() {
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-                || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-            fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<android.location.Location>() {
-                @Override
-                public void onComplete(@NonNull Task<Location> task) {
-
-                    android.location.Location location = task.getResult();
-                    if (location != null) {
-                        lati=String.valueOf(location.getLatitude());
-                        longi = String.valueOf(location.getLongitude());
-                        Log.d("long2i",lati+longi);
-//                        mlati.setText(String.valueOf(location.getLatitude()));
-//                        mlongi.setText(String.valueOf(location.getLongitude()));
-                    } else {
-                        LocationRequest locationRequest = new LocationRequest()
-                                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                                .setInterval(1000)
-                                .setFastestInterval(1000)
-                                .setNumUpdates(1);
-                        LocationCallback locationCallback = new LocationCallback() {
-                            @Override
-                            public void onLocationResult(@NonNull LocationResult locationResult) {
-                                android.location.Location location1 = locationResult.getLastLocation();
-//                                mlati.setText(String.valueOf(location1.getLatitude()));
-//                                mlongi.setText(String.valueOf(location1.getLongitude()));
-                                lati=String.valueOf(location1.getLatitude());
-                                longi = String.valueOf(location1.getLongitude());
-                                Log.d("long2i",lati+"-"+longi);
-                            }
-                        };
-                        fusedLocationProviderClient.requestLocationUpdates(locationRequest,
-                                locationCallback, Looper.myLooper());
-                    }
-
-                }
-            });
-
-        } else {
-            startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-        }
-    }
     private void DialogForm() {
         dialog = new AlertDialog.Builder(ClockInActivity.this);
         inflater = getLayoutInflater();
@@ -358,7 +327,52 @@ public class ClockInActivity extends AppCompatActivity {
 
         }
     }
+    @SuppressLint("MissingPermission")
+    private void getCurrentLocation() {
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+                || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<android.location.Location>() {
+                @Override
+                public void onComplete(@NonNull Task<Location> task) {
+
+                    android.location.Location location = task.getResult();
+                    if (location != null) {
+                        lati=String.valueOf(location.getLatitude());
+                        longi = String.valueOf(location.getLongitude());
+                        Log.d("long2i",lati+longi);
+//                        mlati.setText(String.valueOf(location.getLatitude()));
+//                        mlongi.setText(String.valueOf(location.getLongitude()));
+                    } else {
+                        LocationRequest locationRequest = new LocationRequest()
+                                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                                .setInterval(1000)
+                                .setFastestInterval(1000)
+                                .setNumUpdates(1);
+                        LocationCallback locationCallback = new LocationCallback() {
+                            @Override
+                            public void onLocationResult(@NonNull LocationResult locationResult) {
+                                android.location.Location location1 = locationResult.getLastLocation();
+//                                mlati.setText(String.valueOf(location1.getLatitude()));
+//                                mlongi.setText(String.valueOf(location1.getLongitude()));
+                                lati=String.valueOf(location1.getLatitude());
+                                longi = String.valueOf(location1.getLongitude());
+                                Log.d("long2i",lati+"-"+longi);
+                            }
+                        };
+                        fusedLocationProviderClient.requestLocationUpdates(locationRequest,
+                                locationCallback, Looper.myLooper());
+                    }
+
+                }
+            });
+
+        } else {
+            startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+        }
+    }
     public void sesionid() {
         if (MsessionExpired.equals("false")) {
             if (MhaveToUpdate.equals("false")) {
@@ -427,11 +441,38 @@ public class ClockInActivity extends AppCompatActivity {
                 MsessionExpired = homedata.get("sessionExpired").toString();
 //                jsonObject.addProperty("ver",ver);
                 if (statusnya.equals("OK")) {
+                    mrefresh.setVisibility(View.GONE);
+                    mcheck.setVisibility(View.GONE);
+                    Log.d("configeng",homedata.toString());
                     loading.dismiss();
                     sesionid();
                     JsonObject data = homedata.getAsJsonObject("data");
                     mnewnotif.setText("("+String.valueOf(data.get("newNotification").getAsInt())+")");
                     boolean clocksts = data.get("alreadyClockIn").getAsBoolean();
+                    if (data.get("latestClockOut").toString().equals("null")){
+
+
+                    }else {
+                        String string2 = data.get("latestClockOut").getAsString();;
+
+
+                        String string7 = data.get("latestClockOut").getAsString();
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm", Locale.getDefault());
+                        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
+                        String string5 = "";
+                        String string6="";
+                        try {
+                            string6 = simpleDateFormat2.format(simpleDateFormat.parse(string7));
+                            string5 = simpleDateFormat.format(simpleDateFormat.parse(string7));
+                            String[] separated = string5.split("T");
+                            String time = separated[1];
+                            String date = separated[0];
+                            mlatesclock.setText("Latest Clock Out: "+string6+" "+time);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
                     if (clocksts){
                         startActivity(new Intent(ClockInActivity.this, Home.class));
                         finish();
@@ -450,6 +491,8 @@ public class ClockInActivity extends AppCompatActivity {
                     myitem_place.setAdapter(notifhomeAdapter);
                     myitem_place.setVisibility(View.VISIBLE);
                 }else {
+                    mrefresh.setVisibility(View.VISIBLE);
+                    mcheck.setVisibility(View.GONE);
                     sesionid();
                     //// error message
                     loading.dismiss();
@@ -462,11 +505,14 @@ public class ClockInActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                mrefresh.setVisibility(View.VISIBLE);
+                mcheck.setVisibility(View.GONE);
                 Toast.makeText(ClockInActivity.this, getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
                 cekInternet();
                 loading.dismiss();
             }
         });
+
     }
     public void prefcllock() {
         loading = ProgressDialog.show(this, "", "", true);
@@ -494,6 +540,7 @@ public class ClockInActivity extends AppCompatActivity {
                 MsessionExpired = homedata.get("sessionExpired").toString();
 //                jsonObject.addProperty("ver",ver);
                 if (statusnya.equals("OK")) {
+
                     loading.dismiss();
                     sesionid();
                     JsonObject data = homedata.getAsJsonObject("data");
@@ -511,9 +558,11 @@ public class ClockInActivity extends AppCompatActivity {
                         }
 
                     }
+                    mrefresh.setVisibility(View.GONE);
                     mcheck.setVisibility(View.GONE);
                 }else {
-
+                    mrefresh.setVisibility(View.VISIBLE);
+                    mcheck.setVisibility(View.GONE);
                     sesionid();
                     //// error message
                     loading.dismiss();
@@ -529,6 +578,8 @@ public class ClockInActivity extends AppCompatActivity {
                 Toast.makeText(ClockInActivity.this, getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
                 cekInternet();
                 loading.dismiss();
+                mrefresh.setVisibility(View.VISIBLE);
+                mcheck.setVisibility(View.GONE);
             }
         });
     }
@@ -586,5 +637,6 @@ public class ClockInActivity extends AppCompatActivity {
                 loading.dismiss();
             }
         });
+        Log.d("clockinjs",jsonObject.toString());
     }
 }
