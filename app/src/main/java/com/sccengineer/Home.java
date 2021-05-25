@@ -4,11 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -16,6 +18,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.location.Location;
@@ -149,16 +152,41 @@ public class Home extends AppCompatActivity {
         mclockout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+                if (ActivityCompat.checkSelfPermission(Home.this, Manifest.permission.ACCESS_FINE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(Home.this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                                != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(Home.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                    return;
+                }else{
+                    LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
                 if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
                     fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(Home.this);
                     getCurrentLocation();
                     clockout();
-//                DialogForm();
 //                    Toast.makeText(ClockInActivity.this, "GPS is Enabled in your devide", Toast.LENGTH_SHORT).show();
                 }else{
                     showGPSDisabledAlertToUser();
                 }
+                    // Write you code here if permission already given.
+
+                }
+
+
+////                lempar = false;
+//                }else {
+//                    showGPSDisabledAlertToUser();
+//                }
+//                LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+//                if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+//                    fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(Home.this);
+//                    getCurrentLocation();
+//                    clockout();
+////                DialogForm();
+////                    Toast.makeText(ClockInActivity.this, "GPS is Enabled in your devide", Toast.LENGTH_SHORT).show();
+//                }else{
+//                    showGPSDisabledAlertToUser();
+//                }
 
             }
         });
@@ -273,6 +301,34 @@ public class Home extends AppCompatActivity {
 //        }
 //        return installed2;
 //    }
+@Override
+public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                       @NonNull int[] grantResults) {
+    if (requestCode == 100 && grantResults.length>0 && (grantResults[0]+grantResults[1]
+            == PackageManager.PERMISSION_GRANTED)){
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(Home.this);
+        getCurrentLocation();
+//            if (reopen){
+//                showDialogreopen();
+//            }else {
+//                showDialogrupdate();
+//            }
+
+    }else {
+//            if (lempar){
+//
+//                Intent back = new Intent(ClockInActivity.this,Home.class);
+////            back.putExtra("pos",valuefilter);
+//                startActivity(back);
+//                overridePendingTransition(R.anim.left_in, R.anim.right_out);
+//                finish();
+//            }else {
+//
+//            }
+        Toast.makeText(this, "Akese Lokasi Diperlukan", Toast.LENGTH_LONG).show();
+
+    }
+}
     public void sesionid() {
         if (MsessionExpired.equals("false")) {
             if (MhaveToUpdate.equals("false")) {

@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,7 +52,7 @@ import static com.sccengineer.apihelper.ServiceGenerator.baseurl;
 
 public class AttendanceActivity extends AppCompatActivity {
     LinearLayout mback;
-    ProgressDialog loading;
+    ProgressBar loading;
     String MhaveToUpdate = "";
     String MsessionExpired = "";
     Boolean internet = false;
@@ -82,6 +83,7 @@ public class AttendanceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attendance);
         mback=findViewById(R.id.backbtn);
+        loading = findViewById(R.id.progressbar);
         mnextbtn = findViewById(R.id.nextbtn);
         mbtnprev = findViewById(R.id.prefbtn);
         mnexticn = findViewById(R.id.nexticn);
@@ -301,7 +303,7 @@ public class AttendanceActivity extends AppCompatActivity {
 
     }
     public void loadAttendance() {
-        loading = ProgressDialog.show(this, "", "", true);
+       loading.setVisibility(View.VISIBLE);
 
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("sessionId",sesionid_new);
@@ -327,7 +329,7 @@ public class AttendanceActivity extends AppCompatActivity {
                 MsessionExpired = homedata.get("sessionExpired").toString();
 //                jsonObject.addProperty("ver",ver);
                 if (statusnya.equals("OK")) {
-                    loading.dismiss();
+                    loading.setVisibility(View.GONE);
                     sesionid();
                     JsonObject data = homedata.getAsJsonObject("data");
                     jsonttendance = data.getAsJsonArray("attendanceList");
@@ -354,7 +356,8 @@ public class AttendanceActivity extends AppCompatActivity {
 
                     sesionid();
                     //// error message
-                    loading.dismiss();
+                    loading.setVisibility(View.GONE);
+
 //                    if (MsessionExpired.equals("true")) {
 //                        Toast.makeText(Home.this, errornya.toString(), Toast.LENGTH_SHORT).show();
 //                    }
@@ -366,7 +369,8 @@ public class AttendanceActivity extends AppCompatActivity {
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 Toast.makeText(AttendanceActivity.this, getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
                 cekInternet();
-                loading.dismiss();
+                loading.setVisibility(View.GONE);
+
             }
         });
         Log.d("clockinjs",jsonObject.toString());

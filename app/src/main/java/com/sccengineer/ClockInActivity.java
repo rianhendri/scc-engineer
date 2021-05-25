@@ -122,25 +122,25 @@ public class ClockInActivity extends AppCompatActivity {
 //        linearLayoutManager.setStackFromEnd(true);
         myitem_place.setLayoutManager(linearLayoutManager3);
         myitem_place.setHasFixedSize(true);
-        rolelist.add("-Pilih Role");
+        rolelist.add("-Pilih Role-");
         rolecvalue.add("-");
         cekInternet();
         getSessionId();
         check.checknotif=1;
         if (internet){
-            if (ActivityCompat.checkSelfPermission(ClockInActivity.this,
-                    Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                    && ActivityCompat.checkSelfPermission(ClockInActivity.this
-                    ,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                if (internet){
-                    fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(ClockInActivity.this);
-                    getCurrentLocation();
-                }
-
-//                lempar = false;
-            }else {
-                showGPSDisabledAlertToUser();
-            }
+//            if (ActivityCompat.checkSelfPermission(ClockInActivity.this,
+//                    Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+//                    && ActivityCompat.checkSelfPermission(ClockInActivity.this
+//                    ,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+//                if (internet){
+//                    fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(ClockInActivity.this);
+//                    getCurrentLocation();
+//                }
+//
+////                lempar = false;
+//            }else {
+//                showGPSDisabledAlertToUser();
+//            }
             reqApi();
 //            appInstalledOrNot("com.whatsapp");
 //            appInstalledOrNot2("com.whatsapp.w4b");
@@ -149,19 +149,41 @@ public class ClockInActivity extends AppCompatActivity {
         mclockin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ActivityCompat.checkSelfPermission(ClockInActivity.this,
-                        Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                        && ActivityCompat.checkSelfPermission(ClockInActivity.this
-                        ,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    if (internet){
+                if (ActivityCompat.checkSelfPermission(ClockInActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(ClockInActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                                != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(ClockInActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                    return;
+                }else{
+                    LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+                    if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
                         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(ClockInActivity.this);
                         getCurrentLocation();
+                        DialogForm();
+//                    Toast.makeText(ClockInActivity.this, "GPS is Enabled in your devide", Toast.LENGTH_SHORT).show();
+                    }else{
+                        showGPSDisabledAlertToUser();
                     }
+                    // Write you code here if permission already given.
 
-//                lempar = false;
-                }else {
-                    showGPSDisabledAlertToUser();
                 }
+
+
+//                if (ActivityCompat.checkSelfPermission(ClockInActivity.this,
+//                        Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+//                        && ActivityCompat.checkSelfPermission(ClockInActivity.this
+//                        ,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+//                    if (internet){
+//                        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(ClockInActivity.this);
+//                        getCurrentLocation();
+//                        DialogForm();
+//                    }
+//
+////                lempar = false;
+//                }else {
+//                    showGPSDisabledAlertToUser();
+//                }
 //                LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 //                if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
 //                    fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(ClockInActivity.this);
@@ -181,6 +203,34 @@ public class ClockInActivity extends AppCompatActivity {
             }
         });
         }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode == 100 && grantResults.length>0 && (grantResults[0]+grantResults[1]
+                == PackageManager.PERMISSION_GRANTED)){
+            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(ClockInActivity.this);
+            getCurrentLocation();
+//            if (reopen){
+//                showDialogreopen();
+//            }else {
+//                showDialogrupdate();
+//            }
+
+        }else {
+//            if (lempar){
+//
+//                Intent back = new Intent(ClockInActivity.this,Home.class);
+////            back.putExtra("pos",valuefilter);
+//                startActivity(back);
+//                overridePendingTransition(R.anim.left_in, R.anim.right_out);
+//                finish();
+//            }else {
+//
+//            }
+            Toast.makeText(this, "Akese Lokasi Diperlukan", Toast.LENGTH_LONG).show();
+
+        }
+    }
     private void showGPSDisabledAlertToUser(){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setMessage("Lokasi perlu diaktifkan")
@@ -300,33 +350,7 @@ public class ClockInActivity extends AppCompatActivity {
 
         dialog.show();
     }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        if (requestCode == 100 && grantResults.length>0 && (grantResults[0]+grantResults[1]
-                == PackageManager.PERMISSION_GRANTED)){
-            getCurrentLocation();
-//            if (reopen){
-//                showDialogreopen();
-//            }else {
-//                showDialogrupdate();
-//            }
 
-        }else {
-//            if (lempar){
-//
-//                Intent back = new Intent(ClockInActivity.this,Home.class);
-////            back.putExtra("pos",valuefilter);
-//                startActivity(back);
-//                overridePendingTransition(R.anim.left_in, R.anim.right_out);
-//                finish();
-//            }else {
-//
-//            }
-            Toast.makeText(this, "Akese Lokasi Diperlukan", Toast.LENGTH_LONG).show();
-
-        }
-    }
     @SuppressLint("MissingPermission")
     private void getCurrentLocation() {
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -450,7 +474,7 @@ public class ClockInActivity extends AppCompatActivity {
                     mnewnotif.setText("("+String.valueOf(data.get("newNotification").getAsInt())+")");
                     boolean clocksts = data.get("alreadyClockIn").getAsBoolean();
                     if (data.get("latestClockOut").toString().equals("null")){
-
+                        mlatesclock.setText("");
 
                     }else {
                         String string2 = data.get("latestClockOut").getAsString();;

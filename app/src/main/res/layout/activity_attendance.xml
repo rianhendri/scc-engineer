@@ -132,19 +132,33 @@
         </LinearLayout>
 
     </LinearLayout>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/listjadwal"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/dwhite"
-        android:layout_marginTop="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:nestedScrollingEnabled="false"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp"
-        >
-    </androidx.recyclerview.widget.RecyclerView>
+        android:layout_height="match_parent">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/listjadwal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/dwhite"
+            android:layout_marginTop="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:nestedScrollingEnabled="false"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            >
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <ProgressBar
+            android:id="@+id/progressbar"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:layout_constraintBottom_toBottomOf="@+id/listjadwal"
+            app:layout_constraintEnd_toEndOf="@+id/listjadwal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/listjadwal" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </LinearLayout>

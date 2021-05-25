@@ -179,7 +179,7 @@ public class JadwalAdapter extends RecyclerView.Adapter<JadwalAdapter.Myviewhold
                         myviewholder.mclockout.setText(timea);
 
                     }else {
-                        myviewholder.mclockout.setText(timea+"("+"+"+String.valueOf(hariplus)+")");
+                        myviewholder.mclockout.setText(timea+" ("+"+"+String.valueOf(hariplus)+")");
 
                     }
                 } catch (ParseException e) {
