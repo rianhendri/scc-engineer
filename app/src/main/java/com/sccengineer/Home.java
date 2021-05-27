@@ -468,6 +468,15 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
                     loading.dismiss();
                     sesionid();
                     JsonObject data = homedata.getAsJsonObject("data");
+                    boolean clocksts = data.get("alreadyClockIn").getAsBoolean();
+                    if (clocksts){
+
+                    }else {
+                        startActivity(new Intent(Home.this, ClockInActivity.class));
+                        finish();
+
+
+                    }
                     if (data.get("alreadyClockIn").getAsBoolean()){
                         String string2 = data.get("clockInDateTime").getAsString();;
 

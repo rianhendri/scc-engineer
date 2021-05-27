@@ -109,12 +109,14 @@ public class AttendanceActivity extends AppCompatActivity {
             }
         });
         date1 = new SimpleDateFormat("MM", Locale.getDefault()).format(new Date());
+        String tahun =new SimpleDateFormat("yyy", Locale.getDefault()).format(new Date());
+        mtahun.setText(tahun);
 
         cekInternet();
         getSessionId();
 //        check.checknotif=1;
         if (internet){
-
+            reqApi();
             bulanini = Integer.parseInt(date1);
             bulanprev = Integer.parseInt(date1)-1;
             bulannext = Integer.parseInt(date1)+1;
@@ -381,5 +383,69 @@ public class AttendanceActivity extends AppCompatActivity {
         startActivity(new Intent((Context)this, Home.class));
         overridePendingTransition(R.anim.left_in, R.anim.right_out);
         finish();
+    }
+    public void reqApi() {
+//        loading = ProgressDialog.show(this, "", "", true);
+
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("sessionId",sesionid_new);
+        jsonObject.addProperty("ver",BuildConfig.VERSION_NAME);
+        IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, baseurl);
+        Call<JsonObject> panggilkomplek = jsonPostService.postRawJSONconfig(jsonObject);
+        panggilkomplek.enqueue(new Callback<JsonObject>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                String errornya = "";
+                JsonObject homedata=response.body();
+                String statusnya = homedata.get("status").getAsString();
+                if (homedata.get("errorMessage").toString().equals("null")) {
+
+                }else {
+                    errornya = homedata.get("errorMessage").getAsString();
+                }
+                MhaveToUpdate = homedata.get("haveToUpdate").toString();
+                MsessionExpired = homedata.get("sessionExpired").toString();
+//                jsonObject.addProperty("ver",ver);
+                if (statusnya.equals("OK")) {
+
+//                    loading.dismiss();
+                    sesionid();
+                    JsonObject data = homedata.getAsJsonObject("data");
+
+                    boolean clocksts = data.get("alreadyClockIn").getAsBoolean();
+
+                    if (clocksts){
+                        ;
+                    }else {
+                        startActivity(new Intent(AttendanceActivity.this, ClockInActivity.class));
+                        finish();
+//                        mcheck.setVisibility(View.VISIBLE)
+
+                    }
+                }else {
+//                    mrefresh.setVisibility(View.VISIBLE);
+//                    mcheck.setVisibility(View.GONE);
+                    sesionid();
+                    //// error message
+//                    loading.dismiss();
+//                    if (MsessionExpired.equals("true")) {
+//                        Toast.makeText(Home.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+//                    }
+                    Toast.makeText(AttendanceActivity.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+//                mrefresh.setVisibility(View.VISIBLE);
+//                mcheck.setVisibility(View.GONE);
+                Toast.makeText(AttendanceActivity.this, getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
+                cekInternet();
+//                loading.dismiss();
+            }
+        });
+
     }
 }

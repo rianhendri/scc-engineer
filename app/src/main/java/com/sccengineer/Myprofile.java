@@ -114,6 +114,16 @@ public class Myprofile extends AppCompatActivity {
                 if (statusnya.equals("OK")){
                     sesionid();
                     JsonObject data = homedata.getAsJsonObject("data");
+                    boolean clocksts = data.get("alreadyClockIn").getAsBoolean();
+
+                    if (clocksts){
+                        ;
+                    }else {
+                        startActivity(new Intent(Myprofile.this, ClockInActivity.class));
+                        finish();
+//                        mcheck.setVisibility(View.VISIBLE)
+
+                    }
                     //HEADER
                     mhomeName = data.get("homeName").getAsString();
                     mcompanyName = data.get("companyName").getAsString();
@@ -174,4 +184,5 @@ public class Myprofile extends AppCompatActivity {
         overridePendingTransition(R.anim.left_in, R.anim.right_out);
         finish();
     }
+
 }
