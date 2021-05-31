@@ -53,4 +53,6 @@
     <string name="title_generat">" <u>Generate</u>"</string>
     <string name="title_clockou"><u>Clock Out </u></string>
     <string name="title_attendance">My Attendance</string>
+    <string name="title_changerole"><u>change</u></string>
+    <string name="title_logoutu"><u>Logout</u></string>
 </resources>

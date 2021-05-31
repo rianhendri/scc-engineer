@@ -54,4 +54,6 @@
     <string name="title_activity_maps">Map</string>
     <string name="title_clockou"><u>Clock Out </u></string>
     <string name="title_attendance">Jadwal Saya</string>
+    <string name="title_changerole"><u>change</u></string>
+    <string name="title_logoutu"><u>Logout</u></string>
 </resources>

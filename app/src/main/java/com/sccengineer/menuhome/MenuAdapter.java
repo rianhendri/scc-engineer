@@ -41,12 +41,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.sccengineer.ApprovalActivity;
 import com.sccengineer.AttendanceActivity;
 import com.sccengineer.Location;
 import com.sccengineer.MapsActivity;
 import com.sccengineer.R;
 import com.sccengineer.ServiceTicket;
 import com.sccengineer.Settings;
+import com.sccengineer.approval.ApprovalAdapter;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -54,6 +56,7 @@ import java.util.ArrayList;
 
 public class MenuAdapter  extends RecyclerView.Adapter<MenuAdapter.Myviewholder> {
     private LinearLayoutManager linearLayoutManager;
+    public static Integer counter = 0;
     Context context;
     ArrayList<MenuItem> myItem;
     public static int positem = 0;
@@ -74,7 +77,32 @@ public class MenuAdapter  extends RecyclerView.Adapter<MenuAdapter.Myviewholder>
 
     @Override
     public void onBindViewHolder(@NonNull Myviewholder myviewholder, int i) {
+        String namemenu = myItem.get(i).getMenuname();
+        if (namemenu.equals("Assignment")){
+            myviewholder.mdot.setVisibility(View.GONE);
 
+        }
+        if (namemenu.equals("Change Role Request")){
+            if (counter==0){
+                myviewholder.mdot.setVisibility(View.GONE);
+            }else {
+                myviewholder.mdot.setVisibility(View.VISIBLE);
+                myviewholder.mcount.setText(String.valueOf(counter));
+            }
+
+
+        }
+        if (namemenu.equals("Attendance")){
+            myviewholder.mdot.setVisibility(View.GONE);
+
+
+
+        }
+        if (namemenu.equals(context.getString(R.string.title_Setting))){
+            myviewholder.mdot.setVisibility(View.GONE);
+
+
+        }
         myviewholder.mnama_menu.setText(myItem.get(i).getMenuname());
         Picasso.with(context).load(myItem.get(i).getImg()).into(myviewholder.mimg_menu);
         myviewholder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -83,6 +111,7 @@ public class MenuAdapter  extends RecyclerView.Adapter<MenuAdapter.Myviewholder>
             public void onClick(View v) {
                 String namemenu = myItem.get(i).getMenuname();
                 if (namemenu.equals("Assignment")){
+//                    myviewholder.mdot.setVisibility(View.GONE);
                     Intent gotonews = new Intent(context, ServiceTicket.class);
                     gotonews.putExtra("home", "homes");
 //                    gotonews.putExtra("showaddform",showaddform);
@@ -91,7 +120,19 @@ public class MenuAdapter  extends RecyclerView.Adapter<MenuAdapter.Myviewholder>
                     ((Activity)context).overridePendingTransition(R.anim.right_in, R.anim.left_out);
 //                    Toast.makeText(context, "ticket", Toast.LENGTH_SHORT).show();
                 }
+                if (namemenu.equals("Change Role Request")){
+//                    myviewholder.mdot.setVisibility(View.VISIBLE);
+                    Intent gotonews = new Intent(context, ApprovalActivity.class);
+                    gotonews.putExtra("home", "homes");
+//                    gotonews.putExtra("showaddform",showaddform);
+                    context.startActivity(gotonews);
+                    ((Activity)context).finish();
+                    ((Activity)context).overridePendingTransition(R.anim.right_in, R.anim.left_out);
+//                    Toast.makeText(context, "ticket", Toast.LENGTH_SHORT).show();
+                }
                 if (namemenu.equals("Attendance")){
+//                    myviewholder.mdot.setVisibility(View.GONE);
+                    myviewholder.mcount.setText(String.valueOf(counter));
                     Intent gotonews = new Intent(context, AttendanceActivity.class);
 //                    gotonews.putExtra("mshowPurchaseOrderPO",mshowPurchaseOrderPO);
 //                    gotonews.putExtra("mshowPurchaseOrderPO",mshowPurchaseOrderFOC);
@@ -105,6 +146,7 @@ public class MenuAdapter  extends RecyclerView.Adapter<MenuAdapter.Myviewholder>
 
                 }
                 if (namemenu.equals(context.getString(R.string.title_Setting))){
+//                    myviewholder.mdot.setVisibility(View.GONE);
                     Intent gotosurvey = new Intent(context, Settings.class);
                     context.startActivity(gotosurvey);
                     ((Activity)context).overridePendingTransition(R.anim.right_in, R.anim.left_out);
@@ -188,7 +230,7 @@ public class MenuAdapter  extends RecyclerView.Adapter<MenuAdapter.Myviewholder>
 
     public class Myviewholder extends RecyclerView.ViewHolder{
 
-        TextView mnama_menu,mnews_new;
+        TextView mnama_menu,mnews_new, mcount;
         ImageView mimg_menu;
         ProgressBar mporg;
         LinearLayout mdot;
@@ -197,6 +239,8 @@ public class MenuAdapter  extends RecyclerView.Adapter<MenuAdapter.Myviewholder>
             super(itemView);
             mnama_menu = itemView.findViewById(R.id.namemenu);
             mimg_menu = itemView.findViewById(R.id.menuimg);
+            mdot = itemView.findViewById(R.id.dot);
+            mcount = itemView.findViewById(R.id.newnotif);
 
         }
     }

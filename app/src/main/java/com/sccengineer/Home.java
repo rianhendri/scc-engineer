@@ -30,10 +30,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,6 +61,7 @@ import com.sccengineer.onproghome.OnProgHome_items;
 import com.sccengineer.onproghome.OnProghome_adapter;
 
 import java.lang.reflect.Type;
+import java.security.Permissions;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -92,12 +95,14 @@ public class Home extends AppCompatActivity {
     RecyclerView mymenu, mnotificationconfig;
     ArrayList<MenuItem> menuItemlist;
     MenuAdapter addmenu;
-    TextView mclockintime,mrolehome,mnotif2, mversion, mtotalprog,mtotalassigned,mtotalhistory, mnameprog,mnameasigned,mnamehistory, mnameeng, mnewnotif;
-    ProgressDialog loading;
+    TextView mchangerole,mclockintime,mrolehome,mnotif2, mversion, mtotalprog,mtotalassigned,mtotalhistory, mnameprog,mnameasigned,mnamehistory, mnameeng, mnewnotif;
+    LinearLayout loading;
     SwipeRefreshLayout mswip;
     LinearLayout mnotif1;
     LinearLayout mstonprod, mstass, mstdone;
 
+    boolean changests = true;
+    String rolname="";
     String longi = "";
     String lati = "";
     FusedLocationProviderClient fusedLocationProviderClient;
@@ -106,7 +111,9 @@ public class Home extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        loading = findViewById(R.id.mloading);
         mclockout = findViewById(R.id.clockout);
+        mchangerole = findViewById(R.id.changerole);
         mclockintime = findViewById(R.id.clockintime);
         mrolehome = findViewById(R.id.rolehome);
         mstonprod = findViewById(R.id.stonprog);
@@ -149,6 +156,22 @@ public class Home extends AppCompatActivity {
         }else {
 
         }
+        mrolehome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Toast.makeText(Home.this, String.valueOf(changests), Toast.LENGTH_SHORT).show();
+                if (changests){
+                    Intent gotonews = new Intent(Home.this, ChangeRole.class);
+                    gotonews.putExtra("role", rolname);
+                    startActivity(gotonews);
+                    overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                    finish();
+                }else {
+
+                }
+
+            }
+        });
         mclockout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -229,6 +252,7 @@ public class Home extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent gotonews = new Intent(Home.this, NotificationList.class);
+                gotonews.putExtra("clockin", "home");
                     startActivity(gotonews);
                     overridePendingTransition(R.anim.right_in, R.anim.left_out);
                     finish();
@@ -301,33 +325,41 @@ public class Home extends AppCompatActivity {
 //        }
 //        return installed2;
 //    }
+final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
 @Override
 public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                        @NonNull int[] grantResults) {
-    if (requestCode == 100 && grantResults.length>0 && (grantResults[0]+grantResults[1]
-            == PackageManager.PERMISSION_GRANTED)){
+//    switch (requestCode) {
+//        case REQUEST_CODE_ASK_PERMISSIONS:
+//            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(Home.this);
+//                getCurrentLocation();
+//            } else {
+//                // Permission Denied
+//                Toast.makeText(this, "Akses Lokasi Diperlukan", Toast.LENGTH_LONG).show();
+//
+//            }
+//            break;
+//        default:
+//            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//    }
+    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(Home.this);
         getCurrentLocation();
-//            if (reopen){
-//                showDialogreopen();
-//            }else {
-//                showDialogrupdate();
-//            }
-
-    }else {
-//            if (lempar){
-//
-//                Intent back = new Intent(ClockInActivity.this,Home.class);
-////            back.putExtra("pos",valuefilter);
-//                startActivity(back);
-//                overridePendingTransition(R.anim.left_in, R.anim.right_out);
-//                finish();
-//            }else {
-//
-//            }
-        Toast.makeText(this, "Akese Lokasi Diperlukan", Toast.LENGTH_LONG).show();
+    } else {
+        // Permission Denied
+        Toast.makeText(this, "Akses Lokasi Diperlukan", Toast.LENGTH_LONG).show();
 
     }
+//    if (requestCode == 100 && grantResults.length>0 && (grantResults[0]+grantResults[1]
+//            == PackageManager.PERMISSION_GRANTED)){
+//
+//
+//
+//    }else {
+//
+//
+//    }
 }
     public void sesionid() {
         if (MsessionExpired.equals("false")) {
@@ -440,7 +472,7 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
 
     }
     public void reqApi() {
-        loading = ProgressDialog.show(this, "", "", true);
+        loading .setVisibility(View.VISIBLE);
 
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("sessionId",sesionid_new);
@@ -465,7 +497,7 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
                 MsessionExpired = homedata.get("sessionExpired").toString();
 //                jsonObject.addProperty("ver",ver);
                 if (statusnya.equals("OK")) {
-                    loading.dismiss();
+                    loading .setVisibility(View.GONE);
                     sesionid();
                     JsonObject data = homedata.getAsJsonObject("data");
                     boolean clocksts = data.get("alreadyClockIn").getAsBoolean();
@@ -496,7 +528,25 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
-                        mrolehome.setText("Role: "+data.get("roleName").getAsString());
+
+                        if (data.get("showChangeRole").getAsBoolean()){
+                            changests = true;
+                            String html = "<p>Role: "+data.get("roleName").getAsString()+"   "+"<u>"+data.get("changeRoleText").getAsString()+"</u></p>";
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                mrolehome.setEnabled(true);
+                                mrolehome.setText(Html.fromHtml(html, Html.FROM_HTML_MODE_COMPACT));
+                        } else {
+                                mrolehome.setEnabled(false);
+                                mrolehome.setText(Html.fromHtml(html));
+
+                        }
+
+
+                        }else {
+                            changests = false;
+                            mrolehome.setText("Role: "+data.get("roleName").getAsString()+"   \n"+data.get("changeRoleText").getAsString());
+                        }
+                        rolname = data.get("roleName").getAsString();
 
                     }else {
 
@@ -552,12 +602,14 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
                     String mshowServiceTicket = data.get("showServiceTicket").toString();
                     String mshowAttendance = data.get("showAttendance").toString();
                     String mshowSettings = data.get("showSettings").toString();
+                    MenuAdapter.counter = data.get("showApprovalCounter").getAsInt();
                     if (mshowServiceTicket.equals("true")){
                         menuItem.setMenuname("Assignment");
                         menuItem.setImg(R.drawable.ticket);
                         menuItem.setShow(mshowServiceTicket);
                         menuItemlist.add(menuItem);
                     }
+
 //                    if (mshowPurchaseOrderPO.equals("false") && mshowPurchaseOrderFOC.equals("false")){
 //
 //                    }else{
@@ -578,6 +630,12 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
                         menuItem4.setImg(R.drawable.settings);
                         menuItem4.setShow(mshowSettings);
                         menuItemlist.add(menuItem4);
+                    }
+                    if (data.get("showApproval").getAsBoolean()){
+                        menuItem2.setMenuname("Change Role Request");
+                        menuItem2.setImg(R.drawable.check);
+                        menuItem2.setShow(mshowServiceTicket);
+                        menuItemlist.add(menuItem2);
                     }
 //                    if (mshowSurvey.equals("true")){
 //                        menuItem4.setMenuname(getString(R.string.title_survei));
@@ -643,7 +701,7 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
                 }else {
                     sesionid();
                     //// error message
-                    loading.dismiss();
+                    loading .setVisibility(View.GONE);
 //                    if (MsessionExpired.equals("true")) {
 //                        Toast.makeText(Home.this, errornya.toString(), Toast.LENGTH_SHORT).show();
 //                    }
@@ -655,7 +713,8 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 Toast.makeText(Home.this, getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
                 cekInternet();
-                loading.dismiss();
+                loading .setVisibility(View.GONE);
+
             }
         });
     }
@@ -680,7 +739,8 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
 
     }
     public void clockoutnya(){
-        loading = ProgressDialog.show(this, "", "", true);
+        loading .setVisibility(View.VISIBLE);
+
 
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("sessionId",sesionid_new);
@@ -707,7 +767,8 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
                 MsessionExpired = homedata.get("sessionExpired").toString();
 //                jsonObject.addProperty("ver",ver);
                 if (statusnya.equals("OK")) {
-                    loading.dismiss();
+                    loading .setVisibility(View.GONE);
+
                     sesionid();
                     JsonObject data = homedata.getAsJsonObject("data");
                     Intent gohome = new Intent(Home.this,ClockOutActivity.class);
@@ -717,7 +778,8 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
 
                     sesionid();
                     //// error message
-                    loading.dismiss();
+                    loading .setVisibility(View.GONE);
+
 //                    if (MsessionExpired.equals("true")) {
 //                        Toast.makeText(Home.this, errornya.toString(), Toast.LENGTH_SHORT).show();
 //                    }
@@ -729,7 +791,8 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 Toast.makeText(Home.this, getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
                 cekInternet();
-                loading.dismiss();
+                loading .setVisibility(View.GONE);
+
             }
         });
         Log.d("reqclockout",jsonObject.toString());

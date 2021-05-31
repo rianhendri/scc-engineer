@@ -55,7 +55,7 @@ public class NotificationList extends AppCompatActivity {
     NotificationAdapter notificationAdapter;
     ArrayList<NotificationItem> notiflist;
     String sesionid_new = "";
-
+    public static String clockin1 = "";
 
     ProgressDialog loading;
     @SuppressLint("WrongConstant")
@@ -77,12 +77,13 @@ public class NotificationList extends AppCompatActivity {
 
     Bundle bundle2 = this.getIntent().getExtras();
         if (bundle2 != null) {
+            clockin1 = bundle2.getString("clockin");
         this.id = bundle2.getString("id");
     }
     getSessionId();
     cekInternet();
         if (internet){
-            reqApi();
+//            reqApi();
         loadNotiflist();
     }else {
 
@@ -209,9 +210,16 @@ public class NotificationList extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent((Context)this, Home.class));
-        overridePendingTransition(R.anim.left_in, R.anim.right_out);
-        finish();
+        if (clockin1.equals("yes")) {
+            startActivity(new Intent((Context)this, ClockInActivity.class));
+            overridePendingTransition(R.anim.left_in, R.anim.right_out);
+            finish();
+        }else {
+            startActivity(new Intent((Context)this, Home.class));
+            overridePendingTransition(R.anim.left_in, R.anim.right_out);
+            finish();
+        }
+
     }
     public void ReadAll(){
         JsonObject jsonObject = new JsonObject();

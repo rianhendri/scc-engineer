@@ -254,7 +254,7 @@ public class Login extends AppCompatActivity {
 
 
         }else {
-            Toast.makeText(this, "Akese Telpon Wajib", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Akses Telpon Wajib", Toast.LENGTH_LONG).show();
 
         }
     }

@@ -116,6 +116,7 @@ public class NotifclockAdapter extends RecyclerView.Adapter<NotifclockAdapter.My
                 intent.putExtra("guid", (myItem.get(i)).getGuid());
                 intent.putExtra("title", (myItem.get(i)).getTitle());
                 intent.putExtra("body", (myItem.get(i)).getContent());
+                intent.putExtra("clockin", "yes");
                 context.startActivity(intent);
                 ((Activity)context).finish();
                 ((Activity)context).overridePendingTransition(R.anim.right_in, R.anim.left_out);

@@ -113,12 +113,13 @@ public class NotifhomeAdapter extends RecyclerView.Adapter<NotifhomeAdapter.Myvi
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, DetailsNotification.class);
-                intent.putExtra("home", "homes");
+//                intent.putExtra("home", "homes");
                 intent.putExtra("id", (myItem.get(i)).getGuid());
                 intent.putExtra("username", (myItem.get(i)).getTitle());
                 intent.putExtra("guid", (myItem.get(i)).getGuid());
                 intent.putExtra("title", (myItem.get(i)).getTitle());
                 intent.putExtra("body", (myItem.get(i)).getContent());
+                intent.putExtra("clockin", "home");
                 context.startActivity(intent);
                 ((Activity)context).finish();
                 ((Activity)context).overridePendingTransition(R.anim.right_in, R.anim.left_out);

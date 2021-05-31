@@ -80,7 +80,7 @@ import static com.sccengineer.apihelper.ServiceGenerator.baseurl;
 
 public class ClockInActivity extends AppCompatActivity {
     ProgressDialog loading;
-    LinearLayout mcheck, mrefresh;
+    LinearLayout mcheck, mrefresh, mlogout;
     String MhaveToUpdate = "";
     String MsessionExpired = "";
     Boolean internet = false;
@@ -105,12 +105,14 @@ public class ClockInActivity extends AppCompatActivity {
     String longi = "";
     String lati = "";
     FusedLocationProviderClient fusedLocationProviderClient;
-    TextView mlatesclock;
+    TextView mlatesclock,mnotif2;
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clock_in);
+        mlogout = findViewById(R.id.logout);
+        mnotif2 = findViewById(R.id.notif2);
         mrefresh = findViewById(R.id.refresh);
         mcheck = findViewById(R.id.checkclock);
         mlatesclock = findViewById(R.id.latesclock);
@@ -202,7 +204,77 @@ public class ClockInActivity extends AppCompatActivity {
                 reqApi();
             }
         });
+        mnotif2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent gohome = new Intent(ClockInActivity.this,NotificationList.class);
+                gohome.putExtra("clockin", "yes");
+                startActivity(gohome);
+                finish();
+            }
+        });
+        mlogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cekInternet();
+                if (internet){
+                    logout();
+                }else {
+
+                }
+            }
+        });
         }
+    public void logout(){
+        loading = ProgressDialog.show(ClockInActivity.this, "", "", true);
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("sessionId",sesionid_new);
+        jsonObject.addProperty("ver",BuildConfig.VERSION_NAME);
+        IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, baseurl);
+        Call<JsonObject> panggilkomplek = jsonPostService.postRawJSONlogout(jsonObject);
+        panggilkomplek.enqueue(new Callback<JsonObject>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                String errornya = "";
+                JsonObject homedata=response.body();
+                String statusnya = homedata.get("status").getAsString();
+                if (homedata.get("errorMessage").toString().equals("null")) {
+
+                }else {
+                    errornya = homedata.get("errorMessage").getAsString();
+                }
+                MhaveToUpdate = homedata.get("haveToUpdate").toString();
+                MsessionExpired = homedata.get("sessionExpired").toString();
+                if (statusnya.equals("OK")){
+                    sesionid();
+                    JsonObject data = homedata.getAsJsonObject("data");
+                    //HEADER
+                    Intent gotologin = new Intent(ClockInActivity.this,Login.class);
+                    startActivity(gotologin);
+                    overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                    finish();
+                    loading.dismiss();
+
+                }else {
+                    sesionid();
+                    loading.dismiss();
+                    if (MsessionExpired.equals("true")) {
+                        Toast.makeText(ClockInActivity.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Toast.makeText(ClockInActivity.this, getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
+                cekInternet();
+                loading.dismiss();
+
+            }
+        });
+    }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {

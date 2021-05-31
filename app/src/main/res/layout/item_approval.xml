@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:orientation="vertical"
+	android:background="@drawable/bg_cornergrey2"
+	android:padding="12dp"
+	android:layout_marginBottom="4dp"
+	android:layout_marginTop="4dp"
+	android:id="@+id/bghriini"
+	android:layout_margin="12dp"
+	>
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:gravity="center_vertical">
+		<TextView
+			android:visibility="gone"
+			android:id="@+id/no"
+			android:layout_width="30dp"
+			android:layout_height="match_parent"
+			android:layout_marginRight="12dp"
+			android:textSize="15sp"
+			android:textColor="@color/black"
+			android:gravity="center"
+			android:padding="4dp"
+			android:fontFamily="@font/segoeuib"
+			android:lines="2"
+			android:textAllCaps="true"
+			android:background="@drawable/bg_cornerwhite2"
+			android:text="1"/>
+		<TextView
+			android:visibility="gone"
+			android:id="@+id/nodata"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:gravity="end"
+			android:fontFamily="@font/seguisbi"
+			android:text="No Data"/>
+		<LinearLayout
+			android:id="@+id/layoutnya"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal">
+			<LinearLayout
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:orientation="vertical">
+				<TextView
+					android:id="@+id/engineername"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:fontFamily="@font/segoeuib"
+					android:text="asdasdasdasdasdadasd"
+					android:textSize="15sp"
+					android:textColor="@color/black"
+					/>
+
+				<TextView
+					android:id="@+id/fromapprov"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:fontFamily="@font/segoeuib"
+					android:text="From:  "
+					android:textSize="12sp"
+					android:layout_weight="1"
+					android:textColor="@color/black"
+					/>
+
+				<TextView
+					android:id="@+id/toapprov"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:fontFamily="@font/segoeuib"
+					android:text="To: "
+					android:textSize="12sp"
+					android:layout_weight="1"
+					android:textColor="@color/black"
+					/>
+				<TextView
+					android:id="@+id/dateapprov"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:fontFamily="@font/segoeui"
+					android:text="Reques: 24 Juni 2021"
+					android:textSize="10sp"
+					android:textColor="@color/black"
+					/>
+			</LinearLayout>
+
+		</LinearLayout>
+
+	</LinearLayout>
+</LinearLayout>

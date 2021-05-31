@@ -56,7 +56,7 @@ public class DetailsNotification extends AppCompatActivity {
         mcontent = (TextView)this.findViewById(R.id.content);
         Bundle bundle2 = this.getIntent().getExtras();
         if (bundle2 != null) {
-            home = bundle2.getString("home");
+            home = bundle2.getString("clockin");
             id = bundle2.getString("id");
             guid = bundle2.getString("guid");
             username = bundle2.getString("username");
@@ -68,7 +68,7 @@ public class DetailsNotification extends AppCompatActivity {
         getSessionId();
         cekInternet();
         if (internet){
-            reqApi();
+//            reqApi();
             ReadNotif();
             mtitle.setText(Title);
             mcontent.setText(Content);
@@ -182,33 +182,39 @@ public class DetailsNotification extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-        if (home.equals("homes")){
+        if (home.equals("home")){
             Intent back = new Intent(DetailsNotification.this,Home.class);
 //            back.putExtra("pos",valuefilter);
             startActivity(back);
             overridePendingTransition(R.anim.left_in, R.anim.right_out);
             finish();
-        }else {
-            if (check.checknotif==1){
-                if (username==null){
-                    if (check.checklistform==1){
+        } else if (home.equals("yes")) {
+            Intent back = new Intent(DetailsNotification.this,ClockInActivity.class);
+//            back.putExtra("pos",valuefilter);
+            startActivity(back);
+            overridePendingTransition(R.anim.left_in, R.anim.right_out);
+            finish();
+        } else {
+            if (check.checknotif == 1) {
+                if (username == null) {
+                    if (check.checklistform == 1) {
 //                    list2.clear();
 //                    refresh=true;
                     }
                     super.onBackPressed();
                     finish();
 
-                }else {
+                } else {
                     super.onBackPressed();
 //            refresh=true;
-                    Intent back = new Intent(DetailsNotification.this,NotificationList.class);
+                    Intent back = new Intent(DetailsNotification.this, NotificationList.class);
 //                back.putExtra("pos",valuefilter);
                     startActivity(back);
                     overridePendingTransition(R.anim.left_in, R.anim.right_out);
                     finish();
                 }
-            }else {
-                Intent back = new Intent(DetailsNotification.this,Home.class);
+            } else {
+                Intent back = new Intent(DetailsNotification.this, Home.class);
 //            back.putExtra("pos",valuefilter);
                 startActivity(back);
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
