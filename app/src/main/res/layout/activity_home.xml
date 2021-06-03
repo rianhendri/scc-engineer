@@ -214,8 +214,8 @@
                                     android:layout_marginTop="4dp"
                                     android:fontFamily="@font/segoeuib"
                                     android:text="@string/title_clockou"
-                                    android:textColor="@color/dwhite"
-                                    android:textSize="11sp" />
+                                    android:textColor="@color/red"
+                                    android:textSize="17sp" />
 
                             </LinearLayout>
                             <!--                        <androidx.constraintlayout.widget.ConstraintLayout-->

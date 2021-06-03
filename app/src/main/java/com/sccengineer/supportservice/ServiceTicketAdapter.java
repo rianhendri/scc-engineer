@@ -124,7 +124,7 @@ extends RecyclerView.Adapter<ServiceTicketAdapter.Myviewholder> implements Activ
         myviewholder.mdescrip.setText(addFromItem.get(i).getDescription());
         myviewholder.mpress.setText(addFromItem.get(i).getPressName());
         myviewholder.mdate.setText(separated[0]+" "+ separated[1]);
-        myviewholder.massst.setText(addFromItem.get(i).getAssignmentStatusName());
+        myviewholder.massst.setText(addFromItem.get(i).getStatusName());
         myviewholder.massst.setTextColor(Color.parseColor("#"+addFromItem.get(i).getAssignmentStatusColorCode()));
         myviewholder.mcurrentst.setText(addFromItem.get(i).getStatusName());
         myviewholder.mcurrentst.setTextColor(Color.parseColor("#"+addFromItem.get(i).getStatusColorCode()));

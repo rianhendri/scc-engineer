@@ -227,7 +227,7 @@ public class Login extends AppCompatActivity {
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 loading.dismiss();
                 cekInternet();
-                Toast.makeText(Login.this, "getString(R.string.title_excpetation)", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Login.this, t.toString(), Toast.LENGTH_SHORT).show();
 //                Toast.makeText(LoginActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
 
             }

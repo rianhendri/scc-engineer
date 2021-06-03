@@ -10,6 +10,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -104,6 +105,7 @@ public class Myprofile extends AppCompatActivity {
                 String errornya = "";
                 JsonObject homedata=response.body();
                 String statusnya = homedata.get("status").getAsString();
+                Log.d("reqapi1",homedata.toString());
                 if (homedata.get("errorMessage").toString().equals("null")) {
 
                 }else {
@@ -152,6 +154,7 @@ public class Myprofile extends AppCompatActivity {
 
             }
         });
+        Log.d("reqapi",jsonObject.toString());
     }
     public void getSessionId(){
 

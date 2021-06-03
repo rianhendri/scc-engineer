@@ -46,7 +46,7 @@ public class DetailsNotification extends AppCompatActivity {
     String username = "";
     String Title = "";
     String Content = "";
-    String home="";
+    String home="-";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +56,7 @@ public class DetailsNotification extends AppCompatActivity {
         mcontent = (TextView)this.findViewById(R.id.content);
         Bundle bundle2 = this.getIntent().getExtras();
         if (bundle2 != null) {
-            home = bundle2.getString("clockin");
+            home = bundle2.getString("home");
             id = bundle2.getString("id");
             guid = bundle2.getString("guid");
             username = bundle2.getString("username");

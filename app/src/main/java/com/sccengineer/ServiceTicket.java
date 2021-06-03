@@ -325,6 +325,7 @@ public class ServiceTicket extends AppCompatActivity {
 
             }
         });
+        Log.d("listst",jsonObject.toString());
     }
     public void loadSpin(){
         mfooterload.setVisibility(View.VISIBLE);

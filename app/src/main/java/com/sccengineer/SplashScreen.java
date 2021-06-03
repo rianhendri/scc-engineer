@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.google.gson.JsonObject;
 import com.sccengineer.apihelper.IRetrofit;
 import com.sccengineer.apihelper.ServiceGenerator;
+import com.sccengineer.messagecloud.check;
 
 import java.util.Locale;
 
@@ -46,7 +47,7 @@ public class SplashScreen extends AppCompatActivity {
         getSessionId();
         cekInternet();
         loadLanguage();
-//        check.checknotif=1;
+        check.checknotif=1;
         if (stringlang.equals("")) {
             setLocale("EN");
         } else {

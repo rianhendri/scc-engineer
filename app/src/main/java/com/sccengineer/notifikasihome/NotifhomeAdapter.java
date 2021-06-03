@@ -119,7 +119,7 @@ public class NotifhomeAdapter extends RecyclerView.Adapter<NotifhomeAdapter.Myvi
                 intent.putExtra("guid", (myItem.get(i)).getGuid());
                 intent.putExtra("title", (myItem.get(i)).getTitle());
                 intent.putExtra("body", (myItem.get(i)).getContent());
-                intent.putExtra("clockin", "home");
+                intent.putExtra("home", "home");
                 context.startActivity(intent);
                 ((Activity)context).finish();
                 ((Activity)context).overridePendingTransition(R.anim.right_in, R.anim.left_out);

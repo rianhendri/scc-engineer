@@ -94,7 +94,8 @@ public class ChangeRole extends AppCompatActivity {
         cekInternet();
         getSessionId();
         if (internet){
-            prefcllock();
+            reqApi();
+
 
         }else {
         }
@@ -128,7 +129,7 @@ public class ChangeRole extends AppCompatActivity {
         finish();
     }
     public void prefcllock() {
-        loading = ProgressDialog.show(this, "", "", true);
+//        loading = ProgressDialog.show(this, "", "", true);
 
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("sessionId",sesionid_new);
@@ -338,5 +339,72 @@ public class ChangeRole extends AppCompatActivity {
             }
         });
         Log.d("reqclockout",jsonObject.toString());
+    }
+    public void reqApi() {
+        loading = ProgressDialog.show(this, "", "", true);
+
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("sessionId",sesionid_new);
+        jsonObject.addProperty("ver",BuildConfig.VERSION_NAME);
+        IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, baseurl);
+        Call<JsonObject> panggilkomplek = jsonPostService.postRawJSONconfig(jsonObject);
+        panggilkomplek.enqueue(new Callback<JsonObject>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                String errornya = "";
+                JsonObject homedata=response.body();
+                String statusnya = homedata.get("status").getAsString();
+                Log.d("reqapi1",homedata.toString());
+
+                if (homedata.get("errorMessage").toString().equals("null")) {
+
+                }else {
+                    errornya = homedata.get("errorMessage").getAsString();
+                }
+                MhaveToUpdate = homedata.get("haveToUpdate").toString();
+                MsessionExpired = homedata.get("sessionExpired").toString();
+//                jsonObject.addProperty("ver",ver);
+                if (statusnya.equals("OK")) {
+
+//                    loading.dismiss();
+                    sesionid();
+                    JsonObject data = homedata.getAsJsonObject("data");
+
+                    boolean clocksts = data.get("alreadyClockIn").getAsBoolean();
+
+                    if (clocksts){
+                        prefcllock();
+                    }else {
+                        startActivity(new Intent(ChangeRole.this, ClockInActivity.class));
+                        finish();
+//                        mcheck.setVisibility(View.VISIBLE)
+
+                    }
+                }else {
+//                    mrefresh.setVisibility(View.VISIBLE);
+//                    mcheck.setVisibility(View.GONE);
+                    sesionid();
+                    //// error message
+                    loading.dismiss();
+//                    if (MsessionExpired.equals("true")) {
+//                        Toast.makeText(Home.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+//                    }
+                    Toast.makeText(ChangeRole.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+//                mrefresh.setVisibility(View.VISIBLE);
+//                mcheck.setVisibility(View.GONE);
+                Toast.makeText(ChangeRole.this, getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
+                cekInternet();
+                loading.dismiss();
+            }
+        });
+        Log.d("reqapi",jsonObject.toString());
+
     }
 }

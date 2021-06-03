@@ -121,7 +121,7 @@ extends RecyclerView.Adapter<NotificationAdapter.Myviewholder> {
                 intent.putExtra("guid", (myItem.get(i)).getGuid());
                 intent.putExtra("title", (myItem.get(i)).getTitle());
                 intent.putExtra("body", (myItem.get(i)).getContent());
-                intent.putExtra("clockin", "no");
+                intent.putExtra("home", "no");
                 context.startActivity(intent);
                 ((Activity)context).finish();
                 ((Activity)context).overridePendingTransition(R.anim.right_in, R.anim.left_out);

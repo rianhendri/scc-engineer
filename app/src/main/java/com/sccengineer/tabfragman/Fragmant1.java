@@ -1,23 +1,18 @@
-package com.sccengineer;
-
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+package com.sccengineer.tabfragman;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.LocationManager;
+import android.media.tv.TvView;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,18 +21,30 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.location.LocationServices;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.sccengineer.AttendanceActivity;
+import com.sccengineer.BuildConfig;
+import com.sccengineer.ClockInActivity;
+import com.sccengineer.Home;
+import com.sccengineer.Login;
+import com.sccengineer.NoInternet;
+import com.sccengineer.R;
+import com.sccengineer.TabAct;
 import com.sccengineer.apihelper.IRetrofit;
 import com.sccengineer.apihelper.ServiceGenerator;
 import com.sccengineer.jadwal.JadwalAdapter;
 import com.sccengineer.jadwal.JadwalItems;
-import com.sccengineer.messagecloud.check;
-import com.sccengineer.notificationclock.NotifclockAdapter;
-import com.sccengineer.notificationclock.NotifclockItems;
 import com.sccengineer.onproghome.OnProghome_adapter;
 
 import java.lang.reflect.Type;
@@ -51,9 +58,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.content.Context.MODE_PRIVATE;
 import static com.sccengineer.apihelper.ServiceGenerator.baseurl;
 
-public class AttendanceActivity extends AppCompatActivity {
+public class Fragmant1 extends Fragment {
+    Spinner mengname;
     LinearLayout mback;
     ProgressBar loading;
     String MhaveToUpdate = "";
@@ -83,25 +92,25 @@ public class AttendanceActivity extends AppCompatActivity {
     String datereq="";
     int posi=0;
     @SuppressLint("WrongConstant")
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_attendance);
-        mback=findViewById(R.id.backbtn);
-        mengineername = findViewById(R.id.spinstatus);
-        loading = findViewById(R.id.progressbar);
-        mnextbtn = findViewById(R.id.nextbtn);
-        mbtnprev = findViewById(R.id.prefbtn);
-        mnexticn = findViewById(R.id.nexticn);
-        mprevicn = findViewById(R.id.previcn);
-        mbulanutama = findViewById(R.id.bulanutama);
-        mbulanprev = findViewById(R.id.bulanprev);
-        mbulannext = findViewById(R.id.bulannext);
-        mtahun = findViewById(R.id.tahun);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragmant1, container, false);
+
+        mengineername = view.findViewById(R.id.spinstatus);
+        loading = view.findViewById(R.id.progressbar);
+        mnextbtn = view.findViewById(R.id.nextbtn);
+        mbtnprev = view.findViewById(R.id.prefbtn);
+        mnexticn = view.findViewById(R.id.nexticn);
+        mprevicn = view.findViewById(R.id.previcn);
+        mbulanutama = view.findViewById(R.id.bulanutama);
+        mbulanprev = view.findViewById(R.id.bulanprev);
+        mbulannext = view.findViewById(R.id.bulannext);
+        mtahun = view.findViewById(R.id.tahun);
         englist.add("Eng1");
         englist.add("Eng2");
         englist.add("Eng3");
-        final ArrayAdapter<String> kategori = new ArrayAdapter<String>(AttendanceActivity.this, R.layout.spinstatus_layout,
+        final ArrayAdapter<String> kategori = new ArrayAdapter<String>(getActivity(), R.layout.spinstatus_layout,
                 englist);
         kategori.setDropDownViewResource(R.layout.spinkategori);
         kategori.notifyDataSetChanged();
@@ -110,20 +119,20 @@ public class AttendanceActivity extends AppCompatActivity {
 
 //        mcheck = findViewById(R.id.checkclock);
 //        mlatesclock = findViewById(R.id.latesclock);
-        myitem_place = findViewById(R.id.listjadwal);
+        myitem_place = view.findViewById(R.id.listjadwal);
 //        mclockin = findViewById(R.id.clockin);
 //        mnewnotif = findViewById(R.id.newnotif);
-        linearLayoutManager3 = new LinearLayoutManager(AttendanceActivity.this, LinearLayout.VERTICAL,false);
+        linearLayoutManager3 = new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL,false);
 //        linearLayoutManager.setReverseLayout(true);
 //        linearLayoutManager.setStackFromEnd(true);
         myitem_place.setLayoutManager(linearLayoutManager3);
         myitem_place.setHasFixedSize(true);
-        mback.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+//        mback.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                onBackPressed();
+//            }
+//        });
         date1 = new SimpleDateFormat("MM", Locale.getDefault()).format(new Date());
         String tahun =new SimpleDateFormat("yyy", Locale.getDefault()).format(new Date());
         mtahun.setText(tahun);
@@ -148,21 +157,21 @@ public class AttendanceActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (bulanini==Integer.parseInt(date1)){
-                    mnexticn.setImageDrawable(ContextCompat.getDrawable(AttendanceActivity.this, R.drawable.ic_right_arrowgrey));
+                    mnexticn.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_right_arrowgrey));
                 }else {
-                    mnexticn.setImageDrawable(ContextCompat.getDrawable(AttendanceActivity.this, R.drawable.ic_right_arrow));
+                    mnexticn.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_right_arrow));
 
                     bulanini += 1;
                     bulanprev += 1;
                     bulannext += 1;
                     if (bulanini==Integer.parseInt(date1)){
-                        mnexticn.setImageDrawable(ContextCompat.getDrawable(AttendanceActivity.this, R.drawable.ic_right_arrowgrey));
+                        mnexticn.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_right_arrowgrey));
                     }
                     loadbulan();
                     if (String.valueOf(bulanini).equals("1")){
-                        mprevicn.setImageDrawable(ContextCompat.getDrawable(AttendanceActivity.this, R.drawable.ic_right_arrowgrey));
+                        mprevicn.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_right_arrowgrey));
                     }else {
-                        mprevicn.setImageDrawable(ContextCompat.getDrawable(AttendanceActivity.this, R.drawable.ic_right_arrow));
+                        mprevicn.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_right_arrow));
 
                     }
                     periodnya = datereq+"-0"+bulanini+"-01 00:00:00";
@@ -176,21 +185,21 @@ public class AttendanceActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (String.valueOf(bulanini).equals("1")){
-                    mprevicn.setImageDrawable(ContextCompat.getDrawable(AttendanceActivity.this, R.drawable.ic_right_arrowgrey));
+                    mprevicn.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_right_arrowgrey));
                 }else {
 
                     bulanini -= 1;
                     bulanprev -= 1;
                     bulannext -= 1;
-                    mprevicn.setImageDrawable(ContextCompat.getDrawable(AttendanceActivity.this, R.drawable.ic_right_arrow));
+                    mprevicn.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_right_arrow));
                     if (String.valueOf(bulanini).equals("1")){
-                        mprevicn.setImageDrawable(ContextCompat.getDrawable(AttendanceActivity.this, R.drawable.ic_right_arrowgrey));
+                        mprevicn.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_right_arrowgrey));
                     }
                     loadbulan();
                     if (bulanini==Integer.parseInt(date1)){
-                        mnexticn.setImageDrawable(ContextCompat.getDrawable(AttendanceActivity.this, R.drawable.ic_right_arrowgrey));
+                        mnexticn.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_right_arrowgrey));
                     }else {
-                        mnexticn.setImageDrawable(ContextCompat.getDrawable(AttendanceActivity.this, R.drawable.ic_right_arrow));
+                        mnexticn.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_right_arrow));
 
                     }
                     periodnya = datereq+"-0"+bulanini+"-01 00:00:00";
@@ -201,6 +210,8 @@ public class AttendanceActivity extends AppCompatActivity {
 
             }
         });
+        return view;
+
     }
     public void loadbulan(){
         if (bulanini==1){mbulanutama.setText("Januari");
@@ -289,22 +300,22 @@ public class AttendanceActivity extends AppCompatActivity {
             }
 
         }else {
-            startActivity(new Intent(AttendanceActivity.this, Login.class));
-            finish();
+            startActivity(new Intent(getActivity(), Login.class));
+            getActivity().finish();
 //            Toast.makeText(Home.this, getString(R.string.title_session_Expired),Toast.LENGTH_LONG).show();
         }
 
     }
     public void getSessionId(){
 
-        SharedPreferences sharedPreferences = getSharedPreferences("SESSION_ID",MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("SESSION_ID",MODE_PRIVATE);
         sesionid_new = sharedPreferences.getString("session_id", "");
         Log.d("session",sesionid_new);
 
     }
     public void cekInternet(){
         /// cek internet apakah internet terhubung atau tidak
-        ConnectivityManager connectivityManager = (ConnectivityManager)AttendanceActivity.this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivityManager = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
                 connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED)
         {
@@ -313,19 +324,19 @@ public class AttendanceActivity extends AppCompatActivity {
 
         }else {
             internet=false;
-            Intent noconnection = new Intent(AttendanceActivity.this,NoInternet.class);
+            Intent noconnection = new Intent(getActivity(), NoInternet.class);
             startActivity(noconnection);
-            finish();
+            getActivity().finish();
         }
         //// pengecekan internet selesai
 
     }
     public void loadAttendance() {
-       loading.setVisibility(View.VISIBLE);
+        loading.setVisibility(View.VISIBLE);
 
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("sessionId",sesionid_new);
-        jsonObject.addProperty("ver",BuildConfig.VERSION_NAME);
+        jsonObject.addProperty("ver", BuildConfig.VERSION_NAME);
         jsonObject.addProperty("period",periodnya);
         IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, baseurl);
         Call<JsonObject> panggilkomplek = jsonPostService.attendancelist(jsonObject);
@@ -355,12 +366,12 @@ public class AttendanceActivity extends AppCompatActivity {
                     Type listType2 = new TypeToken<ArrayList<JadwalItems>>() {
                     }.getType();
                     notifhomeItems = gson2.fromJson(jsonttendance.toString(), listType2);
-                    notifhomeAdapter = new JadwalAdapter(AttendanceActivity.this, notifhomeItems);
+                    notifhomeAdapter = new JadwalAdapter(getActivity(), notifhomeItems);
                     myitem_place.setAdapter(notifhomeAdapter);
                     myitem_place.setVisibility(View.VISIBLE);
                     String date1a = new SimpleDateFormat("dd", Locale.getDefault()).format(new Date());
                     if (bulanini==Integer.parseInt(date1)){
-                         posi = Integer.parseInt(date1a)-1;
+                        posi = Integer.parseInt(date1a)-1;
                         myitem_place.scrollToPosition(posi);
                     }
                     else {
@@ -379,13 +390,13 @@ public class AttendanceActivity extends AppCompatActivity {
 //                    if (MsessionExpired.equals("true")) {
 //                        Toast.makeText(Home.this, errornya.toString(), Toast.LENGTH_SHORT).show();
 //                    }
-                    Toast.makeText(AttendanceActivity.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), errornya.toString(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                Toast.makeText(AttendanceActivity.this, getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
                 cekInternet();
                 loading.setVisibility(View.GONE);
 
@@ -393,12 +404,12 @@ public class AttendanceActivity extends AppCompatActivity {
         });
         Log.d("clockinjs",jsonObject.toString());
     }
-    @Override
+
     public void onBackPressed() {
-        super.onBackPressed();
-        startActivity(new Intent((Context)this, Home.class));
-        overridePendingTransition(R.anim.left_in, R.anim.right_out);
-        finish();
+        super.getActivity().onBackPressed();
+        startActivity(new Intent(getActivity(), Home.class));
+        getActivity().overridePendingTransition(R.anim.left_in, R.anim.right_out);
+        getActivity().finish();
     }
     public void reqApi() {
 //        loading = ProgressDialog.show(this, "", "", true);
@@ -435,8 +446,8 @@ public class AttendanceActivity extends AppCompatActivity {
                     if (clocksts){
                         ;
                     }else {
-                        startActivity(new Intent(AttendanceActivity.this, ClockInActivity.class));
-                        finish();
+                        startActivity(new Intent(getActivity(), ClockInActivity.class));
+                        getActivity().finish();
 //                        mcheck.setVisibility(View.VISIBLE)
 
                     }
@@ -449,7 +460,7 @@ public class AttendanceActivity extends AppCompatActivity {
 //                    if (MsessionExpired.equals("true")) {
 //                        Toast.makeText(Home.this, errornya.toString(), Toast.LENGTH_SHORT).show();
 //                    }
-                    Toast.makeText(AttendanceActivity.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), errornya.toString(), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -457,7 +468,7 @@ public class AttendanceActivity extends AppCompatActivity {
             public void onFailure(Call<JsonObject> call, Throwable t) {
 //                mrefresh.setVisibility(View.VISIBLE);
 //                mcheck.setVisibility(View.GONE);
-                Toast.makeText(AttendanceActivity.this, getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
                 cekInternet();
 //                loading.dismiss();
             }

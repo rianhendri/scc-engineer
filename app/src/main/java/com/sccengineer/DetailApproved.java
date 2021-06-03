@@ -99,7 +99,7 @@ public class DetailApproved extends AppCompatActivity {
         }
         cekInternet();
         getSessionId();
-        check.checknotif=1;
+//        check.checknotif=1;
         mback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

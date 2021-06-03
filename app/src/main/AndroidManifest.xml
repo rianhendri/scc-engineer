@@ -30,7 +30,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".DetailApproved"></activity>
+        <activity
+            android:name=".TabAct"
+            android:label="@string/title_activity_tab"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".DetailApproved" />
         <activity android:name=".ApprovalActivity" />
         <activity android:name=".ChangeRole" />
         <activity android:name=".AttendanceActivity" />

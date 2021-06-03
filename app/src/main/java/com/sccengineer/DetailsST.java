@@ -299,7 +299,7 @@ public class DetailsST extends AppCompatActivity {
         seconds=0;
         Bundle bundle2 = getIntent().getExtras();
         if (bundle2 != null) {
-            reqApi();
+
             noreq = bundle2.getString("noticket");
             home = bundle2.getString("home");
             guid = bundle2.getString("guid");
@@ -313,6 +313,7 @@ public class DetailsST extends AppCompatActivity {
         cekInternet();
         if (internet){
             fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(DetailsST.this);
+            reqApi();;
             loadData();
             if (guid==null){
 
@@ -697,7 +698,8 @@ public class DetailsST extends AppCompatActivity {
                 MsessionExpired = homedata.get("sessionExpired").toString();
                 if (statusnya.equals("OK")){
 
-                    sesionid();
+//                    sesionid();
+                    Log.d("sessionId",MsessionExpired);
                     JsonObject data = homedata.getAsJsonObject("data");
                     //setnoteupdatepanels
                     if (data.get("generateNotes").toString().equals("null")){
@@ -1209,6 +1211,7 @@ public class DetailsST extends AppCompatActivity {
 
             }
         });
+        Log.d("loadDetailst",jsonObject.toString());
     }
     public void loadpartnya(){
         mloadpart.setVisibility(View.VISIBLE);
@@ -1653,6 +1656,7 @@ public class DetailsST extends AppCompatActivity {
 
             }
         });
+        Log.d("readnotif",jsonObject.toString());
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
@@ -1825,6 +1829,8 @@ public class DetailsST extends AppCompatActivity {
                 String errornya = "";
                 JsonObject homedata=response.body();
                 String statusnya = homedata.get("status").getAsString();
+                Log.d("reqapi1",homedata.toString());
+
                 if (homedata.get("errorMessage").toString().equals("null")) {
 
                 }else {
@@ -1871,6 +1877,7 @@ public class DetailsST extends AppCompatActivity {
 //                loading.dismiss();
             }
         });
+        Log.d("reqapi",jsonObject.toString());
 
     }
 

@@ -110,7 +110,7 @@ public class NotifclockAdapter extends RecyclerView.Adapter<NotifclockAdapter.My
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, DetailsNotification.class);
-                intent.putExtra("home", "homes");
+                intent.putExtra("home", "yes");
                 intent.putExtra("id", (myItem.get(i)).getGuid());
                 intent.putExtra("username", (myItem.get(i)).getTitle());
                 intent.putExtra("guid", (myItem.get(i)).getGuid());

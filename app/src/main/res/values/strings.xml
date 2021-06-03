@@ -55,4 +55,8 @@
     <string name="title_attendance">My Attendance</string>
     <string name="title_changerole"><u>change</u></string>
     <string name="title_logoutu"><u>Logout</u></string>
+    <string name="title_activity_tab">TabAct</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Leave Form</string>
+    <string name="tab_text_3">Approval</string>
 </resources>
