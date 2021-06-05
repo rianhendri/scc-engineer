@@ -21,6 +21,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
@@ -60,11 +62,13 @@ import com.sccengineer.notifikasihome.NotifhomeItems;
 import com.sccengineer.onproghome.OnProgHome_items;
 import com.sccengineer.onproghome.OnProghome_adapter;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.security.Permissions;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import retrofit2.Call;
@@ -106,6 +110,12 @@ public class Home extends AppCompatActivity {
     String longi = "";
     String lati = "";
     FusedLocationProviderClient fusedLocationProviderClient;
+    String address =""; // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+    String city = "";
+    String state = "";
+    String country = "";
+    String postalCode = "";
+    String knownName = "";
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -400,6 +410,22 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
                     if (location != null) {
                         lati=String.valueOf(location.getLatitude());
                         longi = String.valueOf(location.getLongitude());
+                        Geocoder geocoder;
+                        List<Address> addresses;
+                        geocoder = new Geocoder(Home.this, Locale.getDefault());
+
+                        try {
+                            addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+                            String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+                            city = addresses.get(0).getLocality();
+                            state = addresses.get(0).getAdminArea();
+                            country = addresses.get(0).getCountryName();
+                            postalCode = addresses.get(0).getPostalCode();
+                            knownName = addresses.get(0).getFeatureName();
+                            Log.d("alamatnya",city+"/"+state+"/"+country+"/"+postalCode+"/"+knownName);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         Log.d("long2i",lati+longi);
 //                        mlati.setText(String.valueOf(location.getLatitude()));
 //                        mlongi.setText(String.valueOf(location.getLongitude()));
@@ -747,6 +773,7 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
         jsonObject.addProperty("ver",BuildConfig.VERSION_NAME);
         jsonObject.addProperty("longitude",longi);
         jsonObject.addProperty("latitude",lati);
+        jsonObject.addProperty("location",city+" "+state+" "+country+" "+postalCode+" "+knownName);
         IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, baseurl);
         Call<JsonObject> panggilkomplek = jsonPostService.clockout(jsonObject);
         panggilkomplek.enqueue(new Callback<JsonObject>() {

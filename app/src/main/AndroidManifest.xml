@@ -79,9 +79,16 @@
         <activity android:name=".NoInternet" />
         <activity
             android:name=".Home"
+
             android:excludeFromRecents="true"
             android:parentActivityName=".SplashScreen"
-            android:taskAffinity="" />
+            android:taskAffinity="" >
+            <intent-filter>
+                <action android:name="Home" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity android:name=".Login" />
         <activity android:name=".SplashScreen">
             <intent-filter>
