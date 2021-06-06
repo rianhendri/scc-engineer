@@ -134,7 +134,7 @@ public class MenuAdapter  extends RecyclerView.Adapter<MenuAdapter.Myviewholder>
                 if (namemenu.equals("Attendance")){
 //                    myviewholder.mdot.setVisibility(View.GONE);
                     myviewholder.mcount.setText(String.valueOf(counter));
-                    Intent gotonews = new Intent(context, TabAct.class);
+                    Intent gotonews = new Intent(context, AttendanceActivity.class);
 //                    gotonews.putExtra("mshowPurchaseOrderPO",mshowPurchaseOrderPO);
 //                    gotonews.putExtra("mshowPurchaseOrderPO",mshowPurchaseOrderFOC);
 //                    gotonews.putExtra("showaddpo",showaddpo);
