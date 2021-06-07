@@ -412,6 +412,13 @@ public class ClockInActivity extends AppCompatActivity {
                     Toast.makeText(ClockInActivity.this, "Wajib Pilih Role", Toast.LENGTH_SHORT).show();
                 }else {
                     clockinnya();
+//                    if (postalCode.equals("")){
+//
+//                    }else {
+//                        getCurrentLocation();
+//                        Toast.makeText(ClockInActivity.this, "mohon periksa koneksi anda", Toast.LENGTH_SHORT).show();
+//                    }
+                   ;
 
                 }
 

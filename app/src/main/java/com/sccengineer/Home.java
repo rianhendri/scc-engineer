@@ -110,12 +110,14 @@ public class Home extends AppCompatActivity {
     String longi = "";
     String lati = "";
     FusedLocationProviderClient fusedLocationProviderClient;
-    String address =""; // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-    String city = "";
-    String state = "";
-    String country = "";
-    String postalCode = "";
-    String knownName = "";
+    // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+    String city2 = "";
+    String state2 = "";
+    String country2 = "";
+    String postalCode2 = "";
+    String knownName2 = "";
+    String alamat ="";
+    boolean clok = false;
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -408,6 +410,7 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
 
                     android.location.Location location = task.getResult();
                     if (location != null) {
+
                         lati=String.valueOf(location.getLatitude());
                         longi = String.valueOf(location.getLongitude());
                         Geocoder geocoder;
@@ -417,12 +420,19 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
                         try {
                             addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
                             String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-                            city = addresses.get(0).getLocality();
-                            state = addresses.get(0).getAdminArea();
-                            country = addresses.get(0).getCountryName();
-                            postalCode = addresses.get(0).getPostalCode();
-                            knownName = addresses.get(0).getFeatureName();
-                            Log.d("alamatnya",city+"/"+state+"/"+country+"/"+postalCode+"/"+knownName);
+                            city2 = addresses.get(0).getLocality();
+                            state2 = addresses.get(0).getAdminArea();
+                            country2 = addresses.get(0).getCountryName();
+                            postalCode2 = addresses.get(0).getPostalCode();
+                            knownName2 = addresses.get(0).getFeatureName();
+                            alamat=city2+" "+state2+" "+country2+" "+postalCode2+" "+knownName2;
+                            Log.d("alamatnya22",alamat);
+//                            if (clok){
+//                                clockout();
+//                            }else {
+//
+//                            }
+//                            clok=false;
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -764,6 +774,57 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
 
 
     }
+    private void clockout() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                this);
+
+        // set title dialog
+//        alertDialogBuilder.setTitle(getString(R.string.title_reopendialod));
+
+        // set pesan dari dialog
+        alertDialogBuilder
+                .setMessage("Anda yakin ingin Clock Out?")
+                .setIcon(R.mipmap.ic_launcher)
+                .setCancelable(false)
+                .setPositiveButton(getString(R.string.title_yes),new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int id) {
+                        clockoutnya();
+
+                        // jika tombol diklik, maka akan menutup activity ini
+//                        if (alamat.equals("")){
+//                            LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+//                            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+//                                fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(Home.this);
+//                                getCurrentLocation();
+////                                clockout();
+////                    Toast.makeText(ClockInActivity.this, "GPS is Enabled in your devide", Toast.LENGTH_SHORT).show();
+//                            }else{
+//                                showGPSDisabledAlertToUser();
+//                            }
+//                            Toast.makeText(Home.this, "mohon periksa koneksi anda", Toast.LENGTH_SHORT).show();
+////                            Toast.makeText(Home.this, alamat, Toast.LENGTH_SHORT).show();
+//
+//                        }else {
+//                            clockoutnya();
+//                        }
+
+
+                    }
+                })
+                .setNegativeButton(getString(R.string.title_no),new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // jika tombol ini diklik, akan menutup dialog
+                        // dan tidak terjadi apa2
+                        dialog.cancel();
+                    }
+                });
+
+        // membuat alert dialog dari builder
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // menampilkan alert dialog
+        alertDialog.show();
+    }
     public void clockoutnya(){
         loading .setVisibility(View.VISIBLE);
 
@@ -773,7 +834,7 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
         jsonObject.addProperty("ver",BuildConfig.VERSION_NAME);
         jsonObject.addProperty("longitude",longi);
         jsonObject.addProperty("latitude",lati);
-        jsonObject.addProperty("location",city+" "+state+" "+country+" "+postalCode+" "+knownName);
+        jsonObject.addProperty("location",alamat);
         IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, baseurl);
         Call<JsonObject> panggilkomplek = jsonPostService.clockout(jsonObject);
         panggilkomplek.enqueue(new Callback<JsonObject>() {
@@ -824,37 +885,5 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
         });
         Log.d("reqclockout",jsonObject.toString());
     }
-    private void clockout() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                this);
 
-        // set title dialog
-//        alertDialogBuilder.setTitle(getString(R.string.title_reopendialod));
-
-        // set pesan dari dialog
-        alertDialogBuilder
-                .setMessage("Anda yakin ingin Clock Out?")
-                .setIcon(R.mipmap.ic_launcher)
-                .setCancelable(false)
-                .setPositiveButton(getString(R.string.title_yes),new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,int id) {
-                        // jika tombol diklik, maka akan menutup activity ini
-                        clockoutnya();
-
-                    }
-                })
-                .setNegativeButton(getString(R.string.title_no),new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // jika tombol ini diklik, akan menutup dialog
-                        // dan tidak terjadi apa2
-                        dialog.cancel();
-                    }
-                });
-
-        // membuat alert dialog dari builder
-        AlertDialog alertDialog = alertDialogBuilder.create();
-
-        // menampilkan alert dialog
-        alertDialog.show();
-    }
 }
