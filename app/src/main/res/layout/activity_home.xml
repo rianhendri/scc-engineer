@@ -150,7 +150,7 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/seguisb"
                                 android:gravity="center_vertical"
-                                android:text="Rian Hendri"
+                                android:text="-"
                                 android:textColor="@color/dwhite"
                                 android:textSize="15sp" />
 
@@ -565,7 +565,7 @@
 
                             android:fontFamily="@font/segoeuib"
                             android:gravity="center"
-                            android:text="(44)"
+                            android:text="(-)"
                             android:textColor="@color/colorPrimaryDark"
                             android:textSize="13sp"
 

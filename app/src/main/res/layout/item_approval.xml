@@ -54,7 +54,7 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:fontFamily="@font/segoeuib"
-					android:text="asdasdasdasdasdadasd"
+					android:text="-"
 					android:textSize="15sp"
 					android:textColor="@color/black"
 					/>
@@ -85,7 +85,7 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:fontFamily="@font/segoeui"
-					android:text="Reques: 24 Juni 2021"
+					android:text="-"
 					android:textSize="10sp"
 					android:textColor="@color/black"
 					/>

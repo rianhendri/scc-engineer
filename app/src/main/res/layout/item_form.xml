@@ -66,7 +66,7 @@
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:fontFamily="@font/segoeui"
-						android:text="12 Juni 2020"
+						android:text="-"
 						android:textColor="@color/black"
 						android:textSize="12sp" />
 				</LinearLayout>
@@ -181,7 +181,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:layout_marginLeft="2dp"
-						android:text="asdasd asd asd asd asdasdasd as das dasdas das das das das dasd asd asd asd asd "
+						android:text="- "
 						android:fontFamily="@font/segoeui"
 						android:textColor="@color/black"
 						android:textSize="11sp" />
@@ -222,7 +222,7 @@
 						android:layout_marginLeft="2dp"
 						android:fontFamily="@font/segoeui"
 						android:textSize="11sp"
-						android:text="asdasdasdasdasd"/>
+						android:text=""/>
 
 
 

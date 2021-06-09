@@ -4,6 +4,6 @@
     android:layout_height="wrap_content"
     android:fontFamily="@font/segoeui"
     android:gravity="center_vertical"
-    android:text="asdasdasdasdasdasdasdsad"
+    android:text=""
     android:textColor="@color/black"
     android:textSize="13dp" />

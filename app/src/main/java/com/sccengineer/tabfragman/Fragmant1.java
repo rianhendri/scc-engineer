@@ -405,12 +405,7 @@ public class Fragmant1 extends Fragment {
         Log.d("clockinjs",jsonObject.toString());
     }
 
-    public void onBackPressed() {
-        super.getActivity().onBackPressed();
-        startActivity(new Intent(getActivity(), Home.class));
-        getActivity().overridePendingTransition(R.anim.left_in, R.anim.right_out);
-        getActivity().finish();
-    }
+
     public void reqApi() {
 //        loading = ProgressDialog.show(this, "", "", true);
 

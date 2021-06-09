@@ -45,7 +45,7 @@
 					android:textColor="@color/black"
 					/>
 				<TextView
-					android:id="@+id/clockinjadwal"
+					android:id="@+id/fromdate"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:fontFamily="@font/segoeui"
@@ -71,14 +71,13 @@
 					/>
 
 				<TextView
-					android:id="@+id/clockoutjadwal"
+					android:id="@+id/todate"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:fontFamily="@font/segoeui"
 					android:text="09 Juni 2021"
-					android:textSize="10sp"
 					android:textColor="@color/black"
-					 />
+					android:textSize="10sp" />
 			</LinearLayout>
 			<LinearLayout
 				android:layout_width="wrap_content"
@@ -95,16 +94,16 @@
 					android:textSize="12sp"
 					android:textColor="@color/black"
 					/>
+
 				<TextView
-					android:id="@+id/hoursjadwal"
+					android:id="@+id/notes"
 					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
+					android:layout_height="match_parent"
 
 					android:fontFamily="@font/segoeui"
 					android:text="Istri Lahiran"
-					android:textSize="10sp"
 					android:textColor="@color/black"
-					/>
+					android:textSize="10sp" />
 			</LinearLayout>
 			<LinearLayout
 				android:layout_width="wrap_content"

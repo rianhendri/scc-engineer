@@ -1,5 +1,7 @@
 package com.sccengineer;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -16,7 +18,7 @@ import android.view.View;
 import com.sccengineer.ui.main.SectionsPagerAdapter;
 
 public class TabAct extends AppCompatActivity {
-
+    public static int positab = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,7 +26,7 @@ public class TabAct extends AppCompatActivity {
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
         ViewPager viewPager = findViewById(R.id.view_pager);
         viewPager.setAdapter(sectionsPagerAdapter);
-        viewPager.setCurrentItem(1);
+        viewPager.setCurrentItem(positab);
         TabLayout tabs = findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
 //        tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -53,5 +55,11 @@ public class TabAct extends AppCompatActivity {
 //            }
 //        });
     }
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent((Context)this, Home.class));
+        overridePendingTransition(R.anim.left_in, R.anim.right_out);
+        finish();
+    }
 }

@@ -38,7 +38,7 @@
 				android:fontFamily="@font/segoeuib"
 				android:textColor="@color/black"
 				android:textSize="13sp"
-				android:text="-sasasdasds"
+				android:text="-"
 				android:id="@+id/namemenu"
 				android:layout_weight="1"
 				android:padding="0dp"/>
@@ -61,7 +61,7 @@
 			android:fontFamily="@font/segoeui"
 			android:textColor="@color/black"
 			android:textSize="13sp"
-			android:text="-asdsadsad"
+			android:text="-"
 			android:id="@+id/des"
 			android:maxLines="1"
 			android:padding="0dp"/>

@@ -54,6 +54,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import static com.sccengineer.TabAct.positab;
+
 
 public class MenuAdapter  extends RecyclerView.Adapter<MenuAdapter.Myviewholder> {
     private LinearLayoutManager linearLayoutManager;
@@ -139,6 +141,7 @@ public class MenuAdapter  extends RecyclerView.Adapter<MenuAdapter.Myviewholder>
 //                    gotonews.putExtra("mshowPurchaseOrderPO",mshowPurchaseOrderFOC);
 //                    gotonews.putExtra("showaddpo",showaddpo);
 //                    gotonews.putExtra("showaddfoc",showaddfoc);
+                    positab = 0;
                     context.startActivity(gotonews);
                     ((Activity)context).overridePendingTransition(R.anim.right_in, R.anim.left_out);
                     ((Activity)context).finish();
