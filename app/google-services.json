@@ -1,41 +1,124 @@
 {
   "project_info": {
-    "project_number": "950046616669",
-    "project_id": "sccengineer-2544e",
-    "storage_bucket": "sccengineer-2544e.appspot.com"
+    "project_number": "64534194741",
+    "firebase_url": "https://smartcare-7f57f.firebaseio.com",
+    "project_id": "smartcare-7f57f",
+    "storage_bucket": "smartcare-7f57f.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:950046616669:android:f284e3bfc3f4ee7868f1b4",
+        "mobilesdk_app_id": "1:64534194741:android:782588b0738a7e23bcdf7c",
         "android_client_info": {
-          "package_name": "com.sccengineer"
+          "package_name": "com.example.myapplication"
         }
       },
       "oauth_client": [
         {
-          "client_id": "950046616669-6gg9sdfvdi0sobpjpqnb8ba7vjdt1ghq.apps.googleusercontent.com",
+          "client_id": "64534194741-nisua6ear18a91tppbjnktevjpajeah5.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.sccengineer",
+            "package_name": "com.example.myapplication",
             "certificate_hash": "48c37abaee8cc1ab78e0528bd5138a31c1f5e339"
           }
         },
         {
-          "client_id": "950046616669-l69n66mtpqo2r1gp479f4olbgf97qa4e.apps.googleusercontent.com",
+          "client_id": "64534194741-oa0gcuuqeqpt41hegqi0cb7u1oa7daib.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBYnFDu_wxf8cr0Ty0ex-jHnu0Ao8cxKJ8"
+          "current_key": "AIzaSyAiuOTrM8rHuPIRtunUj-W4SWfoa2jFp8s"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "950046616669-l69n66mtpqo2r1gp479f4olbgf97qa4e.apps.googleusercontent.com",
+              "client_id": "64534194741-oa0gcuuqeqpt41hegqi0cb7u1oa7daib.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:64534194741:android:72bb25c1d4e89917bcdf7c",
+        "android_client_info": {
+          "package_name": "com.sccengineer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "64534194741-oa0gcuuqeqpt41hegqi0cb7u1oa7daib.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAiuOTrM8rHuPIRtunUj-W4SWfoa2jFp8s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "64534194741-oa0gcuuqeqpt41hegqi0cb7u1oa7daib.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:64534194741:android:937b584e032c1db0bcdf7c",
+        "android_client_info": {
+          "package_name": "com.smartcarecenter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "64534194741-jicof03du7m85qv2dnsum0cmktgkg2p8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.smartcarecenter",
+            "certificate_hash": "1e2be528bd69c045daa74e712e57a53135dc3ff8"
+          }
+        },
+        {
+          "client_id": "64534194741-r7amlgbvrl6gdk6d58q5le0pska37akl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.smartcarecenter",
+            "certificate_hash": "48c37abaee8cc1ab78e0528bd5138a31c1f5e339"
+          }
+        },
+        {
+          "client_id": "64534194741-rrne2pmu223pca1qii5002clj2s6p9fe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.smartcarecenter",
+            "certificate_hash": "59dc80c4002f982b2cc5f1ea3b94da3c75ac7f68"
+          }
+        },
+        {
+          "client_id": "64534194741-oa0gcuuqeqpt41hegqi0cb7u1oa7daib.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAiuOTrM8rHuPIRtunUj-W4SWfoa2jFp8s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "64534194741-oa0gcuuqeqpt41hegqi0cb7u1oa7daib.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -33,8 +33,10 @@
 package com.sccengineer.serviceticket;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -51,13 +53,23 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.sccengineer.Chat.Adapterchat;
+import com.sccengineer.Chat.Itemchat;
 import com.sccengineer.DetailsST;
+import com.sccengineer.ListChat;
 import com.sccengineer.R;
 import com.squareup.picasso.Picasso;
 
@@ -67,13 +79,27 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import static com.sccengineer.DetailsST.mcustname;
+import static com.sccengineer.DetailsST.mformRequestCd;
 import static com.sccengineer.DetailsST.msendpartlist;
+import static com.sccengineer.DetailsST.noreq;
 import static com.sccengineer.DetailsST.seconds;
+import static com.sccengineer.DetailsST.username;
 import static com.sccengineer.DetailsST.usetime;
+import static com.sccengineer.DetailsST.xhori;
+import static com.sccengineer.DetailsST.yverti;
+import static com.sccengineer.ListChat.databaseReference;
+import static com.sccengineer.ListChat.name;
+import static com.sccengineer.messagecloud.check.tokennya2;
 
 
 public class ServiceTicketAdapter
 extends RecyclerView.Adapter<ServiceTicketAdapter.Myviewholder> {
+    DatabaseReference databaseReference7;
+    ArrayList<Itemchat> itemchat;
+    Itemchat itemchat2;
+    Adapterchat adapterchat;
+    int total1 = 0;
     boolean solved = true;
     boolean showprogress = true;
     Context context;
@@ -286,6 +312,7 @@ extends RecyclerView.Adapter<ServiceTicketAdapter.Myviewholder> {
         }else {
             myviewholder.massengineer.setText(myItem.get(i).getAssist());
             myviewholder.mlasyass.setVisibility(View.VISIBLE);
+            Log.d("assist3",myItem.get(i).getAssist());
         }
         String last = null;
         last = String.valueOf(myItem.get(i).getLastImpression());
@@ -394,6 +421,89 @@ extends RecyclerView.Adapter<ServiceTicketAdapter.Myviewholder> {
 
         }
 
+        // chatclik
+        if (myItem.get(i).isShowLiveChat()){
+            myviewholder.mchatclik.setVisibility(View.VISIBLE);
+            itemchat = new ArrayList<Itemchat>();
+            itemchat2 = new Itemchat();
+            databaseReference7= FirebaseDatabase.getInstance().getReference().child("chat").child(myItem.get(i).getGuid()).child("listchat");
+
+            databaseReference7.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    itemchat.clear();
+                    total1 = 0;
+                    if (dataSnapshot.exists()){
+                        for(DataSnapshot ds: dataSnapshot.getChildren())
+                        {
+                            Itemchat fetchDatalist=ds.getValue(Itemchat.class);
+                            fetchDatalist.setKey(ds.getKey());
+                            itemchat.add(fetchDatalist);
+                        }
+
+                        adapterchat=new Adapterchat(context, itemchat);
+                        for (int i = 0; i < itemchat.size(); i++) {
+                            if (itemchat.get(i).getName().equals(name)){
+
+                            }else {
+                                if (itemchat.get(i).getRead().equals("yes")){
+                                    myviewholder.mdot.setVisibility(View.GONE);
+                                }else {
+                                    total1 +=1;
+                                    myviewholder.mdot.setVisibility(View.VISIBLE);
+                                    myviewholder.mnotif.setText(String.valueOf(total1));
+                                }
+                            }
+                        }
+
+
+
+//                    recyclerView.setAdapter(adapterchat);
+//                    recyclerView.scrollToPosition(adapterchat.getItemCount()-1);
+//                recyclerView.scrollToPosition(adapterchat.getItemCount());
+                    }
+
+//                Log.d("posi",String.valueOf(recyclerView.getAdapter().getItemCount()));
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+        }else {
+            myviewholder.mchatclik.setVisibility(View.GONE);
+        }
+        myviewholder.mchatclik.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String token = "";
+                if (myItem.get(i).getLiveChatFirebaseToken()==null){
+                    token="-";
+                }else {
+
+
+//                    token = myItem.get(i).getLiveChatFirebaseToken();
+                }
+                Intent gotonews = new Intent(context, ListChat.class);
+                gotonews.putExtra("name",myItem.get(i).getLiveChatName());
+                gotonews.putExtra("sessionnya",myItem.get(i).getGuid());
+                gotonews.putExtra("chat",myItem.get(i).isLiveChatAllowChat());
+                gotonews.putExtra("user",username);
+                gotonews.putExtra("id",noreq);
+                gotonews.putExtra("tokennya",token);
+                gotonews.putExtra("engname", mcustname);
+                gotonews.putExtra("nofr", mformRequestCd);
+                gotonews.putExtra("xhori", xhori);
+                gotonews.putExtra("yverti", yverti);
+                gotonews.putExtra("scrolbawah","-");
+                context.startActivity(gotonews);
+                ((Activity)context).overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                ((Activity)context).finish();
+            }
+        });
+
     }
 
     @Override
@@ -403,19 +513,23 @@ extends RecyclerView.Adapter<ServiceTicketAdapter.Myviewholder> {
     }
 
     public static class Myviewholder extends RecyclerView.ViewHolder{
-
+        ConstraintLayout mchatclik;
         TextView massigndate,mstatus;
         TextView mbar1,mbar2,mbar3,mbar4,mcomment,mendtime,mengineer,mservicetype,mstarttime
                 ,mstatusservice,mstatustik;
-        TextView mtimer,msupport,massengineer,mlastimpresi, mactionprogress, mfeedbackfoto, mestima, mreadmore, mnotes;
+        TextView mnotif,mtimer,msupport,massengineer,mlastimpresi, mactionprogress, mfeedbackfoto, mestima, mreadmore, mnotes;
 //        ExpandableTextView mnotes;
         ImageView mposbar;
         RatingBar mrating;
         RecyclerView mlistspart,mtype;
-        LinearLayout mlayouttypr,mlayoutstart,mlasyass,mlayimpres,mlayoutnotes,mlayac, murlfoto, mlayestima, mread, mlayoutspar;
+        LinearLayout mdot,mlayouttypr,mlayoutstart,mlasyass,mlayimpres,mlayoutnotes,mlayac, murlfoto, mlayestima, mread, mlayoutspar;
         public Myviewholder(@NonNull View view) {
             super(view);
 
+            mdot = view.findViewById(R.id.dot);
+            mnotif = view.findViewById(R.id.newnotif);
+
+            mchatclik = view.findViewById(R.id.chatclik);
             mlayouttypr = view.findViewById(R.id.layouttype);
             mlistspart = view.findViewById(R.id.listsper);
             mtype = view.findViewById(R.id.listtype);

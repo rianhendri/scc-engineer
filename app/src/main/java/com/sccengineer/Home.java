@@ -161,8 +161,10 @@ public class Home extends AppCompatActivity {
         cekInternet();
         getSessionId();
         check.checknotif=1;
+        check.checkhome = 0;
         if (internet){
             reqApi();
+            Log.d("sessionidnya",sesionid_new);
 //            appInstalledOrNot("com.whatsapp");
 //            appInstalledOrNot2("com.whatsapp.w4b");
         }else {
@@ -757,7 +759,7 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
     public void onBackPressed(){
         if (exit) {
             this.finish();
-
+            check.checkhome = 1;
         } else {
             Toast.makeText(this, getString(R.string.title_exit),
                     Toast.LENGTH_SHORT).show();

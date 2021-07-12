@@ -3,6 +3,7 @@ package com.sccengineer;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,19 +35,18 @@ import android.os.SystemClock;
 import android.provider.Settings;
 import android.text.Editable;
 import android.text.Html;
-import android.text.InputType;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,17 +58,22 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.sccengineer.Chat.Adapterchat;
+import com.sccengineer.Chat.Itemchat;
 import com.sccengineer.apihelper.IRetrofit;
 import com.sccengineer.apihelper.ServiceGenerator;
 import com.sccengineer.listsparepart.Sparepart_adapter;
 import com.sccengineer.listsparepart.Sparepart_item;
 import com.sccengineer.messagecloud.check;
-import com.sccengineer.notification.NotificationAdapter;
-import com.sccengineer.notification.NotificationItem;
 import com.sccengineer.serviceticket.ServiceTicketAdapter;
 import com.sccengineer.serviceticket.ServicesTicketItem;
 import com.sccengineer.spartsend.SendSparepart_adapter;
@@ -83,18 +88,32 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.sccengineer.ListChat.name;
 import static com.sccengineer.ServiceTicket.list2;
 import static com.sccengineer.ServiceTicket.refresh;
 import static com.sccengineer.ServiceTicket.valuefilter;
 import static com.sccengineer.apihelper.ServiceGenerator.baseurl;
-import static com.sccengineer.apihelper.ServiceGenerator.ver;
+import static com.sccengineer.messagecloud.check.tokennya2;
 
 public class DetailsST extends AppCompatActivity {
+
+    //Timer Set New
+    Timer timer;
+    TimerTask timerTask;
+    Double time = 7200.0;
+    //
+    String engas="";
+    ArrayList<Itemchat> itemchat;
+    Itemchat itemchat2;
+    Adapterchat adapterchat;
+    int total1 = 0;
     boolean inforeopen = true;
     EditText mreasonnya;
     public static String noreq = "";
@@ -113,8 +132,9 @@ public class DetailsST extends AppCompatActivity {
     TextView mcreatedate, mdate, mdeskription, missu, moperator, mreqno, mservicetype, msn, mstatusdetail,
             mstid, mtitle, munitcategory, mlocation, mtextalert, mrequestby, mreopeninfo;
     String mdateapi = "";
+    public  static String mcustname="";
     String mdeskriptionapi = "";
-    String mformRequestCd = "";
+    public  static String mformRequestCd = "";
     String mreopen = "";
     ImageView mimgpopup;
     LinearLayout mlayoutticket,mlayoutunit1, mlayoutunit2, mlayoutunit3, mreinfolay,mspar;
@@ -195,12 +215,26 @@ public class DetailsST extends AppCompatActivity {
     private Calendar newDate= Calendar.getInstance();
     boolean cekdate= false;
     String notesapi = "";
+    ConstraintLayout mchactclik;
+    String tokennya = "-";
+//    List<String> tokennya2= new ArrayList();
+    LinearLayout mdot;
+    TextView mnotif;
+    String scrollnya = "no";
+    DatabaseReference databaseReference5;
+    ScrollView mscroll;
+    public static int yverti=0;
+    public static int xhori=0;
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_s_t);
+        mscroll = findViewById(R.id.scrollnya);
+        mchactclik = findViewById(R.id.chatclik);
         //panelupdate
+        mnotif = findViewById(R.id.newnotif);
+        mdot = findViewById(R.id.dot);
         mlayountlink = findViewById(R.id.linkbtn);
         mlinkgenerate = findViewById(R.id.linkgenerate);
         mlayoutdate = findViewById(R.id.layoutdate);
@@ -300,13 +334,15 @@ public class DetailsST extends AppCompatActivity {
         Bundle bundle2 = getIntent().getExtras();
         if (bundle2 != null) {
 
-            noreq = bundle2.getString("noticket");
+            noreq = bundle2.getString("id");
             home = bundle2.getString("home");
             guid = bundle2.getString("guid");
             username = bundle2.getString("user");
-            noticket = bundle2.getString("noticket");
+            noticket = bundle2.getString("id");
             valuefilter = bundle2.getString("pos");
-
+            scrollnya =   bundle2.getString("scrolbawah");
+            xhori=bundle2.getInt("xhori");
+            yverti=bundle2.getInt("yverti");
         }
 
         getSessionId();
@@ -424,6 +460,19 @@ public class DetailsST extends AppCompatActivity {
 //                }
 //            }
 //        });
+
+//        mscroll.setVerticalScrollbarPosition(1949);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            mscroll.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                @Override
+                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                    yverti = scrollY;
+                    xhori = scrollX;
+                    Log.d("scrollabe", String.valueOf(scrollX)+"/"+String.valueOf(scrollY)+"/");
+                }
+            });
+
+        }
         mbanner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -499,7 +548,9 @@ public class DetailsST extends AppCompatActivity {
 
             }
         });
-        startTimer();
+        //timer
+        timer = new Timer();
+//        startTimernew();
         mspar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -698,6 +749,7 @@ public class DetailsST extends AppCompatActivity {
                 MsessionExpired = homedata.get("sessionExpired").toString();
                 if (statusnya.equals("OK")){
 
+
 //                    sesionid();
                     Log.d("sessionId",MsessionExpired);
                     JsonObject data = homedata.getAsJsonObject("data");
@@ -797,6 +849,7 @@ public class DetailsST extends AppCompatActivity {
                     mstatusColorCode = data.get("statusColorCode").getAsString();
                     mdeskriptionapi = data.get("description").getAsString();
                     mrequestby.setText(data.get("createdBy").getAsString());
+                    mcustname = data.get("createdBy").getAsString();
                     moperator.setText(data.get("operatorName").getAsString());
                     mrequestedDateTime = data.get("requestedDateTime").getAsString();
                     mstid.setText(": "+data.get("serviceTicketCd").getAsString());
@@ -916,8 +969,92 @@ public class DetailsST extends AppCompatActivity {
                     if (data.get("updatePanelLatestAction").toString().equals("null")){
 
                     }else {
-                        JsonObject updatepanel = data.getAsJsonObject("updatePanelLatestAction");
 
+                        JsonObject updatepanel = data.getAsJsonObject("updatePanelLatestAction");
+                                if(updatepanel.get("ShowLiveChat").getAsBoolean()){
+                                    itemchat = new ArrayList<Itemchat>();
+                                    itemchat2 = new Itemchat();
+                                    databaseReference5= FirebaseDatabase.getInstance().getReference().child("chat").child(updatepanel.get("Guid").getAsString()).child("listchat");
+
+                                    mchactclik.setVisibility(View.VISIBLE);
+                                    if (updatepanel.get("LiveChatFirebaseToken").toString().equals("null")){
+                                        tokennya = "-";
+                                    }else {
+                                        JsonArray tokeny = updatepanel.getAsJsonArray("LiveChatFirebaseToken");
+                                        for (int c = 0; c < tokeny.size(); ++c) {
+                                            JsonObject assobj2 = tokeny.get(c).getAsJsonObject();
+                                            tokennya2.add(assobj2.get("Token").getAsString());
+                                        }
+
+                                        Log.d("listToken", tokennya2.toString());
+                                    }
+                                    databaseReference5.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            itemchat.clear();
+                                            total1 = 0;
+                                            if (dataSnapshot.exists()){
+                                                for(DataSnapshot ds: dataSnapshot.getChildren())
+                                                {
+                                                    Itemchat fetchDatalist=ds.getValue(Itemchat.class);
+                                                    fetchDatalist.setKey(ds.getKey());
+                                                    itemchat.add(fetchDatalist);
+                                                }
+
+                                                adapterchat=new Adapterchat(DetailsST.this, itemchat);
+                                                for (int i = 0; i < itemchat.size(); i++) {
+                                                    if (itemchat.get(i).getName().equals(name)){
+                                                        mdot.setVisibility(View.GONE);
+                                                    }else {
+
+                                                        if (itemchat.get(i).getRead().equals("yes")){
+                                                            mdot.setVisibility(View.GONE);
+                                                        }else {
+                                                            total1 +=1;
+                                                            mdot.setVisibility(View.VISIBLE);
+                                                            mnotif.setText(String.valueOf(total1));
+                                                        }
+                                                    }
+                                                }
+
+
+
+//                    recyclerView.setAdapter(adapterchat);
+//                    recyclerView.scrollToPosition(adapterchat.getItemCount()-1);
+//                recyclerView.scrollToPosition(adapterchat.getItemCount());
+                                            }
+
+//                Log.d("posi",String.valueOf(recyclerView.getAdapter().getItemCount()));
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                        }
+                                    });
+
+                                    engas = "";
+                                }else {
+                                    mchactclik.setVisibility(View.GONE);
+
+                                }
+                        mchactclik.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent gotonews = new Intent(DetailsST.this, ListChat.class);
+                                gotonews.putExtra("name",updatepanel.get("LiveChatName").getAsString());
+                                gotonews.putExtra("sessionnya",updatepanel.get("Guid").getAsString());
+                                gotonews.putExtra("chat",updatepanel.get("LiveChatAllowChat").getAsBoolean());
+                                gotonews.putExtra("user",username);
+                                gotonews.putExtra("id",noreq);
+                                gotonews.putExtra("tokennya",tokennya);
+                                gotonews.putExtra("engname", mcustname);
+                                gotonews.putExtra("nofr", mformRequestCd);
+                               startActivity(gotonews);
+                               overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                             finish();
+                            }
+                        });
                         //sparepartupdatepanel
                         mlalbeldate.setText(updatepanel.get("WaitingEstimationLabel").getAsString());
                         myCustomArray = updatepanel.getAsJsonArray("SpareParts");
@@ -928,7 +1065,6 @@ public class DetailsST extends AppCompatActivity {
                         sendsparepart_adapter = new SendSparepart_adapter(DetailsST.this, sendsparepart_items);
                         msendpartlist.setAdapter(sendsparepart_adapter);
                         //timer Update
-
 //                        usetimea = updatepanel.getAsString()
                         if (data.get("updatePanelUseTimer").getAsBoolean()){
                             msupport.setVisibility(View.GONE);
@@ -936,10 +1072,12 @@ public class DetailsST extends AppCompatActivity {
                             int hours = data.get("updatePanelTimerStartHours").getAsInt();
                             int minute = data.get("updatePanelTimerStartMinutes").getAsInt();
                             int second = data.get("updatePanelTimerStartSeconds").getAsInt();
-                            seconds = (hours*60*60*1000)+(minute*60*1000)+(second*1000);
+                            seconds = (hours*60*60)+(minute*60)+(second);
+                            time = Double.valueOf(seconds);
+                            Log.d("secondop",String.valueOf(hours)+":"+String.valueOf(minute)+":"+String.valueOf(second));
                             TimeBuff = seconds;
                             UpdateTime = TimeBuff + MillisecondTime;
-                            startTimer();
+                            startTimernew();
 
                         }else {
                             msupport.setVisibility(View.VISIBLE);
@@ -1070,15 +1208,17 @@ public class DetailsST extends AppCompatActivity {
                         //panel atas by defaultnya
                         mengineer.setText(updatepanel.get("EngineerName").getAsString());
                         //assist
-//                    massistengineer2 = updatepanel.getAsJsonArray("Assists");
-//                    String asist2 = "";
-//                    for (int x = 0; x < massistengineer.size(); ++x){
-//                        JsonObject assobj = massistengineer.get(x).getAsJsonObject();
-//                        asist2 += assobj.get("Name").getAsString();
-//                        asist2 += "\n";
-////                        listticket.get(i).setAssist(asist);
-//
-//                    }
+                    massistengineer2 = updatepanel.getAsJsonArray("Assists");
+                    String asist2 = "";
+                    for (int i = 0; i < massistengineer2.size(); ++i){
+                        JsonObject assobj = massistengineer2.get(i).getAsJsonObject();
+                        asist2 += assobj.get("Name").getAsString();
+                        asist2 += "\n";
+//                        listticket.get(i).setAssist(asist2);
+                        masengineer.setText(asist2);
+                        Log.d("assist2",asist2);
+
+                    }
                         //bbutton
                         if (data.get("allowToStartProgress").getAsBoolean()){
                             mstartprogress.setVisibility(View.VISIBLE);
@@ -1192,7 +1332,11 @@ public class DetailsST extends AppCompatActivity {
                         }
                     }
 
-
+                    if (scrollnya==null){
+                        mscroll.scrollTo(0,1900);
+                    }else {
+                        mscroll.scrollTo(xhori,yverti);
+                    }
                 }else {
                     sesionid();
                     loading.dismiss();
@@ -1733,25 +1877,34 @@ public class DetailsST extends AppCompatActivity {
         }
     }
     public void onBackPressed() {
+        Log.d("chekcnotif",String.valueOf(check.checknotif)+"/"+String.valueOf(check.checknotif)+username);
 //        super.onBackPressed();
-        if (home.equals("homes")){
-            Intent back = new Intent(DetailsST.this,Home.class);
-//            back.putExtra("pos",valuefilter);
-            startActivity(back);
-            overridePendingTransition(R.anim.left_in, R.anim.right_out);
-            finish();
-        }else {
+        if (home==null){
             if (check.checknotif==1){
                 if (username==null){
-                    if (check.checklistform==1){
-                        list2.clear();
-                        refresh=true;
+                    if (check.checkhome==0){
+                        if (check.checklistform==1){
+                            list2.clear();
+                            refresh=true;
+                        }
+//                    Intent back = new Intent(DetailsST.this,Home.class);
+//                    back.putExtra("pos",valuefilter);
+//                    startActivity(back);
+//                    overridePendingTransition(R.anim.left_in, R.anim.right_out);
+//                    finish();
+                        super.onBackPressed();
+                        finish();
+                    }else {
+                        Intent back = new Intent(DetailsST.this,Home.class);
+                        back.putExtra("pos",valuefilter);
+                        startActivity(back);
+                        overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                        finish();
                     }
-                    super.onBackPressed();
-                    finish();
+
 
                 }else {
-                    super.onBackPressed();
+//                    super.onBackPressed();
 //            refresh=true;
                     Intent back = new Intent(DetailsST.this,ServiceTicket.class);
                     back.putExtra("pos",valuefilter);
@@ -1766,7 +1919,42 @@ public class DetailsST extends AppCompatActivity {
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
                 finish();
             }
+        }else {
+            if (home.equals("homes")){
+                Intent back = new Intent(DetailsST.this,Home.class);
+//            back.putExtra("pos",valuefilter);
+                startActivity(back);
+                overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                finish();
+            }else {
+                if (check.checknotif==1){
+                    if (username==null){
+                        if (check.checklistform==1){
+                            list2.clear();
+                            refresh=true;
+                        }
+                        super.onBackPressed();
+                        finish();
+
+                    }else {
+                        super.onBackPressed();
+//            refresh=true;
+                        Intent back = new Intent(DetailsST.this,ServiceTicket.class);
+                        back.putExtra("pos",valuefilter);
+                        startActivity(back);
+                        overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                        finish();
+                    }
+                }else {
+                    Intent back = new Intent(DetailsST.this,Home.class);
+                    back.putExtra("pos",valuefilter);
+                    startActivity(back);
+                    overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                    finish();
+                }
+            }
         }
+
 
 
 
@@ -1880,5 +2068,41 @@ public class DetailsST extends AppCompatActivity {
         Log.d("reqapi",jsonObject.toString());
 
     }
+//timer new up
+private void startTimernew()
+{
+    timerTask = new TimerTask()
+    {
+        @Override
+        public void run()
+        {
+            runOnUiThread(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    time++;
+                    mtimer.setText(getTimerText());
+                }
+            });
+        }
 
+    };
+    timer.scheduleAtFixedRate(timerTask, 0 ,1000);
+}
+    private String getTimerText()
+    {
+        int rounded = (int) Math.round(time);
+
+        int seconds = ((rounded % 86400) % 3600) % 60;
+        int minutes = ((rounded % 86400) % 3600) / 60;
+        int hours = ((rounded % 86400) / 3600);
+
+        return formatTime(seconds, minutes, hours);
+    }
+
+    private String formatTime(int seconds, int minutes, int hours)
+    {
+        return String.format("%02d",hours) + " : " + String.format("%02d",minutes) + " : " + String.format("%02d",seconds);
+    }
 }

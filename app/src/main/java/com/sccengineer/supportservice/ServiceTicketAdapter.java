@@ -35,6 +35,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -63,6 +64,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import static android.content.Context.MODE_PRIVATE;
 import static com.sccengineer.ServiceTicket.valuefilter;
 
 //import static com.smartcarecenter.FormActivity.valuefilter;
@@ -71,6 +73,7 @@ public class ServiceTicketAdapter
 extends RecyclerView.Adapter<ServiceTicketAdapter.Myviewholder> implements ActivityCompat.OnRequestPermissionsResultCallback{
     ArrayList<ServiceTicketItems> addFromItem;
     Context context;
+    String engas = "";
     ImageView mimgpopup;
     boolean toastnya = false;
     public ServiceTicketAdapter(Context context, ArrayList<ServiceTicketItems> addFromItem) {
@@ -118,6 +121,13 @@ extends RecyclerView.Adapter<ServiceTicketAdapter.Myviewholder> implements Activ
         catch (ParseException parseException) {
             parseException.printStackTrace();
         }
+        if (addFromItem.get(i).isStsAssist()){
+            myviewholder.massist.setVisibility(View.VISIBLE);
+
+        }else {
+            myviewholder.massist.setVisibility(View.GONE);
+
+        }
         String[] separated = newdate.split("T");
         separated[0].trim();; // this will contain "Fruit"
         separated[1].trim();;
@@ -128,16 +138,31 @@ extends RecyclerView.Adapter<ServiceTicketAdapter.Myviewholder> implements Activ
         myviewholder.massst.setTextColor(Color.parseColor("#"+addFromItem.get(i).getAssignmentStatusColorCode()));
         myviewholder.mcurrentst.setText(addFromItem.get(i).getStatusName());
         myviewholder.mcurrentst.setTextColor(Color.parseColor("#"+addFromItem.get(i).getStatusColorCode()));
+
         myviewholder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (addFromItem.get(i).isStsAssist()){
+                    myviewholder.massist.setVisibility(View.VISIBLE);
+                    engas = "Assist";
+                }else {
+                    myviewholder.massist.setVisibility(View.GONE);
+                    engas = "Engineer";
+                }
+                SharedPreferences sharedPreferences = context.getSharedPreferences("LEVEL_ENGINEER", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("level_engineer", engas);
+                editor.apply();
                 Intent intent = new Intent(context, DetailsST.class);
-                intent.putExtra("id", (addFromItem.get(i).getFormRequestCd()));
+//                intent.putExtra("id", (addFromItem.get(i).getFormRequestCd()));
                 intent.putExtra("home", "homesa");
                 intent.putExtra("filter", valuefilter);
-                intent.putExtra("noticket", (addFromItem.get(i)).getServiceTicketCd());
+                intent.putExtra("id", (addFromItem.get(i)).getServiceTicketCd());
                 intent.putExtra("pos", valuefilter);
                 intent.putExtra("user", addFromItem.get(i).getCreatedBy());
+                intent.putExtra("scrolbawah", "yes");
+
+
                 context.startActivity(intent);
                 ((Activity)context).overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 ((Activity)context).finish();
@@ -146,6 +171,7 @@ extends RecyclerView.Adapter<ServiceTicketAdapter.Myviewholder> implements Activ
 
             }
         });
+
         myviewholder.xgambar_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -165,11 +191,7 @@ extends RecyclerView.Adapter<ServiceTicketAdapter.Myviewholder> implements Activ
                 dialog.show();
             }
         });
-        if (addFromItem.get(i).isStsAssist()){
-            myviewholder.massist.setVisibility(View.VISIBLE);
-        }else {
-            myviewholder.massist.setVisibility(View.GONE);
-        }
+
 
     }
 

@@ -114,13 +114,14 @@ public class ClockInActivity extends AppCompatActivity {
     String postalCode = "";
     String knownName = "";
     FusedLocationProviderClient fusedLocationProviderClient;
-    TextView mlatesclock,mnotif2;
+    TextView mlatesclock,mnotif2,maprov;
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clock_in);
         mlogout = findViewById(R.id.logout);
+        maprov = findViewById(R.id.waitingaprov);
         mnotif2 = findViewById(R.id.notif2);
         mrefresh = findViewById(R.id.refresh);
         mcheck = findViewById(R.id.checkclock);
@@ -675,6 +676,14 @@ public class ClockInActivity extends AppCompatActivity {
                     loading.dismiss();
                     sesionid();
                     JsonObject data = homedata.getAsJsonObject("data");
+//                    if (data.get("waitApproval").getAsBoolean()){
+//                        maprov.setVisibility(View.VISIBLE);
+//                        mclockin.setVisibility(View.GONE);
+//                    }else {
+//                        maprov.setVisibility(View.GONE);
+//                        mclockin.setVisibility(View.VISIBLE);
+//
+//                    }
                     rolejson = data.getAsJsonArray("engineerRoles");
                     for (int i = 0; i < rolejson.size(); ++i) {
                         JsonObject jsonObject3 = (JsonObject)rolejson.get(i);
@@ -747,9 +756,20 @@ public class ClockInActivity extends AppCompatActivity {
                     loading.dismiss();
                     sesionid();
                     JsonObject data = homedata.getAsJsonObject("data");
+
+//                    if (data.get("waitApproval").getAsBoolean()){
+//                        maprov.setVisibility(View.VISIBLE);
+//                        mclockin.setVisibility(View.GONE);
+//                    }else {
+//                        maprov.setVisibility(View.GONE);
+//                        mclockin.setVisibility(View.VISIBLE);
+//                        Intent gohome = new Intent(ClockInActivity.this,Home.class);
+//                        startActivity(gohome);
+//                        finish();
+//                    }
                     Intent gohome = new Intent(ClockInActivity.this,Home.class);
-                    startActivity(gohome);
-                    finish();
+                        startActivity(gohome);
+                        finish();
                 }else {
 
                     sesionid();
