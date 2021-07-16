@@ -128,6 +128,10 @@ public class Login extends AppCompatActivity {
                     } else {
                         imeiHp = telephonyManager.getDeviceId();
                     }
+//                    Log.i("OmSai ", "Single or Dula Sim "+telephonyManager.getPhoneCount());
+//                    Log.i("OmSai ", "Defualt device ID "+telephonyManager.getDeviceId());
+//                    Log.i("OmSai ", "Single 1 "+telephonyManager.getDeviceId(0));
+//                    Log.i("OmSai ", "Single 2 "+telephonyManager.getDeviceId(1));
                     Log.d("imei",imeiHp);
                     Log.d("token1",token);
                     if (internet){

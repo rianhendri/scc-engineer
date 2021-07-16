@@ -36,6 +36,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -84,6 +85,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
+import static android.content.Context.MODE_PRIVATE;
 import static android.os.Environment.DIRECTORY_DOWNLOADS;
 import static com.sccengineer.DownloadBroadcastReceiver.key;
 import static com.sccengineer.DownloadBroadcastReceiver.pathnya;
@@ -227,7 +229,7 @@ extends RecyclerView.Adapter<Adapterchat.Myviewholder>  {
                                                     public void onSuccess(Void aVoid) {
 //                                loading.dismiss();
 
-
+                                                        Toast.makeText(context, "File berhasil diupload", Toast.LENGTH_SHORT).show();
                                                     }
                                                 }).addOnFailureListener(new OnFailureListener() {
                                                     @Override
@@ -236,7 +238,7 @@ extends RecyclerView.Adapter<Adapterchat.Myviewholder>  {
 
                                                     }
                                                 });
-                                                Toast.makeText(context, "File berhasil diupload", Toast.LENGTH_SHORT).show();
+
 
                                             }
                                         });
@@ -338,6 +340,7 @@ extends RecyclerView.Adapter<Adapterchat.Myviewholder>  {
                                                     public void onSuccess(Void aVoid) {
 //                                loading.dismiss();
 
+                                                        Toast.makeText(context, "File berhasil diupload", Toast.LENGTH_SHORT).show();
 
                                                     }
                                                 }).addOnFailureListener(new OnFailureListener() {
@@ -347,7 +350,6 @@ extends RecyclerView.Adapter<Adapterchat.Myviewholder>  {
 
                                                     }
                                                 });
-                                                Toast.makeText(context, "File berhasil diupload", Toast.LENGTH_SHORT).show();
 
                                             }
                                         });
@@ -520,8 +522,13 @@ extends RecyclerView.Adapter<Adapterchat.Myviewholder>  {
         //showdate
         String date = new SimpleDateFormat("d MMM yyyy", Locale.getDefault()).format(new Date());
         if (date.equals(addFoclistreq.get(i).getDate())){
+            SharedPreferences sharedPreferences = context.getSharedPreferences("SHOW_ID", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("show_id", date);
+            editor.apply();
             myviewholder.mdate.setText("Hari Ini");
             myviewholder.mlaydate.setVisibility(View.VISIBLE);
+
         }
         else {
             myviewholder.mlaydate.setVisibility(View.VISIBLE);
@@ -696,40 +703,40 @@ extends RecyclerView.Adapter<Adapterchat.Myviewholder>  {
             }
         });
         //click chat long
-        myviewholder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                if (chatin){
-                    if (addFoclistreq.get(i).getMyuri().equals("-")){
-
-                    }else {
-                        File myuri = new File(addFoclistreq.get(i).getMyuri());
-                        if (myuri.exists()){
-
-                        }else {
-//                        startDownload();
-                        }
-                    }
-                    pos = i;
-                    if (name.equals(addFoclistreq.get(i).getName())){
-                        mdelcop.setVisibility(View.VISIBLE);
-                    }else {
-                        mdelcop.setVisibility(View.GONE);
-                    }
-                    mcopylay.setVisibility(View.VISIBLE);
-
-                    mback.setVisibility(View.GONE);
-                    myviewholder.mlayyou.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_corneryl));
-                    myviewholder.mlayme.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_corneryl));
-                    myviewholder.mMyname.setTextColor(Color.parseColor("#000000"));
-                }else {
-
-                }
-
-//                Toast.makeText(context, "Berhasil", Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });
+//        myviewholder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View v) {
+//                if (chatin){
+//                    if (addFoclistreq.get(i).getMyuri().equals("-")){
+//
+//                    }else {
+//                        File myuri = new File(addFoclistreq.get(i).getMyuri());
+//                        if (myuri.exists()){
+//
+//                        }else {
+////                        startDownload();
+//                        }
+//                    }
+//                    pos = i;
+//                    if (name.equals(addFoclistreq.get(i).getName())){
+//                        mdelcop.setVisibility(View.VISIBLE);
+//                    }else {
+//                        mdelcop.setVisibility(View.GONE);
+//                    }
+//                    mcopylay.setVisibility(View.VISIBLE);
+//
+//                    mback.setVisibility(View.GONE);
+//                    myviewholder.mlayyou.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_corneryl));
+//                    myviewholder.mlayme.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_corneryl));
+//                    myviewholder.mMyname.setTextColor(Color.parseColor("#000000"));
+//                }else {
+//
+//                }
+//
+////                Toast.makeText(context, "Berhasil", Toast.LENGTH_SHORT).show();
+//                return true;
+//            }
+//        });
         //copy and delete chat
         mcopy.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -760,57 +767,62 @@ extends RecyclerView.Adapter<Adapterchat.Myviewholder>  {
 //        else {
 //
 //        }
+
+
 // set thumbnail
         if (addFoclistreq.get(i).getName().equals(name)){
-            if (addFoclistreq.get(i).getThumb().equals("-")){
-                myviewholder.mbgimgme.setVisibility(View.VISIBLE);
-                myviewholder.mloadimgme.setVisibility(View.VISIBLE);
+                if (addFoclistreq.get(i).getThumb().equals("-")){
+                    myviewholder.mbgimgme.setVisibility(View.VISIBLE);
+                    myviewholder.mloadimgme.setVisibility(View.VISIBLE);
 
-                myviewholder.mimgme.setVisibility(View.GONE);
-                myviewholder.mplaybtn.setVisibility(View.GONE);
-
-
-
-            }else {
-                if (addFoclistreq.get(i).getType().equals("image")){
+                    myviewholder.mimgme.setVisibility(View.GONE);
                     myviewholder.mplaybtn.setVisibility(View.GONE);
-                    Picasso.with(context).load(addFoclistreq.get(i).getThumb()).into(myviewholder.mimgme, new Callback() {
-                        @Override
-                        public void onSuccess() {
-                            myviewholder.mbgimgme2.setVisibility(View.GONE);
-                            myviewholder.mloadimgme2.setVisibility(View.GONE);
-                        }
 
-                        @Override
-                        public void onError() {
 
-                        }
-                    });
 
                 }else {
-                    Picasso.with(context).load(addFoclistreq.get(i).getThumb()).into(myviewholder.mimgme, new Callback() {
-                        @Override
-                        public void onSuccess() {
-                            myviewholder.mbgimgme2.setVisibility(View.GONE);
-                            myviewholder.mloadimgme2.setVisibility(View.GONE);
-                            myviewholder.mplaybtn.setVisibility(View.VISIBLE);
+                    if (addFoclistreq.get(i).getType().equals("image")){
+                        myviewholder.mplaybtn.setVisibility(View.GONE);
+                        Picasso.with(context).load(addFoclistreq.get(i).getThumb()).into(myviewholder.mimgme, new Callback() {
+                            @Override
+                            public void onSuccess() {
+                                myviewholder.mbgimgme2.setVisibility(View.GONE);
+                                myviewholder.mloadimgme2.setVisibility(View.GONE);
+                            }
 
-                        }
+                            @Override
+                            public void onError() {
 
-                        @Override
-                        public void onError() {
+                            }
+                        });
 
-                        }
-                    });
+                    }else {
+                        Picasso.with(context).load(addFoclistreq.get(i).getThumb()).into(myviewholder.mimgme, new Callback() {
+                            @Override
+                            public void onSuccess() {
+                                myviewholder.mbgimgme2.setVisibility(View.GONE);
+                                myviewholder.mloadimgme2.setVisibility(View.GONE);
+                                myviewholder.mplaybtn.setVisibility(View.VISIBLE);
 
-                }
+                            }
+
+                            @Override
+                            public void onError() {
+
+                            }
+                        });
+
+                    }
 //                Picasso.with(context).load(addFoclistreq.get(i).getThumb()).into(myviewholder.mimgme);
 
-                myviewholder.mimgme.setVisibility(View.VISIBLE);
-                myviewholder.mbgimgme.setVisibility(View.GONE);
-                myviewholder.mloadimgme.setVisibility(View.GONE);
-            }
+                    myviewholder.mimgme.setVisibility(View.VISIBLE);
+                    myviewholder.mbgimgme.setVisibility(View.GONE);
+                    myviewholder.mloadimgme.setVisibility(View.GONE);
+                }
+
+
         }else {
+
             if (addFoclistreq.get(i).getThumb().equals("-")){
                 if (addFoclistreq.get(i).getType().equals("-")){
 
@@ -895,7 +907,7 @@ extends RecyclerView.Adapter<Adapterchat.Myviewholder>  {
 
         TextView mextc2, mlvl,mopenfile2, mopenfile,mextc,mmefilename,myufilename,mMyname, myourname,mname1,mname2,mdate, mcategory, mqty, mpos,munit,msubharga, mharga, mps, mdateyou,mdateme;
         ImageView mimg, mminus,mfileme,mfileyour, mplus,mdelete,mbgimgme,mbgimgyou,mbgimgme2,mbgimgyou2;
-        LinearLayout mlayyou, mlayme,mlaydate, mlayfileme, mlayfileyoyu;
+        LinearLayout mlayyou, mlayme,mlaydate, mlayfileme, mlayfileyoyu, mfootertext;
          ImageView muploadme,mdownloadme,mdownloadyou,mimgme,mimgyou,mplaybtn,mplaybtnyou;
         ConstraintLayout mloadme,mloadyou;
         View mgarisatasme,mgarisatasyou;
@@ -903,6 +915,8 @@ extends RecyclerView.Adapter<Adapterchat.Myviewholder>  {
         public Myviewholder(@NonNull View itemView) {
             super(itemView);
             muploadme = itemView.findViewById(R.id.upload);
+            mfootertext = itemView.findViewById(R.id.footertext);
+
             mgarisatasme = itemView.findViewById(R.id.garisatasme);
             mgarisatasyou = itemView.findViewById(R.id.garisatasyou);
             mloadimgme = itemView.findViewById(R.id.loadingimg);
@@ -1009,12 +1023,12 @@ extends RecyclerView.Adapter<Adapterchat.Myviewholder>  {
                 downloadUri);
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
 
-        request.setDestinationInExternalPublicDir(DIRECTORY_DOWNLOADS, direct+"/"+downloadUri.getLastPathSegment());
+        request.setDestinationInExternalPublicDir(DIRECTORY_DOWNLOADS, String.valueOf(direct));
         mgr.enqueue(request);
-
+//        +"/"+downloadUri.getLastPathSegment()
         String external = Environment.getExternalStorageDirectory().toString()+"/";
         Log.d("pathsimpen","di sini: "+ external+DIRECTORY_DOWNLOADS+"/"+direct+"/"+downloadUri.getLastPathSegment());
-        pathnya=external+DIRECTORY_DOWNLOADS+"/"+direct+"/"+downloadUri.getLastPathSegment();
+        pathnya=external+DIRECTORY_DOWNLOADS+"/"+direct;
 
     }
 //    public void startDownload() {

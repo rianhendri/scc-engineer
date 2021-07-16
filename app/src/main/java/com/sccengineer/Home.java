@@ -193,7 +193,7 @@ public class Home extends AppCompatActivity {
                         != PackageManager.PERMISSION_GRANTED &&
                         ActivityCompat.checkSelfPermission(Home.this, Manifest.permission.ACCESS_COARSE_LOCATION)
                                 != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(Home.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                    ActivityCompat.requestPermissions(Home.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION}, 100);
                     return;
                 }else{
                     LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -362,7 +362,7 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
         getCurrentLocation();
     } else {
         // Permission Denied
-        Toast.makeText(this, "Akses Lokasi Diperlukan", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Akses lokasi diperlukan", Toast.LENGTH_LONG).show();
 
     }
 //    if (requestCode == 100 && grantResults.length>0 && (grantResults[0]+grantResults[1]
@@ -485,6 +485,8 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
         alertDialogBuilder.setNegativeButton("Cancel",
                 new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int id){
+                        Toast.makeText(Home.this, "Mohon aktifkan lokasi", Toast.LENGTH_LONG).show();
+
                         dialog.cancel();
                     }
                 });

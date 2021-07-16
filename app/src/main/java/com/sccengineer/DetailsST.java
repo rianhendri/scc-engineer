@@ -5,11 +5,13 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -225,6 +227,9 @@ public class DetailsST extends AppCompatActivity {
     ScrollView mscroll;
     public static int yverti=0;
     public static int xhori=0;
+
+    //lokasi
+    boolean lokasi = false;
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -297,6 +302,9 @@ public class DetailsST extends AppCompatActivity {
         mlocation = findViewById(R.id.locationsn);
         mtextalert = findViewById(R.id.textalert);
         mbackgroundalert = findViewById(R.id.backgroundalert);
+
+        tokennya2.clear();
+
         dialog = new Dialog(   DetailsST.this);
 //        mtimerconfirm = findViewById(R.id.timer);
 //        mreopenbtn = findViewById(R.id.reopen);
@@ -314,21 +322,23 @@ public class DetailsST extends AppCompatActivity {
         msendpartlist.setLayoutManager(linearLayoutManager2);
         msendpartlist.setHasFixedSize(true);
         sendsparepart_items = new ArrayList();
-        if (ActivityCompat.checkSelfPermission(DetailsST.this,
-                Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(DetailsST.this
-                ,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            if (internet){
-                fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(DetailsST.this);
-                getCurrentLocation();
-            }
 
-            lempar = false;
-        }else {
-            ActivityCompat.requestPermissions(DetailsST.this
-                    , new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
-                    },100);
-        }
+
+//        if (ActivityCompat.checkSelfPermission(DetailsST.this,
+//                Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+//                && ActivityCompat.checkSelfPermission(DetailsST.this
+//                ,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+//            if (internet){
+//                fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(DetailsST.this);
+//                getCurrentLocation();
+//            }
+//
+//            lempar = false;
+//        }else {
+//            ActivityCompat.requestPermissions(DetailsST.this
+//                    , new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
+//                    },100);
+//        }
         //getsessionId
         seconds=0;
         Bundle bundle2 = getIntent().getExtras();
@@ -379,6 +389,15 @@ public class DetailsST extends AppCompatActivity {
         mstartprogress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // code baru
+                requestlokasi();
+                if (lokasi){
+                    getCurrentLocation();
+                    showDialogreopen();
+                }else {
+
+                }
+                //code lama
                 if (ActivityCompat.checkSelfPermission(DetailsST.this,
                         Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
                         && ActivityCompat.checkSelfPermission(DetailsST.this
@@ -396,10 +415,9 @@ public class DetailsST extends AppCompatActivity {
         mupdatebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ActivityCompat.checkSelfPermission(DetailsST.this,
-                        Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                        && ActivityCompat.checkSelfPermission(DetailsST.this
-                        ,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                // code baru
+                requestlokasi();
+                if (lokasi){
                     getCurrentLocation();
                     if (cekdate){
                         if (mdatestatus.getText().toString().equals("-")){
@@ -410,12 +428,30 @@ public class DetailsST extends AppCompatActivity {
                     }else {
                         showDialogrupdate();
                     }
-
                 }else {
-                    ActivityCompat.requestPermissions(DetailsST.this
-                            , new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
-                            },100);
+
                 }
+                // code lama
+//                if (ActivityCompat.checkSelfPermission(DetailsST.this,
+//                        Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+//                        && ActivityCompat.checkSelfPermission(DetailsST.this
+//                        ,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+//                    getCurrentLocation();
+//                    if (cekdate){
+//                        if (mdatestatus.getText().toString().equals("-")){
+//                            Toast.makeText(DetailsST.this, "Tanggal due date wajib diisi", Toast.LENGTH_SHORT).show();
+//                        }else {
+//                            showDialogrupdate();
+//                        }
+//                    }else {
+//                        showDialogrupdate();
+//                    }
+//
+//                }else {
+//                    ActivityCompat.requestPermissions(DetailsST.this
+//                            , new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
+//                            },100);
+//                }
             }
         });
 //        mcs.setOnClickListener(new View.OnClickListener() {
@@ -748,7 +784,6 @@ public class DetailsST extends AppCompatActivity {
                 MhaveToUpdate = homedata.get("haveToUpdate").toString();
                 MsessionExpired = homedata.get("sessionExpired").toString();
                 if (statusnya.equals("OK")){
-
 
 //                    sesionid();
                     Log.d("sessionId",MsessionExpired);
@@ -1333,10 +1368,11 @@ public class DetailsST extends AppCompatActivity {
                     }
 
                     if (scrollnya==null){
-                        mscroll.scrollTo(0,1900);
+                        mscroll.scrollTo(0,2029);
                     }else {
                         mscroll.scrollTo(xhori,yverti);
                     }
+                    requestlokasi();
                 }else {
                     sesionid();
                     loading.dismiss();
@@ -1805,8 +1841,12 @@ public class DetailsST extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-        if (requestCode == 100 && grantResults.length>0 && (grantResults[0]+grantResults[1]
-                == PackageManager.PERMISSION_GRANTED)){
+
+        if (requestCode == 100  && grantResults[0]+grantResults[1]
+                == PackageManager.PERMISSION_GRANTED){
+            Log.d("requestcodenya",String.valueOf(requestCode)+permissions[0]+
+                    permissions[1]+grantResults[0]+grantResults[1]+PackageManager.PERMISSION_GRANTED);
+            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(DetailsST.this);
             getCurrentLocation();
 //            if (reopen){
 //                showDialogreopen();
@@ -1815,17 +1855,65 @@ public class DetailsST extends AppCompatActivity {
 //            }
 
         }else {
-            if (lempar){
+//            if (lempar){
+//
+//                Intent back = new Intent(ClockInActivity.this,Home.class);
+////            back.putExtra("pos",valuefilter);
+//                startActivity(back);
+//                overridePendingTransition(R.anim.left_in, R.anim.right_out);
+//                finish();
+//            }else {
+//
+//            }
+            Toast.makeText(this, "Akses lokasi diperlukan", Toast.LENGTH_LONG).show();
 
-                Intent back = new Intent(DetailsST.this,Home.class);
-//            back.putExtra("pos",valuefilter);
-                startActivity(back);
-                overridePendingTransition(R.anim.left_in, R.anim.right_out);
-                finish();
-            }else {
+        }
+    }
+    private void showGPSDisabledAlertToUser(){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage("Lokasi perlu diaktifkan")
+                .setCancelable(false)
+                .setPositiveButton("Go to GPS",
+                        new DialogInterface.OnClickListener(){
+                            public void onClick(DialogInterface dialog, int id){
 
+                                ActivityCompat.requestPermissions(DetailsST.this
+                                        , new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION
+                                        },100);
+
+                            }
+                        });
+        alertDialogBuilder.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int id){
+                        Toast.makeText(DetailsST.this, "Mohon aktifkan lokasi", Toast.LENGTH_LONG).show();
+                        dialog.cancel();
+
+                    }
+                });
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
+    }
+    private  void requestlokasi(){
+        if (ActivityCompat.checkSelfPermission(DetailsST.this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(DetailsST.this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(DetailsST.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION}, 100);
+            return;
+        }else{
+            LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(DetailsST.this);
+                getCurrentLocation();
+                lokasi=true;
+//                DialogForm();
+//                    Toast.makeText(ClockInActivity.this, "GPS is Enabled in your devide", Toast.LENGTH_SHORT).show();
+            }else{
+                lokasi=false;
+                showGPSDisabledAlertToUser();
             }
-            Toast.makeText(this, "Akese Lokasi Diperlukan", Toast.LENGTH_LONG).show();
+            // Write you code here if permission already given.
 
         }
     }

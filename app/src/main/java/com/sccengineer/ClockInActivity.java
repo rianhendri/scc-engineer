@@ -165,7 +165,7 @@ public class ClockInActivity extends AppCompatActivity {
                         != PackageManager.PERMISSION_GRANTED &&
                         ActivityCompat.checkSelfPermission(ClockInActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION)
                                 != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(ClockInActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                    ActivityCompat.requestPermissions(ClockInActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION}, 100);
                     return;
                 }else{
                     LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -288,8 +288,8 @@ public class ClockInActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-        if (requestCode == 100 && grantResults.length>0 && (grantResults[0]+grantResults[1]
-                == PackageManager.PERMISSION_GRANTED)){
+        if (requestCode == 100  && grantResults[0]+grantResults[1]
+                == PackageManager.PERMISSION_GRANTED){
             fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(ClockInActivity.this);
             getCurrentLocation();
 //            if (reopen){
@@ -309,7 +309,7 @@ public class ClockInActivity extends AppCompatActivity {
 //            }else {
 //
 //            }
-            Toast.makeText(this, "Akese Lokasi Diperlukan", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Akses lokasi diperlukan", Toast.LENGTH_LONG).show();
 
         }
     }
@@ -328,6 +328,7 @@ public class ClockInActivity extends AppCompatActivity {
         alertDialogBuilder.setNegativeButton("Cancel",
                 new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int id){
+                        Toast.makeText(ClockInActivity.this, "Mohon aktifkan lokasi", Toast.LENGTH_LONG).show();
                         dialog.cancel();
                     }
                 });

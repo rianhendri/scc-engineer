@@ -120,6 +120,7 @@ public class ListChat extends AppCompatActivity {
     int xhori = 0;
     int yverti = 0;
     String scrollnya = "-";
+    int tokenpos=0;
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -270,6 +271,7 @@ public class ListChat extends AppCompatActivity {
 
             }
         });
+        mimeType2 = "-";
     }
 
     public void loadchat(){
@@ -360,9 +362,7 @@ public class ListChat extends AppCompatActivity {
                             @Override
                             public void onSuccess(Void aVoid) {
 
-
-
-
+                                sendnotifchat();
                                 int posi = addFoclistreq.size()-1;
                                 InputStream stream = null;
                                 try {
@@ -371,6 +371,7 @@ public class ListChat extends AppCompatActivity {
                                 } catch (FileNotFoundException e) {
                                     e.printStackTrace();
                                 }
+
 
 //                        UploadTask uploadTask = ref.child("images").putStream(stream);
 
@@ -425,8 +426,9 @@ public class ListChat extends AppCompatActivity {
 //                            loading.dismiss();
                             }
                         });
-
+                        mimeType2 = "-";
                     }
+
                 })
                 .setNegativeButton("No",new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
@@ -549,7 +551,7 @@ public class ListChat extends AppCompatActivity {
     }
     public void sendnotifchat(){
 //        loading = ProgressDialog.show(DetailsFormActivity.this, "", getString(R.string.title_loading), true);
-        for (int i = 0; i < tokennya2.size(); ++i) {
+
             JsonObject dataid = new JsonObject();
             dataid.addProperty("id",nofr);
 
@@ -559,7 +561,7 @@ public class ListChat extends AppCompatActivity {
             notifikasidata.addProperty("click_action","FormRequest");
 
             JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("to",tokennya2.get(i));
+            jsonObject.addProperty("to",tokennya2.get(tokenpos));
             jsonObject.add("data",dataid);
             jsonObject.add("notification",notifikasidata);
 //        Toast.makeText(DetailsFormActivity.this,jsonObject.toString(), Toast.LENGTH_SHORT).show();
@@ -569,7 +571,13 @@ public class ListChat extends AppCompatActivity {
                 @RequiresApi(api = Build.VERSION_CODES.N)
                 @Override
                 public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-
+                    Log.d("tokenplusisze", String.valueOf(tokennya2.size()-1)+"=="+String.valueOf(tokenpos));
+                    if (tokennya2.size()-1==tokenpos){
+                        tokenpos =0;
+                    }else {
+                        tokenpos +=1;
+                        sendnotifchat();
+                    }
                     String errornya = "";
                     JsonObject homedata = response.body();
                     int statusnya = homedata.get("success").getAsInt();
@@ -592,7 +600,7 @@ public class ListChat extends AppCompatActivity {
             });
             Log.d("requestnotif",jsonObject.toString());
 
-        }
+
 
 
     }
