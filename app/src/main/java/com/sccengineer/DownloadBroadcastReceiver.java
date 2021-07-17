@@ -23,6 +23,7 @@ import static com.sccengineer.ListChat.sessionnya;
 public class DownloadBroadcastReceiver extends BroadcastReceiver {
     public static String pathnya = "";
     public static String key="0";
+    public static String urinya = "";
     DatabaseReference databaseReference2 = FirebaseDatabase.getInstance().getReference();
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -31,7 +32,11 @@ public class DownloadBroadcastReceiver extends BroadcastReceiver {
         if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action)) {
             //Show a notification
             HashMap hashMap = new HashMap();
-            hashMap.put("youruri",pathnya);
+            if (urinya.equals("me")){
+                hashMap.put("myuri",pathnya);
+            }else {
+                hashMap.put("youruri",pathnya);
+            }
             databaseReference2.child("chat").child(sessionnya).child("listchat").child(key).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
