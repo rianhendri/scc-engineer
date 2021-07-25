@@ -59,4 +59,7 @@
     <string name="tab_text_3">Approval</string>
     <string name="tab_text_2">Leave Form</string>
     <string name="tab_text_1">Attendance</string>
+    <string name="title_cancleasigmnt">Cancel Assignment</string>
+    <string name="title_pleasechoose">-please choose-</string>
+    <string name="title_cancelassignment">Cancel Assignment</string>
 </resources>

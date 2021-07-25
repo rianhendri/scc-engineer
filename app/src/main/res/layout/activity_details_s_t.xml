@@ -1595,6 +1595,31 @@
                                 </LinearLayout>
                             </LinearLayout>
                             <LinearLayout
+                                android:id="@+id/canclebtn"
+                                android:layout_width="match_parent"
+                                android:layout_height="45dp"
+                                android:layout_marginTop="0dp"
+                                android:layout_marginBottom="12dp"
+                                android:gravity="center"
+                                android:orientation="horizontal"
+                                android:visibility="visible" >
+
+                                <LinearLayout
+                                    android:layout_width="250dp"
+                                    android:layout_height="45dp"
+                                    android:background="@drawable/bg_yellow_borderradius"
+                                    android:gravity="center" >
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="@font/segoeui"
+                                        android:text="@string/title_cancleasigmnt"
+                                        android:textColor="@color/black"
+                                        android:textSize="17sp" />
+                                </LinearLayout>
+                            </LinearLayout>
+                            <LinearLayout
                                 android:visibility="gone"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"

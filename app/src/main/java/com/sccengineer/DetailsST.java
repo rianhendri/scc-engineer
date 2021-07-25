@@ -40,6 +40,7 @@ import android.text.Html;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -105,7 +106,14 @@ import static com.sccengineer.apihelper.ServiceGenerator.baseurl;
 import static com.sccengineer.messagecloud.check.tokennya2;
 
 public class DetailsST extends AppCompatActivity {
-
+    AlertDialog.Builder dialog2;
+    Spinner mrole;
+    JsonArray rolejson;
+    List<String> rolelist = new ArrayList();
+    List<String> rolecvalue = new ArrayList();
+    String valerole = "";
+    LayoutInflater inflater;
+    View dialogView;
     //Timer Set New
     Timer timer;
     TimerTask timerTask;
@@ -177,7 +185,7 @@ public class DetailsST extends AppCompatActivity {
     TextView mlinkgenerate,mdatestatus,mlalbeldate,msupport,mbar1,mbar2,mbar3,mbar4,mactionprogress,mestimasi,mstarttime,mendtime,massigndate,mengineer,masengineer, mstatustick, mtimer;
     EditText mlastimpresiST, mdescripst;
     Spinner mservicetypeST, mstatusST;
-    LinearLayout mlayountlink,mlayoutdate,mlayoutsper,mlayestima,mstartprogress, mupdatebtn, mlayoutimpress, mlayoutnote, mlayoutstatus, mlayoutservicest, mlayoutupdatepanel;
+    LinearLayout mlayountlink,mlayoutdate,mlayoutsper,mlayestima,mstartprogress, mupdatebtn,mcancleassg, mlayoutimpress, mlayoutnote, mlayoutstatus, mlayoutservicest, mlayoutupdatepanel;
     JsonArray listsn;
     List<String> snid = new ArrayList();
     List<String> snname = new ArrayList();
@@ -237,6 +245,7 @@ public class DetailsST extends AppCompatActivity {
         setContentView(R.layout.activity_details_s_t);
         mscroll = findViewById(R.id.scrollnya);
         mchactclik = findViewById(R.id.chatclik);
+        mcancleassg = findViewById(R.id.canclebtn);
         //panelupdate
         mnotif = findViewById(R.id.newnotif);
         mdot = findViewById(R.id.dot);
@@ -354,7 +363,7 @@ public class DetailsST extends AppCompatActivity {
             xhori=bundle2.getInt("xhori");
             yverti=bundle2.getInt("yverti");
         }
-
+        rolelist.add(getString(R.string.title_pleasechoose));
         getSessionId();
         cekInternet();
         if (internet){
@@ -452,6 +461,12 @@ public class DetailsST extends AppCompatActivity {
 //                            , new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
 //                            },100);
 //                }
+            }
+        });
+        mcancleassg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+DialogForm();
             }
         });
 //        mcs.setOnClickListener(new View.OnClickListener() {
@@ -676,6 +691,76 @@ public class DetailsST extends AppCompatActivity {
 //        d.show();
 //
 //    }
+private void DialogForm() {
+    dialog2 = new AlertDialog.Builder(DetailsST.this);
+    inflater = getLayoutInflater();
+    dialogView = inflater.inflate(R.layout.dialog_cancleassigment, null);
+    dialog2.setView(dialogView);
+    dialog2.setCancelable(true);
+    dialog2.setIcon(R.mipmap.ic_launcher);
+    dialog2.setTitle(getString(R.string.title_cancelassignment));
+    mrole = dialogView.findViewById(R.id.rolenya);
+    String[] arraySpinner = new String[]{
+            "-", "Role1"," Role2"
+    };
+
+    ArrayAdapter arrayAdapter = new ArrayAdapter(this, R.layout.spinstatus_layout, rolelist);
+    arrayAdapter.setDropDownViewResource(R.layout.spinkategori);
+    arrayAdapter.notifyDataSetChanged();
+    mrole.setAdapter(arrayAdapter);
+//        txt_nama    = (EditText) dialogView.findViewById(R.id.txt_nama);
+
+    mrole.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            cekInternet();
+            for (int i = 0; i < rolecvalue.size(); ++i) {
+                valerole = rolecvalue.get(position);
+
+            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+    });
+//        kosong();
+
+    dialog2.setPositiveButton("SUBMIT", new DialogInterface.OnClickListener() {
+
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            if (valerole.equals("-")){
+                Toast.makeText(DetailsST.this, "Wajib Pilih Status", Toast.LENGTH_SHORT).show();
+            }else {
+//                clockinnya();
+//                    if (postalCode.equals("")){
+//
+//                    }else {
+//                        getCurrentLocation();
+//                        Toast.makeText(ClockInActivity.this, "mohon periksa koneksi anda", Toast.LENGTH_SHORT).show();
+//                    }
+                ;
+
+            }
+
+
+
+            dialog.dismiss();
+        }
+    });
+
+    dialog2.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            dialog.dismiss();
+        }
+    });
+
+    dialog2.show();
+}
     private void showDialogreopen() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 this);
@@ -788,6 +873,26 @@ public class DetailsST extends AppCompatActivity {
 //                    sesionid();
                     Log.d("sessionId",MsessionExpired);
                     JsonObject data = homedata.getAsJsonObject("data");
+                    // cancle btn show
+                    if (data.get("allowToCancel").getAsBoolean()){
+                        mcancleassg.setVisibility(View.VISIBLE);
+                        rolejson = data.getAsJsonArray("updatePanelCancellationStatusOptions");
+                        for (int i = 0; i < rolejson.size(); ++i) {
+                            JsonObject jsonObject3 = (JsonObject)rolejson.get(i);
+                            String string3 = jsonObject3.getAsJsonObject().get("Value").getAsString();
+                            String string4 = jsonObject3.getAsJsonObject().get("Text").getAsString();
+                            rolecvalue.add(string3);
+                            rolelist.add(string4);
+                            for (int j = 0; j < rolecvalue.size(); ++j) {
+//                            if (rolecvalue.get(i).equals(valuefilter)){
+//                                pos=j;
+//                            }
+                            }
+
+                        }
+                    }else {
+                        mcancleassg.setVisibility(View.GONE);
+                    }
                     //setnoteupdatepanels
                     if (data.get("generateNotes").toString().equals("null")){
                         mlinkgenerate.setVisibility(View.GONE);
@@ -1424,6 +1529,8 @@ public class DetailsST extends AppCompatActivity {
                     mloadpart.setVisibility(View.GONE);
                     sesionid();
                     JsonObject data = homedata.getAsJsonObject("data");
+
+
                     listnotif = data.getAsJsonArray("sparePartList");
                     Gson gson = new Gson();
                     Type listType = new TypeToken<ArrayList<Sparepart_item>>() {
