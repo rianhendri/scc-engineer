@@ -506,7 +506,7 @@
 
             <LinearLayout
                 android:id="@+id/layoutticket"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimaryDark"
@@ -611,6 +611,204 @@
                         android:text=" 20 Juli 2020 14:16:30"
                         android:textColor="@color/dwhite"
                         android:textSize="13sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layoutsper"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="12dp"
+                    android:visibility="visible"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/bgwhitecorner"
+                    android:layout_marginTop="8dp">
+                    <LinearLayout
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:orientation="horizontal" >
+
+
+                        <LinearLayout
+
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <TextView
+
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/segoeuib"
+                                android:textColor="@color/black"
+                                android:text="Spare Part"
+                                android:textSize="11sp"
+                                />
+                            <View
+                                android:layout_width="wrap_content"
+                                android:layout_height="1dp"
+                                android:background="@color/transparent" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="70dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <LinearLayout
+                                android:id="@+id/searchsper"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+                                <TextView
+                                    android:id="@+id/sparename"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/segoeui"
+                                    android:textColor="@color/colorPrimaryDark"
+                                    android:text="@string/title_addsparepart"
+                                    android:textSize="11sp"
+                                    />
+                                <View
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="1dp"
+                                    android:background="@color/colorPrimaryDark" />
+                            </LinearLayout>
+
+
+                            <TextView
+                                android:visibility="gone"
+                                android:layout_width="70dp"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/seguisb"
+                                android:textSize="13sp"
+                                android:text="Add"
+                                android:gravity="center"
+                                android:background="@drawable/bg_cornerblue_line"/>
+                        </LinearLayout>
+
+                    </LinearLayout>
+                    <HorizontalScrollView
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:fadeScrollbars="false">
+                        <LinearLayout
+                            android:layout_width="590dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingBottom="24dp"
+                          >
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:background="@color/green">
+                                <TextView
+                                    android:id="@+id/codecd"
+                                    android:layout_width="100dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="8dp"
+                                    android:layout_marginRight="4dp"
+                                    android:layout_marginTop="8dp"
+                                    android:layout_marginBottom="8dp"
+                                    android:fontFamily="@font/segoeui"
+                                    android:textSize="11dp"
+                                    android:layout_weight="1"
+                                    android:text="Item"
+                                    android:textColor="@color/dwhite"/>
+                                <TextView
+
+                                    android:layout_width="30dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="4dp"
+                                    android:layout_marginRight="8dp"
+                                    android:layout_marginTop="8dp"
+                                    android:layout_marginBottom="8dp"
+                                    android:fontFamily="@font/segoeui"
+                                    android:textSize="11dp"
+                                    android:text="QTY "
+                                    android:textColor="@color/dwhite"/>
+
+                                <TextView
+
+                                    android:layout_width="100dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="4dp"
+                                    android:layout_marginRight="8dp"
+                                    android:maxWidth="100dp"
+                                    android:layout_marginTop="8dp"
+                                    android:layout_marginBottom="8dp"
+                                    android:fontFamily="@font/segoeui"
+                                    android:textSize="11dp"
+                                    android:text="Reason"
+                                    android:layout_weight="1"
+                                    android:textColor="@color/dwhite"/>
+                                <TextView
+
+                                    android:layout_width="100dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="4dp"
+                                    android:layout_marginRight="8dp"
+                                    android:layout_marginTop="8dp"
+                                    android:layout_marginBottom="8dp"
+                                    android:fontFamily="@font/segoeui"
+                                    android:textSize="11dp"
+                                    android:text="Case ID"
+                                    android:maxWidth="100dp"
+                                    android:layout_weight="1"
+                                    android:textColor="@color/dwhite"/>
+                                <TextView
+
+                                    android:layout_width="120dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="4dp"
+                                    android:layout_marginRight="8dp"
+                                    android:layout_marginTop="8dp"
+                                    android:layout_marginBottom="8dp"
+                                    android:fontFamily="@font/segoeui"
+                                    android:textSize="11dp"
+                                    android:text="Order date"
+                                    android:maxWidth="100dp"
+                                    android:layout_weight="1"
+                                    android:textColor="@color/dwhite"/>
+                                <TextView
+
+                                    android:layout_width="120dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="4dp"
+                                    android:layout_marginRight="8dp"
+                                    android:layout_marginTop="8dp"
+                                    android:layout_marginBottom="8dp"
+                                    android:fontFamily="@font/segoeui"
+                                    android:textSize="11dp"
+                                    android:text="Install date"
+                                    android:maxWidth="100dp"
+                                    android:layout_weight="1"
+                                    android:textColor="@color/dwhite"/>
+                                <ImageView
+                                    android:id="@+id/edite"
+                                    android:layout_width="30dp"
+                                    android:layout_height="15dp"
+
+
+
+                                    />
+                            </LinearLayout>
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/listsper"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintBottom_toTopOf="@+id/addform"
+                                android:scrollbars="none"
+                                android:nestedScrollingEnabled="false">
+                            </androidx.recyclerview.widget.RecyclerView>
+                        </LinearLayout>
+                    </HorizontalScrollView>
+
+
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -1343,12 +1541,13 @@
 
                             </LinearLayout>
                             <LinearLayout
-                                android:id="@+id/layoutsper"
+                                android:id="@+id/layoutsper1"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"
                                 android:paddingLeft="12dp"
                                 android:paddingRight="12dp"
+                                android:visibility="gone"
                                 android:layout_marginTop="8dp">
                                 <LinearLayout
 
@@ -1383,12 +1582,12 @@
                                         android:layout_height="wrap_content"
                                         android:orientation="horizontal">
                                         <LinearLayout
-                                            android:id="@+id/searchsper"
+                                            android:id="@+id/asearchsper"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:orientation="vertical">
                                             <TextView
-                                                android:id="@+id/sparename"
+                                                android:id="@+id/asparename"
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:fontFamily="@font/segoeui"
@@ -1421,7 +1620,7 @@
                                     android:orientation="horizontal"
                                     android:background="@color/green">
                                     <TextView
-                                        android:id="@+id/nospart"
+                                        android:id="@+id/anospart"
                                         android:layout_width="20dp"
                                         android:layout_height="wrap_content"
                                         android:layout_marginLeft="8dp"
@@ -1432,7 +1631,7 @@
                                         android:text="No."
                                         android:textColor="@color/dwhite"/>
                                     <TextView
-                                        android:id="@+id/codecd"
+                                        android:id="@+id/acodecd"
                                         android:layout_width="70dp"
                                         android:layout_height="wrap_content"
                                         android:layout_marginLeft="8dp"
@@ -1444,7 +1643,7 @@
                                         android:text="Code"
                                         android:textColor="@color/dwhite"/>
                                     <TextView
-                                        android:id="@+id/namespar"
+                                        android:id="@+id/anamespar"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginLeft="8dp"
@@ -1457,7 +1656,7 @@
                                         android:textColor="@color/dwhite"/>
                                 </LinearLayout>
                                 <androidx.recyclerview.widget.RecyclerView
-                                    android:id="@+id/listsper"
+                                    android:id="@+id/alistsper"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     app:layout_constraintBottom_toTopOf="@+id/addform"

@@ -10,8 +10,8 @@
 		android:id="@+id/search_btn"
 		android:layout_width="match_parent"
 		android:layout_height="40dp"
-		android:layout_marginLeft="12dp"
-		android:layout_marginRight="12dp"
+		android:layout_marginLeft="8dp"
+		android:layout_marginRight="8dp"
 		android:layout_marginTop="20dp"
 		android:background="@drawable/bgwhite_cornerblue"
 		android:gravity="center_vertical"
@@ -35,6 +35,81 @@
 			android:hint="search..."
 			android:textSize="14sp" />
 	</LinearLayout>
+	<LinearLayout
+		android:layout_marginTop="12dp"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:layout_marginLeft="8dp"
+		android:layout_marginRight="8dp"
+		android:background="@color/green">
+		<TextView
+			android:id="@+id/codecd"
+			android:layout_width="100dp"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="8dp"
+			android:layout_marginRight="4dp"
+			android:layout_marginTop="8dp"
+			android:layout_marginBottom="8dp"
+			android:fontFamily="@font/segoeui"
+			android:textSize="11dp"
+			android:layout_weight="1"
+			android:text="Item"
+			android:textColor="@color/dwhite"/>
+		<TextView
+
+			android:layout_width="50dp"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="4dp"
+			android:layout_marginRight="8dp"
+			android:layout_marginTop="8dp"
+			android:layout_marginBottom="8dp"
+			android:fontFamily="@font/segoeui"
+			android:textSize="11dp"
+			android:text="QTY "
+			android:gravity="center"
+			android:textColor="@color/dwhite"/>
+
+		<TextView
+	android:visibility="gone"
+			android:layout_width="100dp"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="4dp"
+			android:layout_marginRight="8dp"
+			android:maxWidth="100dp"
+			android:layout_marginTop="8dp"
+			android:layout_marginBottom="8dp"
+			android:fontFamily="@font/segoeui"
+			android:textSize="11dp"
+			android:text="Reason"
+			android:layout_weight="1"
+			android:textColor="@color/dwhite"/>
+
+		<TextView
+			android:visibility="gone"
+			android:layout_width="100dp"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="4dp"
+			android:layout_marginTop="8dp"
+			android:layout_marginRight="8dp"
+			android:layout_marginBottom="8dp"
+			android:layout_weight="1"
+			android:fontFamily="@font/segoeui"
+			android:maxWidth="100dp"
+			android:text="Case ID"
+			android:textColor="@color/dwhite"
+			android:textSize="11dp" />
+
+		<ImageView
+			android:id="@+id/edite"
+			android:layout_width="30dp"
+			android:layout_height="15dp"
+
+
+
+			/>
+	</LinearLayout>
+
 	<androidx.constraintlayout.widget.ConstraintLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
@@ -48,7 +123,7 @@
 			app:layout_constraintHorizontal_bias="0.0"
 			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintTop_toTopOf="parent"
-			android:padding="12dp" />
+			android:padding="8dp" />
 
 		<ProgressBar
 			android:id="@+id/loadingfooter"

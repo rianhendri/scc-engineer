@@ -30,28 +30,47 @@
  */
 package com.sccengineer.spartsend;
 
+import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.text.method.DigitsKeyListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.sccengineer.DetailsST;
 import com.sccengineer.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 import static com.sccengineer.DetailsST.dialog;
 import static com.sccengineer.DetailsST.jsonarayitem;
 import static com.sccengineer.DetailsST.mpartlist;
 import static com.sccengineer.DetailsST.msendpartlist;
 import static com.sccengineer.DetailsST.myCustomArray;
+import static com.sccengineer.DetailsST.sendsparepart_adapter;
 import static com.sccengineer.DetailsST.sendsparepart_items;
 
 
@@ -60,6 +79,22 @@ extends RecyclerView.Adapter<SendSparepart_adapter.Myviewholder> {
     ArrayList<SendSparepart_item> addFoclistitem;
     Context context;
     ImageView mimgpopup;
+    String namaitemedit="";
+    boolean dateedit = true;
+    boolean stsedit = true;
+    String installdateedit="";
+    String orderdatedit="";
+    String caseidedit="";
+    String reasonedit="";
+    int qtyedit=0;
+     Dialog dialogedit;
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+    TextView mnamesparedit,mqtysperedit2,mcaseidedit2,mreasonedit2,morderdateedit,minstalldateedit;
+    LinearLayout minstalldateedit2;
+    final Calendar myCalendar = Calendar.getInstance();
+    int posedit=0;
+    EditText mqtysperedit,mreasonedit,mcaseidedit;
+    LinearLayout mupdateeditedit;
     boolean stsS = true;
     boolean usingMatrix = true;
     public SendSparepart_adapter(Context context, ArrayList<SendSparepart_item> addFoclistitem) {
@@ -76,19 +111,111 @@ extends RecyclerView.Adapter<SendSparepart_adapter.Myviewholder> {
     }
 
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(@NonNull Myviewholder myviewholder, int i) {
+        if (addFoclistitem.get(i).isStsAllowEdit()){
+////            myviewholder.mnamespar.setBackground(ContextCompat.getDrawable(context,R.drawable.underline));
+//            myviewholder.mcaseid.setBackground(ContextCompat.getDrawable(context,R.drawable.underline));
+//            myviewholder.mreason.setBackground(ContextCompat.getDrawable(context,R.drawable.underline));
+//            myviewholder.mqtysper.setBackground(ContextCompat.getDrawable(context,R.drawable.underline));
+            myviewholder.mdelete2.setVisibility(View.GONE);
+            myviewholder.mdelete.setVisibility(View.VISIBLE);
+        }else {
+////            myviewholder.mnamespar.setBackgroundColor(android.R.color.transparent);
+//
+//            myviewholder.mcaseid.setBackgroundColor(android.R.color.transparent);
+//            myviewholder.mcaseid.setTextColor(Color.parseColor("#6A6A6A"));
+//            myviewholder.mreason.setBackgroundColor(android.R.color.transparent);
+//            myviewholder.mreason.setTextColor(Color.parseColor("#6A6A6A"));
+//            myviewholder.mqtysper.setBackgroundColor(android.R.color.transparent);
+//            myviewholder.mqtysper.setTextColor(Color.parseColor("#6A6A6A"));wwwwwwwwwwwwwwwwwwwwwwssssssssssssssssssssssssssss
+//            myviewholder.morderdate.setTextColor(Color.parseColor("#6A6A6A"));
+            myviewholder.mdelete.setVisibility(View.GONE);
+            myviewholder.mdelete2.setVisibility(View.VISIBLE);
+//
+        }
+
+        if (addFoclistitem.get(i).isStsAllowUpdateInstallDate()){
+            myviewholder.minstalldate.setBackground(ContextCompat.getDrawable(context,R.drawable.underline));
+        }else {
+            myviewholder.minstalldate.setBackgroundColor(android.R.color.transparent);
+            myviewholder.minstalldate.setTextColor(Color.parseColor("#6A6A6A"));
+
+        }
         if (addFoclistitem.get(i).getSparePartName()!=null){
             addFoclistitem.get(i).setName(addFoclistitem.get(i).getSparePartName());
         }
         myviewholder.mnamespar.setText(addFoclistitem.get(i).getName());
         myviewholder.mno.setText(String.valueOf(i+1));
         myviewholder.mcd.setText(addFoclistitem.get(i).getSparePartCd());
+        if (addFoclistitem.get(i).getOrderDate()==null){
+            myviewholder.morderdate.setText("-");
+        }else {
+            SimpleDateFormat datefor = new SimpleDateFormat("dd-MMMM-yyyy", Locale.getDefault());
+            String estima = addFoclistitem.get(i).getOrderDate();
+            String estimadate = "";
+            try {
+
+                estimadate = datefor.format(simpleDateFormat.parse(estima));
+                System.out.println(estimadate);
+                Log.e((String)"Date", (String)estimadate);
+                myviewholder.morderdate.setText(estimadate);
+            }
+            catch (ParseException parseException) {
+                parseException.printStackTrace();
+            }
+
+        }
+        if (addFoclistitem.get(i).getInstallDate()==null){
+            myviewholder.minstalldate.setText("-");
+        }else {
+            if (addFoclistitem.get(i).getInstallDate().length()<19){
+                myviewholder.minstalldate.setText(addFoclistitem.get(i).getInstallDate());
+            }else {
+                SimpleDateFormat datefor = new SimpleDateFormat("dd-MMMM-yyyy", Locale.getDefault());
+                String estima = addFoclistitem.get(i).getInstallDate();
+                String estimadate2 = "";
+                try {
+
+                    estimadate2 = datefor.format(simpleDateFormat.parse(estima));
+                    System.out.println(estimadate2);
+                    Log.e((String)"Date", (String)estimadate2);
+                    myviewholder.minstalldate.setText(estimadate2);
+                }
+                catch (ParseException parseException) {
+                    parseException.printStackTrace();
+                }
+            }
+
+
+
+
+        }
+
+        myviewholder.mcaseid.setText(addFoclistitem.get(i).getCaseID());
+        myviewholder.mreason.setText(addFoclistitem.get(i).getReason());
+        myviewholder.mqtysper.setText(String.valueOf(addFoclistitem.get(i).getQuantity()));
         myviewholder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                stsedit = addFoclistitem.get(i).isStsAllowEdit();
+                dateedit = addFoclistitem.get(i).isStsAllowUpdateInstallDate();
+                namaitemedit=addFoclistitem.get(i).getName();
+                qtyedit=addFoclistitem.get(i).getQuantity();
+                reasonedit=addFoclistitem.get(i).getReason();
+                caseidedit=addFoclistitem.get(i).getCaseID();
+                installdateedit=addFoclistitem.get(i).getInstallDate();
+                orderdatedit = addFoclistitem.get(i).getOrderDate();
+                posedit = i;
 //                msparenaem.setText(addFoclistitem.get(i).getName());
 //                dialog.dismiss();
+//                if (addFoclistitem.get(i).isStsAllowEdit()){
+//
+//                }
+                if (addFoclistitem.get(i).isStsAllowUpdateInstallDate()){
+
+                } dialogspar();
             }
         });
         myviewholder.mdelete.setOnClickListener(new View.OnClickListener() {
@@ -141,16 +268,235 @@ extends RecyclerView.Adapter<SendSparepart_adapter.Myviewholder> {
     public static class Myviewholder extends RecyclerView.ViewHolder{
 
         TextView mnamespar;
-        ImageView mdelete;
-        TextView mno,mcd;
+        ImageView mdelete,mdelete2;
+        TextView mno,mcd,morderdate,minstalldate;
+        TextView mqtysper,mreason,mcaseid;
         public Myviewholder(@NonNull View itemView) {
             super(itemView);
             mnamespar = itemView.findViewById(R.id.namespar);
             mdelete = itemView.findViewById(R.id.deletelist);
+            mdelete2 = itemView.findViewById(R.id.deletelist2);
             mno = itemView.findViewById(R.id.nospart);
             mcd = itemView.findViewById(R.id.codecd);
+            morderdate = itemView.findViewById(R.id.orderdate);
+            minstalldate = itemView.findViewById(R.id.installdate);
+            mqtysper = itemView.findViewById(R.id.qtysper);
+            mreason = itemView.findViewById(R.id.reason);
+            mcaseid = itemView.findViewById(R.id.caseid);
+        }
+    }
+    @SuppressLint("WrongConstant")
+    public void dialogspar(){
+        dialogedit = new Dialog(   context);
+        dialogedit.setContentView(R.layout.dialogspar2);
+//        dialog.setTitle("Title...");
+
+        // set the custom dialog components - text, image and button
+//        msearch = dialog.findViewById(R.id.searchitem);
+//        mpartlist = dialog.findViewById(R.id.listadditemfoc);
+        mnamesparedit = dialogedit.findViewById(R.id.namespar);
+//        mqtysperedit2 = dialogedit.findViewById(R.id.qtysper2);
+        mqtysperedit = dialogedit.findViewById(R.id.qtysper);
+        mreasonedit = dialogedit.findViewById(R.id.reason);
+//        mreasonedit2 = dialogedit.findViewById(R.id.reason2);
+        mcaseidedit = dialogedit.findViewById(R.id.caseid);
+//        mcaseidedit2 = dialogedit.findViewById(R.id.caseid2);
+        morderdateedit = dialogedit.findViewById(R.id.orderdate);
+        minstalldateedit = dialogedit.findViewById(R.id.installdate);
+        minstalldateedit2 = dialogedit.findViewById(R.id.installdate2);
+        mupdateeditedit = dialogedit.findViewById(R.id.updateedit);
+        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateLabel();
+            }
+
+        };
+
+        minstalldateedit2.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                new DatePickerDialog(context, date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+        if (stsedit){
+            mqtysperedit.setEnabled(true);
+//            mreasonedit.setEnabled(true);
+//            mcaseidedit.setEnabled(true);
+//            mqtysperedit2.setVisibility(View.GONE);
+//            mqtysperedit.setVisibility(View.VISIBLE);
+//
+//            mreasonedit2.setVisibility(View.GONE);
+//            mreasonedit.setVisibility(View.VISIBLE);
+//
+//            mcaseidedit2.setVisibility(View.GONE);
+//            mcaseidedit.setVisibility(View.VISIBLE);
+
+        }else {
+            mqtysperedit.setEnabled(false);
+//            mreasonedit.setEnabled(false);
+//            mcaseidedit.setEnabled(false);
+
+//            mqtysperedit2.setVisibility(View.VISIBLE);
+//            mqtysperedit2.setTextColor(Color.parseColor("#6A6A6A"));
+//            mqtysperedit2.setText(String.valueOf(qtyedit));
+//            mqtysperedit.setVisibility(View.GONE);
+//
+//            mreasonedit2.setVisibility(View.VISIBLE);
+//            mreasonedit2.setTextColor(Color.parseColor("#6A6A6A"));
+//            mreasonedit2.setText(reasonedit);
+//            mreasonedit.setVisibility(View.GONE);
+//
+//            mcaseidedit2.setVisibility(View.VISIBLE);
+//            mcaseidedit2.setTextColor(Color.parseColor("#6A6A6A"));
+//
+//            mcaseidedit2.setText(reasonedit);
+//            mcaseidedit.setVisibility(View.GONE);
+
+        }if (dateedit){
+//            minstalldateedit.setBackground(ContextCompat.getDrawable(context,R.drawable.underline));
+        }else {
+            minstalldateedit2.setEnabled(false);
+        }
+        mnamesparedit.setText(namaitemedit);
+        mqtysperedit.setText(String.valueOf(qtyedit));
+        mcaseidedit.setText(caseidedit);
+        mreasonedit.setText(reasonedit);
+        if (orderdatedit==null){
+            morderdateedit.setText("-");
+        }else {
+            SimpleDateFormat datefor = new SimpleDateFormat("dd-MMMM-yyyy", Locale.getDefault());
+            String estima = orderdatedit;
+            String estimadate = "";
+            try {
+
+                estimadate = datefor.format(simpleDateFormat.parse(estima));
+                System.out.println(estimadate);
+                Log.e((String)"Date", (String)estimadate);
+//                myviewholder.morderdate.setText(estimadate);
+                morderdateedit.setText(estimadate);
+            }
+            catch (ParseException parseException) {
+                parseException.printStackTrace();
+            }
+//            morderdateedit.setText(orderdatedit);
+        }
+        if (installdateedit==null){
+            minstalldateedit.setText("-");
+        }else {
+            if (installdateedit.length()<19){
+                minstalldateedit.setText(installdateedit);
+//                myviewholder.minstalldate.setText(addFoclistitem.get(i).getInstallDate());
+            }else {
+                SimpleDateFormat datefor = new SimpleDateFormat("dd-MMMM-yyyy", Locale.getDefault());
+                String estima = installdateedit;
+                String estimadate2 = "";
+                try {
+
+                    estimadate2 = datefor.format(simpleDateFormat.parse(estima));
+                    System.out.println(estimadate2);
+                    Log.e((String)"Date", (String)estimadate2);
+                    minstalldateedit.setText(estimadate2);
+                }
+                catch (ParseException parseException) {
+                    parseException.printStackTrace();
+                }
+            }
 
         }
+
+
+
+        mqtysperedit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (mqtysperedit.length()>0){
+                    if (Integer.parseInt(mqtysperedit.getText().toString())>99){
+                        mqtysperedit.setText("99");
+                        Toast.makeText(context, "Qty maksimal 99", Toast.LENGTH_SHORT).show();
+                    }else {
+
+                    }
+                }
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().length() == 1 && s.toString().startsWith("0")) {
+                    s.clear();
+                }
+            }
+        });
+        mupdateeditedit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mqtysperedit.length()==0){
+                    Toast.makeText(context, "Qty tidak boleh kosong", Toast.LENGTH_SHORT).show();
+                }else {
+                    if (mqtysperedit.getText().toString().equals("0")){
+                        Toast.makeText(context, "Qty tidak boleh 0", Toast.LENGTH_SHORT).show();
+                    }else {
+                        addFoclistitem.get(posedit).setQuantity(Integer.parseInt(mqtysperedit.getText().toString()));
+                        addFoclistitem.get(posedit).setReason(mreasonedit.getText().toString());
+                        addFoclistitem.get(posedit).setCaseID(mcaseidedit.getText().toString());
+                        if (minstalldateedit.getText().toString().equals("-")) {
+                            addFoclistitem.get(posedit).setInstallDate(null);
+                        } else {
+                            if (dateedit) {
+                                addFoclistitem.get(posedit).setInstallDate(minstalldateedit.getText().toString());
+                            } else {
+
+                            }
+
+                        }
+
+
+                        sendsparepart_adapter = new SendSparepart_adapter(context, sendsparepart_items);
+                        msendpartlist.setAdapter(sendsparepart_adapter);
+                        Gson gson = new GsonBuilder().create();
+                        myCustomArray = gson.toJsonTree(sendsparepart_items).getAsJsonArray();
+                        jsonarayitem = myCustomArray.toString();
+                        dialogedit.dismiss();
+                    }
+//                    if (mreasonedit.length()==0){
+//                        Toast.makeText(context, "Reason tidak boleh kosong", Toast.LENGTH_SHORT).show();
+//
+//                    }else {
+//                        if (mcaseidedit.length()==0){
+//                            Toast.makeText(context, "CaseID tidak boleh kosong", Toast.LENGTH_SHORT).show();
+//
+//                        }else {
+//
+////                            Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+                }
+            }
+        });
+        dialogedit.show();
+    }
+    private void updateLabel() {
+        String myFormat = "dd-MMMM-yyyy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+        minstalldateedit.setText(sdf.format(myCalendar.getTime()));
     }
 }
 

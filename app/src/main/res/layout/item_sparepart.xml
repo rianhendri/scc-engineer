@@ -13,6 +13,7 @@
 			android:layout_height="wrap_content"
 			android:orientation="vertical">
 			<LinearLayout
+				android:visibility="gone"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:orientation="horizontal">
@@ -28,7 +29,7 @@
 					android:textSize="11dp"
 					android:text="CT354-01350"/>
 				<TextView
-					android:id="@+id/namespar"
+					android:id="@+id/namespara"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_marginLeft="8dp"
@@ -39,6 +40,85 @@
 					android:textSize="11dp"
 					android:text="[CT354-01360] - FAN ASSY. WIRED- INK UNIT"/>
 			</LinearLayout>
+			<LinearLayout
+				android:visibility="visible"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="horizontal"
+				android:paddingBottom="8dp"
+				android:gravity="center_vertical"
+				android:background="@color/dwhite">
+				<TextView
+					android:id="@+id/namespar"
+					android:layout_width="100dp"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="8dp"
+					android:layout_marginRight="4dp"
+					android:layout_marginTop="2dp"
+					android:layout_marginBottom="2dp"
+					android:fontFamily="@font/segoeui"
+					android:textSize="11dp"
+					android:layout_weight="1"
+					android:maxLines="10"
+					android:text=""
+					android:textColor="@color/black"/>
+				<EditText
+					android:id="@+id/qtysper"
+					android:layout_width="50dp"
+					android:inputType="number"
+					android:digits="0123456789"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="4dp"
+					android:layout_marginRight="8dp"
+					android:layout_marginTop="2dp"
+					android:layout_marginBottom="2dp"
+					android:fontFamily="@font/segoeui"
+					android:textSize="11dp"
+					android:gravity="center"
+					android:text=""
+					android:textColor="@color/black"/>
+				<EditText
+					android:visibility="gone"
+					android:id="@+id/reason"
+					android:layout_width="100dp"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="4dp"
+					android:layout_marginRight="8dp"
+					android:maxWidth="100dp"
+					android:layout_marginTop="2dp"
+					android:layout_marginBottom="2dp"
+					android:fontFamily="@font/segoeui"
+					android:textSize="11dp"
+					android:text=""
+					android:layout_weight="1"
+					android:maxLength="100"
+					android:textColor="@color/black"/>
+				<EditText
+					android:visibility="gone"
+					android:id="@+id/caseid"
+					android:layout_width="100dp"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="4dp"
+					android:layout_marginRight="8dp"
+					android:layout_marginTop="2dp"
+					android:layout_marginBottom="2dp"
+					android:fontFamily="@font/segoeui"
+					android:textSize="11dp"
+					android:text=""
+					android:maxWidth="100dp"
+					android:maxLength="100"
+					android:layout_weight="1"
+					android:textColor="@color/black"/>
+
+				<ImageView
+					android:id="@+id/edite"
+					android:layout_width="30dp"
+					android:layout_height="20dp"
+
+
+					android:src="@drawable/ic_plus2"
+					/>
+			</LinearLayout>
 			<View
 				android:layout_width="match_parent"
 				android:layout_height="1dp"
@@ -48,6 +128,7 @@
 				/>
 		</LinearLayout>
 	</LinearLayout>
+
 
 
 </LinearLayout>

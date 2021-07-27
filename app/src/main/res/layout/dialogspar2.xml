@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="320dp"
+	android:layout_height="390dp"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:background="@color/dwhite"
+	android:orientation="vertical"
+	android:padding="12dp"
+	android:focusableInTouchMode="true">
+
+<!--	<HorizontalScrollView-->
+<!--		android:layout_width="match_parent"-->
+<!--		android:layout_height="100dp">-->
+<!--		<LinearLayout-->
+<!--			android:layout_width="590dp"-->
+<!--			android:layout_height="wrap_content"-->
+<!--			android:orientation="vertical">-->
+<!--			<LinearLayout-->
+<!--				android:layout_width="match_parent"-->
+<!--				android:layout_height="wrap_content"-->
+<!--				android:orientation="horizontal"-->
+<!--				android:background="@color/green">-->
+<!--				<TextView-->
+<!--					android:id="@+id/codecd"-->
+<!--					android:layout_width="100dp"-->
+<!--					android:layout_height="wrap_content"-->
+<!--					android:layout_marginLeft="8dp"-->
+<!--					android:layout_marginRight="4dp"-->
+<!--					android:layout_marginTop="8dp"-->
+<!--					android:layout_marginBottom="8dp"-->
+<!--					android:fontFamily="@font/segoeui"-->
+<!--					android:textSize="11dp"-->
+<!--					android:layout_weight="1"-->
+<!--					android:text="Item"-->
+<!--					android:textColor="@color/dwhite"/>-->
+<!--				<TextView-->
+
+<!--					android:layout_width="30dp"-->
+<!--					android:layout_height="wrap_content"-->
+<!--					android:layout_marginLeft="4dp"-->
+<!--					android:layout_marginRight="8dp"-->
+<!--					android:layout_marginTop="8dp"-->
+<!--					android:layout_marginBottom="8dp"-->
+<!--					android:fontFamily="@font/segoeui"-->
+<!--					android:textSize="11dp"-->
+<!--					android:text="QTY "-->
+<!--					android:textColor="@color/dwhite"/>-->
+
+<!--				<TextView-->
+
+<!--					android:layout_width="100dp"-->
+<!--					android:layout_height="wrap_content"-->
+<!--					android:layout_marginLeft="4dp"-->
+<!--					android:layout_marginRight="8dp"-->
+<!--					android:maxWidth="100dp"-->
+<!--					android:layout_marginTop="8dp"-->
+<!--					android:layout_marginBottom="8dp"-->
+<!--					android:fontFamily="@font/segoeui"-->
+<!--					android:textSize="11dp"-->
+<!--					android:text="Reason"-->
+<!--					android:layout_weight="1"-->
+<!--					android:textColor="@color/dwhite"/>-->
+<!--				<TextView-->
+
+<!--					android:layout_width="100dp"-->
+<!--					android:layout_height="wrap_content"-->
+<!--					android:layout_marginLeft="4dp"-->
+<!--					android:layout_marginRight="8dp"-->
+<!--					android:layout_marginTop="8dp"-->
+<!--					android:layout_marginBottom="8dp"-->
+<!--					android:fontFamily="@font/segoeui"-->
+<!--					android:textSize="11dp"-->
+<!--					android:text="Case ID"-->
+<!--					android:maxWidth="100dp"-->
+<!--					android:layout_weight="1"-->
+<!--					android:textColor="@color/dwhite"/>-->
+<!--				<TextView-->
+
+<!--					android:layout_width="120dp"-->
+<!--					android:layout_height="wrap_content"-->
+<!--					android:layout_marginLeft="4dp"-->
+<!--					android:layout_marginRight="8dp"-->
+<!--					android:layout_marginTop="8dp"-->
+<!--					android:layout_marginBottom="8dp"-->
+<!--					android:fontFamily="@font/segoeui"-->
+<!--					android:textSize="11dp"-->
+<!--					android:text="Order date"-->
+<!--					android:maxWidth="100dp"-->
+<!--					android:layout_weight="1"-->
+<!--					android:textColor="@color/dwhite"/>-->
+
+<!--				<TextView-->
+
+<!--					android:layout_width="120dp"-->
+<!--					android:layout_height="wrap_content"-->
+<!--					android:layout_marginLeft="4dp"-->
+<!--					android:layout_marginTop="8dp"-->
+<!--					android:layout_marginRight="8dp"-->
+<!--					android:layout_marginBottom="8dp"-->
+<!--					android:layout_weight="1"-->
+<!--					android:fontFamily="@font/segoeui"-->
+<!--					android:maxWidth="100dp"-->
+<!--					android:text="Install date"-->
+<!--					android:textColor="@color/dwhite"-->
+<!--					android:textSize="11dp" />-->
+
+<!--				<ImageView-->
+<!--					android:id="@+id/edite"-->
+<!--					android:layout_width="100dp"-->
+<!--					android:layout_height="15dp"-->
+
+
+
+<!--					/>-->
+<!--			</LinearLayout>-->
+<!--			<LinearLayout-->
+<!--				android:visibility="visible"-->
+<!--				android:layout_width="match_parent"-->
+<!--				android:layout_height="wrap_content"-->
+<!--				android:orientation="horizontal"-->
+<!--				android:paddingBottom="8dp"-->
+<!--				android:gravity="center_vertical"-->
+<!--				android:background="@color/dwhite">-->
+<!--				<TextView-->
+<!--					android:id="@+id/namespar"-->
+<!--					android:layout_width="100dp"-->
+<!--					android:layout_height="wrap_content"-->
+<!--					android:layout_marginLeft="8dp"-->
+<!--					android:layout_marginRight="4dp"-->
+<!--					android:layout_marginTop="2dp"-->
+<!--					android:layout_marginBottom="2dp"-->
+<!--					android:fontFamily="@font/segoeui"-->
+<!--					android:textSize="11dp"-->
+<!--					android:layout_weight="1"-->
+<!--					android:maxLines="10"-->
+<!--					android:text=" "-->
+<!--					android:textColor="@color/black"/>-->
+<!--				<EditText-->
+<!--					android:id="@+id/qtysper"-->
+<!--					android:layout_width="30dp"-->
+<!--					android:inputType="number"-->
+<!--					android:enabled="true"-->
+<!--					android:layout_height="wrap_content"-->
+<!--					android:layout_marginLeft="4dp"-->
+<!--					android:layout_marginRight="8dp"-->
+<!--					android:layout_marginTop="2dp"-->
+<!--					android:layout_marginBottom="2dp"-->
+<!--					android:fontFamily="@font/segoeui"-->
+<!--					android:textSize="11dp"-->
+<!--					android:gravity="center"-->
+<!--					android:text=" "-->
+<!--					android:textColor="@color/black"/>-->
+<!--				<TextView-->
+<!--					android:id="@+id/qtysper2"-->
+<!--					android:visibility="gone"-->
+<!--					android:layout_width="30dp"-->
+<!--					android:inputType="number"-->
+<!--					android:enabled="true"-->
+<!--					android:layout_height="wrap_content"-->
+<!--					android:layout_marginLeft="4dp"-->
+<!--					android:layout_marginRight="8dp"-->
+<!--					android:layout_marginTop="2dp"-->
+<!--					android:layout_marginBottom="2dp"-->
+<!--					android:fontFamily="@font/segoeui"-->
+<!--					android:textSize="11dp"-->
+<!--					android:gravity="center"-->
+<!--					android:text=" "-->
+<!--					android:textColor="@color/black"/>-->
+<!--				<EditText-->
+<!--					android:id="@+id/reason"-->
+<!--					android:layout_width="100dp"-->
+<!--					android:layout_height="wrap_content"-->
+<!--					android:layout_marginLeft="4dp"-->
+<!--					android:layout_marginRight="8dp"-->
+<!--					android:maxWidth="100dp"-->
+<!--					android:enabled="true"-->
+<!--					android:layout_marginTop="2dp"-->
+<!--					android:layout_marginBottom="2dp"-->
+<!--					android:fontFamily="@font/segoeui"-->
+<!--					android:textSize="11dp"-->
+<!--					android:text=" "-->
+<!--					android:layout_weight="1"-->
+<!--					android:maxLength="100"-->
+<!--					android:textColor="@color/black"/>-->
+<!--				<TextView-->
+<!--					android:id="@+id/reason2"-->
+<!--					android:layout_width="100dp"-->
+<!--					android:layout_height="wrap_content"-->
+<!--					android:layout_marginLeft="4dp"-->
+<!--					android:layout_marginRight="8dp"-->
+<!--					android:visibility="gone"-->
+<!--					android:maxWidth="100dp"-->
+<!--					android:enabled="true"-->
+<!--					android:layout_marginTop="2dp"-->
+<!--					android:layout_marginBottom="2dp"-->
+<!--					android:fontFamily="@font/segoeui"-->
+<!--					android:textSize="11dp"-->
+<!--					android:text=" "-->
+<!--					android:layout_weight="1"-->
+<!--					android:maxLength="100"-->
+<!--					android:textColor="@color/black"/>-->
+<!--				<EditText-->
+<!--					android:id="@+id/caseid"-->
+<!--					android:layout_width="100dp"-->
+<!--					android:layout_height="wrap_content"-->
+<!--					android:layout_marginLeft="4dp"-->
+<!--					android:layout_marginRight="8dp"-->
+<!--					android:layout_marginTop="2dp"-->
+<!--					android:layout_marginBottom="2dp"-->
+<!--					android:enabled="true"-->
+<!--					android:fontFamily="@font/segoeui"-->
+<!--					android:textSize="11dp"-->
+<!--					android:text=" "-->
+<!--					android:maxWidth="100dp"-->
+<!--					android:maxLength="100"-->
+<!--					android:layout_weight="1"-->
+<!--					android:textColor="@color/black"/>-->
+<!--				<TextView-->
+<!--					android:id="@+id/caseid2"-->
+<!--					android:layout_width="100dp"-->
+<!--					android:layout_height="wrap_content"-->
+<!--					android:layout_marginLeft="4dp"-->
+<!--					android:layout_marginRight="8dp"-->
+<!--					android:layout_marginTop="2dp"-->
+<!--					android:layout_marginBottom="2dp"-->
+<!--					android:enabled="true"-->
+<!--					android:visibility="gone"-->
+<!--					android:fontFamily="@font/segoeui"-->
+<!--					android:textSize="11dp"-->
+<!--					android:text=" "-->
+<!--					android:maxWidth="100dp"-->
+<!--					android:maxLength="100"-->
+<!--					android:layout_weight="1"-->
+<!--					android:textColor="@color/black"/>-->
+<!--				<TextView-->
+<!--					android:id="@+id/orderdate"-->
+<!--					android:layout_width="120dp"-->
+<!--					android:layout_height="wrap_content"-->
+<!--					android:layout_marginLeft="4dp"-->
+<!--					android:layout_marginRight="8dp"-->
+<!--					android:layout_marginTop="2dp"-->
+<!--					android:layout_marginBottom="2dp"-->
+<!--					android:fontFamily="@font/segoeui"-->
+<!--					android:textSize="11dp"-->
+<!--					android:text="30-september-2021"-->
+<!--					android:maxWidth="120dp"-->
+<!--					android:maxLength="100"-->
+<!--					android:layout_weight="1"-->
+<!--					android:textColor="@color/black"/>-->
+<!--				<TextView-->
+<!--					android:id="@+id/installdate"-->
+<!--					android:layout_width="120dp"-->
+<!--					android:layout_height="wrap_content"-->
+<!--					android:layout_marginLeft="4dp"-->
+<!--					android:layout_marginRight="8dp"-->
+<!--					android:layout_marginTop="2dp"-->
+<!--					android:layout_marginBottom="2dp"-->
+<!--					android:fontFamily="@font/segoeui"-->
+<!--					android:textSize="11dp"-->
+<!--					android:text="30-September-2021"-->
+<!--					android:maxWidth="120dp"-->
+<!--					android:maxLength="100"-->
+<!--					android:layout_weight="1"-->
+<!--					android:textColor="@color/black"/>-->
+<!--				<LinearLayout-->
+<!--					android:id="@+id/updateedit"-->
+<!--					android:layout_marginRight="12dp"-->
+<!--					android:layout_width="100dp"-->
+<!--					android:layout_height="30dp"-->
+<!--					android:background="@drawable/bg_cornergrey"-->
+<!--					android:gravity="center" >-->
+
+<!--					<TextView-->
+<!--						android:layout_width="wrap_content"-->
+<!--						android:layout_height="wrap_content"-->
+<!--						android:fontFamily="@font/segoeui"-->
+<!--						android:text="Update"-->
+<!--						android:textColor="@color/black"-->
+<!--						android:textSize="13sp" />-->
+<!--				</LinearLayout>-->
+<!--			</LinearLayout>-->
+
+<!--		</LinearLayout>-->
+<!--	</HorizontalScrollView>-->
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical" >
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:fontFamily="@font/seguisb"
+			android:paddingLeft="4dp"
+			android:text="Item:"
+			android:textColor="@color/black"
+			android:textSize="12sp" />
+
+		<TextView
+			android:id="@+id/namespar"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:enabled="false"
+			android:fontFamily="@font/segoeui"
+			android:paddingLeft="4dp"
+			android:text="-"
+			android:textColor="@color/black"
+			android:textSize="13sp" />
+
+		<View
+			android:layout_width="match_parent"
+			android:layout_height="1dp"
+			android:layout_margin="4dp"
+			android:background="@color/softgrey" />
+	</LinearLayout>
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical" >
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:fontFamily="@font/seguisb"
+			android:paddingLeft="4dp"
+			android:text="Qty:"
+			android:textColor="@color/black"
+			android:textSize="12sp" />
+
+		<EditText
+			android:id="@+id/qtysper"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:fontFamily="@font/segoeui"
+			android:paddingLeft="4dp"
+			android:inputType="number"
+			android:digits="0123456789"
+			android:text="-"
+			android:background="@color/transparent"
+			android:textColor="@color/black"
+			android:textSize="13sp" />
+
+		<View
+			android:layout_width="match_parent"
+			android:layout_height="1dp"
+			android:layout_margin="4dp"
+			android:background="@color/softgrey" />
+	</LinearLayout>
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical" >
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:fontFamily="@font/seguisb"
+			android:paddingLeft="4dp"
+			android:text="Reason:"
+			android:textColor="@color/black"
+			android:textSize="12sp" />
+
+		<EditText
+			android:id="@+id/reason"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:fontFamily="@font/segoeui"
+			android:paddingLeft="4dp"
+			android:text="-"
+			android:maxLength="100"
+			android:background="@color/transparent"
+			android:textColor="@color/black"
+			android:textSize="13sp" />
+
+		<View
+			android:layout_width="match_parent"
+			android:layout_height="1dp"
+			android:layout_margin="4dp"
+			android:background="@color/softgrey" />
+	</LinearLayout>
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical" >
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:fontFamily="@font/seguisb"
+			android:paddingLeft="4dp"
+			android:text="Case ID:"
+			android:textColor="@color/black"
+			android:textSize="12sp" />
+
+		<EditText
+			android:id="@+id/caseid"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:fontFamily="@font/segoeui"
+			android:paddingLeft="4dp"
+			android:text="-"
+			android:maxLength="15"
+			android:background="@color/transparent"
+			android:textColor="@color/black"
+			android:textSize="13sp" />
+
+		<View
+			android:layout_width="match_parent"
+			android:layout_height="1dp"
+			android:layout_margin="4dp"
+			android:background="@color/softgrey" />
+	</LinearLayout>
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical" >
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:fontFamily="@font/seguisb"
+			android:paddingLeft="4dp"
+			android:text="Order date:"
+			android:textColor="@color/black"
+			android:textSize="12sp" />
+
+		<TextView
+			android:id="@+id/orderdate"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:enabled="false"
+			android:fontFamily="@font/segoeui"
+			android:paddingLeft="4dp"
+			android:text="-"
+			android:textColor="@color/black"
+			android:textSize="13sp" />
+
+		<View
+			android:layout_width="match_parent"
+			android:layout_height="1dp"
+			android:layout_margin="4dp"
+			android:background="@color/softgrey" />
+	</LinearLayout>
+	<LinearLayout
+		android:id="@+id/installdate2"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical" >
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:fontFamily="@font/seguisb"
+			android:paddingLeft="4dp"
+			android:text="Install date:"
+			android:textColor="@color/black"
+			android:textSize="12sp" />
+
+		<TextView
+			android:id="@+id/installdate"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:enabled="false"
+			android:fontFamily="@font/segoeui"
+			android:paddingLeft="4dp"
+			android:text="-"
+			android:background="@color/transparent"
+			android:textColor="@color/black"
+			android:textSize="13sp" />
+
+		<View
+			android:layout_width="match_parent"
+			android:layout_height="1dp"
+			android:layout_margin="4dp"
+			android:background="@color/softgrey" />
+	</LinearLayout>
+	<LinearLayout
+		android:layout_marginTop="24dp"
+		android:id="@+id/updateedit"
+		android:layout_marginRight="12dp"
+		android:layout_width="match_parent"
+		android:layout_height="30dp"
+		android:background="@drawable/bg_cornergrey"
+		android:gravity="center" >
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:fontFamily="@font/segoeui"
+			android:text="Update"
+			android:textColor="@color/black"
+			android:textSize="13sp" />
+	</LinearLayout>
+	</LinearLayout>

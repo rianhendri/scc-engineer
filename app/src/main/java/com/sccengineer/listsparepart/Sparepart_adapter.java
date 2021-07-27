@@ -32,13 +32,18 @@ package com.sccengineer.listsparepart;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.text.method.DigitsKeyListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -98,45 +103,72 @@ extends RecyclerView.Adapter<Sparepart_adapter.Myviewholder> {
             @SuppressLint("WrongConstant")
             @Override
             public void onClick(View v) {
-                msendpartlist.setVisibility(View.VISIBLE);
-//                msparenaem.setText(addFoclistitem.get(i).getName());
-//                linearLayoutManager2 = new LinearLayoutManager(context, LinearLayout.VERTICAL,false);
-//                msendpartlist.setLayoutManager(linearLayoutManager2);
-//                msendpartlist.setHasFixedSize(true);
-//                sendsparepart_items = new ArrayList();
-                tambahpart = new SendSparepart_item();
-                tambahpart.setName(addFoclistitem.get(i).getName());
-                tambahpart.setSparePartCodeAndName(addFoclistitem.get(i).getSparePartCodeAndName());
-                tambahpart.setSparePartCd(addFoclistitem.get(i).getSparePartCd());
-                listpoact.add(tambahpart);
+                if (myviewholder.mqtysper.length()==0){
+                    Toast.makeText(context, "Qty tidak boleh kosong", Toast.LENGTH_SHORT).show();
+                }else {
+                    if (myviewholder.mqtysper.getText().toString().equals("0")){
+                        Toast.makeText(context, "Qty tidak boleh 0", Toast.LENGTH_SHORT).show();
+                    }else {
+                        msendpartlist.setVisibility(View.VISIBLE);
+                        tambahpart = new SendSparepart_item();
+                        tambahpart.setName(addFoclistitem.get(i).getName());
+                        tambahpart.setSparePartCodeAndName(addFoclistitem.get(i).getSparePartCodeAndName());
+                        tambahpart.setSparePartCd(addFoclistitem.get(i).getSparePartCd());
+                        tambahpart.setInstallDate(null);
+                        tambahpart.setOrderDate(null);
+                        tambahpart.setStsAllowEdit(true);
+                        tambahpart.setStsAllowUpdateInstallDate(true);
 
-//                for (int i = 0; i < listpoact.size(); i++) {
-//                    for (int j = i + 1; j < listpoact.size(); j++) {
-//                        if (listpoact.get(i).getSparePartCd().equals(listpoact.get(j).getSparePartCd())) {
-////                    listpoact.get(i).setQuantity(listpoact.get(j).getQuantity());
-////                    listpoact.get(i).setHarga(listpoact.get(j).getHarga());
-//                            listpoact.remove(j);
-//                            j--;
-////                    Log.d("remove", String.valueOf(cartModels.size()));
-//
-//                        }
-//                    }
-//
-//                }
+                        tambahpart.setCaseID(myviewholder.mcaseid.getText().toString());
+                        tambahpart.setReason(myviewholder.mreason.getText().toString());
+                        tambahpart.setQuantity(Integer.parseInt(myviewholder.mqtysper.getText().toString()));
 
-                sendsparepart_items.addAll(listpoact);
-                Gson gson = new GsonBuilder().create();
-                myCustomArray = gson.toJsonTree(sendsparepart_items).getAsJsonArray();
-                jsonarayitem = myCustomArray.toString();
+                        listpoact.add(tambahpart);
+                        sendsparepart_items.addAll(listpoact);
+                        Gson gson = new GsonBuilder().create();
+                        myCustomArray = gson.toJsonTree(sendsparepart_items).getAsJsonArray();
+                        jsonarayitem = myCustomArray.toString();
 
-                listpoact.clear();
-                Log.d("sizecart_11", String.valueOf(sendsparepart_items.size()));
-                Log.d("sizecart_22", String.valueOf(jsonarayitem));
+                        listpoact.clear();
+                        Log.d("sizecart_11", String.valueOf(sendsparepart_items.size()));
+                        Log.d("sizecart_22", String.valueOf(jsonarayitem));
 ////////////////////// adapter di masukan ke recyler//
-                sendsparepart_adapter = new SendSparepart_adapter(context, sendsparepart_items);
-                msendpartlist.setAdapter(sendsparepart_adapter);
-                dialog.dismiss();
+                        sendsparepart_adapter = new SendSparepart_adapter(context, sendsparepart_items);
+                        msendpartlist.setAdapter(sendsparepart_adapter);
+                        dialog.dismiss();
+                    }
 
+                }
+
+
+            }
+        });
+        myviewholder.mqtysper.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                if (myviewholder.mqtysper.length()>0){
+
+                    if (Integer.parseInt(myviewholder.mqtysper.getText().toString())>99){
+                        myviewholder.mqtysper.setText("99");
+                        Toast.makeText(context, "Qty maksimal 99", Toast.LENGTH_SHORT).show();
+                    }else {
+
+                    }
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().length() == 1 && s.toString().startsWith("0")) {
+                    s.clear();
+                }
             }
         });
     }
@@ -154,11 +186,15 @@ extends RecyclerView.Adapter<Sparepart_adapter.Myviewholder> {
     public static class Myviewholder extends RecyclerView.ViewHolder{
 
         TextView mnamespar,mno,mcd;
+        EditText mqtysper,mreason,mcaseid;
 
         public Myviewholder(@NonNull View itemView) {
             super(itemView);
             mnamespar = itemView.findViewById(R.id.namespar);
             mcd = itemView.findViewById(R.id.codecd);
+            mqtysper = itemView.findViewById(R.id.qtysper);
+            mreason = itemView.findViewById(R.id.reason);
+            mcaseid = itemView.findViewById(R.id.caseid);
 
         }
     }

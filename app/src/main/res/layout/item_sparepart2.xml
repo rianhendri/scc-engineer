@@ -5,6 +5,7 @@
 	android:layout_height="wrap_content"
 	android:orientation="vertical" >
 	<LinearLayout
+		android:visibility="gone"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:orientation="horizontal">
@@ -40,7 +41,7 @@
 					android:textSize="11dp"
 					android:text="CT354-01350"/>
 				<TextView
-					android:id="@+id/namespar"
+					android:id="@+id/namesparq"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_marginLeft="8dp"
@@ -61,7 +62,7 @@
 				/>
 		</LinearLayout>
 		<ImageView
-			android:id="@+id/deletelist"
+			android:id="@+id/deletelista"
 			android:layout_width="35dp"
 			android:layout_height="match_parent"
 			android:layout_weight="1"
@@ -69,6 +70,126 @@
 			android:src="@drawable/ic_trash"
 			android:textSize="12sp" />
 	</LinearLayout>
+	<LinearLayout
+		android:visibility="visible"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:paddingBottom="8dp"
+		android:paddingTop="8dp"
+		android:gravity="center_vertical"
+		android:background="@color/dwhite">
+		<TextView
+			android:id="@+id/namespar"
+			android:layout_width="100dp"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="8dp"
+			android:layout_marginRight="4dp"
+			android:layout_marginTop="2dp"
+			android:layout_marginBottom="2dp"
+			android:fontFamily="@font/segoeui"
+			android:textSize="11dp"
+			android:layout_weight="1"
+			android:maxLines="10"
+			android:text=" "
+			android:textColor="@color/black"/>
+		<TextView
+			android:id="@+id/qtysper"
+			android:layout_width="30dp"
+			android:inputType="number"
+			android:enabled="false"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="4dp"
+			android:layout_marginRight="8dp"
+			android:layout_marginTop="2dp"
+			android:layout_marginBottom="2dp"
+			android:fontFamily="@font/segoeui"
+			android:textSize="11dp"
+			android:gravity="center"
+			android:text=" "
+			android:background="@drawable/underline"
+			android:textColor="@color/black"/>
+		<TextView
+			android:id="@+id/reason"
+			android:layout_width="100dp"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="4dp"
+			android:layout_marginRight="8dp"
+			android:maxWidth="100dp"
+			android:enabled="false"
+			android:layout_marginTop="2dp"
+			android:layout_marginBottom="2dp"
+			android:fontFamily="@font/segoeui"
+			android:textSize="11dp"
+			android:background="@drawable/underline"
+			android:text=" "
+			android:layout_weight="1"
+			android:maxLength="100"
+			android:textColor="@color/black"/>
+		<TextView
+			android:id="@+id/caseid"
+			android:layout_width="100dp"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="4dp"
+			android:layout_marginRight="8dp"
+			android:layout_marginTop="2dp"
+			android:layout_marginBottom="2dp"
+			android:enabled="false"
+			android:fontFamily="@font/segoeui"
+			android:textSize="11dp"
+			android:text=" "
+			android:maxWidth="100dp"
+			android:maxLength="100"
+			android:layout_weight="1"
+			android:background="@drawable/underline"
+			android:textColor="@color/black"/>
+		<TextView
+			android:id="@+id/orderdate"
+			android:layout_width="120dp"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="4dp"
+			android:layout_marginRight="8dp"
+			android:layout_marginTop="2dp"
+			android:layout_marginBottom="2dp"
+			android:fontFamily="@font/segoeui"
+			android:textSize="11dp"
+			android:text="-"
+			android:maxWidth="120dp"
+			android:maxLength="100"
+			android:layout_weight="1"
+			android:textColor="@color/black"/>
+		<TextView
+			android:id="@+id/installdate"
+			android:layout_width="120dp"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="4dp"
+			android:layout_marginRight="8dp"
+			android:layout_marginTop="2dp"
+			android:layout_marginBottom="2dp"
+			android:fontFamily="@font/segoeui"
+			android:textSize="11dp"
+			android:text="-"
+			android:maxWidth="120dp"
+			android:maxLength="100"
+			android:enabled="false"
+			android:layout_weight="1"
+			android:background="@drawable/underline"
+			android:textColor="@color/black"/>
 
+		<ImageView
+		android:id="@+id/deletelist"
+		android:layout_width="30dp"
+		android:layout_height="15dp"
+
+
+		android:src="@drawable/ic_trash"
+		/>
+		<ImageView
+			android:id="@+id/deletelist2"
+			android:layout_width="30dp"
+			android:layout_height="15dp"
+
+			/>
+	</LinearLayout>
 
 </LinearLayout>

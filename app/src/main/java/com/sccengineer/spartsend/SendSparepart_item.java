@@ -17,13 +17,6 @@ public class SendSparepart_item {
     public SendSparepart_item() {
     }
 
-    public SendSparepart_item(String sparePartCodeAndName, String sparePartCd, String name, String sparePartName) {
-        SparePartCodeAndName = sparePartCodeAndName;
-        SparePartCd = sparePartCd;
-        Name = name;
-        SparePartName = sparePartName;
-    }
-
     public String getSparePartCodeAndName() {
         return SparePartCodeAndName;
     }
@@ -56,6 +49,62 @@ public class SendSparepart_item {
         SparePartName = sparePartName;
     }
 
+    public int getQuantity() {
+        return Quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        Quantity = quantity;
+    }
+
+    public String getReason() {
+        return Reason;
+    }
+
+    public void setReason(String reason) {
+        Reason = reason;
+    }
+
+    public String getCaseID() {
+        return CaseID;
+    }
+
+    public void setCaseID(String caseID) {
+        CaseID = caseID;
+    }
+
+    public String getInstallDate() {
+        return InstallDate;
+    }
+
+    public void setInstallDate(String installDate) {
+        InstallDate = installDate;
+    }
+
+    public String getOrderDate() {
+        return OrderDate;
+    }
+
+    public void setOrderDate(String orderDate) {
+        OrderDate = orderDate;
+    }
+
+    public boolean isStsAllowEdit() {
+        return StsAllowEdit;
+    }
+
+    public void setStsAllowEdit(boolean stsAllowEdit) {
+        StsAllowEdit = stsAllowEdit;
+    }
+
+    public boolean isStsAllowUpdateInstallDate() {
+        return StsAllowUpdateInstallDate;
+    }
+
+    public void setStsAllowUpdateInstallDate(boolean stsAllowUpdateInstallDate) {
+        StsAllowUpdateInstallDate = stsAllowUpdateInstallDate;
+    }
+
     @Expose
     @SerializedName("SparePartCodeAndName")
     private String SparePartCodeAndName;
@@ -69,12 +118,43 @@ public class SendSparepart_item {
     @SerializedName("SparePartName")
     private String SparePartName;
 
+    @Expose
+    @SerializedName("Quantity")
+    private int Quantity;
 
+    @Expose
+    @SerializedName("Reason")
+    private String Reason;
 
+    @Expose
+    @SerializedName("CaseID")
+    private String CaseID;
+    @Expose
+    @SerializedName("InstallDate")
+    private String InstallDate;
+    @Expose
+    @SerializedName("OrderDate")
+    private String OrderDate;
+    @Expose
+    @SerializedName("StsAllowEdit")
+    private boolean StsAllowEdit;
+    @Expose
+    @SerializedName("StsAllowUpdateInstallDate")
+    private boolean StsAllowUpdateInstallDate;
 
-
-
-
+    public SendSparepart_item(String sparePartCodeAndName, String sparePartCd, String name, String sparePartName, int quantity, String reason, String caseID, String installDate, String orderDate, boolean stsAllowEdit, boolean stsAllowUpdateInstallDate) {
+        SparePartCodeAndName = sparePartCodeAndName;
+        SparePartCd = sparePartCd;
+        Name = name;
+        SparePartName = sparePartName;
+        Quantity = quantity;
+        Reason = reason;
+        CaseID = caseID;
+        InstallDate = installDate;
+        OrderDate = orderDate;
+        StsAllowEdit = stsAllowEdit;
+        StsAllowUpdateInstallDate = stsAllowUpdateInstallDate;
+    }
 }
 
 

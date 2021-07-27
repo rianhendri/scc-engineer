@@ -412,7 +412,7 @@ public class DetailsST extends AppCompatActivity {
                         && ActivityCompat.checkSelfPermission(DetailsST.this
                         ,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     getCurrentLocation();
-                    showDialogreopen();
+//                    showDialogreopen();
                 }else {
                     ActivityCompat.requestPermissions(DetailsST.this
                             , new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
@@ -463,6 +463,7 @@ public class DetailsST extends AppCompatActivity {
 //                }
             }
         });
+        mcancleassg.setVisibility(View.GONE);
         mcancleassg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -875,7 +876,7 @@ private void DialogForm() {
                     JsonObject data = homedata.getAsJsonObject("data");
                     // cancle btn show
                     if (data.get("allowToCancel").getAsBoolean()){
-                        mcancleassg.setVisibility(View.VISIBLE);
+//                        mcancleassg.setVisibility(View.VISIBLE);
                         rolejson = data.getAsJsonArray("updatePanelCancellationStatusOptions");
                         for (int i = 0; i < rolejson.size(); ++i) {
                             JsonObject jsonObject3 = (JsonObject)rolejson.get(i);
@@ -903,10 +904,15 @@ private void DialogForm() {
                     }
 
                     // layoutsper
-                    if (data.get("updatePanelShowSparePart").getAsBoolean()){
+                    if (data.get("showSparePart").getAsBoolean()){
                         mlayoutsper.setVisibility(View.VISIBLE);
                     }else {
                         mlayoutsper.setVisibility(View.GONE);
+                    }
+                    if (data.get("allowToAddSparePart").getAsBoolean()){
+                        mspar.setVisibility(View.VISIBLE);
+                    }else {
+                        mspar.setVisibility(View.GONE);
                     }
 
 //                    inforeopen = data.get("allowToReopenCase").getAsBoolean();
@@ -1197,13 +1203,19 @@ private void DialogForm() {
                         });
                         //sparepartupdatepanel
                         mlalbeldate.setText(updatepanel.get("WaitingEstimationLabel").getAsString());
-                        myCustomArray = updatepanel.getAsJsonArray("SpareParts");
-                        Gson gson = new Gson();
-                        Type listType = new TypeToken<ArrayList<SendSparepart_item>>() {
-                        }.getType();
-                        sendsparepart_items = gson.fromJson(myCustomArray.toString(), listType);
-                        sendsparepart_adapter = new SendSparepart_adapter(DetailsST.this, sendsparepart_items);
-                        msendpartlist.setAdapter(sendsparepart_adapter);
+                        if (data.get("selectedSparePartList").toString().equals("null")){
+
+                        }else {
+                            myCustomArray = data.getAsJsonArray("selectedSparePartList");
+                            Gson gson = new Gson();
+                            Type listType = new TypeToken<ArrayList<SendSparepart_item>>() {
+                            }.getType();
+                            sendsparepart_items = gson.fromJson(myCustomArray.toString(), listType);
+                            sendsparepart_adapter = new SendSparepart_adapter(DetailsST.this, sendsparepart_items);
+                            msendpartlist.setAdapter(sendsparepart_adapter);
+                        }
+
+
                         //timer Update
 //                        usetimea = updatepanel.getAsString()
                         if (data.get("updatePanelUseTimer").getAsBoolean()){
@@ -1564,6 +1576,7 @@ private void DialogForm() {
 
             }
         });
+        Log.d("sperpartnya",jsonObject.toString());
     }
 //    public void cancelreq(){
 //        loading = ProgressDialog.show(DetailsFormActivity.this, "", getString(R.string.title_loading), true);
@@ -1717,7 +1730,7 @@ private void DialogForm() {
             }
         });
 
-        Log.d("jsonnya",jsonObject.toString());
+        Log.d("requpdate",jsonObject.toString());
     }
     public void getSessionId(){
 

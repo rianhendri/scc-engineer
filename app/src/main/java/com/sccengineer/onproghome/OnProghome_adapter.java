@@ -108,7 +108,7 @@ extends RecyclerView.Adapter<OnProghome_adapter.Myviewholder> {
                 Intent intent = new Intent(context, DetailsST.class);
                 intent.putExtra("home", "homes");
 //                intent.putExtra("id", (onProgHome_items.get(i).getFormRequestCd()));
-                intent.putExtra("noticket", (onProgHome_items.get(i)).getServiceTicketCd());
+                intent.putExtra("id", (onProgHome_items.get(i)).getServiceTicketCd());
                 intent.putExtra("pos", valuefilter);
 //                intent.putExtra("user", onProgHome_items.get(i).getCreatedBy());
                 context.startActivity(intent);
