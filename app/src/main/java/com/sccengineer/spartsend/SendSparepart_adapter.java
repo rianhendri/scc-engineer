@@ -36,6 +36,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.text.method.DigitsKeyListener;
 import android.util.Log;
@@ -82,6 +83,8 @@ extends RecyclerView.Adapter<SendSparepart_adapter.Myviewholder> {
     String namaitemedit="";
     boolean dateedit = true;
     boolean stsedit = true;
+    String  statuspar = "";
+    String statuscolor="";
     String installdateedit="";
     String orderdatedit="";
     String caseidedit="";
@@ -89,7 +92,7 @@ extends RecyclerView.Adapter<SendSparepart_adapter.Myviewholder> {
     int qtyedit=0;
      Dialog dialogedit;
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
-    TextView mnamesparedit,mqtysperedit2,mcaseidedit2,mreasonedit2,morderdateedit,minstalldateedit;
+    TextView mnamesparedit,mqtysperedit2,mcaseidedit2,mreasonedit2,morderdateedit,minstalldateedit, mstatusedit;
     LinearLayout minstalldateedit2;
     final Calendar myCalendar = Calendar.getInstance();
     int posedit=0;
@@ -114,26 +117,23 @@ extends RecyclerView.Adapter<SendSparepart_adapter.Myviewholder> {
     @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(@NonNull Myviewholder myviewholder, int i) {
-        if (addFoclistitem.get(i).isStsAllowEdit()){
-////            myviewholder.mnamespar.setBackground(ContextCompat.getDrawable(context,R.drawable.underline));
-//            myviewholder.mcaseid.setBackground(ContextCompat.getDrawable(context,R.drawable.underline));
-//            myviewholder.mreason.setBackground(ContextCompat.getDrawable(context,R.drawable.underline));
-//            myviewholder.mqtysper.setBackground(ContextCompat.getDrawable(context,R.drawable.underline));
+        if (addFoclistitem.get(i).getStatusName().equals("-")){
+            myviewholder.mstatussper.setText("-");
+        }else {
+            myviewholder.mstatussper.setText(addFoclistitem.get(i).getStatusName());
+            myviewholder.mstatussper.setTextColor(Color.parseColor("#"+addFoclistitem.get(i).getStatusTextColor()));
+        }
+        if (addFoclistitem.get(i).isStsAllowDelete()){
             myviewholder.mdelete2.setVisibility(View.GONE);
             myviewholder.mdelete.setVisibility(View.VISIBLE);
         }else {
-////            myviewholder.mnamespar.setBackgroundColor(android.R.color.transparent);
-//
-//            myviewholder.mcaseid.setBackgroundColor(android.R.color.transparent);
-//            myviewholder.mcaseid.setTextColor(Color.parseColor("#6A6A6A"));
-//            myviewholder.mreason.setBackgroundColor(android.R.color.transparent);
-//            myviewholder.mreason.setTextColor(Color.parseColor("#6A6A6A"));
-//            myviewholder.mqtysper.setBackgroundColor(android.R.color.transparent);
-//            myviewholder.mqtysper.setTextColor(Color.parseColor("#6A6A6A"));wwwwwwwwwwwwwwwwwwwwwwssssssssssssssssssssssssssss
-//            myviewholder.morderdate.setTextColor(Color.parseColor("#6A6A6A"));
             myviewholder.mdelete.setVisibility(View.GONE);
             myviewholder.mdelete2.setVisibility(View.VISIBLE);
-//
+        }
+        if (addFoclistitem.get(i).isStsAllowEdit()){
+            myviewholder.mlayoutsperpart.setBackgroundColor(Color.parseColor("#ffffff"));
+        }else {
+            myviewholder.mlayoutsperpart.setBackgroundColor(Color.parseColor("#FFEFEFEF"));
         }
 
         if (addFoclistitem.get(i).isStsAllowUpdateInstallDate()){
@@ -146,7 +146,8 @@ extends RecyclerView.Adapter<SendSparepart_adapter.Myviewholder> {
         if (addFoclistitem.get(i).getSparePartName()!=null){
             addFoclistitem.get(i).setName(addFoclistitem.get(i).getSparePartName());
         }
-        myviewholder.mnamespar.setText(addFoclistitem.get(i).getName());
+        String s = "<b>"+addFoclistitem.get(i).getSparePartCd()+"</b>"+" ("+addFoclistitem.get(i).getName()+")";
+        myviewholder.mnamespar.setText(Html.fromHtml(s));
         myviewholder.mno.setText(String.valueOf(i+1));
         myviewholder.mcd.setText(addFoclistitem.get(i).getSparePartCd());
         if (addFoclistitem.get(i).getOrderDate()==null){
@@ -200,8 +201,15 @@ extends RecyclerView.Adapter<SendSparepart_adapter.Myviewholder> {
             @Override
             public void onClick(View v) {
                 stsedit = addFoclistitem.get(i).isStsAllowEdit();
+                if (addFoclistitem.get(i).getStatusName().equals("-")){
+                        statuspar="-";
+                }else {
+                    statuspar=addFoclistitem.get(i).getStatusName();
+                    statuscolor=addFoclistitem.get(i).getStatusTextColor();
+                }
+
                 dateedit = addFoclistitem.get(i).isStsAllowUpdateInstallDate();
-                namaitemedit=addFoclistitem.get(i).getName();
+                namaitemedit="<b>"+addFoclistitem.get(i).getSparePartCd()+"</b>"+" ("+addFoclistitem.get(i).getName()+")";
                 qtyedit=addFoclistitem.get(i).getQuantity();
                 reasonedit=addFoclistitem.get(i).getReason();
                 caseidedit=addFoclistitem.get(i).getCaseID();
@@ -210,12 +218,12 @@ extends RecyclerView.Adapter<SendSparepart_adapter.Myviewholder> {
                 posedit = i;
 //                msparenaem.setText(addFoclistitem.get(i).getName());
 //                dialog.dismiss();
-//                if (addFoclistitem.get(i).isStsAllowEdit()){
+                if (addFoclistitem.get(i).isStsAllowEdit()){
+                    dialogspar();
+                }
+//                if (addFoclistitem.get(i).isStsAllowUpdateInstallDate()){
 //
 //                }
-                if (addFoclistitem.get(i).isStsAllowUpdateInstallDate()){
-
-                } dialogspar();
             }
         });
         myviewholder.mdelete.setOnClickListener(new View.OnClickListener() {
@@ -266,16 +274,18 @@ extends RecyclerView.Adapter<SendSparepart_adapter.Myviewholder> {
     }
 
     public static class Myviewholder extends RecyclerView.ViewHolder{
-
+        LinearLayout mlayoutsperpart;
         TextView mnamespar;
         ImageView mdelete,mdelete2;
         TextView mno,mcd,morderdate,minstalldate;
-        TextView mqtysper,mreason,mcaseid;
+        TextView mqtysper,mreason,mcaseid,mstatussper;
         public Myviewholder(@NonNull View itemView) {
             super(itemView);
             mnamespar = itemView.findViewById(R.id.namespar);
+            mlayoutsperpart = itemView.findViewById(R.id.layoutsperpart);
             mdelete = itemView.findViewById(R.id.deletelist);
             mdelete2 = itemView.findViewById(R.id.deletelist2);
+            mstatussper = itemView.findViewById(R.id.statussper);
             mno = itemView.findViewById(R.id.nospart);
             mcd = itemView.findViewById(R.id.codecd);
             morderdate = itemView.findViewById(R.id.orderdate);
@@ -305,6 +315,7 @@ extends RecyclerView.Adapter<SendSparepart_adapter.Myviewholder> {
         minstalldateedit = dialogedit.findViewById(R.id.installdate);
         minstalldateedit2 = dialogedit.findViewById(R.id.installdate2);
         mupdateeditedit = dialogedit.findViewById(R.id.updateedit);
+        mstatusedit = dialogedit.findViewById(R.id.statusspernya);
         DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
             @Override
@@ -368,10 +379,18 @@ extends RecyclerView.Adapter<SendSparepart_adapter.Myviewholder> {
         }else {
             minstalldateedit2.setEnabled(false);
         }
-        mnamesparedit.setText(namaitemedit);
+        mnamesparedit.setText(Html.fromHtml(namaitemedit));
+//        mnamesparedit.setText(namaitemedit);
         mqtysperedit.setText(String.valueOf(qtyedit));
         mcaseidedit.setText(caseidedit);
         mreasonedit.setText(reasonedit);
+        if (statuspar.equals("-")){
+            mstatusedit.setText("-");
+        }else {
+            mstatusedit.setText(statuspar);
+            mstatusedit.setTextColor(Color.parseColor("#"+statuscolor));
+        }
+
         if (orderdatedit==null){
             morderdateedit.setText("-");
         }else {
@@ -453,39 +472,41 @@ extends RecyclerView.Adapter<SendSparepart_adapter.Myviewholder> {
                     if (mqtysperedit.getText().toString().equals("0")){
                         Toast.makeText(context, "Qty tidak boleh 0", Toast.LENGTH_SHORT).show();
                     }else {
-                        addFoclistitem.get(posedit).setQuantity(Integer.parseInt(mqtysperedit.getText().toString()));
-                        addFoclistitem.get(posedit).setReason(mreasonedit.getText().toString());
-                        addFoclistitem.get(posedit).setCaseID(mcaseidedit.getText().toString());
-                        if (minstalldateedit.getText().toString().equals("-")) {
-                            addFoclistitem.get(posedit).setInstallDate(null);
-                        } else {
-                            if (dateedit) {
-                                addFoclistitem.get(posedit).setInstallDate(minstalldateedit.getText().toString());
+                        if (mreasonedit.length()==0){
+                            Toast.makeText(context, "Reason tidak boleh kosong", Toast.LENGTH_SHORT).show();
+
+                        }else {
+                            addFoclistitem.get(posedit).setQuantity(Integer.parseInt(mqtysperedit.getText().toString()));
+                            addFoclistitem.get(posedit).setReason(mreasonedit.getText().toString());
+                            addFoclistitem.get(posedit).setCaseID(mcaseidedit.getText().toString());
+                            if (minstalldateedit.getText().toString().equals("-")) {
+                                addFoclistitem.get(posedit).setInstallDate(null);
                             } else {
+                                if (dateedit) {
+                                    addFoclistitem.get(posedit).setInstallDate(minstalldateedit.getText().toString());
+                                } else {
+
+                                }
 
                             }
 
+
+                            sendsparepart_adapter = new SendSparepart_adapter(context, sendsparepart_items);
+                            msendpartlist.setAdapter(sendsparepart_adapter);
+                            Gson gson = new GsonBuilder().create();
+                            myCustomArray = gson.toJsonTree(sendsparepart_items).getAsJsonArray();
+                            jsonarayitem = myCustomArray.toString();
+                            dialogedit.dismiss();
                         }
 
-
-                        sendsparepart_adapter = new SendSparepart_adapter(context, sendsparepart_items);
-                        msendpartlist.setAdapter(sendsparepart_adapter);
-                        Gson gson = new GsonBuilder().create();
-                        myCustomArray = gson.toJsonTree(sendsparepart_items).getAsJsonArray();
-                        jsonarayitem = myCustomArray.toString();
-                        dialogedit.dismiss();
                     }
-//                    if (mreasonedit.length()==0){
-//                        Toast.makeText(context, "Reason tidak boleh kosong", Toast.LENGTH_SHORT).show();
+
+//                    if (mcaseidedit.length()==0){
+//                        Toast.makeText(context, "CaseID tidak boleh kosong", Toast.LENGTH_SHORT).show();
 //
 //                    }else {
-//                        if (mcaseidedit.length()==0){
-//                            Toast.makeText(context, "CaseID tidak boleh kosong", Toast.LENGTH_SHORT).show();
-//
-//                        }else {
 //
 ////                            Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
-//                        }
 //                    }
                 }
             }

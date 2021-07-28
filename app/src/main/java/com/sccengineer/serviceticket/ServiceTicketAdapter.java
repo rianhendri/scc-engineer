@@ -390,22 +390,23 @@ extends RecyclerView.Adapter<ServiceTicketAdapter.Myviewholder> {
 //            }
 //        });
         linearLayoutManager1 = new LinearLayoutManager(context, LinearLayout.VERTICAL,false);
-        myviewholder.mlistspart.setLayoutManager(linearLayoutManager1);
-        myviewholder.mlistspart.setHasFixedSize(true);
+//        myviewholder.mlistspart.setLayoutManager(linearLayoutManager1);
+//        myviewholder.mlistspart.setHasFixedSize(true);
         listsparser = new ArrayList();
 //        Gson gson = new Gson();
 //        Type type = new TypeToken<ArrayList<STSendSparepart_item>>(){}.getType();
 //        listsparser = gson.fromJson(mjsonspar.toString(), type);
-        if (myItem.get(i).getStSendSparepart_items().toString().equals("[]")){
-            myviewholder.mlayoutspar.setVisibility(View.GONE);
-        }else {
-            ticketadapter = new STSendSparepart_adapter(context,myItem.get(i).getStSendSparepart_items());
-            myviewholder.mlistspart.setAdapter(ticketadapter);
-            myItem.get(i).getStSendSparepart_items();
-            myviewholder.mlayoutspar.setVisibility(View.VISIBLE);
-
-
-        }
+        //hide
+//        if (myItem.get(i).getStSendSparepart_items().toString().equals("[]")){
+//            myviewholder.mlayoutspar.setVisibility(View.GONE);
+//        }else {
+//            ticketadapter = new STSendSparepart_adapter(context,myItem.get(i).getStSendSparepart_items());
+//            myviewholder.mlistspart.setAdapter(ticketadapter);
+//            myItem.get(i).getStSendSparepart_items();
+//            myviewholder.mlayoutspar.setVisibility(View.VISIBLE);
+//
+//
+//        }
         linearLayoutManagertyp = new LinearLayoutManager(context, LinearLayout.VERTICAL,false);
         myviewholder.mtype.setLayoutManager(linearLayoutManagertyp);
         myviewholder.mtype.setHasFixedSize(true);
@@ -531,9 +532,9 @@ extends RecyclerView.Adapter<ServiceTicketAdapter.Myviewholder> {
 
             mchatclik = view.findViewById(R.id.chatclik);
             mlayouttypr = view.findViewById(R.id.layouttype);
-            mlistspart = view.findViewById(R.id.listsper);
+//            mlistspart = view.findViewById(R.id.listsper);
             mtype = view.findViewById(R.id.listtype);
-            mlayoutspar = view.findViewById(R.id.layoutspar);
+//            mlayoutspar = view.findViewById(R.id.layoutspar);
             mstatus = view.findViewById(R.id.statushistory);
             mservicetype = view.findViewById(R.id.servicetype);
             mread = view.findViewById(R.id.read);

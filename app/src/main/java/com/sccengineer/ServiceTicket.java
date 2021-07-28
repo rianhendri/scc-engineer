@@ -393,6 +393,7 @@ public class ServiceTicket extends AppCompatActivity {
 
             }
         });
+        Log.d("reqapilista",jsonObject.toString());
     }
     public void pagination(){
         mfooterload.setVisibility(View.VISIBLE);
@@ -604,6 +605,7 @@ public class ServiceTicket extends AppCompatActivity {
 //                loading.dismiss();
             }
         });
+        Log.d("reqapilist",jsonObject.toString());
 
     }
 }

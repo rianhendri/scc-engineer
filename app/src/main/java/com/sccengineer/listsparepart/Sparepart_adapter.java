@@ -33,6 +33,7 @@ package com.sccengineer.listsparepart;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.text.method.DigitsKeyListener;
 import android.util.Log;
@@ -96,7 +97,9 @@ extends RecyclerView.Adapter<Sparepart_adapter.Myviewholder> {
         if (addFoclistitem.get(i).getSparePartName()!=null){
             addFoclistitem.get(i).setName(addFoclistitem.get(i).getSparePartName());
         }
-        myviewholder.mnamespar.setText(addFoclistitem.get(i).getName());
+        String s = "<b>"+addFoclistitem.get(i).getSparePartCd()+"</b>"+" ("+addFoclistitem.get(i).getName()+")";
+        myviewholder.mnamespar.setText(Html.fromHtml(s));
+//        myviewholder.mnamespar.setText(addFoclistitem.get(i).getSparePartCd()+" ("+addFoclistitem.get(i).getName()+")");
 
         myviewholder.mcd.setText(addFoclistitem.get(i).getSparePartCd());
         myviewholder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -109,33 +112,40 @@ extends RecyclerView.Adapter<Sparepart_adapter.Myviewholder> {
                     if (myviewholder.mqtysper.getText().toString().equals("0")){
                         Toast.makeText(context, "Qty tidak boleh 0", Toast.LENGTH_SHORT).show();
                     }else {
-                        msendpartlist.setVisibility(View.VISIBLE);
-                        tambahpart = new SendSparepart_item();
-                        tambahpart.setName(addFoclistitem.get(i).getName());
-                        tambahpart.setSparePartCodeAndName(addFoclistitem.get(i).getSparePartCodeAndName());
-                        tambahpart.setSparePartCd(addFoclistitem.get(i).getSparePartCd());
-                        tambahpart.setInstallDate(null);
-                        tambahpart.setOrderDate(null);
-                        tambahpart.setStsAllowEdit(true);
-                        tambahpart.setStsAllowUpdateInstallDate(true);
+                        if (myviewholder.mreason.length()==0){
+                            Toast.makeText(context, "Reason tidak boleh kosong", Toast.LENGTH_SHORT).show();
 
-                        tambahpart.setCaseID(myviewholder.mcaseid.getText().toString());
-                        tambahpart.setReason(myviewholder.mreason.getText().toString());
-                        tambahpart.setQuantity(Integer.parseInt(myviewholder.mqtysper.getText().toString()));
+                        }else {
+                            msendpartlist.setVisibility(View.VISIBLE);
+                            tambahpart = new SendSparepart_item();
+                            tambahpart.setName(addFoclistitem.get(i).getName());
+                            tambahpart.setSparePartCodeAndName(addFoclistitem.get(i).getSparePartCodeAndName());
+                            tambahpart.setSparePartCd(addFoclistitem.get(i).getSparePartCd());
+                            tambahpart.setInstallDate(null);
+                            tambahpart.setOrderDate(null);
+                            tambahpart.setStsAllowEdit(true);
+                            tambahpart.setStsAllowUpdateInstallDate(true);
+                            tambahpart.setStsAllowDelete(true);
+                            tambahpart.setStatusName("-");
+                            tambahpart.setCaseID(myviewholder.mcaseid.getText().toString());
+                            tambahpart.setReason(myviewholder.mreason.getText().toString());
+                            tambahpart.setQuantity(Integer.parseInt(myviewholder.mqtysper.getText().toString()));
 
-                        listpoact.add(tambahpart);
-                        sendsparepart_items.addAll(listpoact);
-                        Gson gson = new GsonBuilder().create();
-                        myCustomArray = gson.toJsonTree(sendsparepart_items).getAsJsonArray();
-                        jsonarayitem = myCustomArray.toString();
+                            listpoact.add(tambahpart);
+                            sendsparepart_items.addAll(listpoact);
+                            Gson gson = new GsonBuilder().create();
+                            myCustomArray = gson.toJsonTree(sendsparepart_items).getAsJsonArray();
+                            jsonarayitem = myCustomArray.toString();
 
-                        listpoact.clear();
-                        Log.d("sizecart_11", String.valueOf(sendsparepart_items.size()));
-                        Log.d("sizecart_22", String.valueOf(jsonarayitem));
+                            listpoact.clear();
+                            Log.d("sizecart_11", String.valueOf(sendsparepart_items.size()));
+                            Log.d("sizecart_22", String.valueOf(jsonarayitem));
 ////////////////////// adapter di masukan ke recyler//
-                        sendsparepart_adapter = new SendSparepart_adapter(context, sendsparepart_items);
-                        msendpartlist.setAdapter(sendsparepart_adapter);
-                        dialog.dismiss();
+                            sendsparepart_adapter = new SendSparepart_adapter(context, sendsparepart_items);
+                            msendpartlist.setAdapter(sendsparepart_adapter);
+                            dialog.dismiss();
+                        }
+
                     }
 
                 }

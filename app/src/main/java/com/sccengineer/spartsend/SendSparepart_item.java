@@ -21,6 +21,29 @@ public class SendSparepart_item {
         return SparePartCodeAndName;
     }
 
+
+    @Expose
+    @SerializedName("SparePartCodeAndName")
+    private String SparePartCodeAndName;
+
+    public SendSparepart_item(String sparePartCodeAndName, String sparePartCd, String name, String sparePartName, int quantity, String reason, String caseID, String installDate, String orderDate, boolean stsAllowEdit,
+                              boolean stsAllowUpdateInstallDate, String statusName, String statusTextColor, boolean stsAllowDelete) {
+        SparePartCodeAndName = sparePartCodeAndName;
+        SparePartCd = sparePartCd;
+        Name = name;
+        SparePartName = sparePartName;
+        Quantity = quantity;
+        Reason = reason;
+        CaseID = caseID;
+        InstallDate = installDate;
+        OrderDate = orderDate;
+        StsAllowEdit = stsAllowEdit;
+        StsAllowUpdateInstallDate = stsAllowUpdateInstallDate;
+        StatusName = statusName;
+        StatusTextColor = statusTextColor;
+        StsAllowDelete = stsAllowDelete;
+    }
+
     public void setSparePartCodeAndName(String sparePartCodeAndName) {
         SparePartCodeAndName = sparePartCodeAndName;
     }
@@ -105,9 +128,30 @@ public class SendSparepart_item {
         StsAllowUpdateInstallDate = stsAllowUpdateInstallDate;
     }
 
-    @Expose
-    @SerializedName("SparePartCodeAndName")
-    private String SparePartCodeAndName;
+    public String getStatusName() {
+        return StatusName;
+    }
+
+    public void setStatusName(String statusName) {
+        StatusName = statusName;
+    }
+
+    public String getStatusTextColor() {
+        return StatusTextColor;
+    }
+
+    public void setStatusTextColor(String statusTextColor) {
+        StatusTextColor = statusTextColor;
+    }
+
+    public boolean isStsAllowDelete() {
+        return StsAllowDelete;
+    }
+
+    public void setStsAllowDelete(boolean stsAllowDelete) {
+        StsAllowDelete = stsAllowDelete;
+    }
+
     @Expose
     @SerializedName("SparePartCd")
     private String SparePartCd;
@@ -141,20 +185,16 @@ public class SendSparepart_item {
     @Expose
     @SerializedName("StsAllowUpdateInstallDate")
     private boolean StsAllowUpdateInstallDate;
+    @Expose
+    @SerializedName("StatusName")
+    private String StatusName;
+    @Expose
+    @SerializedName("StatusTextColor")
+    private String StatusTextColor;
+    @Expose
+    @SerializedName("StsAllowDelete")
+    private boolean StsAllowDelete;
 
-    public SendSparepart_item(String sparePartCodeAndName, String sparePartCd, String name, String sparePartName, int quantity, String reason, String caseID, String installDate, String orderDate, boolean stsAllowEdit, boolean stsAllowUpdateInstallDate) {
-        SparePartCodeAndName = sparePartCodeAndName;
-        SparePartCd = sparePartCd;
-        Name = name;
-        SparePartName = sparePartName;
-        Quantity = quantity;
-        Reason = reason;
-        CaseID = caseID;
-        InstallDate = installDate;
-        OrderDate = orderDate;
-        StsAllowEdit = stsAllowEdit;
-        StsAllowUpdateInstallDate = stsAllowUpdateInstallDate;
-    }
 }
 
 
