@@ -225,7 +225,7 @@ public class DetailsST extends AppCompatActivity {
     private Calendar newDate= Calendar.getInstance();
     boolean cekdate= false;
     String notesapi = "";
-    ConstraintLayout mchactclik;
+    LinearLayout mchactclik;
     String tokennya = "-";
 //    List<String> tokennya2= new ArrayList();
     LinearLayout mdot;

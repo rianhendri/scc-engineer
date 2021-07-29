@@ -818,9 +818,18 @@
                                 android:scrollbars="none"
                                 android:nestedScrollingEnabled="false">
                             </androidx.recyclerview.widget.RecyclerView>
+
                         </LinearLayout>
                     </HorizontalScrollView>
-
+                    <TextView
+                        android:layout_marginTop="24dp"
+                        android:textSize="12dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/segoeuii"
+                        android:textColor="@color/black"
+                        android:text="Mohon klik 'Update' pada assignment setelah merubah data sparepart."
+                        />
 
 
                 </LinearLayout>
@@ -1072,6 +1081,7 @@
                                         android:fontFamily="@font/segoeuib"
                                         android:gravity="center"
                                         android:text="Support"
+                                        android:layout_marginRight="34dp"
                                         android:layout_weight="1"
                                         android:textColor="@color/black"
                                         android:textSize="17sp"  />
@@ -1085,46 +1095,46 @@
                                         android:layout_weight="1"
                                         android:textColor="@color/black"
                                         android:textSize="17sp" />
-                                    <androidx.constraintlayout.widget.ConstraintLayout
-                                        android:id="@+id/chatclik"
-                                        android:layout_width="30dp"
-                                        android:layout_height="30dp">
-                                        <ImageView
-                                            android:id="@+id/waa"
-                                            android:layout_width="30dp"
-                                            android:layout_height="30dp"
-                                            android:src="@drawable/chat"
-                                            app:layout_constraintBottom_toBottomOf="parent"
-                                            app:layout_constraintEnd_toEndOf="parent"
-                                            app:layout_constraintStart_toStartOf="parent"
-                                            app:layout_constraintTop_toTopOf="parent" />
-                                        <LinearLayout
+<!--                                    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                                        android:id="@+id/chatclik"-->
+<!--                                        android:layout_width="30dp"-->
+<!--                                        android:layout_height="30dp">-->
+<!--                                        <ImageView-->
+<!--                                            android:id="@+id/waa"-->
+<!--                                            android:layout_width="30dp"-->
+<!--                                            android:layout_height="30dp"-->
+<!--                                            android:src="@drawable/chat"-->
+<!--                                            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                                            app:layout_constraintEnd_toEndOf="parent"-->
+<!--                                            app:layout_constraintStart_toStartOf="parent"-->
+<!--                                            app:layout_constraintTop_toTopOf="parent" />-->
+<!--                                        <LinearLayout-->
 
-                                            android:id="@+id/dot"
-                                            android:layout_width="15dp"
-                                            android:layout_height="15dp"
-                                            android:background="@drawable/notification_red_dot2"
-                                            android:orientation="vertical"
-                                            android:visibility="gone"
-                                            app:layout_constraintBottom_toBottomOf="parent"
-                                            app:layout_constraintEnd_toEndOf="parent"
-                                            app:layout_constraintHorizontal_bias="1.0"
-                                            app:layout_constraintStart_toStartOf="parent"
-                                            app:layout_constraintTop_toTopOf="parent"
-                                            app:layout_constraintVertical_bias="0.0">
+<!--                                            android:id="@+id/dot"-->
+<!--                                            android:layout_width="15dp"-->
+<!--                                            android:layout_height="15dp"-->
+<!--                                            android:background="@drawable/notification_red_dot2"-->
+<!--                                            android:orientation="vertical"-->
+<!--                                            android:visibility="gone"-->
+<!--                                            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                                            app:layout_constraintEnd_toEndOf="parent"-->
+<!--                                            app:layout_constraintHorizontal_bias="1.0"-->
+<!--                                            app:layout_constraintStart_toStartOf="parent"-->
+<!--                                            app:layout_constraintTop_toTopOf="parent"-->
+<!--                                            app:layout_constraintVertical_bias="0.0">-->
 
-                                            <TextView
-                                                android:id="@+id/newnotif"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="match_parent"
-                                                android:fontFamily="@font/seguisb"
-                                                android:gravity="center"
-                                                android:text="-"
-                                                android:textColor="@color/dwhite"
-                                                android:textSize="8dp"
-                                                android:visibility="visible" />
-                                        </LinearLayout>
-                                    </androidx.constraintlayout.widget.ConstraintLayout>
+<!--                                            <TextView-->
+<!--                                                android:id="@+id/newnotif"-->
+<!--                                                android:layout_width="match_parent"-->
+<!--                                                android:layout_height="match_parent"-->
+<!--                                                android:fontFamily="@font/seguisb"-->
+<!--                                                android:gravity="center"-->
+<!--                                                android:text="-"-->
+<!--                                                android:textColor="@color/dwhite"-->
+<!--                                                android:textSize="8dp"-->
+<!--                                                android:visibility="visible" />-->
+<!--                                        </LinearLayout>-->
+<!--                                    </androidx.constraintlayout.widget.ConstraintLayout>-->
 
                                 </LinearLayout>
 
@@ -1689,36 +1699,100 @@
                                 android:layout_marginRight="12dp"
                                 android:layout_marginLeft="12dp">
                                 <LinearLayout
-                                    android:id="@+id/linkbtn"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:orientation="horizontal">
-                                    <TextView
+                                    <LinearLayout
+                                        android:id="@+id/linkbtn"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal"
+                                        android:layout_weight="1">
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginBottom="8dp"
+                                            android:layout_marginTop="4dp"
+                                            android:fontFamily="@font/seguisb"
+                                            android:paddingLeft="4dp"
+                                            android:text="Actions: "
+                                            android:textColor="@color/black"
+                                            android:textSize="12sp" />
+                                        <TextView
+                                            android:visibility="gone"
+                                            android:id="@+id/linkgenerate"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginBottom="8dp"
+                                            android:layout_marginTop="4dp"
+                                            android:fontFamily="@font/seguisb"
+                                            android:paddingLeft="4dp"
+                                            android:text="@string/title_generat"
+                                            android:textColor="@color/colorPrimaryDark"
+                                            android:textSize="12sp"
+                                            android:selectAllOnFocus="false"
+                                            android:linksClickable="false"
+                                            android:autoLink="all"/>
+                                    </LinearLayout>
+                                    <LinearLayout
+                                        android:id="@+id/chatclik"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:layout_marginBottom="8dp"
-                                        android:layout_marginTop="4dp"
-                                        android:fontFamily="@font/seguisb"
-                                        android:paddingLeft="4dp"
-                                        android:text="Actions: "
-                                        android:textColor="@color/black"
-                                        android:textSize="12sp" />
-                                    <TextView
-                                        android:visibility="gone"
-                                        android:id="@+id/linkgenerate"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginBottom="8dp"
-                                        android:layout_marginTop="4dp"
-                                        android:fontFamily="@font/seguisb"
-                                        android:paddingLeft="4dp"
-                                        android:text="@string/title_generat"
-                                        android:textColor="@color/colorPrimaryDark"
-                                        android:textSize="12sp"
-                                        android:selectAllOnFocus="false"
-                                        android:linksClickable="false"
-                                        android:autoLink="all"/>
+                                        android:orientation="horizontal">
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:fontFamily="@font/seguisb"
+                                            android:textSize="12sp"
+                                            android:text="Live Chat "
+                                            android:gravity="center_vertical"
+                                            android:textColor="@color/black"
+                                            android:layout_marginRight="8dp"/>
+                                        <androidx.constraintlayout.widget.ConstraintLayout
+
+                                            android:layout_width="30dp"
+                                            android:layout_height="30dp">
+                                            <ImageView
+                                                android:id="@+id/waa"
+                                                android:layout_width="30dp"
+                                                android:layout_height="30dp"
+                                                android:src="@drawable/chat"
+                                                app:layout_constraintBottom_toBottomOf="parent"
+                                                app:layout_constraintEnd_toEndOf="parent"
+                                                app:layout_constraintStart_toStartOf="parent"
+                                                app:layout_constraintTop_toTopOf="parent" />
+                                            <LinearLayout
+
+                                                android:id="@+id/dot"
+                                                android:layout_width="15dp"
+                                                android:layout_height="15dp"
+                                                android:background="@drawable/notification_red_dot2"
+                                                android:orientation="vertical"
+                                                android:visibility="gone"
+                                                app:layout_constraintBottom_toBottomOf="parent"
+                                                app:layout_constraintEnd_toEndOf="parent"
+                                                app:layout_constraintHorizontal_bias="1.0"
+                                                app:layout_constraintStart_toStartOf="parent"
+                                                app:layout_constraintTop_toTopOf="parent"
+                                                app:layout_constraintVertical_bias="0.0">
+
+                                                <TextView
+                                                    android:id="@+id/newnotif"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="match_parent"
+                                                    android:fontFamily="@font/seguisb"
+                                                    android:gravity="center"
+                                                    android:text="-"
+                                                    android:textColor="@color/dwhite"
+                                                    android:textSize="8dp"
+                                                    android:visibility="visible" />
+                                            </LinearLayout>
+                                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                                    </LinearLayout>
+
                                 </LinearLayout>
+
 
                                 <androidx.core.widget.NestedScrollView
                                     android:layout_width="match_parent"
@@ -1927,6 +2001,7 @@
                 android:layout_height="45dp"
                 android:layout_marginTop="24dp"
                 android:gravity="center"
+                android:layout_marginRight="34dp"
                 android:orientation="horizontal"
                 android:visibility="visible" >
 

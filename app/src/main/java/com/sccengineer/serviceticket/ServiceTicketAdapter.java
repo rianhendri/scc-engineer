@@ -514,7 +514,7 @@ extends RecyclerView.Adapter<ServiceTicketAdapter.Myviewholder> {
     }
 
     public static class Myviewholder extends RecyclerView.ViewHolder{
-        ConstraintLayout mchatclik;
+        LinearLayout mchatclik;
         TextView massigndate,mstatus;
         TextView mbar1,mbar2,mbar3,mbar4,mcomment,mendtime,mengineer,mservicetype,mstarttime
                 ,mstatusservice,mstatustik;

@@ -521,7 +521,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:fontFamily="@font/segoeui"
-			android:text="Update"
+			android:text="Change"
 			android:textColor="@color/black"
 			android:textSize="13sp" />
 	</LinearLayout>
