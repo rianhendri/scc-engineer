@@ -82,20 +82,45 @@
 		android:gravity="center_vertical"
 		android:background="@color/dwhite"
 		>
-		<TextView
-			android:id="@+id/namespar"
+		<LinearLayout
 			android:layout_width="100dp"
 			android:layout_height="wrap_content"
-			android:layout_marginLeft="8dp"
-			android:layout_marginRight="4dp"
-			android:layout_marginTop="2dp"
-			android:layout_marginBottom="2dp"
-			android:fontFamily="@font/segoeui"
-			android:textSize="11dp"
+			android:orientation="vertical"
 			android:layout_weight="1"
-			android:maxLines="10"
-			android:text=" "
-			android:textColor="@color/black"/>
+			android:layout_marginRight="4dp"
+			android:layout_marginLeft="8dp"
+			android:layout_marginTop="2dp"
+			android:layout_marginBottom="2dp">
+			<TextView
+				android:id="@+id/namespar"
+				android:layout_width="100dp"
+				android:layout_height="wrap_content"
+
+				android:fontFamily="@font/segoeui"
+				android:textSize="11dp"
+				android:layout_weight="1"
+				android:maxLines="10"
+				android:text=" "
+				android:textColor="@color/black"/>
+			<TextView
+				android:id="@+id/statussper"
+				android:layout_width="90dp"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="0dp"
+				android:layout_marginRight="8dp"
+				android:layout_marginTop="2dp"
+				android:layout_marginBottom="2dp"
+				android:fontFamily="@font/segoeui"
+				android:textSize="11dp"
+				android:text="-"
+				android:maxWidth="120dp"
+				android:maxLength="100"
+				android:enabled="false"
+				android:layout_weight="1"
+				android:background="@drawable/underline"
+				android:textColor="@color/black"/>
+		</LinearLayout>
+
 		<TextView
 			android:id="@+id/qtysper"
 			android:layout_width="30dp"
@@ -178,23 +203,23 @@
 		android:layout_weight="1"
 		android:background="@drawable/underline"
 		android:textColor="@color/black"/>
-		<TextView
-			android:id="@+id/statussper"
-			android:layout_width="90dp"
-			android:layout_height="wrap_content"
-			android:layout_marginLeft="4dp"
-			android:layout_marginRight="8dp"
-			android:layout_marginTop="2dp"
-			android:layout_marginBottom="2dp"
-			android:fontFamily="@font/segoeui"
-			android:textSize="11dp"
-			android:text="-"
-			android:maxWidth="120dp"
-			android:maxLength="100"
-			android:enabled="false"
-			android:layout_weight="1"
-			android:background="@drawable/underline"
-			android:textColor="@color/black"/>
+<!--		<TextView-->
+<!--			android:id="@+id/statussper"-->
+<!--			android:layout_width="90dp"-->
+<!--			android:layout_height="wrap_content"-->
+<!--			android:layout_marginLeft="4dp"-->
+<!--			android:layout_marginRight="8dp"-->
+<!--			android:layout_marginTop="2dp"-->
+<!--			android:layout_marginBottom="2dp"-->
+<!--			android:fontFamily="@font/segoeui"-->
+<!--			android:textSize="11dp"-->
+<!--			android:text="-"-->
+<!--			android:maxWidth="120dp"-->
+<!--			android:maxLength="100"-->
+<!--			android:enabled="false"-->
+<!--			android:layout_weight="1"-->
+<!--			android:background="@drawable/underline"-->
+<!--			android:textColor="@color/black"/>-->
 		<ImageView
 		android:id="@+id/deletelist"
 		android:layout_width="30dp"

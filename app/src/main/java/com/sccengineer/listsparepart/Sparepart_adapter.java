@@ -72,7 +72,7 @@ import static com.sccengineer.DetailsST.jsonarayitem;
 public class Sparepart_adapter
 extends RecyclerView.Adapter<Sparepart_adapter.Myviewholder> {
     ArrayList<Sparepart_item> addFoclistitem;
-    SendSparepart_item tambahpart;
+    public static SendSparepart_item tambahpart;
     public static ArrayList<SendSparepart_item> listpoact = new ArrayList<SendSparepart_item>();
     Context context;
     ImageView mimgpopup;
@@ -97,8 +97,14 @@ extends RecyclerView.Adapter<Sparepart_adapter.Myviewholder> {
         if (addFoclistitem.get(i).getSparePartName()!=null){
             addFoclistitem.get(i).setName(addFoclistitem.get(i).getSparePartName());
         }
-        String s = "<b>"+addFoclistitem.get(i).getSparePartCd()+"</b>"+" ("+addFoclistitem.get(i).getName()+")";
-        myviewholder.mnamespar.setText(Html.fromHtml(s));
+        if (addFoclistitem.get(i).getSparePartCd().equals("")){
+            String s = "<b>"+addFoclistitem.get(i).getManualSparePartCd()+"</b>"+" ("+addFoclistitem.get(i).getManualSparePartName()+")";
+            myviewholder.mnamespar.setText(Html.fromHtml(s));
+        }else {
+            String s = "<b>"+addFoclistitem.get(i).getSparePartCd()+"</b>"+" ("+addFoclistitem.get(i).getName()+")";
+            myviewholder.mnamespar.setText(Html.fromHtml(s));
+        }
+
 //        myviewholder.mnamespar.setText(addFoclistitem.get(i).getSparePartCd()+" ("+addFoclistitem.get(i).getName()+")");
 
         myviewholder.mcd.setText(addFoclistitem.get(i).getSparePartCd());

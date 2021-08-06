@@ -22,16 +22,13 @@ public class SendSparepart_item {
     }
 
 
-    @Expose
-    @SerializedName("SparePartCodeAndName")
-    private String SparePartCodeAndName;
-
-    public SendSparepart_item(String sparePartCodeAndName, String sparePartCd, String name, String sparePartName, int quantity, String reason, String caseID, String installDate, String orderDate, boolean stsAllowEdit,
-                              boolean stsAllowUpdateInstallDate, String statusName, String statusTextColor, boolean stsAllowDelete) {
+    public SendSparepart_item(String sparePartCodeAndName, String sparePartCd, String name, String sparePartName, String manualSparePartCd, String manualSparePartName, int quantity, String reason, String caseID, String installDate, String orderDate, boolean stsAllowEdit, boolean stsAllowUpdateInstallDate, String statusName, String statusTextColor, boolean stsAllowDelete) {
         SparePartCodeAndName = sparePartCodeAndName;
         SparePartCd = sparePartCd;
         Name = name;
         SparePartName = sparePartName;
+        ManualSparePartCd = manualSparePartCd;
+        ManualSparePartName = manualSparePartName;
         Quantity = quantity;
         Reason = reason;
         CaseID = caseID;
@@ -70,6 +67,22 @@ public class SendSparepart_item {
 
     public void setSparePartName(String sparePartName) {
         SparePartName = sparePartName;
+    }
+
+    public String getManualSparePartCd() {
+        return ManualSparePartCd;
+    }
+
+    public void setManualSparePartCd(String manualSparePartCd) {
+        ManualSparePartCd = manualSparePartCd;
+    }
+
+    public String getManualSparePartName() {
+        return ManualSparePartName;
+    }
+
+    public void setManualSparePartName(String manualSparePartName) {
+        ManualSparePartName = manualSparePartName;
     }
 
     public int getQuantity() {
@@ -153,6 +166,10 @@ public class SendSparepart_item {
     }
 
     @Expose
+    @SerializedName("SparePartCodeAndName")
+    private String SparePartCodeAndName;
+
+    @Expose
     @SerializedName("SparePartCd")
     private String SparePartCd;
     @Expose
@@ -161,6 +178,13 @@ public class SendSparepart_item {
     @Expose
     @SerializedName("SparePartName")
     private String SparePartName;
+
+    @Expose
+    @SerializedName("ManualSparePartCd")
+    private String ManualSparePartCd;
+    @Expose
+    @SerializedName("ManualSparePartName")
+    private String ManualSparePartName;
 
     @Expose
     @SerializedName("Quantity")

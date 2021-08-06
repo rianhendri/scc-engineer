@@ -72,6 +72,8 @@ public interface IRetrofit {
     public Call<JsonObject> attendancelist(@Body JsonObject var1);
     @POST("api/serviceticket/startProgress")
     public Call<JsonObject> startprog(@Body JsonObject var1);
+    @POST("api/serviceticket/cancel")
+    public Call<JsonObject> canclerequest(@Body JsonObject var1);
     @POST("api/serviceticket/update")
     public Call<JsonObject> updatea(@Body JsonObject var1);
     @Multipart

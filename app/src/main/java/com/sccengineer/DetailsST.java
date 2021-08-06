@@ -67,6 +67,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -103,6 +104,8 @@ import static com.sccengineer.ServiceTicket.list2;
 import static com.sccengineer.ServiceTicket.refresh;
 import static com.sccengineer.ServiceTicket.valuefilter;
 import static com.sccengineer.apihelper.ServiceGenerator.baseurl;
+import static com.sccengineer.listsparepart.Sparepart_adapter.listpoact;
+import static com.sccengineer.listsparepart.Sparepart_adapter.tambahpart;
 import static com.sccengineer.messagecloud.check.tokennya2;
 
 public class DetailsST extends AppCompatActivity {
@@ -208,7 +211,8 @@ public class DetailsST extends AppCompatActivity {
 
     ProgressBar mloadpart;
     public static RecyclerView mpartlist, msendpartlist;
-    EditText msearch;
+    EditText msearch,mnamespara,mqtyspera,mreasona, mcodemanual;
+    ImageView meditebtna;
     public static TextView msparenaem;
     String sear = "";
     Sparepart_adapter sparepart_adapter;
@@ -364,6 +368,7 @@ public class DetailsST extends AppCompatActivity {
             yverti=bundle2.getInt("yverti");
         }
         rolelist.add(getString(R.string.title_pleasechoose));
+        rolecvalue.add("-");
         getSessionId();
         cekInternet();
         if (internet){
@@ -463,7 +468,7 @@ public class DetailsST extends AppCompatActivity {
 //                }
             }
         });
-        mcancleassg.setVisibility(View.GONE);
+//        mcancleassg.setVisibility(View.GONE);
         mcancleassg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -735,6 +740,7 @@ private void DialogForm() {
             if (valerole.equals("-")){
                 Toast.makeText(DetailsST.this, "Wajib Pilih Status", Toast.LENGTH_SHORT).show();
             }else {
+                canclerequest();
 //                clockinnya();
 //                    if (postalCode.equals("")){
 //
@@ -793,6 +799,54 @@ private void DialogForm() {
 
         // menampilkan alert dialog
         alertDialog.show();
+    }
+    private void canclerequest(){
+        loading = ProgressDialog.show(DetailsST.this, "", "loading...", true);
+        JsonObject jsonObject = new JsonObject();
+
+        jsonObject.addProperty("sessionId",sesionid_new);
+        jsonObject.addProperty("serviceTicketCd",noreq);
+        jsonObject.addProperty("status",valerole);
+        jsonObject.addProperty("ver",BuildConfig.VERSION_NAME);
+        IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, baseurl);
+        Call<JsonObject> panggilkomplek = jsonPostService.canclerequest(jsonObject);
+        panggilkomplek.enqueue(new Callback<JsonObject>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                String errornya = "";
+                JsonObject homedata=response.body();
+                String statusnya = homedata.get("status").getAsString();
+                if (homedata.get("errorMessage").toString().equals("null")) {
+
+                }else {
+                    errornya = homedata.get("errorMessage").getAsString();
+                }
+                MhaveToUpdate = homedata.get("haveToUpdate").toString();
+                MsessionExpired = homedata.get("sessionExpired").toString();
+                sesionid();
+                if (statusnya.equals("OK")){
+                    JsonObject data = homedata.getAsJsonObject("data");
+                    String message = data.get("message").getAsString();
+                    Toast.makeText(DetailsST.this, message,Toast.LENGTH_LONG).show();
+                    onBackPressed();
+                }else {
+                    sesionid();
+                    loading.dismiss();
+                    Toast.makeText(DetailsST.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Toast.makeText(DetailsST.this,getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
+                cekInternet();
+                loading.dismiss();
+
+            }
+        });
+        Log.d("reqcanle",jsonObject.toString());
     }
     private void showDialogrupdate() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
@@ -876,7 +930,7 @@ private void DialogForm() {
                     JsonObject data = homedata.getAsJsonObject("data");
                     // cancle btn show
                     if (data.get("allowToCancel").getAsBoolean()){
-//                        mcancleassg.setVisibility(View.VISIBLE);
+                        mcancleassg.setVisibility(View.VISIBLE);
                         rolejson = data.getAsJsonArray("updatePanelCancellationStatusOptions");
                         for (int i = 0; i < rolejson.size(); ++i) {
                             JsonObject jsonObject3 = (JsonObject)rolejson.get(i);
@@ -1869,6 +1923,11 @@ private void DialogForm() {
         msearch = dialog.findViewById(R.id.searchitem);
         mpartlist = dialog.findViewById(R.id.listadditemfoc);
         mloadpart = dialog.findViewById(R.id.loadingfooter);
+        mnamespara = dialog.findViewById(R.id.namespara);
+        mqtyspera = dialog.findViewById(R.id.qtyspera);
+        mreasona = dialog.findViewById(R.id.reasona);
+        meditebtna = dialog.findViewById(R.id.editebtna);
+        mcodemanual = dialog.findViewById(R.id.codecda);
         linearLayoutManager = new LinearLayoutManager(DetailsST.this, LinearLayout.VERTICAL,false);
 //        linearLayoutManager.setReverseLayout(true);
 //        linearLayoutManager.setStackFromEnd(true);
@@ -1906,6 +1965,68 @@ private void DialogForm() {
 //        text.setText("Android custom dialog example!");
 //        ImageView image = (ImageView) dialog.findViewById(R.id.image);
 //        image.setImageResource(R.drawable.ic_checked_data);
+        mqtyspera.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                if (mqtyspera.length()>0){
+
+                    if (Integer.parseInt(mqtyspera.getText().toString())>99){
+                        mqtyspera.setText("99");
+                        Toast.makeText(DetailsST.this, "Qty maksimal 99", Toast.LENGTH_SHORT).show();
+                    }else {
+
+                    }
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().length() == 1 && s.toString().startsWith("0")) {
+                    s.clear();
+                }
+            }
+        });
+        meditebtna.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tambahpart = new SendSparepart_item();
+                tambahpart.setManualSparePartName(mnamespara.getText().toString());
+                tambahpart.setManualSparePartCd(mcodemanual.getText().toString());
+                tambahpart.setSparePartCd("");
+                tambahpart.setInstallDate(null);
+                tambahpart.setName(null);
+                tambahpart.setOrderDate(null);
+                tambahpart.setStsAllowEdit(true);
+                tambahpart.setStsAllowUpdateInstallDate(true);
+                tambahpart.setStsAllowDelete(true);
+                tambahpart.setStatusName("-");
+                tambahpart.setCaseID("-");
+                
+                tambahpart.setReason(mreasona.getText().toString());
+                tambahpart.setQuantity(Integer.parseInt(mqtyspera.getText().toString()));
+
+                listpoact.add(tambahpart);
+                sendsparepart_items.addAll(listpoact);
+                Gson gson = new GsonBuilder().create();
+                myCustomArray = gson.toJsonTree(sendsparepart_items).getAsJsonArray();
+                jsonarayitem = myCustomArray.toString();
+
+                listpoact.clear();
+                Log.d("sizecart_11", String.valueOf(sendsparepart_items.size()));
+                Log.d("sizecart_22", String.valueOf(jsonarayitem));
+////////////////////// adapter di masukan ke recyler//
+                sendsparepart_adapter = new SendSparepart_adapter(DetailsST.this, sendsparepart_items);
+                msendpartlist.setAdapter(sendsparepart_adapter);
+                dialog.dismiss();
+            }
+        });
 
 
 

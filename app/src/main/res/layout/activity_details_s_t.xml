@@ -788,7 +788,7 @@
                                     android:layout_weight="1"
                                     android:textColor="@color/dwhite"/>
                                 <TextView
-
+                                    android:visibility="gone"
                                     android:layout_width="90dp"
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="4dp"

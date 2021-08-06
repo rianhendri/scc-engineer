@@ -146,8 +146,13 @@ extends RecyclerView.Adapter<SendSparepart_adapter.Myviewholder> {
         if (addFoclistitem.get(i).getSparePartName()!=null){
             addFoclistitem.get(i).setName(addFoclistitem.get(i).getSparePartName());
         }
-        String s = "<b>"+addFoclistitem.get(i).getSparePartCd()+"</b>"+" ("+addFoclistitem.get(i).getName()+")";
-        myviewholder.mnamespar.setText(Html.fromHtml(s));
+        if (addFoclistitem.get(i).getSparePartCd().equals("")){
+            String s = "<b>"+addFoclistitem.get(i).getManualSparePartCd()+"</b>"+" ("+addFoclistitem.get(i).getManualSparePartName()+")";
+            myviewholder.mnamespar.setText(Html.fromHtml(s));
+        }else {
+            String s = "<b>"+addFoclistitem.get(i).getSparePartCd()+"</b>"+" ("+addFoclistitem.get(i).getName()+")";
+            myviewholder.mnamespar.setText(Html.fromHtml(s));
+        }
         myviewholder.mno.setText(String.valueOf(i+1));
         myviewholder.mcd.setText(addFoclistitem.get(i).getSparePartCd());
         if (addFoclistitem.get(i).getOrderDate()==null){
@@ -209,7 +214,13 @@ extends RecyclerView.Adapter<SendSparepart_adapter.Myviewholder> {
                 }
 
                 dateedit = addFoclistitem.get(i).isStsAllowUpdateInstallDate();
-                namaitemedit="<b>"+addFoclistitem.get(i).getSparePartCd()+"</b>"+" ("+addFoclistitem.get(i).getName()+")";
+                if (addFoclistitem.get(i).getSparePartCd().equals("")){
+                    namaitemedit = "<b>"+addFoclistitem.get(i).getManualSparePartCd()+"</b>"+" ("+addFoclistitem.get(i).getManualSparePartName()+")";
+
+                }else {
+                    namaitemedit = "<b>"+addFoclistitem.get(i).getSparePartCd()+"</b>"+" ("+addFoclistitem.get(i).getName()+")";
+
+                }
                 qtyedit=addFoclistitem.get(i).getQuantity();
                 reasonedit=addFoclistitem.get(i).getReason();
                 caseidedit=addFoclistitem.get(i).getCaseID();
