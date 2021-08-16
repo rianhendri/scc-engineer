@@ -649,7 +649,12 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
                         menuItem.setShow(mshowServiceTicket);
                         menuItemlist.add(menuItem);
                     }
-
+                    if (data.get("showReClockInApproval").getAsBoolean()){
+                        menuItem5.setMenuname("Clockin Approval");
+                        menuItem5.setImg(R.drawable.chronometer);
+                        menuItem5.setShow(mshowServiceTicket);
+                        menuItemlist.add(menuItem5);
+                    }
 //                    if (mshowPurchaseOrderPO.equals("false") && mshowPurchaseOrderFOC.equals("false")){
 //
 //                    }else{

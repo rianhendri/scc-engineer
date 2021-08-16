@@ -677,6 +677,13 @@ public class ClockInActivity extends AppCompatActivity {
                     loading.dismiss();
                     sesionid();
                     JsonObject data = homedata.getAsJsonObject("data");
+                    if (data.get("waitingForClockInApproval").getAsBoolean()){
+                        maprov.setVisibility(View.VISIBLE);
+                        mclockin.setVisibility(View.GONE);
+                    }else {
+                        maprov.setVisibility(View.GONE);
+                        mclockin.setVisibility(View.VISIBLE);
+                    }
 //                    if (data.get("waitApproval").getAsBoolean()){
 //                        maprov.setVisibility(View.VISIBLE);
 //                        mclockin.setVisibility(View.GONE);
@@ -757,7 +764,16 @@ public class ClockInActivity extends AppCompatActivity {
                     loading.dismiss();
                     sesionid();
                     JsonObject data = homedata.getAsJsonObject("data");
-
+                    if (data.get("waitingForClockInApproval").getAsBoolean()){
+                        maprov.setVisibility(View.VISIBLE);
+                        mclockin.setVisibility(View.GONE);
+                    }else {
+                        Intent gohome = new Intent(ClockInActivity.this,Home.class);
+                        startActivity(gohome);
+                        finish();
+                        maprov.setVisibility(View.GONE);
+                        mclockin.setVisibility(View.VISIBLE);
+                    }
 //                    if (data.get("waitApproval").getAsBoolean()){
 //                        maprov.setVisibility(View.VISIBLE);
 //                        mclockin.setVisibility(View.GONE);
@@ -768,9 +784,7 @@ public class ClockInActivity extends AppCompatActivity {
 //                        startActivity(gohome);
 //                        finish();
 //                    }
-                    Intent gohome = new Intent(ClockInActivity.this,Home.class);
-                        startActivity(gohome);
-                        finish();
+
                 }else {
 
                     sesionid();

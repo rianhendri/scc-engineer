@@ -1166,6 +1166,20 @@ private void DialogForm() {
                     }else {
                         mlayoutupdatepanel.setVisibility(View.GONE);
                     }
+
+                    //separpart tanpa updatepanel
+                    if (data.get("selectedSparePartList").toString().equals("null")){
+
+                    }else {
+                        myCustomArray = data.getAsJsonArray("selectedSparePartList");
+                        Gson gson = new Gson();
+                        Type listType = new TypeToken<ArrayList<SendSparepart_item>>() {
+                        }.getType();
+                        sendsparepart_items = gson.fromJson(myCustomArray.toString(), listType);
+                        sendsparepart_adapter = new SendSparepart_adapter(DetailsST.this, sendsparepart_items);
+                        msendpartlist.setAdapter(sendsparepart_adapter);
+                    }
+                    /////
                     if (data.get("updatePanelLatestAction").toString().equals("null")){
 
                     }else {
@@ -1257,17 +1271,17 @@ private void DialogForm() {
                         });
                         //sparepartupdatepanel
                         mlalbeldate.setText(updatepanel.get("WaitingEstimationLabel").getAsString());
-                        if (data.get("selectedSparePartList").toString().equals("null")){
-
-                        }else {
-                            myCustomArray = data.getAsJsonArray("selectedSparePartList");
-                            Gson gson = new Gson();
-                            Type listType = new TypeToken<ArrayList<SendSparepart_item>>() {
-                            }.getType();
-                            sendsparepart_items = gson.fromJson(myCustomArray.toString(), listType);
-                            sendsparepart_adapter = new SendSparepart_adapter(DetailsST.this, sendsparepart_items);
-                            msendpartlist.setAdapter(sendsparepart_adapter);
-                        }
+//                        if (data.get("selectedSparePartList").toString().equals("null")){
+//
+//                        }else {
+//                            myCustomArray = data.getAsJsonArray("selectedSparePartList");
+//                            Gson gson = new Gson();
+//                            Type listType = new TypeToken<ArrayList<SendSparepart_item>>() {
+//                            }.getType();
+//                            sendsparepart_items = gson.fromJson(myCustomArray.toString(), listType);
+//                            sendsparepart_adapter = new SendSparepart_adapter(DetailsST.this, sendsparepart_items);
+//                            msendpartlist.setAdapter(sendsparepart_adapter);
+//                        }
 
 
                         //timer Update

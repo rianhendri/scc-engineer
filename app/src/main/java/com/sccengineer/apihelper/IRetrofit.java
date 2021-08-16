@@ -36,6 +36,8 @@ public interface IRetrofit {
     public Call<JsonObject> ListST(@Body JsonObject var1);
     @POST("api/approval/list")
     public Call<JsonObject> ListApproval(@Body JsonObject var1);
+    @POST("api/attendance/ReClockInActiveList")
+    public Call<JsonObject> ListReclock(@Body JsonObject var1);
     @POST("api/Notification/Get")
     public Call<JsonObject> postRawJSONgetnotifget(@Body JsonObject var1);
     @POST("api/Notification/Read")
@@ -63,6 +65,8 @@ public interface IRetrofit {
 
     @POST("api/approval/response")
     public Call<JsonObject> responsea(@Body JsonObject var1);
+    @POST("api/attendance/ApprovalClockIn")
+    public Call<JsonObject> approvreclock(@Body JsonObject var1);
 
     @POST("api/attendance/changeRoleRequest")
     public Call<JsonObject> changerole(@Body JsonObject var1);

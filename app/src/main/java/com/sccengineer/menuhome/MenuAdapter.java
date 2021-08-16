@@ -43,6 +43,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.sccengineer.ApprovalActivity;
 import com.sccengineer.AttendanceActivity;
+import com.sccengineer.ClockinApprovList;
 import com.sccengineer.Location;
 import com.sccengineer.MapsActivity;
 import com.sccengineer.R;
@@ -61,6 +62,7 @@ import static com.sccengineer.TabAct.positab;
 public class MenuAdapter  extends RecyclerView.Adapter<MenuAdapter.Myviewholder> {
     private LinearLayoutManager linearLayoutManager;
     public static Integer counter = 0;
+    public static Integer counter2 = 0;
     Context context;
     ArrayList<MenuItem> myItem;
     public static int positem = 0;
@@ -92,6 +94,16 @@ public class MenuAdapter  extends RecyclerView.Adapter<MenuAdapter.Myviewholder>
             }else {
                 myviewholder.mdot.setVisibility(View.VISIBLE);
                 myviewholder.mcount.setText(String.valueOf(counter));
+            }
+
+
+        }
+        if (namemenu.equals("Clockin Approval")){
+            if (counter==0){
+                myviewholder.mdot.setVisibility(View.GONE);
+            }else {
+                myviewholder.mdot.setVisibility(View.VISIBLE);
+                myviewholder.mcount.setText(String.valueOf(counter2));
             }
 
 
@@ -213,13 +225,13 @@ public class MenuAdapter  extends RecyclerView.Adapter<MenuAdapter.Myviewholder>
 //                    }
 //
 //                }
-//                if (namemenu.equals(context.getString(R.string.title_Setting))){
-//                    Intent gotosetting = new Intent(context, SettingActivity.class);
-//                    context.startActivity(gotosetting);
-//                    ((Activity)context).overridePendingTransition(R.anim.right_in, R.anim.left_out);
-//                    ((Activity)context).finish();
-//
-//                }
+                if (namemenu.equals("Clockin Approval")){
+                    Intent gotosetting = new Intent(context, ClockinApprovList.class);
+                    context.startActivity(gotosetting);
+                    ((Activity)context).overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                    ((Activity)context).finish();
+
+                }
 //
             }
         });
