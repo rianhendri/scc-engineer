@@ -47,11 +47,21 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.sccengineer.Chat.ItemUid;
+import com.sccengineer.Chat.Itemchat2;
 import com.sccengineer.apihelper.IRetrofit;
 import com.sccengineer.apihelper.ServiceGenerator;
 import com.sccengineer.menuhome.MenuAdapter;
@@ -68,6 +78,7 @@ import java.security.Permissions;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -79,6 +90,11 @@ import static com.sccengineer.apihelper.ServiceGenerator.baseurl;
 import static com.sccengineer.apihelper.ServiceGenerator.ver;
 
 public class Home extends AppCompatActivity {
+    ItemUid ietmuid ;
+    String nme="";
+    String uidnya="";
+    FirebaseAuth mAuth;
+    String emainya="";
     String MhaveToUpdate = "";
     String MsessionExpired = "";
     Boolean internet = false;
@@ -104,7 +120,7 @@ public class Home extends AppCompatActivity {
     SwipeRefreshLayout mswip;
     LinearLayout mnotif1;
     LinearLayout mstonprod, mstass, mstdone;
-
+    DatabaseReference databaseReference2 = FirebaseDatabase.getInstance().getReference();
     boolean changests = true;
     String rolname="";
     String longi = "";
@@ -540,6 +556,15 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
                     loading .setVisibility(View.GONE);
                     sesionid();
                     JsonObject data = homedata.getAsJsonObject("data");
+                    emainya=data.get("liveChatUserID").getAsString();
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    if (user != null) {
+                        //User is Logged in
+                    }else{
+                        //No User is Logged in
+                        reglogauth();
+                    }
+
                     boolean clocksts = data.get("alreadyClockIn").getAsBoolean();
                     if (clocksts){
 
@@ -623,6 +648,7 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
                     mtotalhistory.setText(totalshis);
 
                     mnameeng.setText(data.get("engineerName").getAsString());
+                    nme=data.get("engineerName").getAsString();
                     mnewnotif.setText(String.valueOf(data.get("newNotification").getAsInt()));
 
                     linearLayoutManager2 = new GridLayoutManager(Home.this, 2);
@@ -636,6 +662,7 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
                     MenuItem menuItem4 = new MenuItem();
                     MenuItem menuItem5 = new MenuItem();
                     MenuItem menuItem6 = new MenuItem();
+                    MenuItem menuItem9 = new MenuItem();
                     new MenuItem();
                     MenuItem menuItem7 = new MenuItem();
                     menuItemlist = new ArrayList();
@@ -643,15 +670,16 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
                     String mshowAttendance = data.get("showAttendance").toString();
                     String mshowSettings = data.get("showSettings").toString();
                     MenuAdapter.counter = data.get("showApprovalCounter").getAsInt();
+
                     if (mshowServiceTicket.equals("true")){
                         menuItem.setMenuname("Assignment");
-                        menuItem.setImg(R.drawable.ticket);
+                        menuItem.setImg(R.drawable.ic_ticket_sc);
                         menuItem.setShow(mshowServiceTicket);
                         menuItemlist.add(menuItem);
                     }
                     if (data.get("showReClockInApproval").getAsBoolean()){
                         menuItem5.setMenuname("Clockin Approval");
-                        menuItem5.setImg(R.drawable.chronometer);
+                        menuItem5.setImg(R.drawable.ic_chronometer);
                         menuItem5.setShow(mshowServiceTicket);
                         menuItemlist.add(menuItem5);
                     }
@@ -670,15 +698,22 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
                         menuItem3.setShow(mshowAttendance);
                         menuItemlist.add(menuItem3);
                     }
-                    if (mshowSettings.equals("true")){
-                        menuItem4.setMenuname(getString(R.string.title_Setting));
-                        menuItem4.setImg(R.drawable.settings);
-                        menuItem4.setShow(mshowSettings);
-                        menuItemlist.add(menuItem4);
+                    if (data.get("showChatWithSupportList").getAsBoolean()){
+                        menuItem9.setMenuname("Support Live Chat List");
+                        menuItem9.setImg(R.drawable.ic_supportchat);
+                        menuItem9.setShow(data.get("showChatWithSupportList").toString());
+                        menuItemlist.add(menuItem9);
                     }
+                    if (data.get("showCurrentLiveChatList").getAsBoolean()){
+                        menuItem6.setMenuname("Live Chat List");
+                        menuItem6.setImg(R.drawable.ic_chat);
+                        menuItem6.setShow(data.get("showCurrentLiveChatList").toString());
+                        menuItemlist.add(menuItem6);
+                    }
+
                     if (data.get("showApproval").getAsBoolean()){
                         menuItem2.setMenuname("Change Role Request");
-                        menuItem2.setImg(R.drawable.check);
+                        menuItem2.setImg(R.drawable.ic_check);
                         menuItem2.setShow(mshowServiceTicket);
                         menuItemlist.add(menuItem2);
                     }
@@ -706,6 +741,12 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
 //                        menuItem7.setShow(mshowSettings);
 //                        menuItemlist.add(menuItem7);
 //                    }\
+                    if (mshowSettings.equals("true")){
+                        menuItem4.setMenuname(getString(R.string.title_Setting));
+                        menuItem4.setImg(R.drawable.settings);
+                        menuItem4.setShow(mshowSettings);
+                        menuItemlist.add(menuItem4);
+                    }
                     addmenu = new MenuAdapter(Home.this, menuItemlist);
                     mymenu.setAdapter(addmenu);
                     float width3 = getResources().getDimension(R.dimen.height3);
@@ -762,6 +803,7 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
 
             }
         });
+        Log.d("sessionnya",jsonObject.toString());
     }
     public void onBackPressed(){
         if (exit) {
@@ -894,5 +936,95 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
         });
         Log.d("reqclockout",jsonObject.toString());
     }
+    public void reglogauth(){
+    mAuth = FirebaseAuth.getInstance();
+    mAuth.createUserWithEmailAndPassword(emainya, "x8x8x8")
+            .addOnCompleteListener(Home.this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d("trag", "signInWithCustomToken:success");
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        uidnya=user.getUid();
+                        setregistuser();
 
+                    } else {
+                        if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+                            mAuth.signInWithEmailAndPassword(emainya, "x8x8x8")
+                                    .addOnCompleteListener(Home.this, new OnCompleteListener<AuthResult>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<AuthResult> task) {
+                                            if (task.isSuccessful()) {
+                                                // Sign in success, update UI with the signed-in user's information
+
+                                                FirebaseUser user = mAuth.getCurrentUser();
+                                                uidnya=user.getUid();
+                                                Log.d("trag", uidnya);
+                                                setregistuser();
+//
+                                            } else {
+                                                if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+//                                                                            Toast.makeText(DetailsST.this, "User with this email already exist.", Toast.LENGTH_SHORT).show();
+                                                }else {
+
+                                                }
+                                                // If sign in fails, display a message to the user.
+                                                Log.w("uii", "signInWithCustomToken:failure", task.getException());
+//                                    Toast.makeText(CustomAuthActivity.this, "Authentication failed.",
+//                                            Toast.LENGTH_SHORT).show();
+//                                    updateUI(null);
+
+                                            }
+                                        }
+                                    });
+//                                                    Toast.makeText(DetailsST.this, "User with this email already exist.", Toast.LENGTH_SHORT).show();
+//                                            loading.dismiss();
+                        }else {
+//                                            loading.dismiss();
+                        }
+//                                        loading.dismiss();
+                        // If sign in fails, display a message to the user.
+                        Log.w("uii", "signInWithCustomToken:failure", task.getException());
+//                                    Toast.makeText(CustomAuthActivity.this, "Authentication failed.",
+//                                            Toast.LENGTH_SHORT).show();
+//                                    updateUI(null);
+
+                    }
+                }
+            }).addOnFailureListener(Home.this, new OnFailureListener() {
+        @Override
+        public void onFailure(@NonNull Exception e) {
+//                            loading.dismiss();
+            Log.d("gagal login",e.toString());
+        }
+    });
+}
+    public void setregistuser(){
+//        int posinya = 0;
+//        if ((addFoclistreq!=null)){
+//            posinya = 0;
+//        }else{
+//            posinya = addFoclistreq.size()+1;
+//        }
+        ietmuid= new ItemUid();
+
+        ietmuid.setEmail(emainya);
+        ietmuid.setUsername(nme);
+
+        databaseReference2.child("akunregist").child(uidnya).setValue(ietmuid).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+
+                Log.d("failue","succes");
+
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+            Log.d("failue",e.toString());
+            }
+        });
+    }
 }

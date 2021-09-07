@@ -22,6 +22,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
@@ -36,6 +37,14 @@ public interface IRetrofit {
     public Call<JsonObject> ListST(@Body JsonObject var1);
     @POST("api/approval/list")
     public Call<JsonObject> ListApproval(@Body JsonObject var1);
+    @POST("api/engineer/GetCurrentLiveChatList")
+    public Call<JsonObject> livechastlist(@Body JsonObject var1);
+    @POST("api/engineer/GetCurrentSupportLiveChatList")
+    public Call<JsonObject> livecslist(@Body JsonObject var1);
+    @GET("chat.json")
+    public Call<JsonObject> getchat(@Body JsonObject var1);
+    @POST("api/serviceticket/FlagLiveChat")
+    public Call<JsonObject> ping(@Body JsonObject var1);
     @POST("api/attendance/ReClockInActiveList")
     public Call<JsonObject> ListReclock(@Body JsonObject var1);
     @POST("api/Notification/Get")
@@ -58,6 +67,10 @@ public interface IRetrofit {
     public Call<JsonObject> postRawJSONping(@Body JsonObject var1);
     @POST("api/engineer/config")
     public Call<JsonObject> postRawJSONconfig(@Body JsonObject var1);
+    @POST("api/engineer/GetLiveChat")
+    public Call<JsonObject> getlivechat(@Body JsonObject var1);
+    @POST("api/engineer/GetSupportLiveChat")
+    public Call<JsonObject> getlivechatcs(@Body JsonObject var1);
     @POST("api/attendance/prepareClockIn")
     public Call<JsonObject> prefclock(@Body JsonObject var1);
     @POST("api/attendance/clockOut")

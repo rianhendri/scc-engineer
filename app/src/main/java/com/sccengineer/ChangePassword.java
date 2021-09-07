@@ -212,6 +212,7 @@ public class ChangePassword extends AppCompatActivity {
                             Toast.makeText(ChangePassword.this, errornya.toString(), Toast.LENGTH_SHORT).show();
                         }
                         cekInternet();
+                        Toast.makeText(ChangePassword.this, errornya.toString(), Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -225,6 +226,7 @@ public class ChangePassword extends AppCompatActivity {
 
             }
         });
+        Log.d("changepasswords",jsonObject.toString());
     }
     public void getSessionId(){
 

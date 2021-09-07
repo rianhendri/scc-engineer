@@ -62,4 +62,5 @@
     <string name="title_cancleasigmnt">Batalkan Assignment</string>
     <string name="title_pleasechoose">pilih status-</string>
     <string name="title_cancelassignment">Batalkan Assignment</string>
+    <string name="title_detailchatst">Lihat detail request</string>
 </resources>

@@ -422,9 +422,9 @@ extends RecyclerView.Adapter<ServiceTicketAdapter.Myviewholder> {
 
         }
 
-        // chatclik
+        // chatclik cabut
         if (myItem.get(i).isShowLiveChat()){
-            myviewholder.mchatclik.setVisibility(View.VISIBLE);
+            myviewholder.mchatclik.setVisibility(View.GONE);
             itemchat = new ArrayList<Itemchat>();
             itemchat2 = new Itemchat();
             databaseReference7= FirebaseDatabase.getInstance().getReference().child("chat").child(myItem.get(i).getGuid()).child("listchat");

@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.JsonObject;
 import com.sccengineer.apihelper.IRetrofit;
 import com.sccengineer.apihelper.ServiceGenerator;
@@ -45,6 +46,7 @@ public class Settings extends AppCompatActivity {
         mback = findViewById(R.id.backbtn);
         //get Session Id
         getSessionId();
+        mmyprofile.setVisibility(View.GONE);
         mmyprofile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,6 +92,7 @@ public class Settings extends AppCompatActivity {
                 cekInternet();
                 if (internet){
                     logout();
+                    FirebaseAuth.getInstance().signOut();
                 }else {
 
                 }

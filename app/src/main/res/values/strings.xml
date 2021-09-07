@@ -62,4 +62,5 @@
     <string name="title_cancleasigmnt">Cancel Assignment</string>
     <string name="title_pleasechoose">-please choose-</string>
     <string name="title_cancelassignment">Cancel Assignment</string>
+    <string name="title_detailchatst">View request details</string>
 </resources>

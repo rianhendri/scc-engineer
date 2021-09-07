@@ -44,6 +44,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.sccengineer.ApprovalActivity;
 import com.sccengineer.AttendanceActivity;
 import com.sccengineer.ClockinApprovList;
+import com.sccengineer.LiveChatList;
 import com.sccengineer.Location;
 import com.sccengineer.MapsActivity;
 import com.sccengineer.R;
@@ -63,6 +64,7 @@ public class MenuAdapter  extends RecyclerView.Adapter<MenuAdapter.Myviewholder>
     private LinearLayoutManager linearLayoutManager;
     public static Integer counter = 0;
     public static Integer counter2 = 0;
+    public static Integer counter3 = 0;
     Context context;
     ArrayList<MenuItem> myItem;
     public static int positem = 0;
@@ -88,6 +90,10 @@ public class MenuAdapter  extends RecyclerView.Adapter<MenuAdapter.Myviewholder>
             myviewholder.mdot.setVisibility(View.GONE);
 
         }
+        if (namemenu.equals("Support Live Chat List")){
+            myviewholder.mdot.setVisibility(View.GONE);
+
+        }
         if (namemenu.equals("Change Role Request")){
             if (counter==0){
                 myviewholder.mdot.setVisibility(View.GONE);
@@ -99,14 +105,20 @@ public class MenuAdapter  extends RecyclerView.Adapter<MenuAdapter.Myviewholder>
 
         }
         if (namemenu.equals("Clockin Approval")){
-            if (counter==0){
+            if (counter2==0){
                 myviewholder.mdot.setVisibility(View.GONE);
             }else {
                 myviewholder.mdot.setVisibility(View.VISIBLE);
                 myviewholder.mcount.setText(String.valueOf(counter2));
             }
-
-
+        }
+        if (namemenu.equals("Live Chat List")){
+            if (counter3==0){
+                myviewholder.mdot.setVisibility(View.GONE);
+            }else {
+                myviewholder.mdot.setVisibility(View.VISIBLE);
+                myviewholder.mcount.setText(String.valueOf(counter3));
+            }
         }
         if (namemenu.equals("Attendance")){
             myviewholder.mdot.setVisibility(View.GONE);
@@ -119,13 +131,38 @@ public class MenuAdapter  extends RecyclerView.Adapter<MenuAdapter.Myviewholder>
 
 
         }
+        int sd = R.drawable.ic_check;
         myviewholder.mnama_menu.setText(myItem.get(i).getMenuname());
-        Picasso.with(context).load(myItem.get(i).getImg()).into(myviewholder.mimg_menu);
+        myviewholder.mimg_menu.setImageResource(myItem.get(i).getImg());
+//        Picasso.with(context).load(myItem.get(i).getImg()).into(myviewholder.mimg_menu);
         myviewholder.itemView.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("WrongConstant")
             @Override
             public void onClick(View v) {
                 String namemenu = myItem.get(i).getMenuname();
+                if (namemenu.equals("Support Live Chat List")){
+                    Intent gotonews = new Intent(context, LiveChatList.class);
+                    gotonews.putExtra("home", "homes");
+                    gotonews.putExtra("cs", "yes");
+                    gotonews.putExtra("titlelist", "Support Live Chat List");
+//                    gotonews.putExtra("showaddform",showaddform);
+                    context.startActivity(gotonews);
+                    ((Activity)context).finish();
+                    ((Activity)context).overridePendingTransition(R.anim.right_in, R.anim.left_out);
+//                    Toast.makeText(context, "ticket", Toast.LENGTH_SHORT).show();
+                }
+                if (namemenu.equals("Live Chat List")){
+//                    myviewholder.mdot.setVisibility(View.GONE);
+                    Intent gotonews = new Intent(context, LiveChatList.class);
+                    gotonews.putExtra("home", "homes");
+                    gotonews.putExtra("cs", "no");
+                    gotonews.putExtra("titlelist", "List Live Chat");
+//                    gotonews.putExtra("showaddform",showaddform);
+                    context.startActivity(gotonews);
+                    ((Activity)context).finish();
+                    ((Activity)context).overridePendingTransition(R.anim.right_in, R.anim.left_out);
+//                    Toast.makeText(context, "ticket", Toast.LENGTH_SHORT).show();
+                }
                 if (namemenu.equals("Assignment")){
 //                    myviewholder.mdot.setVisibility(View.GONE);
                     Intent gotonews = new Intent(context, ServiceTicket.class);

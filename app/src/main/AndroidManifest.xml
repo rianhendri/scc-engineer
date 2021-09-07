@@ -26,6 +26,7 @@
     <application
         android:allowBackup="true"
         android:hardwareAccelerated="true"
+        android:largeHeap="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
@@ -33,7 +34,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".DetailReclock"></activity>
+        <activity android:name=".LiveChatList"></activity>
+        <activity android:name=".DetailReclock" />
         <activity android:name=".ClockinApprovList" />
 
         <receiver android:name=".DownloadBroadcastReceiver">
@@ -63,7 +65,13 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <activity android:name=".ListChat" />
+        <activity android:name=".ListChat" >
+            <intent-filter>
+                <action android:name="notifchat" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity android:name=".FormCutiDetails" />
         <activity android:name=".FormCuti" />
         <activity
@@ -94,7 +102,7 @@
             android:label="@string/title_activity_maps" />
         <activity android:name=".DetailsST">
             <intent-filter>
-                <action android:name="ListChat" />
+                <action android:name="ServiceTicket" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
