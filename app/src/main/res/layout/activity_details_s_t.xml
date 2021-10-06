@@ -68,7 +68,9 @@
                     android:id="@+id/imgbanner"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="centerCrop" />
+                    android:scaleType="centerCrop"
+                    tools:layout_editor_absoluteX="0dp"
+                    tools:layout_editor_absoluteY="0dp" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
@@ -322,10 +324,10 @@
                         android:lines="6"
                         android:overScrollMode="always"
                         android:padding="8dp"
-                        android:scrollHorizontally="false"
-                        android:scrollbars="vertical"
-                        android:scrollbarFadeDuration="0"
                         android:scrollbarAlwaysDrawVerticalTrack="true"
+                        android:scrollbarFadeDuration="0"
+                        android:scrollbars="vertical"
+                        android:scrollHorizontally="false"
                         android:text=""
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/black"
@@ -1561,6 +1563,41 @@
                                 android:layout_margin="4dp"
                                 android:background="@color/softgrey" />
                         </LinearLayout>
+
+                            <LinearLayout
+                                android:visibility="gone"
+                                android:id="@+id/layoutcheck"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:paddingLeft="12dp"
+                                android:paddingRight="12dp">
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal">
+                                    <CheckBox
+                                        android:id="@+id/checkboxbtn"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"/>
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="@font/seguisb"
+                                        android:paddingLeft="4dp"
+                                        android:text="Need Replacement"
+                                        android:textColor="@color/black"
+                                        android:textSize="12sp" />
+                                </LinearLayout>
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:layout_margin="4dp"
+                                    android:background="@color/softgrey" />
+
+
+
+                            </LinearLayout>
                             <LinearLayout
                                 android:visibility="gone"
                                 android:id="@+id/layoutdate"
@@ -1905,6 +1942,31 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="45dp"
                                 android:layout_marginTop="24dp"
+                                android:layout_marginBottom="32dp"
+                                android:gravity="center"
+                                android:orientation="horizontal"
+                                android:visibility="visible" >
+
+                                <LinearLayout
+                                    android:layout_width="250dp"
+                                    android:layout_height="45dp"
+                                    android:background="@drawable/bg_greencorener"
+                                    android:gravity="center" >
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="@font/seguisb"
+                                        android:text="Start Progress"
+                                        android:textColor="@color/dwhite"
+                                        android:textSize="17sp" />
+                                </LinearLayout>
+                            </LinearLayout>
+                            <LinearLayout
+                                android:id="@+id/startprogresssched"
+                                android:layout_width="match_parent"
+                                android:layout_height="45dp"
+                                android:layout_marginTop="24dp"
                                 android:layout_marginBottom="12dp"
                                 android:gravity="center"
                                 android:orientation="horizontal"
@@ -1913,18 +1975,20 @@
                                 <LinearLayout
                                     android:layout_width="250dp"
                                     android:layout_height="45dp"
-                                    android:background="@drawable/bg_cornergrey"
+                                    android:background="@drawable/bg_cornergrey2"
                                     android:gravity="center" >
 
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:fontFamily="@font/segoeui"
-                                        android:text="Start Progress"
+                                        android:text="Scheduled Progress"
                                         android:textColor="@color/black"
                                         android:textSize="17sp" />
                                 </LinearLayout>
                             </LinearLayout>
+
+
                             <LinearLayout
                                 android:id="@+id/updatebtn"
                                 android:layout_width="match_parent"

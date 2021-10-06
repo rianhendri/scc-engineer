@@ -137,7 +137,7 @@ public class AttendanceActivity extends AppCompatActivity {
             bulanprev = Integer.parseInt(date1)-1;
             bulannext = Integer.parseInt(date1)+1;
             datereq = new SimpleDateFormat("yyyy", Locale.getDefault()).format(new Date());
-            periodnya = datereq+"-0"+bulanini+"-01 00:00:00";
+            periodnya = datereq+"-"+bulanini+"-01 00:00:00";
             Log.d("bulan",String.valueOf(bulanini));
             loadbulan();
             loadAttendance();
@@ -165,7 +165,7 @@ public class AttendanceActivity extends AppCompatActivity {
                         mprevicn.setImageDrawable(ContextCompat.getDrawable(AttendanceActivity.this, R.drawable.ic_right_arrow));
 
                     }
-                    periodnya = datereq+"-0"+bulanini+"-01 00:00:00";
+                    periodnya = datereq+"-"+bulanini+"-01 00:00:00";
                     loadAttendance();
 
                 }
@@ -193,7 +193,7 @@ public class AttendanceActivity extends AppCompatActivity {
                         mnexticn.setImageDrawable(ContextCompat.getDrawable(AttendanceActivity.this, R.drawable.ic_right_arrow));
 
                     }
-                    periodnya = datereq+"-0"+bulanini+"-01 00:00:00";
+                    periodnya = datereq+"-"+bulanini+"-01 00:00:00";
                     loadAttendance();
 
 

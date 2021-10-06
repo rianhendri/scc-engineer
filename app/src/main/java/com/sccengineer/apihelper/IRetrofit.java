@@ -63,6 +63,7 @@ public interface IRetrofit {
     public Call<JsonObject> changelanguage(@Body JsonObject var1);
     @POST("api/engineer/changepassword")
     public Call<JsonObject> changepassword(@Body JsonObject var1);
+
     @POST("api/engineer/ping")
     public Call<JsonObject> postRawJSONping(@Body JsonObject var1);
     @POST("api/engineer/config")
@@ -89,10 +90,16 @@ public interface IRetrofit {
     public Call<JsonObject> attendancelist(@Body JsonObject var1);
     @POST("api/serviceticket/startProgress")
     public Call<JsonObject> startprog(@Body JsonObject var1);
+    @POST("api/serviceticket/ScheduledProgress")
+    public Call<JsonObject> startprogsched(@Body JsonObject var1);
     @POST("api/serviceticket/cancel")
     public Call<JsonObject> canclerequest(@Body JsonObject var1);
     @POST("api/serviceticket/update")
     public Call<JsonObject> updatea(@Body JsonObject var1);
+    @POST("api/serviceTicket/GetMessageTemplateList")
+    public Call<JsonObject> generatelist(@Body JsonObject var1);
+    @GET("chat.json?auth=EGEEh1XOQyHdrTP8UZvedE79LBCH0mkmamZZOs0m")
+    public Call<JsonObject> getjsonchat();
     @Multipart
     @POST("api/FormRequest/Add")
     public Call<JsonObject> uploadImage(@Part MultipartBody.Part multipart,

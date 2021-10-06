@@ -46,6 +46,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -119,7 +120,12 @@ import static com.sccengineer.listsparepart.Sparepart_adapter.tambahpart;
 import static com.sccengineer.messagecloud.check.tokennya2;
 
 public class DetailsST extends AppCompatActivity {
-    AlertDialog.Builder dialog2;
+    CheckBox mcheckboxbtn;
+    AlertDialog.Builder dialog2,dialog3;
+    TextView mdatenya;
+    String dateschedjul="";
+    LinearLayout mdatebtn;
+    Calendar myCalendar = Calendar.getInstance();
     Spinner mrole;
     JsonArray rolejson;
     List<String> rolelist = new ArrayList();
@@ -142,6 +148,7 @@ public class DetailsST extends AppCompatActivity {
     public static String noreq = "";
     String servicetypenya = "";
     String MhaveToUpdate = "";
+    JsonObject data = null;
     String MsessionExpired = "";
     boolean internet = true;
     public static LinearLayoutManager linearLayoutManager,linearLayoutManager2;
@@ -198,7 +205,7 @@ public class DetailsST extends AppCompatActivity {
     TextView mtextmhon,mlinkgenerate,mdatestatus,mlalbeldate,msupport,mbar1,mbar2,mbar3,mbar4,mactionprogress,mestimasi,mstarttime,mendtime,massigndate,mengineer,masengineer, mstatustick, mtimer;
     EditText mlastimpresiST, mdescripst;
     Spinner mservicetypeST, mstatusST;
-    LinearLayout mlayountlink,mlayoutdate,mlayoutsper,mlayestima,mstartprogress, mupdatebtn,mcancleassg, mlayoutimpress, mlayoutnote, mlayoutstatus, mlayoutservicest, mlayoutupdatepanel;
+    LinearLayout mstartprogresssched,mlayountlink,mlayoutdate,mlayoutsper,mlayestima,mstartprogress, mupdatebtn,mcancleassg, mlayoutimpress, mlayoutnote, mlayoutstatus, mlayoutservicest, mlayoutupdatepanel;
     JsonArray listsn;
     List<String> snid = new ArrayList();
     List<String> snname = new ArrayList();
@@ -207,7 +214,10 @@ public class DetailsST extends AppCompatActivity {
     List<String> snida = new ArrayList();
     List<String> snnamea = new ArrayList();
     List<Boolean> estimatedate = new ArrayList();
+    List<Boolean> checkbox = new ArrayList();
+    LinearLayout mlayoutcheck;
     String mpressIda = "";
+    boolean checkboxsts = false;
     String home="homesa";
     long MillisecondTime, StartTime, UpdateTime = 0L ;
     long TimeBuff = seconds ;
@@ -260,10 +270,12 @@ public class DetailsST extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_s_t);
+        mcheckboxbtn = findViewById(R.id.checkboxbtn);
         mtextmhon = findViewById(R.id.textmhon);
         mscroll = findViewById(R.id.scrollnya);
         mchactclik = findViewById(R.id.chatclik);
         mcancleassg = findViewById(R.id.canclebtn);
+        mlayoutcheck=findViewById(R.id.layoutcheck);
         //panelupdate
         mnotif = findViewById(R.id.newnotif);
         mdot = findViewById(R.id.dot);
@@ -304,6 +316,7 @@ public class DetailsST extends AppCompatActivity {
         mstartprogress = findViewById(R.id.startprogress);
         mupdatebtn = findViewById(R.id.updatebtn);
         //
+        mstartprogresssched = findViewById(R.id.startprogresssched);
         missu = findViewById(R.id.issucategroy);
         mservicetype = findViewById(R.id.servicetype);
         mcreatedate =findViewById(R.id.createdate);
@@ -377,7 +390,7 @@ public class DetailsST extends AppCompatActivity {
         if (bundle2 != null) {
 
             noreq = bundle2.getString("id");
-            home = bundle2.getString("home");
+               home = bundle2.getString("home");
             guid = bundle2.getString("guid");
             username = bundle2.getString("user");
             noticket = bundle2.getString("id");
@@ -445,6 +458,12 @@ public class DetailsST extends AppCompatActivity {
 
             }
         });
+        mstartprogresssched.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogsched();
+            }
+        });
         mupdatebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -494,6 +513,20 @@ public class DetailsST extends AppCompatActivity {
 DialogForm();
             }
         });
+
+        mlayoutcheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mcheckboxbtn.isChecked()){
+                    mcheckboxbtn.setChecked(false);
+//                    Toast.makeText(DetailsST.this, "true", Toast.LENGTH_SHORT).show();
+                }else {
+                    mcheckboxbtn.setChecked(true);
+//                    Toast.makeText(DetailsST.this, "false", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
 //        mcs.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -601,6 +634,12 @@ DialogForm();
 //                operatorname.clear();
 //                operatorcd.clear();
                 mpressIda = snida.get(position);
+
+                if (checkbox.get(position).booleanValue()){
+                    mlayoutcheck.setVisibility(View.VISIBLE);
+                }else {
+                    mlayoutcheck.setVisibility(View.GONE);
+                }
                 if (estimatedate.get(position).booleanValue()){
                     cekdate = true;
                     mlayoutdate.setOnClickListener(new View.OnClickListener() {
@@ -716,77 +755,149 @@ DialogForm();
 //        d.show();
 //
 //    }
-private void DialogForm() {
-    dialog2 = new AlertDialog.Builder(DetailsST.this);
-    inflater = getLayoutInflater();
-    dialogView = inflater.inflate(R.layout.dialog_cancleassigment, null);
-    dialog2.setView(dialogView);
-    dialog2.setCancelable(true);
-    dialog2.setIcon(R.mipmap.ic_launcher);
-    dialog2.setTitle(getString(R.string.title_cancelassignment));
-    mrole = dialogView.findViewById(R.id.rolenya);
-    String[] arraySpinner = new String[]{
-            "-", "Role1"," Role2"
-    };
 
-    ArrayAdapter arrayAdapter = new ArrayAdapter(this, R.layout.spinstatus_layout, rolelist);
-    arrayAdapter.setDropDownViewResource(R.layout.spinkategori);
-    arrayAdapter.notifyDataSetChanged();
-    mrole.setAdapter(arrayAdapter);
-//        txt_nama    = (EditText) dialogView.findViewById(R.id.txt_nama);
+    private void dialogsched() {
+        dialog3 = new AlertDialog.Builder(DetailsST.this);
+        inflater = getLayoutInflater();
+        dialogView = inflater.inflate(R.layout.dialog_stschedjul, null);
+        dialog3.setView(dialogView);
+        dialog3.setCancelable(true);
+        dialog3.setIcon(R.mipmap.ic_launcher);
+        dialog3.setTitle("Scheduled Progress");
+        mdatenya = dialogView.findViewById(R.id.datenya);
+        mdatebtn = dialogView.findViewById(R.id.datebtn);
+        myCalendar = Calendar.getInstance();
+    //        kosong();
+        Date today = Calendar.getInstance().getTime();//getting date
+        Calendar tomorroaw = Calendar.getInstance();
+        tomorroaw.add(Calendar.DAY_OF_YEAR, 1);//getting date
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MMMM-yyyy");//formating according to my need
+        String date3 = formatter.format(today);
+        Date tomorrow = tomorroaw.getTime();
+        String date4 = formatter.format(tomorrow);
 
-    mrole.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            cekInternet();
-            for (int i = 0; i < rolecvalue.size(); ++i) {
-                valerole = rolecvalue.get(position);
-
-            }
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-
-        }
-    });
-//        kosong();
-
-    dialog2.setPositiveButton("SUBMIT", new DialogInterface.OnClickListener() {
-
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            if (valerole.equals("-")){
-                Toast.makeText(DetailsST.this, "Wajib Pilih Status", Toast.LENGTH_SHORT).show();
-            }else {
-                canclerequest();
-//                clockinnya();
-//                    if (postalCode.equals("")){
+        mdatenya.setText(date4);
+//        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 //
-//                    }else {
-//                        getCurrentLocation();
-//                        Toast.makeText(ClockInActivity.this, "mohon periksa koneksi anda", Toast.LENGTH_SHORT).show();
-//                    }
-                ;
+//            @Override
+//            public void onDateSet(DatePicker view, int year, int monthOfYear,
+//                                  int dayOfMonth) {
+//                // TODO Auto-generated method stub
+//                myCalendar.set(Calendar.YEAR, year);
+//                myCalendar.set(Calendar.MONTH, monthOfYear);
+//                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+//                updateLabel();
+//            }
+//
+//        };
+        mdatebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                datepicker2();
+                // TODO Auto-generated method stub
+//                new DatePickerDialog(DetailsST.this, date, myCalendar
+//                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+//                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
 
             }
+        });
+        dialog3.setPositiveButton("SUBMIT", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dateschedjul = mdatenya.getText().toString();
+                startprogressschej();
+                dialog.dismiss();
+            }
+        });
+
+        dialog3.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog3.show();
+    }
+    private void updateLabel() {
+        String myFormat = "dd-MMMM-yyyy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+        mdatenya.setText(sdf.format(myCalendar.getTime()));
+    }
+    private void DialogForm() {
+        dialog2 = new AlertDialog.Builder(DetailsST.this);
+        inflater = getLayoutInflater();
+        dialogView = inflater.inflate(R.layout.dialog_cancleassigment, null);
+        dialog2.setView(dialogView);
+        dialog2.setCancelable(true);
+        dialog2.setIcon(R.mipmap.ic_launcher);
+        dialog2.setTitle(getString(R.string.title_cancelassignment));
+        mrole = dialogView.findViewById(R.id.rolenya);
+        String[] arraySpinner = new String[]{
+                "-", "Role1"," Role2"
+        };
+
+        ArrayAdapter arrayAdapter = new ArrayAdapter(this, R.layout.spinstatus_layout, rolelist);
+        arrayAdapter.setDropDownViewResource(R.layout.spinkategori);
+        arrayAdapter.notifyDataSetChanged();
+        mrole.setAdapter(arrayAdapter);
+    //        txt_nama    = (EditText) dialogView.findViewById(R.id.txt_nama);
+
+        mrole.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                cekInternet();
+                for (int i = 0; i < rolecvalue.size(); ++i) {
+                    valerole = rolecvalue.get(position);
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    //        kosong();
+
+        dialog2.setPositiveButton("SUBMIT", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (valerole.equals("-")){
+                    Toast.makeText(DetailsST.this, "Wajib Pilih Status", Toast.LENGTH_SHORT).show();
+                }else {
+                    canclerequest();
+    //                clockinnya();
+    //                    if (postalCode.equals("")){
+    //
+    //                    }else {
+    //                        getCurrentLocation();
+    //                        Toast.makeText(ClockInActivity.this, "mohon periksa koneksi anda", Toast.LENGTH_SHORT).show();
+    //                    }
+                    ;
+
+                }
 
 
 
-            dialog.dismiss();
-        }
-    });
+                dialog.dismiss();
+            }
+        });
 
-    dialog2.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+        dialog2.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
 
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            dialog.dismiss();
-        }
-    });
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
 
-    dialog2.show();
-}
+        dialog2.show();
+    }
     private void showDialogreopen() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 this);
@@ -946,7 +1057,13 @@ private void DialogForm() {
 
 //                    sesionid();
                     Log.d("sessionId",MsessionExpired);
-                    JsonObject data = homedata.getAsJsonObject("data");
+                   data = homedata.getAsJsonObject("data");
+                    //SHOW START PROGRESS SCHEDJULE
+                    if (data.get("allowToScheduledProgress").getAsBoolean()){
+                        mstartprogresssched.setVisibility(View.VISIBLE);
+                    }else {
+                        mstartprogresssched.setVisibility(View.GONE);
+                    }
                     // cancle btn show
                     if (data.get("allowToCancel").getAsBoolean()){
                         mcancleassg.setVisibility(View.VISIBLE);
@@ -1286,6 +1403,7 @@ private void DialogForm() {
                             gotonews.putExtra("tokennya",tokennya);
                             gotonews.putExtra("engname", mcustname);
                             gotonews.putExtra("nofr", mformRequestCd);
+                            gotonews.putExtra("home", home);
                             startActivity(gotonews);
                             overridePendingTransition(R.anim.right_in, R.anim.left_out);
                             finish();
@@ -1609,6 +1727,7 @@ private void DialogForm() {
                                 JsonObject jsonObject2 = (JsonObject)listsna.get(i);
                                 String string4 = jsonObject2.getAsJsonObject().get("Text").getAsString();
                                 Boolean string7 = jsonObject2.getAsJsonObject().get("ShowEstimateDateInput").getAsBoolean();
+                                Boolean chec = jsonObject2.getAsJsonObject().get("ShowReplacementCheckBox").getAsBoolean();
                                 String string5 = "";
                                 if (jsonObject2.getAsJsonObject().get("Value").toString().equals("null")){
                                     string5 = "-";
@@ -1620,6 +1739,7 @@ private void DialogForm() {
                                 snnamea.add(string4);
                                 snida.add(string5);
                                 estimatedate.add(string7);
+                                checkbox.add(chec);
                                 for (int j = 0; j < snida.size(); ++j) {
                                     if (snida.get(i).equals(mpressIda)){
                                         posa=j;
@@ -1825,6 +1945,7 @@ private void DialogForm() {
                 String errornya = "";
                 JsonObject homedata=response.body();
                 String statusnya = homedata.get("status").getAsString();
+                Log.d("responstartprog",homedata.toString());
                 if (homedata.get("errorMessage").toString().equals("null")) {
 
                 }else {
@@ -1855,7 +1976,61 @@ private void DialogForm() {
         });
         Log.d("jsonstart",jsonObject.toString());
     }
+    public void startprogressschej(){
+        loading = ProgressDialog.show(DetailsST.this, "", "loading...", true);
+        JsonObject jsonObject = new JsonObject();
+
+        jsonObject.addProperty("sessionId",sesionid_new);
+        jsonObject.addProperty("serviceTicketCd",noreq);
+        jsonObject.addProperty("serviceTypeCd",mpressId);
+        jsonObject.addProperty("scheduledDate",dateschedjul);
+        jsonObject.addProperty("ver",BuildConfig.VERSION_NAME);
+        IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, baseurl);
+        Call<JsonObject> panggilkomplek = jsonPostService.startprogsched(jsonObject);
+        panggilkomplek.enqueue(new Callback<JsonObject>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                String errornya = "";
+                JsonObject homedata=response.body();
+                String statusnya = homedata.get("status").getAsString();
+                if (homedata.get("errorMessage").toString().equals("null")) {
+
+                }else {
+                    errornya = homedata.get("errorMessage").getAsString();
+                }
+                MhaveToUpdate = homedata.get("haveToUpdate").toString();
+                MsessionExpired = homedata.get("sessionExpired").toString();
+                sesionid();
+                if (statusnya.equals("OK")){
+                    JsonObject data = homedata.getAsJsonObject("data");
+                    String message = data.get("message").getAsString();
+                    Toast.makeText(DetailsST.this, message,Toast.LENGTH_LONG).show();
+                    onBackPressed();
+                }else {
+                    sesionid();
+                    loading.dismiss();
+                    Toast.makeText(DetailsST.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Toast.makeText(DetailsST.this,getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
+                cekInternet();
+                loading.dismiss();
+
+            }
+        });
+        Log.d("jsonstart2",jsonObject.toString());
+    }
     public void updatea(){
+        if (mcheckboxbtn.isChecked()){
+            checkboxsts=true;
+        }else {
+            checkboxsts=false;
+        }
         loading = ProgressDialog.show(DetailsST.this, "", "loading...", true);
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("sessionId",sesionid_new);
@@ -1866,6 +2041,7 @@ private void DialogForm() {
         jsonObject.addProperty("notes",mdescripst.getText().toString());
         jsonObject.addProperty("waitingEstimationDate",mdatestatus.getText().toString());
         jsonObject.add("sparePart",myCustomArray);
+        jsonObject.addProperty("withReplacement",checkboxsts);
         jsonObject.addProperty("ver",BuildConfig.VERSION_NAME);
         jsonObject.addProperty("longitude",lati);
         jsonObject.addProperty("latitude",longi);
@@ -1893,6 +2069,7 @@ private void DialogForm() {
                     String message = data.get("message").getAsString();
                     Toast.makeText(DetailsST.this, message,Toast.LENGTH_LONG).show();
                     onBackPressed();
+//                    loadData();
                 }else {
                     sesionid();
                     loading.dismiss();
@@ -2449,6 +2626,48 @@ private void DialogForm() {
          */
 
         datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
+        datePickerDialog.show();
+    }
+    private void datepicker2(){
+
+        /**
+         * Calendar untuk mendapatkan tanggal sekarang
+         */
+        Calendar newCalendar = Calendar.getInstance();
+
+        /**
+         * Initiate DatePicker dialog
+         */
+        datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+                /**
+                 * Method ini dipanggil saat kita selesai memilih tanggal di DatePicker
+                 */
+
+                /**
+                 * Set Calendar untuk menampung tanggal yang dipilih
+                 */
+//                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
+
+                /**
+                 * Update TextView dengan tanggal yang kita pilih
+                 */
+                dateFormatter2 = new SimpleDateFormat("dd-MMMM-yyyy");
+                mdatenya.setText(dateFormatter2.format(newDate.getTime()));
+                Log.d("date55", String.valueOf(newDate.getTime()));
+            }
+
+        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+
+        /**
+         * Tampilkan DatePicker dialog
+         */
+
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis()+24*60*60*1000);
         datePickerDialog.show();
     }
     public void reqApi() {

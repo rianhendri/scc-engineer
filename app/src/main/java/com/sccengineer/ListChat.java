@@ -23,6 +23,7 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.GradientDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -30,13 +31,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,8 +56,11 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.sccengineer.Chat.Adapterchat;
 import com.sccengineer.Chat.Itemchat;
@@ -65,7 +72,11 @@ import com.sccengineer.SendNotificationPack.MyResponse;
 import com.sccengineer.SendNotificationPack.NotificationSender;
 import com.sccengineer.apihelper.IRetrofit;
 import com.sccengineer.apihelper.ServiceGenerator;
+import com.sccengineer.generatechat.Adaptergeneratechat;
+import com.sccengineer.generatechat.Itemgeneratechat;
 import com.sccengineer.livechatlist.DetailsDate;
+import com.sccengineer.livechatlist.ListLiveChatAdapter;
+import com.sccengineer.livechatlist.ListLiveChatItem;
 import com.sccengineer.menuhome.MenuAdapter;
 import com.sccengineer.menuhome.MenuItem;
 import com.sccengineer.messagecloud.check;
@@ -73,6 +84,15 @@ import com.sccengineer.notifikasihome.NotifhomeAdapter;
 import com.sccengineer.notifikasihome.NotifhomeItems;
 import com.sccengineer.onproghome.OnProgHome_items;
 import com.sccengineer.onproghome.OnProghome_adapter;
+import com.sccengineer.serviceticket.ServiceTicketAdapter;
+import com.sccengineer.serviceticket.ServicesTicketItem;
+import com.sccengineer.spartsend.SendSparepart_adapter;
+import com.sccengineer.spartsend.SendSparepart_item;
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -83,6 +103,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 
 import retrofit2.Call;
@@ -91,6 +113,7 @@ import retrofit2.Response;
 
 import static android.view.View.GONE;
 import static com.sccengineer.Chat.Adapterchat.addFoclistreq;
+import static com.sccengineer.DetailsST.jsonarayitem;
 import static com.sccengineer.DetailsST.mcustname;
 import static com.sccengineer.DetailsST.mformRequestCd;
 import static com.sccengineer.DetailsST.noreq;
@@ -101,10 +124,14 @@ import static com.sccengineer.LiveChatList.mfooterload;
 import static com.sccengineer.LiveChatList.myitem_place;
 import static com.sccengineer.apihelper.ServiceGenerator.baseurl;
 import static com.sccengineer.apihelper.ServiceGenerator.fcmbase;
+import static com.sccengineer.apihelper.ServiceGenerator.getchatnya;
+import static com.sccengineer.menuhome.MenuAdapter.countSC;
 import static com.sccengineer.messagecloud.check.tokennya2;
 import static com.sccengineer.LiveChatList.itemchat;
 
 public class ListChat extends AppCompatActivity {
+
+    //
     String scs = "";
     Boolean liveChatRepor=false;
     Boolean internet = false;
@@ -112,20 +139,24 @@ public class ListChat extends AppCompatActivity {
     String MsessionExpired = "";
     String sesionid_new = "";
     String idnotif = "";
-    RecyclerView recyclerView;
+    RecyclerView recyclerView,mchatgenerate;
     Itemchat2 itemchat2 ;
     ArrayList<Itemchat> itemchat3;
     Adapterchat adapterchat;
-    public static DatabaseReference databaseReference,databaseReference3,databaseReference4;
+    ArrayList<Itemgeneratechat> generatechat;
+    JsonArray listformreq;
+    Adaptergeneratechat generateadapter;
+    Itemgeneratechat addgenerate,addgenerate2,addgenerate3,addgenerate4;
+    public static DatabaseReference databaseReference,databaseReference3,databaseReference4,databaseReference5;
     DatabaseReference databaseReference2 = FirebaseDatabase.getInstance().getReference();
-    LinearLayoutManager linearLayoutManager;
+    LinearLayoutManager linearLayoutManager,linearLayoutManager2;
     LinearLayout mlayketk;
     public static String name="";
     String module = "";
     String ModuleTransactionNo = "";
     String engas = "";
     String sendto="";
-    EditText sendtext;
+    public static EditText sendtext;
     ImageView mpaperclip;
     public static ImageView msend,mdelet,mcopy;
     String show="no";
@@ -170,11 +201,17 @@ public class ListChat extends AppCompatActivity {
     int tokenpos=0;
     String titlelist = "";
     String stnya="";
+    ProgressBar mloadingchat;
+    LinearLayout mmnodatas;
+    String homes = "";
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_chat);
+        mloadingchat = findViewById(R.id.loadingchat);
+        mmnodatas = findViewById(R.id.nodatas);
+        mchatgenerate = findViewById(R.id.chatgenerate);
         mfrnya = findViewById(R.id.frnya);
         mstnya = findViewById(R.id.stnya);
         mpaperclip = findViewById(R.id.paperclip);
@@ -189,6 +226,8 @@ public class ListChat extends AppCompatActivity {
         mlayketk = findViewById(R.id.layketk);
         getSessionId();
         Bundle bundle2 = getIntent().getExtras();
+
+        ///
         if (bundle2 != null) {
             sessionnya = bundle2.getString("sessionnya");
             name = bundle2.getString("name");
@@ -208,10 +247,11 @@ public class ListChat extends AppCompatActivity {
             titlelist=bundle2.getString("titlelist");
             module=bundle2.getString("module");
             scrollnya =   bundle2.getString("scrolbawah");
+            homes =   bundle2.getString("home");
 //            Toast.makeText(this, id, Toast.LENGTH_SHORT).show();
 //            mfrnya.setText(noreq+" (Customer: "+custnmae+")");
             mfrnya.setText(titlenya);
-
+            mloadingchat.setVisibility(View.VISIBLE);
 //                scs="no";
             if (id==null){
                 String currentString = noreq;
@@ -245,7 +285,14 @@ public class ListChat extends AppCompatActivity {
         }
 
         if (chatin){
+            String aString =sessionnya;
+            String cutString = aString.substring(0, 2);
+            if (cutString.equals("ST")){
+                loadgenerate();
+            }
+
             mlayketk.setVisibility(View.VISIBLE);
+
         }else {
             mlayketk.setVisibility(GONE);
         }
@@ -273,8 +320,8 @@ public class ListChat extends AppCompatActivity {
             databaseReference3= FirebaseDatabase.getInstance().getReference().child("chat").child(sessionnya).child("listchat");
             loadchat();
         }
-
-
+//        databaseReference5= FirebaseDatabase.getInstance().getReference().child("chat");
+//        loadchat2();
         mstnya.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -317,7 +364,7 @@ public class ListChat extends AppCompatActivity {
                 }else {
                     mback.setVisibility(View.VISIBLE);
                     mdelcop.setVisibility(View.GONE);
-                    String date = new SimpleDateFormat("d MMM yyyy", Locale.getDefault()).format(new Date());
+                    String date = new SimpleDateFormat("d MMM yyyy", Locale.ENGLISH).format(new Date());
                     getShowid();
                     if (showid.equals(date)){
                         show="no";
@@ -372,8 +419,8 @@ public class ListChat extends AppCompatActivity {
 //        }else{
 //            posinya = addFoclistreq.size()+1;
 //        }
-        String date = new SimpleDateFormat("d MMM yyyy", Locale.getDefault()).format(new Date());
-        String time = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
+        String date = new SimpleDateFormat("d MMM yyyy", Locale.ENGLISH).format(new Date());
+        String time = new SimpleDateFormat("HH:mm", Locale.ENGLISH).format(new Date());
         itemchat2.setDate(date);
         itemchat2.setName(name);
         itemchat2.setShowDate(show);
@@ -405,6 +452,7 @@ public class ListChat extends AppCompatActivity {
         });
         mimeType2 = "-";
     }
+
     public void reqnotif() {
         loading = ProgressDialog.show(ListChat.this, "", "", true);
 //        loading .setVisibility(View.VISIBLE);
@@ -483,6 +531,7 @@ public class ListChat extends AppCompatActivity {
                     mfrnya.setText(titlenya);
                     loadchat();
                 }else {
+                    mloadingchat.setVisibility(GONE);
                     sesionid();
                     loading.dismiss();
                     //// error message
@@ -496,6 +545,7 @@ public class ListChat extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                mloadingchat.setVisibility(GONE);
                 Toast.makeText(ListChat.this, getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
                 cekInternet();
 //                loading .setVisibility(View.GONE);
@@ -583,6 +633,7 @@ public class ListChat extends AppCompatActivity {
                     mfrnya.setText(titlenya);
                     loadchat();
                 }else {
+                    mloadingchat.setVisibility(GONE);
                     sesionid();
                     loading.dismiss();
                     //// error message
@@ -596,6 +647,7 @@ public class ListChat extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                mloadingchat.setVisibility(GONE);
                 Toast.makeText(ListChat.this, getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
                 cekInternet();
 //                loading .setVisibility(View.GONE);
@@ -639,6 +691,7 @@ public class ListChat extends AppCompatActivity {
                     JsonObject data = homedata.getAsJsonObject("data");
                     Log.d("rekping","success");
                 }else {
+                    mloadingchat.setVisibility(GONE);
                     sesionid();
                     loading.dismiss();
                     //// error message
@@ -656,6 +709,7 @@ public class ListChat extends AppCompatActivity {
                 cekInternet();
 //                loading .setVisibility(View.GONE);
                 loading.dismiss();
+                mloadingchat.setVisibility(GONE);
 
             }
         });
@@ -678,8 +732,11 @@ public class ListChat extends AppCompatActivity {
                     recyclerView.setAdapter(adapterchat);
                     recyclerView.scrollToPosition(adapterchat.getItemCount()-1);
 //                recyclerView.scrollToPosition(adapterchat.getItemCount());
-
-
+                    mmnodatas.setVisibility(GONE);
+                mloadingchat.setVisibility(GONE);
+                }else {
+                    mloadingchat.setVisibility(GONE);
+                    mmnodatas.setVisibility(View.VISIBLE);
                 }
 
 //                Log.d("posi",String.valueOf(recyclerView.getAdapter().getItemCount()));
@@ -687,9 +744,132 @@ public class ListChat extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+                mloadingchat.setVisibility(GONE);
+                mmnodatas.setVisibility(View.VISIBLE);
+                Toast.makeText(ListChat.this, databaseError.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    public void loadgenerate(){
+        loading = ProgressDialog.show(ListChat.this, "", "loading...", true);
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("sessionId",sesionid_new);
+        jsonObject.addProperty("ver",BuildConfig.VERSION_NAME);
+//        Toast.makeText(DetailsFormActivity.this,jsonObject.toString(), Toast.LENGTH_SHORT).show();
+        IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, baseurl);
+        Call<JsonObject> panggilkomplek = jsonPostService.generatelist(jsonObject);
+        panggilkomplek.enqueue(new Callback<JsonObject>() {
+            @SuppressLint("WrongConstant")
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                String errornya = "";
+                JsonObject homedata=response.body();
+                String statusnya = homedata.get("status").getAsString();
+                Log.d("configeng",homedata.toString());
+                if (homedata.get("errorMessage").toString().equals("null")) {
+
+                }else {
+                    errornya = homedata.get("errorMessage").getAsString();
+                }
+                MhaveToUpdate = homedata.get("haveToUpdate").toString();
+                MsessionExpired = homedata.get("sessionExpired").toString();
+//                jsonObject.addProperty("ver",ver);
+                if (statusnya.equals("OK")) {
+                    loading.dismiss();
+//                    loading .setVisibility(View.GONE);
+                    sesionid();
+                    JsonObject data = homedata.getAsJsonObject("data");
+                    listformreq = data.getAsJsonArray("list");
+                    Gson gson = new Gson();
+                    Type listType = new TypeToken<ArrayList<Itemgeneratechat>>() {
+                    }.getType();
+                    generatechat = gson.fromJson(listformreq.toString(), listType);
+                    generateadapter = new Adaptergeneratechat(ListChat.this, generatechat);
+                    //generate chat
+//                    generatechat = new ArrayList<Itemgeneratechat>();
+//                    addgenerate= new Itemgeneratechat();
+//                    addgenerate2= new Itemgeneratechat();
+//                    addgenerate3= new Itemgeneratechat();
+//                    addgenerate4= new Itemgeneratechat();
+//                    addgenerate.setTextgenerate("Text Generate satu (1)");
+//                    generatechat.add(addgenerate);
+//                    addgenerate2.setTextgenerate("Text Generate dua (2)");
+//                    generatechat.add(addgenerate2);
+//                    addgenerate3.setTextgenerate("Text Generate tiga (3)");
+//                    generatechat.add(addgenerate3);
+//                    addgenerate4.setTextgenerate("Text Generate empat (4)");
+//                    generatechat.add(addgenerate4);
+                    linearLayoutManager2 = new LinearLayoutManager(ListChat.this, LinearLayout.HORIZONTAL,false);
+                    mchatgenerate.setLayoutManager(linearLayoutManager2);
+                    generateadapter=new Adaptergeneratechat(ListChat.this, generatechat);
+                    mchatgenerate.setAdapter(generateadapter);
+                }else {
+                    mloadingchat.setVisibility(GONE);
+                    sesionid();
+                    loading.dismiss();
+                    //// error message
+//                    loading .setVisibility(View.GONE);
+//                    if (MsessionExpired.equals("true")) {
+//                        Toast.makeText(Home.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+//                    }
+                    Toast.makeText(ListChat.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+//                Toast.makeText(DetailsST.this, getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
+                cekInternet();
+                loading.dismiss();
 
             }
         });
+        Log.d("loadDetailst",jsonObject.toString());
+    }
+    public void loadchat2(){
+//        loading = ProgressDialog.show(DetailsST.this, "", "loading...", true);
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("sessionId","");
+//        Toast.makeText(DetailsFormActivity.this,jsonObject.toString(), Toast.LENGTH_SHORT).show();
+        IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, getchatnya);
+        Call<JsonObject> panggilkomplek = jsonPostService.getjsonchat();
+        panggilkomplek.enqueue(new Callback<JsonObject>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                String errornya = "";
+                JsonObject homedata=response.body();
+                JsonObject data = homedata.getAsJsonObject("SO210914004");
+                JSONObject rolejson = null;
+                try {
+                    rolejson = new JSONObject(data.get("listchat").toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                for(int i = 0; i<rolejson.names().length(); i++){
+                    try {
+//                        Log.d("TestJson",rolejson.names().getJSONObject(i).getString("message"));
+                        Log.d("TAGet", "key = " + rolejson.names().getString(i) + " value = " + rolejson.getJSONObject(rolejson.names().getString(i)).getString("message"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.d("TAGet", e.toString());
+                    }
+                }
+//                Log.d("jsonchatt",outputJsonArray.toString());
+
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+//                Toast.makeText(DetailsST.this, getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
+                cekInternet();
+                loading.dismiss();
+
+            }
+        });
+        Log.d("loadDetailst",jsonObject.toString());
     }
     public void getShowid(){
 
@@ -747,8 +927,8 @@ public class ListChat extends AppCompatActivity {
 
                         message = imagefile.getName();
                         myuri = pdfPath;
-                        String date = new SimpleDateFormat("d MMM yyyy", Locale.getDefault()).format(new Date());
-                        String time = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
+                        String date = new SimpleDateFormat("d MMM yyyy", Locale.ENGLISH).format(new Date());
+                        String time = new SimpleDateFormat("HH:mm", Locale.ENGLISH).format(new Date());
                         itemchat2.setDate(date);
                         itemchat2.setName(name);
                         itemchat2.setShowDate(show);
@@ -930,7 +1110,7 @@ public class ListChat extends AppCompatActivity {
                 back.putExtra("name",name);
                 back.putExtra("id",stnya);
                 back.putExtra("user",username);
-                back.putExtra("home", "homesa");
+                back.putExtra("home", homes);
                 back.putExtra("xhori", xhori);
                 back.putExtra("yverti", yverti);
                 back.putExtra("scrolbawah","-");
@@ -990,6 +1170,7 @@ public class ListChat extends AppCompatActivity {
 //                Toast.makeText(DetailsFormActivity.this, getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
 //                cekInternet();
                     loading.dismiss();
+                    mloadingchat.setVisibility(GONE);
 
                 }
             });
@@ -1083,6 +1264,7 @@ public class ListChat extends AppCompatActivity {
 //                        Toast.makeText(Home.this, errornya.toString(), Toast.LENGTH_SHORT).show();
 //                    }
                     Toast.makeText(ListChat.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+                    mloadingchat.setVisibility(GONE);
                 }
             }
 
@@ -1092,6 +1274,7 @@ public class ListChat extends AppCompatActivity {
 //                mcheck.setVisibility(View.GONE);
                 Toast.makeText(ListChat.this, getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
                 cekInternet();
+                mloadingchat.setVisibility(GONE);
 //                loading.dismiss();
             }
         });

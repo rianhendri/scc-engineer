@@ -36,7 +36,7 @@ public class ServiceGenerator {
 
 
 
-    public static String baseurl= "http://eng.smartcarecenter.id/";
+    public static String baseurl= "https://eng.smartcarecenter.id/";
     public static String getchatnya= "https://smartcare-7f57f.firebaseio.com/";
     public static String fcmbase= "https://fcm.googleapis.com/";
     public static String ver = BuildConfig.VERSION_NAME;

@@ -151,23 +151,26 @@ extends RecyclerView.Adapter<ListLiveChatAdapter.Myviewholder> {
 //        myviewholder.minitialname.setText(myItem.get(i).getUserName());
 
         myviewholder.mstnya.setText(myItem.get(i).getTitleInList());
-        myviewholder.mdetailchat.setText(itemchat.get(i).getMessage());
+        myviewholder.mdetailchat.setText(myItem.get(i).getDetails());
 
         String date = new SimpleDateFormat("d MMM yyyy", Locale.getDefault()).format(new Date());
-        if (date.equals(itemchat.get(i).getDate())){
-            myviewholder.mdatechatlist.setText(itemchat.get(i).getTime());
+        if (date.equals(myItem.get(i).getDatea())){
+            myviewholder.mdatechatlist.setText(myItem.get(i).getTime());
         }else {
-            myviewholder.mdatechatlist.setText(itemchat.get(i).getDate());
+            myviewholder.mdatechatlist.setText(myItem.get(i).getDatea());
         }
-        if (itemchat.get(i).getName().equals(namea)) {
-            myviewholder.mdot.setVisibility(View.GONE);
-        }else {
-            if (itemchat.get(i).getRead().equals("yes")){
+        if (myItem.get(i).getPengirim()!=null){
+            if (myItem.get(i).getPengirim().equals(namea)) {
                 myviewholder.mdot.setVisibility(View.GONE);
             }else {
-                myviewholder.mdot.setVisibility(View.VISIBLE);
+                if (myItem.get(i).getRead().equals("yes")){
+                    myviewholder.mdot.setVisibility(View.GONE);
+                }else {
+                    myviewholder.mdot.setVisibility(View.VISIBLE);
+                }
             }
         }
+
 //        lastQuery = databaseReference.child("chat").child(myItem.get(i).getLiveChatID()).child("listchat").orderByKey().limitToLast(1);
 //        lastQuery.addListenerForSingleValueEvent(new ValueEventListener() {
 //            @Override

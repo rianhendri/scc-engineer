@@ -914,6 +914,7 @@
 					android:layout_height="wrap_content"
 					android:fontFamily="@font/segoeui"
 					android:text="-ASDASD"
+					android:textIsSelectable="true"
 					android:textColor="@color/black"
 					android:textSize="11sp" />
 				<com.ms.square.android.expandabletextview.ExpandableTextView

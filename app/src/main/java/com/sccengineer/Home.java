@@ -54,9 +54,14 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -64,6 +69,9 @@ import com.sccengineer.Chat.ItemUid;
 import com.sccengineer.Chat.Itemchat2;
 import com.sccengineer.apihelper.IRetrofit;
 import com.sccengineer.apihelper.ServiceGenerator;
+import com.sccengineer.livechatlist.DetailsDate;
+import com.sccengineer.livechatlist.ListLiveChatAdapter;
+import com.sccengineer.livechatlist.ListLiveChatItem;
 import com.sccengineer.menuhome.MenuAdapter;
 import com.sccengineer.menuhome.MenuItem;
 import com.sccengineer.messagecloud.check;
@@ -72,24 +80,51 @@ import com.sccengineer.notifikasihome.NotifhomeItems;
 import com.sccengineer.onproghome.OnProgHome_items;
 import com.sccengineer.onproghome.OnProghome_adapter;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.security.Permissions;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+//import me.leolin.shortcutbadger.ShortcutBadger;
+//import me.leolin.shortcutbadger.ShortcutBadger;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.sccengineer.DetailsST.jsonarayitem;
+import static com.sccengineer.ListChat.name;
+import static com.sccengineer.LiveChatList.list2;
+import static com.sccengineer.LiveChatList.itemchat;
+import static com.sccengineer.LiveChatList.list3;
 import static com.sccengineer.apihelper.ServiceGenerator.baseurl;
+import static com.sccengineer.apihelper.ServiceGenerator.getchatnya;
 import static com.sccengineer.apihelper.ServiceGenerator.ver;
+import static com.sccengineer.menuhome.MenuAdapter.countSC;
+import static com.sccengineer.menuhome.MenuAdapter.counter3;
 
 public class Home extends AppCompatActivity {
+    //adapter count notif live chat
+    ListLiveChatAdapter addFormAdapterAdapter;
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+    int pos1 = 0;
+    Query lastQuery;
+    JsonArray myCustomArray;
+    JSONObject rolejson = null;
+    JSONObject rolejson2 = null;
+    JsonObject homedata2=null;
+    JsonObject homedata3=null;
+    //
     ItemUid ietmuid ;
     String nme="";
     String uidnya="";
@@ -109,7 +144,7 @@ public class Home extends AppCompatActivity {
     ArrayList<NotifhomeItems> notifhomeItems;
     OnProghome_adapter onProghome_adapter;
     NotifhomeAdapter notifhomeAdapter;
-    JsonArray listformreq,listformreq2;
+    JsonArray listformreq,listformreq2,listformreq3;
     RecyclerView myitem_place;
     private LinearLayoutManager linearLayoutManager, linearLayoutManager2, linearLayoutManager3;
     RecyclerView mymenu, mnotificationconfig;
@@ -162,6 +197,10 @@ public class Home extends AppCompatActivity {
         mnotif1 = findViewById(R.id.notifikasi);
         mnotif2 = findViewById(R.id.notif2);
         mnotificationconfig = findViewById(R.id.notificationconfig);
+
+
+        int badgeCount = 10;
+//        ShortcutBadger.applyCount(Home.this, badgeCount); //for 1.1.4+
         linearLayoutManager = new LinearLayoutManager(Home.this, LinearLayout.HORIZONTAL,false);
 //        linearLayoutManager.setReverseLayout(true);
 //        linearLayoutManager.setStackFromEnd(true);
@@ -703,6 +742,7 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
                         menuItem9.setImg(R.drawable.ic_supportchat);
                         menuItem9.setShow(data.get("showChatWithSupportList").toString());
                         menuItemlist.add(menuItem9);
+                        loadScc();
                     }
                     if (data.get("showCurrentLiveChatList").getAsBoolean()){
                         menuItem6.setMenuname("Live Chat List");
@@ -754,15 +794,21 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
                     float width5 = getResources().getDimension(R.dimen.height5);
                     float width6 = getResources().getDimension(R.dimen.height6);
                     if(mymenu.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-                        if (menuItemlist.size()>4)
-                        { mymenu.getLayoutParams().height = (int) width3;
-                        }
-                        else if( menuItemlist.size()>6) {
-                            mymenu.getLayoutParams().height = (int) width4;
-                        }else if (menuItemlist.size()>8) {
-                            mymenu.getLayoutParams().height = (int) width5;
-                        }else if( menuItemlist.size()>10) {
-                            mymenu.getLayoutParams().height = (int) width6;
+                        if (menuItemlist.size()<5)
+                        {
+                            mymenu.getLayoutParams().height = (int) width3;
+                        }else {
+                            if( menuItemlist.size()<7) {
+                                mymenu.getLayoutParams().height = (int) width3;
+                            }else {
+                                if (menuItemlist.size()<9) {
+                                    mymenu.getLayoutParams().height = (int) width4;
+                                }else {
+                                    if( menuItemlist.size()<11) {
+                                        mymenu.getLayoutParams().height = (int) width5;
+                                    }
+                                }
+                            }
                         }
                         mymenu.setNestedScrollingEnabled(false);
                         mymenu.setLayoutManager(new GridLayoutManager(Home.this, 2));
@@ -1027,4 +1073,245 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
             }
         });
     }
+
+    //load badge notif live chat
+    public void loadScc(){
+        countSC=0;
+        counter3=0;
+        list2 = new ArrayList<ListLiveChatItem>();
+        itemchat.clear();
+        list2.clear();
+//        page=1;
+//        if (load){
+//            load = false;
+//        }else {
+//            mfooterload.setVisibility(View.VISIBLE);
+//            load = true;
+//        }
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("sessionId",sesionid_new);
+//        jsonObject.addProperty("page",page);
+//        jsonObject.addProperty("status",valuefilter);
+        jsonObject.addProperty("ver",BuildConfig.VERSION_NAME);
+        IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, baseurl);
+        Call<JsonObject> panggilkomplek = jsonPostService.livecslist(jsonObject);
+        panggilkomplek.enqueue(new Callback<JsonObject>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                String errornya = "";
+                JsonObject homedata=response.body();
+                String statusnya = homedata.get("status").getAsString();
+                if (homedata.get("errorMessage").toString().equals("null")) {
+
+                }else {
+                    errornya = homedata.get("errorMessage").getAsString();
+                }
+                MhaveToUpdate = homedata.get("haveToUpdate").toString();
+                MsessionExpired = homedata.get("sessionExpired").toString();
+                if (statusnya.equals("OK")){
+                    JsonObject data = homedata.getAsJsonObject("data");
+//                    totalpage = 0;
+                    listformreq = data.getAsJsonArray("chatList");
+
+//                    totalrec = "0";
+//                    mrecord.setText("Record: "+totalrec);
+                    Gson gson = new Gson();
+                    Type listType = new TypeToken<ArrayList<ListLiveChatItem>>() {
+                    }.getType();
+                    list2 = gson.fromJson(listformreq.toString(), listType);
+                    addFormAdapterAdapter = new ListLiveChatAdapter(Home.this, list2);
+//                    addFormAdapterAdapter.notifyDataSetChanged();
+
+
+                    JsonObject jsonObject = new JsonObject();
+                    jsonObject.addProperty("sessionId","");
+//        Toast.makeText(DetailsFormActivity.this,jsonObject.toString(), Toast.LENGTH_SHORT).show();
+                    IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, getchatnya);
+                    Call<JsonObject> panggilkomplek = jsonPostService.getjsonchat();
+                    panggilkomplek.enqueue(new Callback<JsonObject>() {
+                        @RequiresApi(api = Build.VERSION_CODES.N)
+                        @Override
+                        public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                            homedata2=response.body();
+                            if (list2!=null){
+                                for(int x = 0; x<list2.size(); x++){
+                                    String errornya = "";
+
+                                    JsonObject data = homedata2.getAsJsonObject(list2.get(x).getLiveChatID());
+                                    String nameme = list2.get(x).getUserName();
+                                    try {
+                                        if (data!=null){
+                                            rolejson = new JSONObject(data.get("listchat").toString());
+                                        }
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    if (data!=null){
+                                        for(int i = 0; i<rolejson.names().length(); i++){
+                                            try {
+                                                if (rolejson.getJSONObject(rolejson.names().getString(i)).getString("name").equals(nameme)){
+
+                                                }else {
+                                                    if (rolejson.getJSONObject(rolejson.names().getString(i)).getString("read").equals("no")){
+                                                        countSC +=1;
+                                                        mymenu.setAdapter(addmenu);
+                                                    }
+                                                    if (rolejson.names().length()==i+1){
+
+                                                    }
+                                                }
+//                        Log.d("TestJson",rolejson.names().getJSONObject(i).getString("message"));
+                                                Log.d("TAGet", "key = " + rolejson.names().getString(i) + " value = " + rolejson.getJSONObject(rolejson.names().getString(i)).getString("message"));
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                                Log.d("TAGet", e.toString());
+                                            }
+                                        }
+                                    }
+
+                                }
+                            }
+
+                            loadDataeng();
+//                Log.d("jsonchatt",outputJsonArray.toString());
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<JsonObject> call, Throwable t) {
+//                Toast.makeText(DetailsST.this, getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
+                            cekInternet();
+//                            loading.dismiss();
+
+                        }
+                    });
+                    Log.d("loadDetailst",jsonObject.toString());
+
+                }else {
+                    sesionid();
+//                    mfooterload.setVisibility(View.GONE);
+                    if (MsessionExpired.equals("true")) {
+                        Toast.makeText(Home.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Toast.makeText(Home.this, getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
+                cekInternet();
+//                mfooterload.setVisibility(View.GONE);
+
+            }
+        });
+        Log.d("livechatlistreq",jsonObject.toString());
+    }
+    public void loadDataeng(){
+        itemchat.clear();
+        list3 = new ArrayList<ListLiveChatItem>();
+        list3.clear();
+
+
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("sessionId",sesionid_new);
+        jsonObject.addProperty("ver",BuildConfig.VERSION_NAME);
+        IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, baseurl);
+        Call<JsonObject> panggilkomplek = jsonPostService.livechastlist(jsonObject);
+        panggilkomplek.enqueue(new Callback<JsonObject>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                String errornya = "";
+                JsonObject homedata=response.body();
+                Log.d("zasazz",homedata.toString());
+                String statusnya = homedata.get("status").getAsString();
+                if (homedata.get("errorMessage").toString().equals("null")) {
+
+                }else {
+                    errornya = homedata.get("errorMessage").getAsString();
+                }
+                MhaveToUpdate = homedata.get("haveToUpdate").toString();
+                MsessionExpired = homedata.get("sessionExpired").toString();
+                if (statusnya.equals("OK")){
+                    JsonObject data = homedata.getAsJsonObject("data");
+
+//                    totalpage = 0;
+                    listformreq3 = data.getAsJsonArray("chatList");
+//                    totalrec = "0";
+//                    mrecord.setText("Record: "+totalrec);
+
+                    Gson gson = new Gson();
+                    Type listType = new TypeToken<ArrayList<ListLiveChatItem>>() {
+                    }.getType();
+                    list3 = gson.fromJson(listformreq3.toString(), listType);
+//                    addFormAdapterAdapter = new ListLiveChatAdapter(Home.this, list3);
+//                    addFormAdapterAdapter.notifyDataSetChanged();
+//                    homedata3=response.body();
+
+                    if (list3!=null){
+                        for(int x = 0; x<list3.size(); x++){
+                            JsonObject data2 = homedata2.getAsJsonObject(list3.get(x).getLiveChatID());
+                            String nameme = list3.get(x).getUserName();
+
+                            try {
+                                if (data2!=null){
+                                    rolejson2 = new JSONObject(data2.get("listchat").toString());
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+//                            try {
+//                                rolejson = new JSONObject(data.get("listchat").toString());
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            }
+                            for(int i = 0; i<rolejson2.names().length(); i++){
+                                try {
+
+
+                                    if (rolejson2.getJSONObject(rolejson2.names().getString(i)).getString("name").equals(nameme)){
+                                    }else {
+                                        if (rolejson2.getJSONObject(rolejson2.names().getString(i)).getString("read").equals("no")){
+                                            counter3 +=1;
+                                            mymenu.setAdapter(addmenu);
+                                        }
+                                    }
+//                        Log.d("TestJson",rolejson.names().getJSONObject(i).getString("message"));
+//                                    Log.d("TAGet", "key = " + rolejson.names().getString(i) + " value = " + rolejson.getJSONObject(rolejson.names().getString(i)).getString("message"));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    Log.d("TAGet", e.toString());
+                                }
+                            }
+                        }
+                    }
+
+                }else {
+                    sesionid();
+//                    mfooterload.setVisibility(View.GONE);
+                    if (MsessionExpired.equals("true")) {
+                        Toast.makeText(Home.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Toast.makeText(Home.this, getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
+                cekInternet();
+//                mfooterload.setVisibility(View.GONE);
+
+            }
+        });
+        Log.d("livechatlistreq",jsonObject.toString());
+    }
+
 }

@@ -8,8 +8,8 @@ android {
         applicationId "com.sccengineer"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 17
-        versionName "1.1.5"
+        versionCode 18
+        versionName "1.1.6"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -92,5 +92,7 @@ dependencies {
     implementation 'com.imankur.library:analogclockview:1.0.0'
 //    implementation  'com.doku.sdkocov2:sdkocov2-release:1.0@aar'
 //    implementation 'com.android.support:multidex:1.0.3'
+
+//    implementation "me.leolin:ShortcutBadger:1.1.22@aar"
 
 }

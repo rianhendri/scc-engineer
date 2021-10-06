@@ -48,6 +48,8 @@ import com.sccengineer.livechatlist.ListLiveChatItem;
 import com.sccengineer.messagecloud.check;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.text.DateFormat;
@@ -70,6 +72,7 @@ import static com.sccengineer.DetailsST.myCustomArray;
 import static com.sccengineer.DetailsST.sendsparepart_items;
 import static com.sccengineer.apihelper.ServiceGenerator.baseurl;
 import static com.sccengineer.apihelper.ServiceGenerator.getchatnya;
+import static com.sccengineer.menuhome.MenuAdapter.countSC;
 import static com.sccengineer.messagecloud.check.tokennya2;
 
 public class LiveChatList extends AppCompatActivity {
@@ -92,6 +95,9 @@ public class LiveChatList extends AppCompatActivity {
     boolean internet = true;
     private LinearLayoutManager linearLayoutManager;
     public static ArrayList<ListLiveChatItem> list2;
+    JsonObject homedata2;
+    JSONObject jsonchat;
+    public static ArrayList<ListLiveChatItem> list3;
     JsonArray listformreq;
     List<String> listnamestatus = new ArrayList();
     JsonArray liststatus;
@@ -332,6 +338,8 @@ public class LiveChatList extends AppCompatActivity {
                 MhaveToUpdate = homedata.get("haveToUpdate").toString();
                 MsessionExpired = homedata.get("sessionExpired").toString();
                 if (statusnya.equals("OK")){
+
+
                     JsonObject data = homedata.getAsJsonObject("data");
                     totalpage = 0;
                     listformreq = data.getAsJsonArray("chatList");
@@ -344,97 +352,189 @@ public class LiveChatList extends AppCompatActivity {
                     addFormAdapterAdapter = new ListLiveChatAdapter(LiveChatList.this, list2);
 //                    addFormAdapterAdapter.notifyDataSetChanged();
 
-
                         if (listformreq.toString().equals("[]")){
                             mfooterload.setVisibility(View.GONE);
                         }else {
-                            lastQuery = databaseReference.child("chat").child(list2.get(pos1).getLiveChatID()).child("listchat").orderByKey().limitToLast(1);
-                            lastQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+
+                            JsonObject jsonObject = new JsonObject();
+                            jsonObject.addProperty("sessionId","");
+//        Toast.makeText(DetailsFormActivity.this,jsonObject.toString(), Toast.LENGTH_SHORT).show();
+                            IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, getchatnya);
+                            Call<JsonObject> panggilkomplek = jsonPostService.getjsonchat();
+                            panggilkomplek.enqueue(new Callback<JsonObject>() {
+                                @RequiresApi(api = Build.VERSION_CODES.N)
                                 @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-//                                dataSnapshot.exists();
-                                    if (dataSnapshot.exists()){
-                                        Log.d("sss","success");
-                                        for(DataSnapshot ds: dataSnapshot.getChildren())
-                                        {
-                                            DetailsDate fetchDatalist=ds.getValue(DetailsDate.class);
-//                        fetchDatalist.setKey(ds.getKey());
-                                            itemchat.add(fetchDatalist);
+                                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                                    homedata2=response.body();
+                                    if (list2!=null){
+                                        for(int x = 0; x<list2.size(); x++){
+                                            pos1+=1;
+                                            String errornya = "";
 
-                                            if (list2.size()==pos1+1){
-                                                list2.get(pos1).setDatea(itemchat.get(pos1).getDate());
-                                                list2.get(pos1).setTime(itemchat.get(pos1).getTime());
-                                                Collections.sort(list2, new Comparator<ListLiveChatItem>() {
-                                                    DateFormat f = new SimpleDateFormat("d MMM yyyy HH:mm");
-                                                    @Override
-                                                    public int compare(ListLiveChatItem lhs, ListLiveChatItem rhs) {
-                                                        try {
-                                                            Log.d("compare","successs");
+                                            JsonObject data = homedata2.getAsJsonObject(list2.get(x).getLiveChatID());
+                                            String nameme = list2.get(x).getUserName();
+                                            try {
+                                                if (data!=null){
+                                                    jsonchat = new JSONObject(data.get("listchat").toString());
+                                                }
 
-                                                            return f.parse(lhs.getDatea()+" "+lhs.getTime()).compareTo(f.parse(rhs.getDatea()+" "+rhs.getTime()));
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                            if (data!=null){
+                                                for(int k = 0; k<jsonchat.names().length(); k++){
 
-                                                        } catch (ParseException e) {
-                                                            Log.d("compare",e.toString());
-                                                            throw new IllegalArgumentException(e);
+                                                    try {
+                                                        if (k==jsonchat.names().length()){
+
                                                         }
-                                                    }
-                                                });
-                                                Collections.sort(itemchat, new Comparator<DetailsDate>() {
-                                                    DateFormat f = new SimpleDateFormat("d MMM yyyy HH:mm");
-                                                    @Override
-                                                    public int compare(DetailsDate lhs, DetailsDate rhs) {
-                                                        try {
-                                                            Log.d("compare","successs");
+                                                        list2.get(x).setDatea(jsonchat.getJSONObject(jsonchat.names().getString(jsonchat.names().length()-1)).getString("date"));
+                                                        list2.get(x).setTime(jsonchat.getJSONObject(jsonchat.names().getString(jsonchat.names().length()-1)).getString("time"));
+                                                        list2.get(x).setDetails(jsonchat.getJSONObject(jsonchat.names().getString(jsonchat.names().length()-1)).getString("message"));
+                                                        list2.get(x).setRead(jsonchat.getJSONObject(jsonchat.names().getString(jsonchat.names().length()-1)).getString("read"));
+                                                        list2.get(x).setPengirim(jsonchat.getJSONObject(jsonchat.names().getString(jsonchat.names().length()-1)).getString("name"));
 
-                                                            return f.parse(lhs.getDate()+" "+lhs.getTime()).compareTo(f.parse(rhs.getDate()+" "+rhs.getTime()));
-
-                                                        } catch (ParseException e) {
-                                                            Log.d("compare",e.toString());
-                                                            throw new IllegalArgumentException(e);
-                                                        }
+//
+                                                    } catch (JSONException e) {
+                                                        e.printStackTrace();
+                                                        Log.d("TAGet", e.toString());
                                                     }
-                                                });
+
+                                                }
+                                            }
+                                            if (pos1==list2.size()){
+                                                for(int u = 0; u<list2.size(); u++){
+                                                    Log.d("datetimessx",list2.get(u).getDatea()+list2.get(u).getTime());
+                                                }
+
+                                                Log.d("jumlahin",String.valueOf(pos1)+"///"+String.valueOf(list2.size()));
+                                                            Collections.sort(list2, new Comparator<ListLiveChatItem>() {
+                                                                Locale local = Locale.ENGLISH;
+                                                                DateFormat f = new SimpleDateFormat("d MMM yyyy HH:mm",local);
+                                                                @Override
+                                                                public int compare(ListLiveChatItem lhs, ListLiveChatItem rhs) {
+
+                                                                    try {
+                                                                        Log.d("compare","successs");
+                                                                        return f.parse(lhs.getDatea()+" "+lhs.getTime()).compareTo(f.parse(rhs.getDatea()+" "+rhs.getTime()));
+
+                                                                    } catch (ParseException e) {
+                                                                        Log.d("compare",e.toString());
+                                                                        throw new IllegalArgumentException(e);
+                                                                    }
+                                                                }
+                                                            });
+
                                                 Collections.reverse(list2);
-                                                Collections.reverse(itemchat);
+                                                mfooterload.setVisibility(View.GONE);
                                                 pos1 =0;
                                                 myitem_place.setAdapter(addFormAdapterAdapter);
                                                 myitem_place.setVisibility(View.VISIBLE);
-                                                mfooterload.setVisibility(View.GONE);
-                                            }else {
-                                                list2.get(pos1).setDatea(itemchat.get(pos1).getDate());
-                                                list2.get(pos1).setTime(itemchat.get(pos1).getTime());
-                                                pos1 +=1;
-                                                showdetail();
 
                                             }
-
                                         }
-//                recyclerView.scrollToPosition(adapterchat.getItemCount());
-                                    }else{
-                                        Log.d("sss","gagal");
-                                        if (list2.size()==pos1+1){
-                                            pos1 =0;
-                                            myitem_place.setAdapter(addFormAdapterAdapter);
-                                            myitem_place.setVisibility(View.VISIBLE);
-                                            mfooterload.setVisibility(View.GONE);
-                                        }else {
-                                            pos1 +=1;
-                                            showdetail();
-
-                                        }
-                                        mfooterload.setVisibility(View.GONE);
                                     }
-//                String message = dataSnapshot.child("message").getValue().toString();
-//                myItem.get(i).setDetails(message);
-//                myviewholder.mdetailchat.setText(myItem.get(i).getDetails());
+
+
                                 }
 
                                 @Override
-                                public void onCancelled(DatabaseError databaseError) {
-                                    // Handle possible errors.
+                                public void onFailure(Call<JsonObject> call, Throwable t) {
+//                Toast.makeText(DetailsST.this, getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
+                                    cekInternet();
                                     mfooterload.setVisibility(View.GONE);
+//                            loading.dismiss();
+
                                 }
                             });
+                            Log.d("loadDetailst",jsonObject.toString());
+//                            lastQuery = databaseReference.child("chat").child(list2.get(pos1).getLiveChatID()).child("listchat").orderByKey().limitToLast(1);
+//                            lastQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+//                                @Override
+//                                public void onDataChange(DataSnapshot dataSnapshot) {
+////                                dataSnapshot.exists();
+//                                    if (dataSnapshot.exists()){
+//                                        Log.d("sss","success");
+//                                        for(DataSnapshot ds: dataSnapshot.getChildren())
+//                                        {
+//                                            DetailsDate fetchDatalist=ds.getValue(DetailsDate.class);
+////                        fetchDatalist.setKey(ds.getKey());
+//                                            itemchat.add(fetchDatalist);
+//
+//                                            if (list2.size()==pos1+1){
+//                                                list2.get(pos1).setDatea(itemchat.get(pos1).getDate());
+//                                                list2.get(pos1).setTime(itemchat.get(pos1).getTime());
+//                                                Collections.sort(list2, new Comparator<ListLiveChatItem>() {
+//                                                    DateFormat f = new SimpleDateFormat("d MMM yyyy HH:mm");
+//                                                    @Override
+//                                                    public int compare(ListLiveChatItem lhs, ListLiveChatItem rhs) {
+//                                                        try {
+//                                                            Log.d("compare","successs");
+//
+//                                                            return f.parse(lhs.getDatea()+" "+lhs.getTime()).compareTo(f.parse(rhs.getDatea()+" "+rhs.getTime()));
+//
+//                                                        } catch (ParseException e) {
+//                                                            Log.d("compare",e.toString());
+//                                                            throw new IllegalArgumentException(e);
+//                                                        }
+//                                                    }
+//                                                });
+//                                                Collections.sort(itemchat, new Comparator<DetailsDate>() {
+//                                                    DateFormat f = new SimpleDateFormat("d MMM yyyy HH:mm");
+//                                                    @Override
+//                                                    public int compare(DetailsDate lhs, DetailsDate rhs) {
+//                                                        try {
+//                                                            Log.d("compare","successs");
+//
+//                                                            return f.parse(lhs.getDate()+" "+lhs.getTime()).compareTo(f.parse(rhs.getDate()+" "+rhs.getTime()));
+//
+//                                                        } catch (ParseException e) {
+//                                                            Log.d("compare",e.toString());
+//                                                            throw new IllegalArgumentException(e);
+//                                                        }
+//                                                    }
+//                                                });
+//                                                Collections.reverse(list2);
+//                                                Collections.reverse(itemchat);
+//                                                pos1 =0;
+//                                                myitem_place.setAdapter(addFormAdapterAdapter);
+//                                                myitem_place.setVisibility(View.VISIBLE);
+//                                                mfooterload.setVisibility(View.GONE);
+//                                            }else {
+//                                                list2.get(pos1).setDatea(itemchat.get(pos1).getDate());
+//                                                list2.get(pos1).setTime(itemchat.get(pos1).getTime());
+//                                                pos1 +=1;
+//                                                showdetail();
+//
+//                                            }
+//
+//                                        }
+////                recyclerView.scrollToPosition(adapterchat.getItemCount());
+//                                    }else{
+//                                        Log.d("sss","gagal");
+//                                        if (list2.size()==pos1+1){
+//                                            pos1 =0;
+//                                            myitem_place.setAdapter(addFormAdapterAdapter);
+//                                            myitem_place.setVisibility(View.VISIBLE);
+//                                            mfooterload.setVisibility(View.GONE);
+//                                        }else {
+//                                            pos1 +=1;
+//                                            showdetail();
+//
+//                                        }
+//                                        mfooterload.setVisibility(View.GONE);
+//                                    }
+////                String message = dataSnapshot.child("message").getValue().toString();
+////                myItem.get(i).setDetails(message);
+////                myviewholder.mdetailchat.setText(myItem.get(i).getDetails());
+//                                }
+//
+//                                @Override
+//                                public void onCancelled(DatabaseError databaseError) {
+//                                    // Handle possible errors.
+//                                    mfooterload.setVisibility(View.GONE);
+//                                }
+//                            });
                         }
 
 
@@ -465,7 +565,7 @@ public class LiveChatList extends AppCompatActivity {
         if (load){
             load = false;
         }else {
-            mfooterload.setVisibility(View.VISIBLE);
+//            mfooterload.setVisibility(View.VISIBLE);
             load = true;
         }
         JsonObject jsonObject = new JsonObject();
@@ -491,6 +591,7 @@ public class LiveChatList extends AppCompatActivity {
                 MhaveToUpdate = homedata.get("haveToUpdate").toString();
                 MsessionExpired = homedata.get("sessionExpired").toString();
                 if (statusnya.equals("OK")){
+
                     JsonObject data = homedata.getAsJsonObject("data");
                     totalpage = 0;
                     listformreq = data.getAsJsonArray("chatList");
@@ -503,31 +604,66 @@ public class LiveChatList extends AppCompatActivity {
                     addFormAdapterAdapter = new ListLiveChatAdapter(LiveChatList.this, list2);
 //                    addFormAdapterAdapter.notifyDataSetChanged();
 
-
-
-                    lastQuery = databaseReference.child("chat").child(list2.get(pos1).getLiveChatID()).child("listchat").orderByKey().limitToLast(1);
-                    lastQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                    JsonObject jsonObject = new JsonObject();
+                    jsonObject.addProperty("sessionId","");
+//        Toast.makeText(DetailsFormActivity.this,jsonObject.toString(), Toast.LENGTH_SHORT).show();
+                    IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, getchatnya);
+                    Call<JsonObject> panggilkomplek = jsonPostService.getjsonchat();
+                    panggilkomplek.enqueue(new Callback<JsonObject>() {
+                        @RequiresApi(api = Build.VERSION_CODES.N)
                         @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-//                                dataSnapshot.exists();
-                            if (dataSnapshot.exists()){
-                                Log.d("sss","success");
-                                for(DataSnapshot ds: dataSnapshot.getChildren())
-                                {
-                                    DetailsDate fetchDatalist=ds.getValue(DetailsDate.class);
-//                        fetchDatalist.setKey(ds.getKey());
-                                    itemchat.add(fetchDatalist);
+                        public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                            homedata2=response.body();
+                            if (list2!=null){
+                                for(int x = 0; x<list2.size(); x++){
+                                    pos1+=1;
+                                    String errornya = "";
 
-                                    if (list2.size()==pos1+1){
-                                        list2.get(pos1).setDatea(itemchat.get(pos1).getDate());
-                                        list2.get(pos1).setTime(itemchat.get(pos1).getTime());
+                                    JsonObject data = homedata2.getAsJsonObject(list2.get(x).getLiveChatID());
+                                    String nameme = list2.get(x).getUserName();
+                                    try {
+                                        if (data!=null){
+                                            jsonchat = new JSONObject(data.get("listchat").toString());
+                                        }
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    if (data!=null){
+                                        for(int k = 0; k<jsonchat.names().length(); k++){
+
+                                            try {
+                                                if (k==jsonchat.names().length()){
+
+                                                }
+                                                list2.get(x).setDatea(jsonchat.getJSONObject(jsonchat.names().getString(jsonchat.names().length()-1)).getString("date"));
+                                                list2.get(x).setTime(jsonchat.getJSONObject(jsonchat.names().getString(jsonchat.names().length()-1)).getString("time"));
+                                                list2.get(x).setDetails(jsonchat.getJSONObject(jsonchat.names().getString(jsonchat.names().length()-1)).getString("message"));
+                                                list2.get(x).setRead(jsonchat.getJSONObject(jsonchat.names().getString(jsonchat.names().length()-1)).getString("read"));
+                                                list2.get(x).setPengirim(jsonchat.getJSONObject(jsonchat.names().getString(jsonchat.names().length()-1)).getString("name"));
+
+//
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                                Log.d("TAGet", e.toString());
+                                            }
+
+                                        }
+                                    }
+                                    if (pos1==list2.size()){
+                                        for(int u = 0; u<list2.size(); u++){
+                                            Log.d("datetimessx",list2.get(u).getDatea()+list2.get(u).getTime());
+                                        }
+
+                                        Log.d("jumlahin",String.valueOf(pos1)+"///"+String.valueOf(list2.size()));
                                         Collections.sort(list2, new Comparator<ListLiveChatItem>() {
-                                            DateFormat f = new SimpleDateFormat("d MMM yyyy HH:mm");
+                                            Locale local = Locale.ENGLISH;
+                                            DateFormat f = new SimpleDateFormat("d MMM yyyy HH:mm",local);
                                             @Override
                                             public int compare(ListLiveChatItem lhs, ListLiveChatItem rhs) {
+
                                                 try {
                                                     Log.d("compare","successs");
-
                                                     return f.parse(lhs.getDatea()+" "+lhs.getTime()).compareTo(f.parse(rhs.getDatea()+" "+rhs.getTime()));
 
                                                 } catch (ParseException e) {
@@ -536,62 +672,119 @@ public class LiveChatList extends AppCompatActivity {
                                                 }
                                             }
                                         });
-                                        Collections.sort(itemchat, new Comparator<DetailsDate>() {
-                                            DateFormat f = new SimpleDateFormat("d MMM yyyy HH:mm");
-                                            @Override
-                                            public int compare(DetailsDate lhs, DetailsDate rhs) {
-                                                try {
-                                                    Log.d("compare","successs");
 
-                                                    return f.parse(lhs.getDate()+" "+lhs.getTime()).compareTo(f.parse(rhs.getDate()+" "+rhs.getTime()));
-
-                                                } catch (ParseException e) {
-                                                    Log.d("compare",e.toString());
-                                                    throw new IllegalArgumentException(e);
-                                                }
-                                            }
-                                        });
                                         Collections.reverse(list2);
-                                        Collections.reverse(itemchat);
+
                                         pos1 =0;
+                                        mfooterload.setVisibility(View.GONE);
                                         myitem_place.setAdapter(addFormAdapterAdapter);
                                         myitem_place.setVisibility(View.VISIBLE);
-                                        mfooterload.setVisibility(View.GONE);
-                                    }else {
-                                        list2.get(pos1).setDatea(itemchat.get(pos1).getDate());
-                                        list2.get(pos1).setTime(itemchat.get(pos1).getTime());
-                                        pos1 +=1;
-                                        showdetail();
 
                                     }
-
                                 }
-//                recyclerView.scrollToPosition(adapterchat.getItemCount());
-                            }else{
-                                Log.d("sss","gagal");
-                                if (list2.size()==pos1+1){
-                                    pos1 =0;
-                                    myitem_place.setAdapter(addFormAdapterAdapter);
-                                    myitem_place.setVisibility(View.VISIBLE);
-                                    mfooterload.setVisibility(View.GONE);
-                                }else {
-                                    pos1 +=1;
-                                    showdetail();
-
-                                }
-                                mfooterload.setVisibility(View.GONE);
                             }
-//                String message = dataSnapshot.child("message").getValue().toString();
-//                myItem.get(i).setDetails(message);
-//                myviewholder.mdetailchat.setText(myItem.get(i).getDetails());
+
+
                         }
 
                         @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                            // Handle possible errors.
+                        public void onFailure(Call<JsonObject> call, Throwable t) {
+//                Toast.makeText(DetailsST.this, getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
+                            cekInternet();
                             mfooterload.setVisibility(View.GONE);
+//                            loading.dismiss();
+
                         }
                     });
+                    Log.d("loadDetailst",jsonObject.toString());
+
+//                    lastQuery = databaseReference.child("chat").child(list2.get(pos1).getLiveChatID()).child("listchat").orderByKey().limitToLast(1);
+//                    lastQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+//                        @Override
+//                        public void onDataChange(DataSnapshot dataSnapshot) {
+////                                dataSnapshot.exists();
+//                            if (dataSnapshot.exists()){
+//                                Log.d("sss","success");
+//                                for(DataSnapshot ds: dataSnapshot.getChildren())
+//                                {
+//                                    DetailsDate fetchDatalist=ds.getValue(DetailsDate.class);
+////                        fetchDatalist.setKey(ds.getKey());
+//                                    itemchat.add(fetchDatalist);
+//
+//                                    if (list2.size()==pos1+1){
+//                                        list2.get(pos1).setDatea(itemchat.get(pos1).getDate());
+//                                        list2.get(pos1).setTime(itemchat.get(pos1).getTime());
+//                                        Collections.sort(list2, new Comparator<ListLiveChatItem>() {
+//                                            DateFormat f = new SimpleDateFormat("d MMM yyyy HH:mm");
+//                                            @Override
+//                                            public int compare(ListLiveChatItem lhs, ListLiveChatItem rhs) {
+//                                                try {
+//                                                    Log.d("compare","successs");
+//
+//                                                    return f.parse(lhs.getDatea()+" "+lhs.getTime()).compareTo(f.parse(rhs.getDatea()+" "+rhs.getTime()));
+//
+//                                                } catch (ParseException e) {
+//                                                    Log.d("compare",e.toString());
+//                                                    throw new IllegalArgumentException(e);
+//                                                }
+//                                            }
+//                                        });
+//                                        Collections.sort(itemchat, new Comparator<DetailsDate>() {
+//                                            DateFormat f = new SimpleDateFormat("d MMM yyyy HH:mm");
+//                                            @Override
+//                                            public int compare(DetailsDate lhs, DetailsDate rhs) {
+//                                                try {
+//                                                    Log.d("compare","successs");
+//
+//                                                    return f.parse(lhs.getDate()+" "+lhs.getTime()).compareTo(f.parse(rhs.getDate()+" "+rhs.getTime()));
+//
+//                                                } catch (ParseException e) {
+//                                                    Log.d("compare",e.toString());
+//                                                    throw new IllegalArgumentException(e);
+//                                                }
+//                                            }
+//                                        });
+//                                        Collections.reverse(list2);
+//                                        Collections.reverse(itemchat);
+//                                        pos1 =0;
+//                                        myitem_place.setAdapter(addFormAdapterAdapter);
+//                                        myitem_place.setVisibility(View.VISIBLE);
+//                                        mfooterload.setVisibility(View.GONE);
+//                                    }else {
+//                                        list2.get(pos1).setDatea(itemchat.get(pos1).getDate());
+//                                        list2.get(pos1).setTime(itemchat.get(pos1).getTime());
+//                                        pos1 +=1;
+//                                        showdetail();
+//
+//                                    }
+//
+//                                }
+////                recyclerView.scrollToPosition(adapterchat.getItemCount());
+//                            }else{
+//                                Log.d("sss","gagal");
+//                                if (list2.size()==pos1+1){
+//                                    pos1 =0;
+//                                    myitem_place.setAdapter(addFormAdapterAdapter);
+//                                    myitem_place.setVisibility(View.VISIBLE);
+//                                    mfooterload.setVisibility(View.GONE);
+//                                }else {
+//                                    pos1 +=1;
+//                                    showdetail();
+//
+//                                }
+//                                mfooterload.setVisibility(View.GONE);
+//                            }
+////                String message = dataSnapshot.child("message").getValue().toString();
+////                myItem.get(i).setDetails(message);
+////                myviewholder.mdetailchat.setText(myItem.get(i).getDetails());
+//                        }
+//
+//                        @Override
+//                        public void onCancelled(DatabaseError databaseError) {
+//                            // Handle possible errors.
+//                            mfooterload.setVisibility(View.GONE);
+//                        }
+//                    });
 
                 }else {
                     sesionid();

@@ -23,7 +23,8 @@ public class MyFireBaseMessagingService extends FirebaseMessagingService {
                 new NotificationCompat.Builder(getApplicationContext())
                         .setSmallIcon(R.drawable.ic_launcher_background)
                         .setContentTitle(title)
-                        .setContentText(message);
+                        .setContentText(message)
+                        .setNumber(5);
         NotificationManager manager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify(0, builder.build());
     }

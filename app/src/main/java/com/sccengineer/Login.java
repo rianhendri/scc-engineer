@@ -3,6 +3,7 @@ package com.sccengineer;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.ProgressDialog;
@@ -42,6 +43,8 @@ import static com.sccengineer.apihelper.ServiceGenerator.baseurl;
 import static com.sccengineer.apihelper.ServiceGenerator.ver;
 
 public class Login extends AppCompatActivity {
+    int PERMISSION_CODE = 1000;
+    boolean gallery = true;
     TextView mlogin, mforgotpassword, mversi;
     EditText musername,mpassword;
     String token="";
@@ -132,13 +135,22 @@ public class Login extends AppCompatActivity {
 //                    Log.i("OmSai ", "Defualt device ID "+telephonyManager.getDeviceId());
 //                    Log.i("OmSai ", "Single 1 "+telephonyManager.getDeviceId(0));
 //                    Log.i("OmSai ", "Single 2 "+telephonyManager.getDeviceId(1));
-                    Log.d("imei",imeiHp);
-                    Log.d("token1",token);
-                    if (internet){
-                        loginApi();
+                    if ((ContextCompat.checkSelfPermission(Login.this,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)) {
+
+                        ActivityCompat.requestPermissions(Login.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_CODE);
+                        return;
+
                     }else {
-                        cekInternet();
+                        Log.d("imei",imeiHp);
+                        Log.d("token1",token);
+                        if (internet){
+                            loginApi();
+                        }else {
+                            cekInternet();
+                        }
                     }
+
                 }else {
                     ActivityCompat.requestPermissions(Login.this
                             , new String[]{Manifest.permission.READ_PHONE_STATE},100);
@@ -257,10 +269,43 @@ public class Login extends AppCompatActivity {
         if (requestCode == 100 && grantResults.length>0 && (grantResults[0]
                 == PackageManager.PERMISSION_GRANTED)){
 
+            if ((ContextCompat.checkSelfPermission(Login.this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)) {
 
+                ActivityCompat.requestPermissions(Login.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_CODE);
+                return;
 
+            }else {
+
+            }
         }else {
-            Toast.makeText(this, "Akses Telpon Wajib", Toast.LENGTH_LONG).show();
+            if (ActivityCompat.checkSelfPermission(Login.this,
+                    Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
+                telephonyManager = (TelephonyManager) getSystemService(Login.this.TELEPHONY_SERVICE);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    imeiHp = android.provider.Settings.Secure.getString(
+                            Login.this.getContentResolver(),
+                            android.provider.Settings.Secure.ANDROID_ID);
+                } else {
+
+                    if (requestCode == 1000 && grantResults.length>0 && (grantResults[0]
+                            == PackageManager.PERMISSION_GRANTED)){
+
+
+
+                    }else {
+                        Toast.makeText(this, "Akses Internal di perlukan", Toast.LENGTH_LONG).show();
+                    }
+                }
+//
+
+            }else {
+                Toast.makeText(this, "Akses Telpon Wajib", Toast.LENGTH_LONG).show();
+
+            }
+
+
+
 
         }
     }

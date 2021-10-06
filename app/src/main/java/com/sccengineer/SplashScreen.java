@@ -24,6 +24,7 @@ import com.sccengineer.messagecloud.check;
 
 import java.util.Locale;
 
+//import me.leolin.shortcutbadger.ShortcutBadger;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -43,6 +44,9 @@ public class SplashScreen extends AppCompatActivity {
         setContentView(R.layout.activity_splashscreen);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+
+//        ShortcutBadger.with(getApplicationContext()).count(badgeCount); //for 1.1.3
 
         getSessionId();
         cekInternet();
