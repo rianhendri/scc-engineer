@@ -354,11 +354,11 @@ public class ListChat extends AppCompatActivity {
                 message=sendtext.getText().toString();
                 showurl="-";
                 myuri = "-";
-                if (liveChatRepor){
-                    ping();
-                }else {
-
-                }
+//                if (liveChatRepor){
+//                    ping();
+//                }else {
+//
+//                }
                 if (sendtext.length()==0){
 
                 }else {
@@ -439,7 +439,11 @@ public class ListChat extends AppCompatActivity {
         databaseReference2.child("chat").child(sessionnya).child("listchat").push().setValue(itemchat2).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
+                if (liveChatRepor){
+                    ping();
+                }else {
 
+                }
                sendnotifchat();
 
 
@@ -689,7 +693,7 @@ public class ListChat extends AppCompatActivity {
 //                    loading .setVisibility(View.GONE);
                     sesionid();
                     JsonObject data = homedata.getAsJsonObject("data");
-                    Log.d("rekping","success");
+                    Log.d("rekping","successeng");
                 }else {
                     mloadingchat.setVisibility(GONE);
                     sesionid();
@@ -947,7 +951,11 @@ public class ListChat extends AppCompatActivity {
                         databaseReference2.child("chat").child(sessionnya).child("listchat").push().setValue(itemchat2).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
+                                if (liveChatRepor){
+                                    ping();
+                                }else {
 
+                                }
                                 sendnotifchat();
                                 int posi = addFoclistreq.size()-1;
                                 InputStream stream = null;

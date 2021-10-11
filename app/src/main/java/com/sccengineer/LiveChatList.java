@@ -25,6 +25,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.datatransport.BuildConfig;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -163,6 +164,7 @@ public class LiveChatList extends AppCompatActivity {
 //        refreshnotif();
         if (internet){
             reqApi();
+            Log.d("sccs",Scs);
             if (Scs.equals("no")){
                 mtitle_list.setText(titlenya);
                 loadData();
@@ -319,7 +321,7 @@ public class LiveChatList extends AppCompatActivity {
         jsonObject.addProperty("sessionId",sesionid_new);
         jsonObject.addProperty("page",page);
         jsonObject.addProperty("status",valuefilter);
-        jsonObject.addProperty("ver",BuildConfig.VERSION_NAME);
+        jsonObject.addProperty("ver", BuildConfig.VERSION_NAME);
         IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, baseurl);
         Call<JsonObject> panggilkomplek = jsonPostService.livechastlist(jsonObject);
         panggilkomplek.enqueue(new Callback<JsonObject>() {
@@ -615,6 +617,8 @@ public class LiveChatList extends AppCompatActivity {
                         public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                             homedata2=response.body();
                             if (list2!=null){
+
+
                                 for(int x = 0; x<list2.size(); x++){
                                     pos1+=1;
                                     String errornya = "";
@@ -682,6 +686,8 @@ public class LiveChatList extends AppCompatActivity {
 
                                     }
                                 }
+                            }else {
+
                             }
 
 
