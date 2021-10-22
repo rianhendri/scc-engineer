@@ -525,7 +525,7 @@ extends RecyclerView.Adapter<SendSparepart_adapter.Myviewholder> {
         dialogedit.show();
     }
     private void updateLabel() {
-        String myFormat = "dd-MMMM-yyyy"; //In which you need put here
+        String myFormat = "yyyy-MM-dd"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
         minstalldateedit.setText(sdf.format(myCalendar.getTime()));

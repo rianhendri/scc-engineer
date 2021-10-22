@@ -771,7 +771,7 @@ DialogForm();
         Date today = Calendar.getInstance().getTime();//getting date
         Calendar tomorroaw = Calendar.getInstance();
         tomorroaw.add(Calendar.DAY_OF_YEAR, 1);//getting date
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MMMM-yyyy");//formating according to my need
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");//formating according to my need
         String date3 = formatter.format(today);
         Date tomorrow = tomorroaw.getTime();
         String date4 = formatter.format(tomorrow);
@@ -1995,6 +1995,7 @@ DialogForm();
                 String errornya = "";
                 JsonObject homedata=response.body();
                 String statusnya = homedata.get("status").getAsString();
+                Log.d("responesche",homedata.toString());
                 if (homedata.get("errorMessage").toString().equals("null")) {
 
                 }else {
@@ -2190,36 +2191,6 @@ DialogForm();
     }
     @SuppressLint("WrongConstant")
     public void dialogspar(){
-//        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-//                this);
-//
-//        // set title dialog
-//        alertDialogBuilder.setTitle(getString(R.string.title_update));
-//
-//        // set pesan dari dialog
-//        alertDialogBuilder
-//                .setMessage(getString(R.string.title_andaupdate))
-//                .setIcon(R.mipmap.ic_launcher)
-//                .setCancelable(false)
-//                .setPositiveButton(getString(R.string.title_yes),new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog,int id) {
-//                        // jika tombol diklik, maka akan menutup activity ini
-//                        updatea();
-//                    }
-//                })
-//                .setNegativeButton(getString(R.string.title_no),new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        // jika tombol ini diklik, akan menutup dialog
-//                        // dan tidak terjadi apa2
-//                        dialog.cancel();
-//                    }
-//                });
-//
-//        // membuat alert dialog dari builder
-//        AlertDialog alertDialog = alertDialogBuilder.create();
-//
-//        // menampilkan alert dialog
-//        alertDialog.show();
 
         dialog.setContentView(R.layout.dialogspar);
         dialog.setTitle("Title...");
