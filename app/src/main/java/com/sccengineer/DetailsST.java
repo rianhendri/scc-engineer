@@ -122,9 +122,9 @@ import static com.sccengineer.messagecloud.check.tokennya2;
 public class DetailsST extends AppCompatActivity {
     CheckBox mcheckboxbtn;
     AlertDialog.Builder dialog2,dialog3;
-    TextView mdatenya;
+    TextView mdatenya,mchngeesti,mdatechangeesti;
     String dateschedjul="";
-    LinearLayout mdatebtn;
+    LinearLayout mdatebtn,mlayoutupdateestimate;
     Calendar myCalendar = Calendar.getInstance();
     Spinner mrole;
     JsonArray rolejson;
@@ -272,11 +272,14 @@ public class DetailsST extends AppCompatActivity {
         setContentView(R.layout.activity_details_s_t);
         mcheckboxbtn = findViewById(R.id.checkboxbtn);
         mtextmhon = findViewById(R.id.textmhon);
+        mdatechangeesti = findViewById(R.id.datechangeesti);
         mscroll = findViewById(R.id.scrollnya);
         mchactclik = findViewById(R.id.chatclik);
         mcancleassg = findViewById(R.id.canclebtn);
         mlayoutcheck=findViewById(R.id.layoutcheck);
         //panelupdate
+        mlayoutupdateestimate=findViewById(R.id.layoutupdateestimate);
+        mchngeesti = findViewById(R.id.chngeesti);
         mnotif = findViewById(R.id.newnotif);
         mdot = findViewById(R.id.dot);
         mlayountlink = findViewById(R.id.linkbtn);
@@ -672,6 +675,90 @@ DialogForm();
                 dialogspar();
             }
         });
+        mchngeesti.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogchangeesti();
+            }
+        });
+    }
+
+    private void dialogchangeesti() {
+        dialog3 = new AlertDialog.Builder(DetailsST.this);
+        inflater = getLayoutInflater();
+        dialogView = inflater.inflate(R.layout.dialog_stschedjul, null);
+        dialog3.setView(dialogView);
+        dialog3.setCancelable(true);
+        dialog3.setIcon(R.mipmap.ic_launcher);
+        dialog3.setTitle("Change estimation date");
+        mdatenya = dialogView.findViewById(R.id.datenya);
+        mdatebtn = dialogView.findViewById(R.id.datebtn);
+        myCalendar = Calendar.getInstance();
+        //        kosong();
+        Date today = Calendar.getInstance().getTime();//getting date
+        Calendar tomorroaw = Calendar.getInstance();
+        tomorroaw.add(Calendar.DAY_OF_YEAR, 1);//getting date
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");//formating according to my need
+        String date3 = formatter.format(today);
+        Date tomorrow = tomorroaw.getTime();
+        String date4 = formatter.format(tomorrow);
+        
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat datefor = new SimpleDateFormat("yyyy-MMMM-dd", Locale.getDefault());
+        String estima = mdatechangeesti.getText().toString();
+        String estimadate = "";
+        try {
+            estimadate = datefor.format(simpleDateFormat.parse(estima));
+            System.out.println(estimadate);
+            Log.e((String)"Date", (String)estimadate);
+        }
+        catch (ParseException parseException) {
+            parseException.printStackTrace();
+        }
+        mdatenya.setText(estimadate);
+//        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+//
+//            @Override
+//            public void onDateSet(DatePicker view, int year, int monthOfYear,
+//                                  int dayOfMonth) {
+//                // TODO Auto-generated method stub
+//                myCalendar.set(Calendar.YEAR, year);
+//                myCalendar.set(Calendar.MONTH, monthOfYear);
+//                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+//                updateLabel();
+//            }
+//
+//        };
+        mdatebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                datepicker2();
+                // TODO Auto-generated method stub
+//                new DatePickerDialog(DetailsST.this, date, myCalendar
+//                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+//                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+
+            }
+        });
+        dialog3.setPositiveButton("SUBMIT", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dateschedjul = mdatenya.getText().toString();
+                changeestimatedate();
+                dialog.dismiss();
+            }
+        });
+
+        dialog3.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog3.show();
     }
 //    private void showDialog() {
 //        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
@@ -1063,6 +1150,26 @@ DialogForm();
                         mstartprogresssched.setVisibility(View.VISIBLE);
                     }else {
                         mstartprogresssched.setVisibility(View.GONE);
+                    }
+                    //show hide estimate update
+                    if (data.get("allowToUpdateEstimationDate").getAsBoolean()){
+                        mlayoutupdateestimate.setVisibility(View.VISIBLE);
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+                        SimpleDateFormat datefor = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                        String estima = data.get("defaultEstimationDate").getAsString();
+                        String estimadate = "";
+                        try {
+                            estimadate = datefor.format(simpleDateFormat.parse(estima));
+                            System.out.println(estimadate);
+                            Log.e((String)"Date", (String)estimadate);
+                        }
+                        catch (ParseException parseException) {
+                            parseException.printStackTrace();
+                        }
+                        mdatechangeesti.setText(estimadate);
+
+                    }else {
+                        mlayoutupdateestimate.setVisibility(View.GONE);
                     }
                     // cancle btn show
                     if (data.get("allowToCancel").getAsBoolean()){
@@ -2026,6 +2133,56 @@ DialogForm();
         });
         Log.d("jsonstart2",jsonObject.toString());
     }
+    public void changeestimatedate(){
+        loading = ProgressDialog.show(DetailsST.this, "", "loading...", true);
+        JsonObject jsonObject = new JsonObject();
+
+        jsonObject.addProperty("sessionId",sesionid_new);
+        jsonObject.addProperty("serviceTicketCd",noreq);
+        jsonObject.addProperty("serviceTypeCd",mpressId);
+        jsonObject.addProperty("estimationDate",dateschedjul);
+        jsonObject.addProperty("ver",BuildConfig.VERSION_NAME);
+        IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, baseurl);
+        Call<JsonObject> panggilkomplek = jsonPostService.UpdateEsti(jsonObject);
+        panggilkomplek.enqueue(new Callback<JsonObject>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                String errornya = "";
+                JsonObject homedata=response.body();
+                String statusnya = homedata.get("status").getAsString();
+                Log.d("responesche",homedata.toString());
+                if (homedata.get("errorMessage").toString().equals("null")) {
+
+                }else {
+                    errornya = homedata.get("errorMessage").getAsString();
+                }
+                MhaveToUpdate = homedata.get("haveToUpdate").toString();
+                MsessionExpired = homedata.get("sessionExpired").toString();
+                sesionid();
+                if (statusnya.equals("OK")){
+                    JsonObject data = homedata.getAsJsonObject("data");
+                    String message = data.get("message").getAsString();
+                    Toast.makeText(DetailsST.this, message,Toast.LENGTH_LONG).show();
+                    onBackPressed();
+                }else {
+                    sesionid();
+                    loading.dismiss();
+                    Toast.makeText(DetailsST.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Toast.makeText(DetailsST.this,getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
+                cekInternet();
+                loading.dismiss();
+
+            }
+        });
+        Log.d("jsonstart2",jsonObject.toString());
+    }
     public void updatea(){
         if (mcheckboxbtn.isChecked()){
             checkboxsts=true;
@@ -2599,7 +2756,7 @@ DialogForm();
         datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
         datePickerDialog.show();
     }
-    private void datepicker2(){
+    private void showDateDialogupdate(){
 
         /**
          * Calendar untuk mendapatkan tanggal sekarang
@@ -2626,6 +2783,48 @@ DialogForm();
 
                 /**
                  * Update TextView dengan tanggal yang kita pilih
+                 */
+                dateFormatter2 = new SimpleDateFormat("yyyy-MM-dd");
+                mdatestatus.setText(dateFormatter2.format(newDate.getTime()));
+                Log.d("date55", String.valueOf(newDate.getTime()));
+            }
+
+        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+
+        /**
+         * Tampilkan DatePicker dialog
+         */
+
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
+        datePickerDialog.show();
+    }
+    private void datepicker2(){
+
+        /**
+         * Calendar untuk mendapatkan tanggal sekarang
+         */
+        Calendar newCalendar = Calendar.getInstance();
+
+        /**
+         * Initiate DatePicker dialog
+         */
+        datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+                /**
+                 * Method ini dipanggil saat kita selesai memilih tanggal di DatePicker
+                 */
+
+                /**
+                 * Set Calendar untuk menampung tanggal yang dipilih
+                 */
+//                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
+
+                /**
+                 * Update TextView dengan tanggal yang kita pilih GANTI MMMM
                  */
                 dateFormatter2 = new SimpleDateFormat("dd-MMMM-yyyy");
                 mdatenya.setText(dateFormatter2.format(newDate.getTime()));

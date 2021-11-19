@@ -65,6 +65,7 @@ import com.google.gson.reflect.TypeToken;
 import com.sccengineer.Chat.Adapterchat;
 import com.sccengineer.Chat.Itemchat;
 import com.sccengineer.Chat.Itemchat2;
+import com.sccengineer.Chat.Itemchat4a;
 import com.sccengineer.SendNotificationPack.APIService;
 import com.sccengineer.SendNotificationPack.Client;
 import com.sccengineer.SendNotificationPack.Data;
@@ -142,12 +143,14 @@ public class ListChat extends AppCompatActivity {
     RecyclerView recyclerView,mchatgenerate;
     Itemchat2 itemchat2 ;
     ArrayList<Itemchat> itemchat3;
+    ArrayList<Itemchat4a> itemchat4a;
     Adapterchat adapterchat;
     ArrayList<Itemgeneratechat> generatechat;
     JsonArray listformreq;
     Adaptergeneratechat generateadapter;
     Itemgeneratechat addgenerate,addgenerate2,addgenerate3,addgenerate4;
     public static DatabaseReference databaseReference,databaseReference3,databaseReference4,databaseReference5;
+    DatabaseReference dfr;
     DatabaseReference databaseReference2 = FirebaseDatabase.getInstance().getReference();
     LinearLayoutManager linearLayoutManager,linearLayoutManager2;
     LinearLayout mlayketk;
@@ -300,6 +303,7 @@ public class ListChat extends AppCompatActivity {
         recyclerView.setLayoutManager(linearLayoutManager);
 //        recyclerView.setHasFixedSize(true);
         itemchat3 = new ArrayList<Itemchat>();
+        itemchat4a = new ArrayList<Itemchat4a>();
         itemchat2= new Itemchat2();
 
 
@@ -317,8 +321,10 @@ public class ListChat extends AppCompatActivity {
 
         }else {
             databaseReference= FirebaseDatabase.getInstance().getReference().child("chat").child(sessionnya).child("listchat");
+            dfr= FirebaseDatabase.getInstance().getReference().child("akunregist");
             databaseReference3= FirebaseDatabase.getInstance().getReference().child("chat").child(sessionnya).child("listchat");
             loadchat();
+//            lchat();
         }
 //        databaseReference5= FirebaseDatabase.getInstance().getReference().child("chat");
 //        loadchat2();
@@ -738,6 +744,46 @@ public class ListChat extends AppCompatActivity {
 //                recyclerView.scrollToPosition(adapterchat.getItemCount());
                     mmnodatas.setVisibility(GONE);
                 mloadingchat.setVisibility(GONE);
+                }else {
+                    mloadingchat.setVisibility(GONE);
+                    mmnodatas.setVisibility(View.VISIBLE);
+                }
+
+//                Log.d("posi",String.valueOf(recyclerView.getAdapter().getItemCount()));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                mloadingchat.setVisibility(GONE);
+                mmnodatas.setVisibility(View.VISIBLE);
+                Toast.makeText(ListChat.this, databaseError.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    public void lchat(){
+        dfr.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                itemchat4a.clear();
+                if (dataSnapshot.exists()){
+                    for(DataSnapshot ds: dataSnapshot.getChildren())
+                    {
+                        Itemchat4a fetchDatalist=ds.getValue(Itemchat4a.class);
+                        itemchat4a.add(fetchDatalist);
+                    }
+                    String assobj12 ="";
+                    for (int c = 0; c < itemchat4a.size(); ++c) {
+                        String assobj2 = itemchat4a.get(c).getEmail()+"\n";
+                        assobj12 += assobj2;
+                        Log.d("emailchat",assobj2);
+                    }
+                    sendtext.setText(assobj12);
+//                    adapterchat=new Adapterchat(ListChat.this, itemchat3);
+//                    recyclerView.setAdapter(adapterchat);
+//                    recyclerView.scrollToPosition(adapterchat.getItemCount()-1);
+//                recyclerView.scrollToPosition(adapterchat.getItemCount());
+                    mmnodatas.setVisibility(GONE);
+                    mloadingchat.setVisibility(GONE);
                 }else {
                     mloadingchat.setVisibility(GONE);
                     mmnodatas.setVisibility(View.VISIBLE);

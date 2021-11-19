@@ -39,6 +39,9 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -192,7 +195,19 @@ extends RecyclerView.Adapter<ServiceTicketAdapter.Myviewholder> implements Activ
             }
         });
 
+        if (addFromItem.get(i).getAdditionalTextHtml()!=null){
+            myviewholder.mtextcntn.setVisibility(View.VISIBLE);
+            if (Build.VERSION.SDK_INT >= 24) {
+                myviewholder.mtextcntn.setText((CharSequence) Html.fromHtml((String)addFromItem.get(i).getAdditionalTextHtml(), Html.FROM_HTML_MODE_COMPACT));
+                myviewholder.mtextcntn.setMovementMethod(LinkMovementMethod.getInstance());
+            } else {
+                myviewholder.mtextcntn.setText((CharSequence)Html.fromHtml((String)addFromItem.get(i).getAdditionalTextHtml()));
+                myviewholder.mtextcntn.setMovementMethod(LinkMovementMethod.getInstance());
 
+            }
+        }else {
+            myviewholder.mtextcntn.setVisibility(View.GONE);
+        }
     }
 
 
@@ -203,7 +218,7 @@ extends RecyclerView.Adapter<ServiceTicketAdapter.Myviewholder> implements Activ
 
     public class Myviewholder extends RecyclerView.ViewHolder{
 
-        TextView mcdst, mdate, mfrnya, mptnya, mpress, mdescrip, massst, mcurrentst;
+        TextView mcdst, mdate, mfrnya, mptnya, mpress, mdescrip, massst, mcurrentst, mtextcntn;
         LinearLayout massist;
         ImageView xgambar_item;
 
@@ -219,6 +234,7 @@ extends RecyclerView.Adapter<ServiceTicketAdapter.Myviewholder> implements Activ
             massst = itemView.findViewById(R.id.assst);
             mcurrentst = itemView.findViewById(R.id.currentst);
             massist = itemView.findViewById(R.id.assist);
+            mtextcntn = itemView.findViewById(R.id.textcntn);
 
         }
     }

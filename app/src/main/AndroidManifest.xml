@@ -27,15 +27,16 @@
     <application
         android:allowBackup="true"
         android:hardwareAccelerated="true"
-        android:largeHeap="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".LiveChatList"></activity>
+        <activity android:name=".DailyReportAct"></activity>
+        <activity android:name=".LiveChatList" />
         <activity android:name=".DetailReclock" />
         <activity android:name=".ClockinApprovList" />
 
@@ -66,7 +67,7 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <activity android:name=".ListChat" >
+        <activity android:name=".ListChat">
             <intent-filter>
                 <action android:name="notifchat" />
 

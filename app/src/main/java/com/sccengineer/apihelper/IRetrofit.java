@@ -96,6 +96,8 @@ public interface IRetrofit {
     public Call<JsonObject> canclerequest(@Body JsonObject var1);
     @POST("api/serviceticket/update")
     public Call<JsonObject> updatea(@Body JsonObject var1);
+    @POST("api/serviceticket/UpdateEstimationDate")
+    public Call<JsonObject> UpdateEsti(@Body JsonObject var1);
     @POST("api/serviceTicket/GetMessageTemplateList")
     public Call<JsonObject> generatelist(@Body JsonObject var1);
     @GET("chat.json?auth=EGEEh1XOQyHdrTP8UZvedE79LBCH0mkmamZZOs0m")

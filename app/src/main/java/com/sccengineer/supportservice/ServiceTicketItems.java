@@ -14,7 +14,8 @@ import com.google.gson.annotations.SerializedName;
 
 public class ServiceTicketItems {
 
-    public ServiceTicketItems(String serviceTicketCd, String formRequestCd, String formRequestPhotoURL, String formRequestPhotoThumbURL, String date, String pressGuid, String pressName, String description, String status, String statusName, String statusColorCode, String createdBy, String createdDateTime, boolean stsAssist, String assignmentStatusName, String assignmentStatusColorCode, String assignedDateTime, String customerName) {
+
+    public ServiceTicketItems(String serviceTicketCd, String formRequestCd, String formRequestPhotoURL, String formRequestPhotoThumbURL, String date, String pressGuid, String pressName, String description, String status, String statusName, String statusColorCode, String createdBy, String createdDateTime, boolean stsAssist, String assignmentStatusName, String assignmentStatusColorCode, String assignedDateTime, String additionalTextHtml, String customerName) {
         this.serviceTicketCd = serviceTicketCd;
         this.formRequestCd = formRequestCd;
         this.formRequestPhotoURL = formRequestPhotoURL;
@@ -32,8 +33,10 @@ public class ServiceTicketItems {
         this.assignmentStatusName = assignmentStatusName;
         this.assignmentStatusColorCode = assignmentStatusColorCode;
         this.assignedDateTime = assignedDateTime;
+        this.additionalTextHtml = additionalTextHtml;
         this.customerName = customerName;
     }
+
     public String getServiceTicketCd() {
         return serviceTicketCd;
     }
@@ -170,6 +173,14 @@ public class ServiceTicketItems {
         this.assignedDateTime = assignedDateTime;
     }
 
+    public String getAdditionalTextHtml() {
+        return additionalTextHtml;
+    }
+
+    public void setAdditionalTextHtml(String additionalTextHtml) {
+        this.additionalTextHtml = additionalTextHtml;
+    }
+
     public String getCustomerName() {
         return customerName;
     }
@@ -230,7 +241,9 @@ public class ServiceTicketItems {
     @SerializedName("assignedDateTime")
     private String assignedDateTime;
 
-
+    @Expose
+    @SerializedName("additionalTextHtml")
+    private String additionalTextHtml;
     @Expose
     @SerializedName("customerName")
     private String customerName;

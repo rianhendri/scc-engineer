@@ -137,6 +137,7 @@ public class DetailsNotification extends AppCompatActivity {
 
             }
         });
+        Log.d("nottifreq",jsonObject.toString());
     }
     public void cekInternet(){
         /// cek internet apakah internet terhubung atau tidak
