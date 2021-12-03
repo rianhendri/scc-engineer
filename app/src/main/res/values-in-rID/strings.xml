@@ -63,4 +63,11 @@
     <string name="title_pleasechoose">pilih status-</string>
     <string name="title_cancelassignment">Batalkan Assignment</string>
     <string name="title_detailchatst">Lihat detail request</string>
+    <string name="title_datetime">"Tanggal, Waktu: "</string>
+    <string name="title_findings">Temuan:</string>
+    <string name="title_actiontaken">Tindakan:</string>
+    <string name="title_followupitems">Langkah Lanjutan:</string>
+    <string name="title_pmticket">PM Tiket</string>
+    <string name="titile_resetlabel">" "</string>
+    <string name="title_reasonrequired">please input the cancellation reason</string>
 </resources>

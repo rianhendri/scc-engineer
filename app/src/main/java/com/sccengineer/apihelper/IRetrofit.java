@@ -28,7 +28,20 @@ import retrofit2.http.POST;
 import retrofit2.http.Part;
 
 public interface IRetrofit {
-
+    @POST("api/pm/StartProgress")
+    public Call<JsonObject> startprogrespm(@Body JsonObject var1);
+    @POST("api/pm/Update")
+    public Call<JsonObject> updatepm(@Body JsonObject var1);
+    @POST("api/pm/List")
+    public Call<JsonObject> pmlistreq(@Body JsonObject var1);
+    @POST("api/pm/get")
+    public Call<JsonObject> pmget(@Body JsonObject var1);
+    @POST("api/pm/ApproveReschedule")
+    public Call<JsonObject> approvereqpm(@Body JsonObject var1);
+    @POST("api/pm/Reschedule")
+    public Call<JsonObject> resdhulepmreq(@Body JsonObject var1);
+    @POST("api/pm/RejectReschedule")
+    public Call<JsonObject> rejectpmrequ(@Body JsonObject var1);
     @POST("api/engineer/login")
     public Call<JsonObject> postRawJSONlogin(@Body JsonObject var1);
     @POST("api/Notification/ReadAll")
@@ -96,6 +109,8 @@ public interface IRetrofit {
     public Call<JsonObject> canclerequest(@Body JsonObject var1);
     @POST("api/serviceticket/update")
     public Call<JsonObject> updatea(@Body JsonObject var1);
+    @POST("api/serviceticket/UpdateSparePart")
+    public Call<JsonObject> updateasparepart(@Body JsonObject var1);
     @POST("api/serviceticket/UpdateEstimationDate")
     public Call<JsonObject> UpdateEsti(@Body JsonObject var1);
     @POST("api/serviceTicket/GetMessageTemplateList")

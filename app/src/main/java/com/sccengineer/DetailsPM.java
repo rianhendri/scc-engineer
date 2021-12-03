@@ -3,15 +3,13 @@ package com.sccengineer;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -42,10 +40,9 @@ import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -79,6 +76,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.kunzisoft.switchdatetime.SwitchDateTimeDialogFragment;
 import com.sccengineer.Chat.Adapterchat;
 import com.sccengineer.Chat.Itemchat;
 import com.sccengineer.apihelper.IRetrofit;
@@ -92,16 +90,16 @@ import com.sccengineer.spartsend.SendSparepart_adapter;
 import com.sccengineer.spartsend.SendSparepart_item;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
-
 import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -111,20 +109,20 @@ import retrofit2.Response;
 
 import static com.sccengineer.ListChat.modultrans;
 import static com.sccengineer.ListChat.name;
-import static com.sccengineer.ServiceTicket.list2;
-import static com.sccengineer.ServiceTicket.refresh;
-import static com.sccengineer.ServiceTicket.valuefilter;
 import static com.sccengineer.apihelper.ServiceGenerator.baseurl;
 import static com.sccengineer.listsparepart.Sparepart_adapter.listpoact;
 import static com.sccengineer.listsparepart.Sparepart_adapter.tambahpart;
 import static com.sccengineer.messagecloud.check.tokennya2;
+import static com.sccengineer.PmList.valuefilter;
+import static com.sccengineer.PmList.list2;
+import static com.sccengineer.PmList.refresh;
 
-public class DetailsST extends AppCompatActivity {
+public class DetailsPM extends AppCompatActivity {
     CheckBox mcheckboxbtn;
     AlertDialog.Builder dialog2,dialog3;
     TextView mdatenya,mchngeesti,mdatechangeesti;
     String dateschedjul="";
-    LinearLayout mdatebtn,mlayoutupdateestimate;
+    LinearLayout mdatebtn,mlayoutupdateestimate,mrejectpm,mapprove;
     Calendar myCalendar = Calendar.getInstance();
     Spinner mrole;
     JsonArray rolejson;
@@ -202,10 +200,10 @@ public class DetailsST extends AppCompatActivity {
     public static String Nowaform = "0";
     //updatepanel;
     ImageView mprosbarr;
-    TextView mtextmhon,mlinkgenerate,mdatestatus,mlalbeldate,msupport,mbar1,mbar2,mbar3,mbar4,mactionprogress,mestimasi,mstarttime,mendtime,massigndate,mengineer,masengineer, mstatustick, mtimer;
+    TextView mpmstatus,mreasonpm,mstpm,mtextmhon,mlinkgenerate,mdatestatus,mlalbeldate,msupport,mbar1,mbar2,mbar3,mbar4,mactionprogress,mestimasi,mstarttime,mendtime,massigndate,mengineer,masengineer, mstatustick, mtimer;
     EditText mlastimpresiST, mdescripst;
     Spinner mservicetypeST, mstatusST;
-    LinearLayout mstartprogresssched,mlayountlink,mlayoutdate,mlayoutsper,mlayestima,mstartprogress, mupdatebtn,mcancleassg, mlayoutimpress, mlayoutnote, mlayoutstatus, mlayoutservicest, mlayoutupdatepanel;
+    LinearLayout mlayreasonpm,mstartprogresssched,mlayountlink,mlayoutdate,mlayoutsper,mlayestima ,mstartprogress, mupdatebtn,mcancleassg, mlayoutimpress, mlayoutnote, mlayoutstatus, mlayoutservicest, mlayoutupdatepanel;
     JsonArray listsn;
     List<String> snid = new ArrayList();
     List<String> snname = new ArrayList();
@@ -233,7 +231,7 @@ public class DetailsST extends AppCompatActivity {
     public static RecyclerView mpartlist, msendpartlist;
     EditText msearch,mnamespara,mqtyspera,mreasona, mcodemanual;
     ImageView meditebtna;
-    public static TextView msparenaem;
+    public static TextView msparenaem,mvisitdate;
     String sear = "";
     Sparepart_adapter sparepart_adapter;
     ArrayList<Sparepart_item> sparepart_items;
@@ -251,7 +249,7 @@ public class DetailsST extends AppCompatActivity {
     String notesapi = "";
     LinearLayout mchactclik;
     String tokennya = "-";
-//    List<String> tokennya2= new ArrayList();
+    //    List<String> tokennya2= new ArrayList();
     LinearLayout mdot,mdailyreport,mupdatespertbtn;
     TextView mnotif;
     String scrollnya = "no";
@@ -269,7 +267,14 @@ public class DetailsST extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_details_s_t);
+        setContentView(R.layout.activity_details_p_m);
+        mvisitdate = findViewById(R.id.visitdate);
+        mstpm = findViewById(R.id.stpm);
+        mapprove = findViewById(R.id.approve);
+        mrejectpm = findViewById(R.id.rejectpm);
+        mreasonpm = findViewById(R.id.reasonpm);
+        mpmstatus = findViewById(R.id.statuspm);
+        mlayreasonpm = findViewById(R.id.layoutreasonpm);
         mupdatespertbtn =findViewById(R.id.updatespertbtn);
         mcheckboxbtn = findViewById(R.id.checkboxbtn);
         mtextmhon = findViewById(R.id.textmhon);
@@ -323,7 +328,7 @@ public class DetailsST extends AppCompatActivity {
         //
         mstartprogresssched = findViewById(R.id.startprogresssched);
         missu = findViewById(R.id.issucategroy);
-        mservicetype = findViewById(R.id.servicetype);
+        mservicetype = findViewById(R.id.servicetyp);
         mcreatedate =findViewById(R.id.createdate);
         mdate=findViewById(R.id.datereq);
         mdeskription=findViewById(R.id.descrip);
@@ -333,10 +338,8 @@ public class DetailsST extends AppCompatActivity {
         mstatusdetail=findViewById(R.id.statusdetail);
         mstid=findViewById(R.id.stid);
         mtitle=findViewById(R.id.title);
-        munitcategory=findViewById(R.id.unitcategory);
+        munitcategory=findViewById(R.id.unitcat);
         mcancel=findViewById(R.id.laycancel);
-//        mconfirm=findViewById(R.id.confirm);
-//        mcs=findViewById(R.id.chatcspo);
         mback=findViewById(R.id.backbtn);
         mbanner=findViewById(R.id.imgbanner);
         mlayoutunit1=findViewById(R.id.layoutunit1);
@@ -350,41 +353,18 @@ public class DetailsST extends AppCompatActivity {
         modultrans="";
         tokennya2.clear();
 
-        dialog = new Dialog(   DetailsST.this);
-//        mtimerconfirm = findViewById(R.id.timer);
-//        mreopenbtn = findViewById(R.id.reopen);
+        dialog = new Dialog(   DetailsPM.this);
         mrequestby = findViewById(R.id.requestby);
-//        mreinfolay = findViewById(R.id.reinfolay);
-//        mreopeninfo = findViewById(R.id.reopeninfo);
         //setlayout recyler
-        linearLayoutManager = new LinearLayoutManager(DetailsST.this, LinearLayout.VERTICAL,false);
-//        linearLayoutManager.setReverseLayout(true);
-//        linearLayoutManager.setStackFromEnd(true);
+        linearLayoutManager = new LinearLayoutManager(DetailsPM.this, LinearLayout.VERTICAL,false);
         mservice_layout.setLayoutManager(linearLayoutManager);
         mservice_layout.setHasFixedSize(true);
         listticket = new ArrayList();
-        linearLayoutManager2 = new LinearLayoutManager(DetailsST.this, LinearLayout.VERTICAL,false);
+        linearLayoutManager2 = new LinearLayoutManager(DetailsPM.this, LinearLayout.VERTICAL,false);
         msendpartlist.setLayoutManager(linearLayoutManager2);
         msendpartlist.setHasFixedSize(true);
         sendsparepart_items = new ArrayList();
 
-
-//        if (ActivityCompat.checkSelfPermission(DetailsST.this,
-//                Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-//                && ActivityCompat.checkSelfPermission(DetailsST.this
-//                ,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-//            if (internet){
-//                fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(DetailsST.this);
-//                getCurrentLocation();
-//            }
-//
-//            lempar = false;
-//        }else {
-//            ActivityCompat.requestPermissions(DetailsST.this
-//                    , new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
-//                    },100);
-//        }
-        //getsessionId
         myCustomArray = new JsonArray();
         if (myCustomArray!=null){
             Log.d("customaraynya",myCustomArray.toString());
@@ -395,11 +375,11 @@ public class DetailsST extends AppCompatActivity {
         if (bundle2 != null) {
 
             noreq = bundle2.getString("id");
-               home = bundle2.getString("home");
+            home = bundle2.getString("home");
             guid = bundle2.getString("guid");
             username = bundle2.getString("user");
             noticket = bundle2.getString("id");
-            valuefilter = bundle2.getString("pos");
+            ServiceTicket.valuefilter = bundle2.getString("pos");
             scrollnya =   bundle2.getString("scrolbawah");
             xhori=bundle2.getInt("xhori");
             yverti=bundle2.getInt("yverti");
@@ -409,7 +389,7 @@ public class DetailsST extends AppCompatActivity {
         getSessionId();
         cekInternet();
         if (internet){
-            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(DetailsST.this);
+            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(DetailsPM.this);
             reqApi();;
             loadData();
             if (guid==null){
@@ -440,7 +420,7 @@ public class DetailsST extends AppCompatActivity {
         mdailyreport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent gotodaily = new Intent(DetailsST.this,DailyReportAct.class);
+                Intent gotodaily = new Intent(DetailsPM.this,DailyReportAct.class);
                 startActivity(gotodaily);
             }
         });
@@ -456,14 +436,14 @@ public class DetailsST extends AppCompatActivity {
 
                 }
                 //code lama
-                if (ActivityCompat.checkSelfPermission(DetailsST.this,
+                if (ActivityCompat.checkSelfPermission(DetailsPM.this,
                         Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                        && ActivityCompat.checkSelfPermission(DetailsST.this
+                        && ActivityCompat.checkSelfPermission(DetailsPM.this
                         ,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     getCurrentLocation();
 //                    showDialogreopen();
                 }else {
-                    ActivityCompat.requestPermissions(DetailsST.this
+                    ActivityCompat.requestPermissions(DetailsPM.this
                             , new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
                             },100);
                 }
@@ -480,41 +460,21 @@ public class DetailsST extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // code baru
-                requestlokasi();
-                if (lokasi){
-                    getCurrentLocation();
-                    if (cekdate){
-                        if (mdatestatus.getText().toString().equals("-")){
-                            Toast.makeText(DetailsST.this, "Tanggal due date wajib diisi", Toast.LENGTH_SHORT).show();
-                        }else {
-                            showDialogrupdate();
-                        }
-                    }else {
-                        showDialogrupdate();
-                    }
-                }else {
-
-                }
-                // code lama
-//                if (ActivityCompat.checkSelfPermission(DetailsST.this,
-//                        Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-//                        && ActivityCompat.checkSelfPermission(DetailsST.this
-//                        ,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                showDialogrupdate();
+//                requestlokasi();
+//                if (lokasi){
 //                    getCurrentLocation();
 //                    if (cekdate){
 //                        if (mdatestatus.getText().toString().equals("-")){
-//                            Toast.makeText(DetailsST.this, "Tanggal due date wajib diisi", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(DetailsPM.this, "Tanggal due date wajib diisi", Toast.LENGTH_SHORT).show();
 //                        }else {
 //                            showDialogrupdate();
 //                        }
 //                    }else {
 //                        showDialogrupdate();
 //                    }
-//
 //                }else {
-//                    ActivityCompat.requestPermissions(DetailsST.this
-//                            , new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
-//                            },100);
+//
 //                }
             }
         });
@@ -522,7 +482,7 @@ public class DetailsST extends AppCompatActivity {
         mcancleassg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-DialogForm();
+                DialogForm();
             }
         });
 
@@ -545,50 +505,7 @@ DialogForm();
                 dialogupdatesparepartbtn();
             }
         });
-//        mcs.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                appInstalledOrNot("com.whatsapp");
-//                if (installed) {
-//                    String message = "Hi Support, "+getString(R.string.title_tanyacs)+noreq;
-//                    Intent intent = new Intent(Intent.ACTION_VIEW);
-//                    intent.setData(android.net.Uri.parse(
-//                            String.format("https://api.whatsapp.com/send?phone=%s&text=%s", Nowaform, message)));
-//                    startActivity(intent);
-//                }else {
-//                    Toast.makeText(DetailsFormActivity.this,"Whatsapp blum di instal", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
-//        mcancel.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                cekInternet();
-//                if (internet){
-//                    showDialog();
-//                }else {
-//                }
-//            }
-//        });
-//        mconfirm.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                cekInternet();
-//                if (internet){
-//                    Intent gotorating = new Intent(DetailsST.this, RatingStar.class);
-//                    gotorating.putExtra("id", noreq);
-//                    gotorating.putExtra("noticket", noticket);
-//                    gotorating.putExtra("user", username);
-//                    startActivity(gotorating);
-//                    overridePendingTransition(R.anim.right_in, R.anim.left_out);
-//                    finish();
-//                }else {
 //
-//                }
-//            }
-//        });
-
-//        mscroll.setVerticalScrollbarPosition(1949);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             mscroll.setOnScrollChangeListener(new View.OnScrollChangeListener() {
                 @Override
@@ -603,36 +520,21 @@ DialogForm();
         mbanner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Dialog dialog = new Dialog(DetailsST.this, R.style.TransparentDialog);
+                Dialog dialog = new Dialog(DetailsPM.this, R.style.TransparentDialog);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.setContentView(R.layout.popupfoto);
                 dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
                 mimgpopup = dialog.findViewById(R.id.imagepopup);
                 if (mphotoURL.equals("")){
-                    Picasso.with(DetailsST.this).load(R.drawable.nonefoto).into(mimgpopup);
+                    Picasso.with(DetailsPM.this).load(R.drawable.nonefoto).into(mimgpopup);
 
                 }else {
-                    Picasso.with(DetailsST.this).load(mphotoURL).into(mimgpopup);
+                    Picasso.with(DetailsPM.this).load(mphotoURL).into(mimgpopup);
                 }
 
                 dialog.show();
             }
         });
-        //REOPEN
-//        mreopenbtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent gotorating = new Intent(DetailsFormActivity.this, ReopenCase.class);
-//                gotorating.putExtra("id", noreq);
-//                gotorating.putExtra("noticket", noticket);
-//                gotorating.putExtra("user", username);
-//                startActivity(gotorating);
-//                overridePendingTransition(R.anim.right_in, R.anim.left_out);
-//                finish();
-////                showDialogreopen();
-//            }
-//        });
-//        updateCountDownText();
         mservicetypeST.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -696,10 +598,187 @@ DialogForm();
                 dialogchangeesti();
             }
         });
+        mapprove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cekInternet();
+                approvedialog();
+            }
+        });
+        mrejectpm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cekInternet();
+                rejectdialog();
+            }
+        });
     }
+    public void Approvereq(){
+        loading = ProgressDialog.show(DetailsPM.this, "", "loading...", true);
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("sessionId",sesionid_new);
+        jsonObject.addProperty("serviceTicketCd",noreq);
+        jsonObject.addProperty("ver",BuildConfig.VERSION_NAME);
+        IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, baseurl);
+        Call<JsonObject> panggilkomplek = jsonPostService.approvereqpm(jsonObject);
+        panggilkomplek.enqueue(new Callback<JsonObject>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
+                String errornya = "";
+                JsonObject homedata=response.body();
+                String statusnya = homedata.get("status").getAsString();
+                if (homedata.get("errorMessage").toString().equals("null")) {
+
+                }else {
+                    errornya = homedata.get("errorMessage").getAsString();
+                }
+                MhaveToUpdate = homedata.get("haveToUpdate").toString();
+                MsessionExpired = homedata.get("sessionExpired").toString();
+                sesionid();
+                if (statusnya.equals("OK")){
+                    JsonObject data = homedata.getAsJsonObject("data");
+                    String message = data.get("message").getAsString();
+                    Toast.makeText(DetailsPM.this, message,Toast.LENGTH_LONG).show();
+                    onBackPressed();
+                }else {
+                    sesionid();
+                    loading.dismiss();
+                    Toast.makeText(DetailsPM.this,errornya,Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Toast.makeText(DetailsPM.this,getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
+                cekInternet();
+                loading.dismiss();
+
+            }
+        });
+    }
+    private void approvedialog() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                this);
+
+        // set title dialog
+        alertDialogBuilder.setTitle("Approve Reschedule PM");
+        // set pesan dari dialog
+        AlertDialog d = new AlertDialog.Builder(DetailsPM.this)
+//                .setView(v)
+                .setMessage("Approve Reschedule PM ?")
+                .setPositiveButton(getString(R.string.title_yes), null) //Set to null. We override the onclick
+                .setNegativeButton(getString(R.string.title_no), null)
+                .create();
+
+        d.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                Button b = d.getButton(AlertDialog.BUTTON_POSITIVE);
+                Button C = d.getButton(AlertDialog.BUTTON_NEGATIVE);
+                b.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Approvereq();
+                        d.dismiss();
+                    }
+                });
+                C.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        d.dismiss();
+                    }
+                });
+            }
+        });
+        d.show();
+
+    }
+    public void rejectreq(){
+        loading = ProgressDialog.show(DetailsPM.this, "", "loading...", true);
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("sessionId",sesionid_new);
+        jsonObject.addProperty("serviceTicketCd",noreq);
+        jsonObject.addProperty("ver",BuildConfig.VERSION_NAME);
+        IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, baseurl);
+        Call<JsonObject> panggilkomplek = jsonPostService.rejectpmrequ(jsonObject);
+        panggilkomplek.enqueue(new Callback<JsonObject>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                String errornya = "";
+                JsonObject homedata=response.body();
+                String statusnya = homedata.get("status").getAsString();
+                if (homedata.get("errorMessage").toString().equals("null")) {
+
+                }else {
+                    errornya = homedata.get("errorMessage").getAsString();
+                }
+                MhaveToUpdate = homedata.get("haveToUpdate").toString();
+                MsessionExpired = homedata.get("sessionExpired").toString();
+                sesionid();
+                if (statusnya.equals("OK")){
+                    JsonObject data = homedata.getAsJsonObject("data");
+                    String message = data.get("message").getAsString();
+                    Toast.makeText(DetailsPM.this, message,Toast.LENGTH_LONG).show();
+                    onBackPressed();
+                }else {
+                    sesionid();
+                    loading.dismiss();
+                    Toast.makeText(DetailsPM.this,errornya,Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Toast.makeText(DetailsPM.this,getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
+                cekInternet();
+                loading.dismiss();
+
+            }
+        });
+    }
+    private void rejectdialog() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                this);
+
+        // set title dialog
+        alertDialogBuilder.setTitle("Approve Reschedule PM");
+        // set pesan dari dialog
+        AlertDialog d = new AlertDialog.Builder(DetailsPM.this)
+//                .setView(v)
+                .setMessage("Reject Reschedule PM ?")
+                .setPositiveButton(getString(R.string.title_yes), null) //Set to null. We override the onclick
+                .setNegativeButton(getString(R.string.title_no), null)
+                .create();
+
+        d.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                Button b = d.getButton(AlertDialog.BUTTON_POSITIVE);
+                Button C = d.getButton(AlertDialog.BUTTON_NEGATIVE);
+                b.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        rejectreq();
+                        d.dismiss();
+                    }
+                });
+                C.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        d.dismiss();
+                    }
+                });
+            }
+        });
+        d.show();
+
+    }
     private void dialogchangeesti() {
-        dialog3 = new AlertDialog.Builder(DetailsST.this);
+        dialog3 = new AlertDialog.Builder(DetailsPM.this);
         inflater = getLayoutInflater();
         dialogView = inflater.inflate(R.layout.dialog_stschedjul, null);
         dialog3.setView(dialogView);
@@ -717,7 +796,7 @@ DialogForm();
         String date3 = formatter.format(today);
         Date tomorrow = tomorroaw.getTime();
         String date4 = formatter.format(tomorrow);
-        
+
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         SimpleDateFormat datefor = new SimpleDateFormat("yyyy-MMMM-dd", Locale.getDefault());
         String estima = mdatechangeesti.getText().toString();
@@ -775,91 +854,10 @@ DialogForm();
 
         dialog3.show();
     }
-//    private void showDialog() {
-//        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-//                this);
 //
-//        // set title dialog
-//        alertDialogBuilder.setTitle(getString(R.string.title_deleteReq));
-//        final EditText input = new EditText(this);
-//// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-//        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-//        View v = getLayoutInflater().inflate(R.layout.item_cancel, null);
-//        mreasonnya=v.findViewById(R.id.reasondes);
-//        mreasonnya.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                mreason = mreasonnya.getText().toString();
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//
-//            }
-//        });
-//        // set pesan dari dialog
-//        AlertDialog d = new AlertDialog.Builder(DetailsFormActivity.this)
-//                .setView(v)
-//                .setMessage(R.string.title_canelreq)
-//                .setPositiveButton(getString(R.string.title_yes), null) //Set to null. We override the onclick
-//                .setNegativeButton(getString(R.string.title_no), null)
-//                .create();
-////        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-////            alertDialogBuilder
-////                    .setMessage(getString(R.string.title_canelreq))
-////                    .setView(v)
-////                    .setIcon(R.mipmap.ic_launcher)
-////                    .setCancelable(false)
-////                    .setPositiveButton(getString(R.string.title_yes),null)
-////                    .setNegativeButton(getString(R.string.title_no),new DialogInterface.OnClickListener() {
-////                        public void onClick(DialogInterface dialog, int id) {
-////                            // jika tombol ini diklik, akan menutup dialog
-////                            // dan tidak terjadi apa2
-////                            dialog.cancel();
-////                        }
-////                    });
-////        }
-//
-//        // membuat alert dialog dari builder
-////        AlertDialog alertDialog = alertDialogBuilder.create();
-////
-////        // menampilkan alert dialog
-//        d.setOnShowListener(new DialogInterface.OnShowListener() {
-//            @Override
-//            public void onShow(DialogInterface dialog) {
-//                Button b = d.getButton(AlertDialog.BUTTON_POSITIVE);
-//                Button C = d.getButton(AlertDialog.BUTTON_NEGATIVE);
-//                b.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//
-//                        if (mreasonnya.length()==0){
-//                            Toast.makeText(DetailsST.this, getString(R.string.title_reasonrequired),Toast.LENGTH_LONG).show();
-//                        }else {
-//                            cancelreq();
-//                            d.dismiss();
-//                        }
-//                    }
-//                });
-//                C.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        d.dismiss();
-//                    }
-//                });
-//            }
-//        });
-//        d.show();
-//
-//    }
 
     private void dialogsched() {
-        dialog3 = new AlertDialog.Builder(DetailsST.this);
+        dialog3 = new AlertDialog.Builder(DetailsPM.this);
         inflater = getLayoutInflater();
         dialogView = inflater.inflate(R.layout.dialog_stschedjul, null);
         dialog3.setView(dialogView);
@@ -869,7 +867,7 @@ DialogForm();
         mdatenya = dialogView.findViewById(R.id.datenya);
         mdatebtn = dialogView.findViewById(R.id.datebtn);
         myCalendar = Calendar.getInstance();
-    //        kosong();
+        //        kosong();
         Date today = Calendar.getInstance().getTime();//getting date
         Calendar tomorroaw = Calendar.getInstance();
         tomorroaw.add(Calendar.DAY_OF_YEAR, 1);//getting date
@@ -923,14 +921,8 @@ DialogForm();
 
         dialog3.show();
     }
-    private void updateLabel() {
-        String myFormat = "dd-MMMM-yyyy"; //In which you need put here
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-
-        mdatenya.setText(sdf.format(myCalendar.getTime()));
-    }
     private void DialogForm() {
-        dialog2 = new AlertDialog.Builder(DetailsST.this);
+        dialog2 = new AlertDialog.Builder(DetailsPM.this);
         inflater = getLayoutInflater();
         dialogView = inflater.inflate(R.layout.dialog_cancleassigment, null);
         dialog2.setView(dialogView);
@@ -946,7 +938,7 @@ DialogForm();
         arrayAdapter.setDropDownViewResource(R.layout.spinkategori);
         arrayAdapter.notifyDataSetChanged();
         mrole.setAdapter(arrayAdapter);
-    //        txt_nama    = (EditText) dialogView.findViewById(R.id.txt_nama);
+        //        txt_nama    = (EditText) dialogView.findViewById(R.id.txt_nama);
 
         mrole.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -963,23 +955,23 @@ DialogForm();
 
             }
         });
-    //        kosong();
+        //        kosong();
 
         dialog2.setPositiveButton("SUBMIT", new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (valerole.equals("-")){
-                    Toast.makeText(DetailsST.this, "Wajib Pilih Status", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DetailsPM.this, "Wajib Pilih Status", Toast.LENGTH_SHORT).show();
                 }else {
                     canclerequest();
-    //                clockinnya();
-    //                    if (postalCode.equals("")){
-    //
-    //                    }else {
-    //                        getCurrentLocation();
-    //                        Toast.makeText(ClockInActivity.this, "mohon periksa koneksi anda", Toast.LENGTH_SHORT).show();
-    //                    }
+                    //                clockinnya();
+                    //                    if (postalCode.equals("")){
+                    //
+                    //                    }else {
+                    //                        getCurrentLocation();
+                    //                        Toast.makeText(ClockInActivity.this, "mohon periksa koneksi anda", Toast.LENGTH_SHORT).show();
+                    //                    }
                     ;
 
                 }
@@ -1033,7 +1025,7 @@ DialogForm();
         alertDialog.show();
     }
     private void canclerequest(){
-        loading = ProgressDialog.show(DetailsST.this, "", "loading...", true);
+        loading = ProgressDialog.show(DetailsPM.this, "", "loading...", true);
         JsonObject jsonObject = new JsonObject();
 
         jsonObject.addProperty("sessionId",sesionid_new);
@@ -1061,18 +1053,18 @@ DialogForm();
                 if (statusnya.equals("OK")){
                     JsonObject data = homedata.getAsJsonObject("data");
                     String message = data.get("message").getAsString();
-                    Toast.makeText(DetailsST.this, message,Toast.LENGTH_LONG).show();
+                    Toast.makeText(DetailsPM.this, message,Toast.LENGTH_LONG).show();
                     onBackPressed();
                 }else {
                     sesionid();
                     loading.dismiss();
-                    Toast.makeText(DetailsST.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DetailsPM.this, errornya.toString(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                Toast.makeText(DetailsST.this,getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
+                Toast.makeText(DetailsPM.this,getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
                 cekInternet();
                 loading.dismiss();
 
@@ -1146,7 +1138,7 @@ DialogForm();
     }
     public void cekInternet(){
         /// cek internet apakah internet terhubung atau tidak
-        ConnectivityManager connectivityManager = (ConnectivityManager) DetailsST.this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivityManager = (ConnectivityManager) DetailsPM.this.getSystemService(Context.CONNECTIVITY_SERVICE);
         if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
                 connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED)
         {
@@ -1155,7 +1147,7 @@ DialogForm();
 
         }else {
             internet=false;
-            Intent noconnection = new Intent(DetailsST.this, NoInternet.class);
+            Intent noconnection = new Intent(DetailsPM.this, NoInternet.class);
             startActivity(noconnection);
             finish();
         }
@@ -1163,14 +1155,14 @@ DialogForm();
 
     }
     public void loadData(){
-        loading = ProgressDialog.show(DetailsST.this, "", "loading...", true);
+        loading = ProgressDialog.show(DetailsPM.this, "", "loading...", true);
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("sessionId",sesionid_new);
         jsonObject.addProperty("serviceTicketCd",noreq);
         jsonObject.addProperty("ver",BuildConfig.VERSION_NAME);
 //        Toast.makeText(DetailsFormActivity.this,jsonObject.toString(), Toast.LENGTH_SHORT).show();
         IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, baseurl);
-        Call<JsonObject> panggilkomplek = jsonPostService.getservice(jsonObject);
+        Call<JsonObject> panggilkomplek = jsonPostService.pmget(jsonObject);
         panggilkomplek.enqueue(new Callback<JsonObject>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -1191,59 +1183,59 @@ DialogForm();
 
 //                    sesionid();
                     Log.d("sessionId",MsessionExpired);
-                   data = homedata.getAsJsonObject("data");
-                   //showhide buttuon update sparepart
-                    if(data.get("showUpdateSparePartButton").getAsBoolean()){
-                        mupdatespertbtn.setVisibility(View.VISIBLE);
-                    }else {
-                        mupdatespertbtn.setVisibility(View.GONE);
-                    }
+                    data = homedata.getAsJsonObject("data");
+                    //showhide buttuon update sparepart
+//                    if(data.get("showUpdateSparePartButton").getAsBoolean()){
+//                        mupdatespertbtn.setVisibility(View.VISIBLE);
+//                    }else {
+//                        mupdatespertbtn.setVisibility(View.GONE);
+//                    }
                     //SHOW START PROGRESS SCHEDJULE
-                    if (data.get("allowToScheduledProgress").getAsBoolean()){
-                        mstartprogresssched.setVisibility(View.VISIBLE);
-                    }else {
-                        mstartprogresssched.setVisibility(View.GONE);
-                    }
+//                    if (data.get("allowToScheduledProgress").getAsBoolean()){
+//                        mstartprogresssched.setVisibility(View.VISIBLE);
+//                    }else {
+//                        mstartprogresssched.setVisibility(View.GONE);
+//                    }
                     //show hide estimate update
-                    if (data.get("allowToUpdateEstimationDate").getAsBoolean()){
-                        mlayoutupdateestimate.setVisibility(View.VISIBLE);
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
-                        SimpleDateFormat datefor = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-                        String estima = data.get("defaultEstimationDate").getAsString();
-                        String estimadate = "";
-                        try {
-                            estimadate = datefor.format(simpleDateFormat.parse(estima));
-                            System.out.println(estimadate);
-                            Log.e((String)"Date", (String)estimadate);
-                        }
-                        catch (ParseException parseException) {
-                            parseException.printStackTrace();
-                        }
-                        mdatechangeesti.setText(estimadate);
-
-                    }else {
-                        mlayoutupdateestimate.setVisibility(View.GONE);
-                    }
+//                    if (data.get("allowToUpdateEstimationDate").getAsBoolean()){
+//                        mlayoutupdateestimate.setVisibility(View.VISIBLE);
+//                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+//                        SimpleDateFormat datefor = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+//                        String estima = data.get("defaultEstimationDate").getAsString();
+//                        String estimadate = "";
+//                        try {
+//                            estimadate = datefor.format(simpleDateFormat.parse(estima));
+//                            System.out.println(estimadate);
+//                            Log.e((String)"Date", (String)estimadate);
+//                        }
+//                        catch (ParseException parseException) {
+//                            parseException.printStackTrace();
+//                        }
+//                        mdatechangeesti.setText(estimadate);
+//
+//                    }else {
+//                        mlayoutupdateestimate.setVisibility(View.GONE);
+//                    }
                     // cancle btn show
-                    if (data.get("allowToCancel").getAsBoolean()){
-                        mcancleassg.setVisibility(View.VISIBLE);
-                        rolejson = data.getAsJsonArray("updatePanelCancellationStatusOptions");
-                        for (int i = 0; i < rolejson.size(); ++i) {
-                            JsonObject jsonObject3 = (JsonObject)rolejson.get(i);
-                            String string3 = jsonObject3.getAsJsonObject().get("Value").getAsString();
-                            String string4 = jsonObject3.getAsJsonObject().get("Text").getAsString();
-                            rolecvalue.add(string3);
-                            rolelist.add(string4);
-                            for (int j = 0; j < rolecvalue.size(); ++j) {
-//                            if (rolecvalue.get(i).equals(valuefilter)){
-//                                pos=j;
+//                    if (data.get("allowToCancel").getAsBoolean()){
+//                        mcancleassg.setVisibility(View.VISIBLE);
+//                        rolejson = data.getAsJsonArray("updatePanelCancellationStatusOptions");
+//                        for (int i = 0; i < rolejson.size(); ++i) {
+//                            JsonObject jsonObject3 = (JsonObject)rolejson.get(i);
+//                            String string3 = jsonObject3.getAsJsonObject().get("Value").getAsString();
+//                            String string4 = jsonObject3.getAsJsonObject().get("Text").getAsString();
+//                            rolecvalue.add(string3);
+//                            rolelist.add(string4);
+//                            for (int j = 0; j < rolecvalue.size(); ++j) {
+////                            if (rolecvalue.get(i).equals(valuefilter)){
+////                                pos=j;
+////                            }
 //                            }
-                            }
-
-                        }
-                    }else {
-                        mcancleassg.setVisibility(View.GONE);
-                    }
+//
+//                        }
+//                    }else {
+//                        mcancleassg.setVisibility(View.GONE);
+//                    }
                     //setnoteupdatepanels
                     if (data.get("generateNotes").toString().equals("null")){
                         mlinkgenerate.setVisibility(View.GONE);
@@ -1252,44 +1244,48 @@ DialogForm();
 
                         mlinkgenerate.setVisibility(View.VISIBLE);
                     }
+                    if (data.get("serviceTicketCd").toString().equals("null")) {
+//                        mlayoutunit1.setVisibility(View.GONE);
+                    } else {
+                        mstpm.setText(data.get("serviceTicketCd").getAsString());
+//                        mlayoutunit1.setVisibility(View.VISIBLE);
+                    }
+                    if (data.get("pmStatusName").toString().equals("null")) {
+//                        mlayoutunit1.setVisibility(View.GONE);
+                    } else {
+                        mpmstatus.setText(data.get("pmStatusName").getAsString());
+                        mpmstatus.setTextColor(Color.parseColor("#"+data.get("pmStatusColorCode").getAsString()));
+//                        mlayoutunit1.setVisibility(View.VISIBLE);
+                    }
+                    if (data.get("pmRescheduleOrRejectReason").getAsString().equals("")) {
+                        mlayreasonpm.setVisibility(View.GONE);
+                    } else {
+                        mreasonpm.setText(data.get("pmRescheduleOrRejectReason").getAsString());
 
+                        mlayreasonpm.setVisibility(View.VISIBLE);
+                    }
+                    if (data.get("unitCategoryName") == null) {
+                        mlayoutunit2.setVisibility(View.GONE);
+                    } else {
+                        munitcategory.setText(data.get("unitCategoryName").getAsString()+"/"+data.get("issueCategoryName").getAsString());
+                        mlayoutunit2.setVisibility(View.VISIBLE);
+                    }
                     // layoutsper
-                    if (data.get("showSparePart").getAsBoolean()){
-                        mlayoutsper.setVisibility(View.VISIBLE);
-                    }else {
-                        mlayoutsper.setVisibility(View.GONE);
-                    }
-                    if (data.get("allowToAddSparePart").getAsBoolean()){
-                        mspar.setVisibility(View.VISIBLE);
-                        mtextmhon.setVisibility(View.VISIBLE);
-                    }else {
-                        mspar.setVisibility(View.GONE);
-                        mtextmhon.setVisibility(View.GONE);
-                    }
-
-//                    inforeopen = data.get("allowToReopenCase").getAsBoolean();
-//                    if (inforeopen){
-//                        mreinfolay.setVisibility(View.VISIBLE);
-//                        mreopeninfo.setText(data.get("reopenCaseInformation").getAsString());
+//                    if (data.get("showSparePart").getAsBoolean()){
+//                        mlayoutsper.setVisibility(View.VISIBLE);
 //                    }else {
-//                        mreinfolay.setVisibility(View.GONE);
+//                        mlayoutsper.setVisibility(View.GONE);
 //                    }
+//                    if (data.get("allowToAddSparePart").getAsBoolean()){
+//                        mspar.setVisibility(View.VISIBLE);
+//                        mtextmhon.setVisibility(View.VISIBLE);
+//                    }else {
+//                        mspar.setVisibility(View.GONE);
+//                        mtextmhon.setVisibility(View.GONE);
+//                    }
+
                     String showalert = data.get("showMessage").toString();
-//                    if (data.get("updatePanelUseTimer").getAsBoolean()){
-//                        int hour = data.get("updatePanelTimerStartHours").getAsInt();
-//                        int minutes = data.get("updatePanelTimerStartMinutes").getAsInt();
-//                        int secondss = data.get("updatePanelTimerStartSeconds").getAsInt();
-//                        int totalsecond = (hour*60*60*1000)+(minutes*60*1000)+(secondss*1000);
-//                        START_TIME_IN_MILLIS = totalsecond;
-//                        mTimeLeftInMillis=START_TIME_IN_MILLIS;
-//                        //timer
-////                        Toast.makeText(DetailsFormActivity.this, String.valueOf(mTimeLeftInMillis),Toast.LENGTH_LONG).show();
-//                        startTimer();
-//                        updateCountDownText();
-//                    }else{
-//
-//                    }
-                    //check alert
+
                     if (showalert.equals("true")){
 
                         String text = data.get("messageText").getAsString();
@@ -1313,46 +1309,13 @@ DialogForm();
                     }else {
                         mbackgroundalert.setVisibility(View.GONE);
                     }
-                    //timer
-//                    usetime = data.get("useTimer").toString();
-//                    int hours = data.get("timerStartHours").getAsInt();
-//                    int minute = data.get("timerStartMinutes").getAsInt();
-//                    int second = data.get("timerStartSeconds").getAsInt();
-//                    seconds = (hours*60*60*1000)+(minute*60*1000)+(second*1000);
-//                    Toast.makeText(DetailsFormActivity.this, String.valueOf(seconds),Toast.LENGTH_LONG).show();
-                    if (data.get("formRequestCd").toString().equals("null")){
-                        mformRequestCd = "-";
-                    }else {
-                        mformRequestCd = data.get("formRequestCd").getAsString();
-                    }
 
-//                    mreopen = data.get("allowToReopenCase").toString();
-//                    if (mreopen.equals("true")){
-//                        mreopenbtn.setVisibility(View.VISIBLE);
-//                    }else {
-//                        mreopenbtn.setVisibility(View.GONE);
-//                    }
+
                     mserviceTicketCd = data.get("serviceTicketCd").toString();
-                    mdateapi = data.get("requestedDateTime").getAsString();
+//                    mdateapi = data.get("requestedDateTime").getAsString();
                     mpressGuid = data.get("pressGuid").getAsString();
                     mpressName = data.get("pressName").getAsString();
-                    if (data.get("photoURL").toString().equals("null")){
-
-                    }else {
-                        mphotoURL = data.get("photoURL").getAsString();
-                    }
-
-                    mstatus = data.get("status").getAsString();
-                    mstatusName = data.get("statusName").getAsString();
-                    mstatusColorCode = data.get("statusColorCode").getAsString();
-                    mdeskriptionapi = data.get("description").getAsString();
-                    mrequestby.setText(data.get("createdBy").getAsString());
-                    mcustname = data.get("createdBy").getAsString();
-                    moperator.setText(data.get("operatorName").getAsString());
-                    mrequestedDateTime = data.get("requestedDateTime").getAsString();
                     mstid.setText(": "+data.get("serviceTicketCd").getAsString());
-//                    mallowToCancel = data.get("allowToCancel").toString();
-//                    mallowtoconfirm = data.get("allowToConfirm").toString();
                     xlocation = data.get("locationName").getAsString();
                     mlocation.setText(xlocation);
                     if (mserviceTicketCd.equals("null")){
@@ -1364,7 +1327,7 @@ DialogForm();
                         Gson gson = new Gson();
                         Type type = new TypeToken<ArrayList<ServicesTicketItem>>(){}.getType();
                         listticket = gson.fromJson(mserviceTicketHistory.toString(), type);
-                        ticketadapter = new ServiceTicketAdapter(DetailsST.this,listticket);
+                        ticketadapter = new ServiceTicketAdapter(DetailsPM.this,listticket);
                         mservice_layout.setAdapter(ticketadapter);
                         mservice_layout.setVisibility(View.VISIBLE);
                         for (int i = 0; i < mserviceTicketHistory.size(); ++i) {
@@ -1398,12 +1361,6 @@ DialogForm();
                         separated[1].trim();;
                         mcreatedate.setText(separated[0]+" "+ separated[1]);
                     }
-                    if (data.get("unitCategoryName") == null) {
-                        mlayoutunit2.setVisibility(View.GONE);
-                    } else {
-                        munitcategory.setText(data.get("unitCategoryName").getAsString());
-                        mlayoutunit2.setVisibility(View.VISIBLE);
-                    }
                     if (data.get("issueCategoryName") == null) {
                         mlayoutunit3.setVisibility(View.GONE);
                     } else {
@@ -1411,31 +1368,44 @@ DialogForm();
                         mlayoutunit3.setVisibility(View.VISIBLE);
                     }
                     if (data.get("serviceTypeName").toString().equals("null")) {
-                        mlayoutunit1.setVisibility(View.GONE);
+//                        mlayoutunit1.setVisibility(View.GONE);
                     } else {
                         mservicetype.setText(data.get("serviceTypeName").getAsString());
-                        mlayoutunit1.setVisibility(View.VISIBLE);
                     }
-//                    if (mallowtoconfirm.equals("true")) {
-//                        mconfirm.setVisibility(View.VISIBLE);
-//                    } else {
-//                        //RATINGVISIBLE
-//                        mconfirm.setVisibility(View.GONE);
-//                    }
-//                    if (mallowToCancel.equals("true")) {
-//                        mcancel.setVisibility(View.VISIBLE);
-//                    } else {
-//                        mcancel.setVisibility(View.GONE);
-//                    }
+                    String newdatew = "";
+                    String oldadate = data.get("pmScheduledDateTime").getAsString();
+                    SimpleDateFormat simpleDateFormat7 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+                    SimpleDateFormat simpleDateFormat20 = new SimpleDateFormat("dd-MM-yyyy  HH:mm", Locale.getDefault());
+                    try {
+                        newdatew = simpleDateFormat20.format(simpleDateFormat7.parse(oldadate));
+                        System.out.println(newdatew);
+                        Log.e((String)"Datexse", (String)newdatew);
+
+                    }
+                    catch (ParseException parseException) {
+                        parseException.printStackTrace();
+                    }
+                    mvisitdate.setText(newdatew);
+                    if (data.get("pmShowApproveReschedule").getAsBoolean()) {
+                        mapprove.setVisibility(View.VISIBLE);
+                    } else {
+                        //RATINGVISIBLE
+                        mapprove.setVisibility(View.GONE);
+                    }
+                    if (data.get("pmShowRejectReschedule").getAsBoolean()) {
+                        mrejectpm.setVisibility(View.VISIBLE);
+                    } else {
+                        mrejectpm.setVisibility(View.GONE);
+                    }
                     loading.dismiss();
                     ////set
                     if (mphotoURL.equals("")){
-                        Picasso.with(DetailsST.this).load(R.drawable.noimgg).into(mbanner);
+                        Picasso.with(DetailsPM.this).load(R.drawable.noimgg).into(mbanner);
                     }else {
-                        Picasso.with(DetailsST.this).load(mphotoURL).into(mbanner);
+                        Picasso.with(DetailsPM.this).load(mphotoURL).into(mbanner);
                     }
 
-                    mtitle.setText("#"+noticket);
+//                    mtitle.setText("#"+noticket);
                     mreqno.setText(mformRequestCd);
                     String datenew = "";
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
@@ -1448,15 +1418,10 @@ DialogForm();
                     catch (ParseException parseException) {
                         parseException.printStackTrace();
                     }
-                    String[] separated = datenew.split("T");
-                    separated[0].trim();; // this will contain "Fruit"
-                    separated[1].trim();;
-                    mdate.setText(separated[0]+" "+ separated[1]);
                     msn.setText(mpressName);
 
                     mdeskription.setText(mdeskriptionapi);
                     mstatusdetail.setText(mstatusName);
-                    mstatusdetail.setTextColor(Color.parseColor("#"+mstatusColorCode));
 
                     // updatepanel ST
                     if (data.get("showUpdatePanel").getAsBoolean()){
@@ -1464,21 +1429,6 @@ DialogForm();
                     }else {
                         mlayoutupdatepanel.setVisibility(View.GONE);
                     }
-
-                    //separpart tanpa updatepanel
-                    if (data.get("selectedSparePartList").toString().equals("null")){
-
-                    }else {
-                        myCustomArray = data.getAsJsonArray("selectedSparePartList");
-                        Gson gson = new Gson();
-                        Type listType = new TypeToken<ArrayList<SendSparepart_item>>() {
-                        }.getType();
-                        sendsparepart_items = gson.fromJson(myCustomArray.toString(), listType);
-                        sendsparepart_adapter = new SendSparepart_adapter(DetailsST.this, sendsparepart_items);
-                        msendpartlist.setAdapter(sendsparepart_adapter);
-                    }
-
-                    //chat baru pasang
                     if(data.get("liveChatShowButton").getAsBoolean()){
                         itemchat = new ArrayList<Itemchat>();
                         itemchat2 = new Itemchat();
@@ -1511,7 +1461,7 @@ DialogForm();
                                         itemchat.add(fetchDatalist);
                                     }
 
-                                    adapterchat=new Adapterchat(DetailsST.this, itemchat);
+                                    adapterchat=new Adapterchat(DetailsPM.this, itemchat);
                                     for (int i = 0; i < itemchat.size(); i++) {
                                         if (itemchat.get(i).getName().equals(name)){
                                             mdot.setVisibility(View.GONE);
@@ -1549,7 +1499,7 @@ DialogForm();
                             loading.show();
 //                            Window window = loading.getWindow();
 //                            window.setLayout(300, 300);
-                            Intent gotonews = new Intent(DetailsST.this, ListChat.class);
+                            Intent gotonews = new Intent(DetailsPM.this, ListChat.class);
                             gotonews.putExtra("name",data.get("liveChatUserName").getAsString());
                             gotonews.putExtra("sessionnya",data.get("liveChatID").getAsString());
                             gotonews.putExtra("chat",data.get("liveChatAllowToChat").getAsBoolean());
@@ -1564,7 +1514,7 @@ DialogForm();
                             gotonews.putExtra("engname", mcustname);
                             gotonews.putExtra("nofr", mformRequestCd);
                             gotonews.putExtra("home", home);
-                            gotonews.putExtra("ping",1);
+                            gotonews.putExtra("ping",2);
                             startActivity(gotonews);
                             overridePendingTransition(R.anim.right_in, R.anim.left_out);
                             finish();
@@ -1578,104 +1528,11 @@ DialogForm();
                     }else {
 
                         JsonObject updatepanel = data.getAsJsonObject("updatePanelLatestAction");
-                        //cabut chat
-//                                if(updatepanel.get("ShowLiveChat").getAsBoolean()){
-//                                    itemchat = new ArrayList<Itemchat>();
-//                                    itemchat2 = new Itemchat();
-//                                    databaseReference5= FirebaseDatabase.getInstance().getReference().child("chat").child(updatepanel.get("Guid").getAsString()).child("listchat");
-//                                    //
-//                                    mchactclik.setVisibility(View.VISIBLE);
-//                                    if (updatepanel.get("LiveChatFirebaseToken").toString().equals("null")){
-//                                        tokennya = "-";
-//                                    }else {
-//                                        JsonArray tokeny = updatepanel.getAsJsonArray("LiveChatFirebaseToken");
-//                                        for (int c = 0; c < tokeny.size(); ++c) {
-//                                            JsonObject assobj2 = tokeny.get(c).getAsJsonObject();
-//                                            tokennya2.add(assobj2.get("Token").getAsString());
-//                                        }
-//
-//                                        Log.d("listToken", tokennya2.toString());
-//                                    }
-//                                    databaseReference5.addValueEventListener(new ValueEventListener() {
-//                                        @Override
-//                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                                            itemchat.clear();
-//                                            total1 = 0;
-//                                            if (dataSnapshot.exists()){
-//                                                for(DataSnapshot ds: dataSnapshot.getChildren())
-//                                                {
-//                                                    Itemchat fetchDatalist=ds.getValue(Itemchat.class);
-//                                                    fetchDatalist.setKey(ds.getKey());
-//                                                    itemchat.add(fetchDatalist);
-//                                                }
-//
-//                                                adapterchat=new Adapterchat(DetailsST.this, itemchat);
-//                                                for (int i = 0; i < itemchat.size(); i++) {
-//                                                    if (itemchat.get(i).getName().equals(name)){
-//                                                        mdot.setVisibility(View.GONE);
-//                                                    }else {
-//
-//                                                        if (itemchat.get(i).getRead().equals("yes")){
-//                                                            mdot.setVisibility(View.GONE);
-//                                                        }else {
-//                                                            total1 +=1;
-//                                                            mdot.setVisibility(View.VISIBLE);
-//                                                            mnotif.setText(String.valueOf(total1));
-//                                                        }
-//                                                    }
-//                                                }
-//
-//                                            }
-//
-//                                        }
-//
-//                                        @Override
-//                                        public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                                        }
-//                                    });
-//
-//                                    engas = "";
-//                                }else {
-//                                    mchactclik.setVisibility(View.GONE);
-//
-//                                }
-//                        mchactclik.setOnClickListener(new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View v) {
-//                                Intent gotonews = new Intent(DetailsST.this, ListChat.class);
-//                                gotonews.putExtra("name",updatepanel.get("LiveChatName").getAsString());
-//                                gotonews.putExtra("sessionnya",updatepanel.get("Guid").getAsString());
-//                                gotonews.putExtra("chat",updatepanel.get("LiveChatAllowChat").getAsBoolean());
-//                                gotonews.putExtra("user",username);
-//                                gotonews.putExtra("id",noreq);
-//                                gotonews.putExtra("tokennya",tokennya);
-//                                gotonews.putExtra("engname", mcustname);
-//                                gotonews.putExtra("nofr", mformRequestCd);
-//                               startActivity(gotonews);
-//                               overridePendingTransition(R.anim.right_in, R.anim.left_out);
-//                             finish();
-//                            }
-//                        });
-                        //sparepartupdatepanel
                         if(updatepanel.get("WaitingEstimationLabel").toString().equals("null")){
 
                         }else {
                             mlalbeldate.setText(updatepanel.get("WaitingEstimationLabel").getAsString());
                         }
-
-//                        if (data.get("selectedSparePartList").toString().equals("null")){
-//
-//                        }else {
-//                            myCustomArray = data.getAsJsonArray("selectedSparePartList");
-//                            Gson gson = new Gson();
-//                            Type listType = new TypeToken<ArrayList<SendSparepart_item>>() {
-//                            }.getType();
-//                            sendsparepart_items = gson.fromJson(myCustomArray.toString(), listType);
-//                            sendsparepart_adapter = new SendSparepart_adapter(DetailsST.this, sendsparepart_items);
-//                            msendpartlist.setAdapter(sendsparepart_adapter);
-//                        }
-
 
                         //timer Update
 //                        usetimea = updatepanel.getAsString()
@@ -1821,17 +1678,17 @@ DialogForm();
                         //panel atas by defaultnya
                         mengineer.setText(updatepanel.get("EngineerName").getAsString());
                         //assist
-                    massistengineer2 = updatepanel.getAsJsonArray("Assists");
-                    String asist2 = "";
-                    for (int i = 0; i < massistengineer2.size(); ++i){
-                        JsonObject assobj = massistengineer2.get(i).getAsJsonObject();
-                        asist2 += assobj.get("Name").getAsString();
-                        asist2 += "\n";
+                        massistengineer2 = updatepanel.getAsJsonArray("Assists");
+                        String asist2 = "";
+                        for (int i = 0; i < massistengineer2.size(); ++i){
+                            JsonObject assobj = massistengineer2.get(i).getAsJsonObject();
+                            asist2 += assobj.get("Name").getAsString();
+                            asist2 += "\n";
 //                        listticket.get(i).setAssist(asist2);
-                        masengineer.setText(asist2);
-                        Log.d("assist2",asist2);
+                            masengineer.setText(asist2);
+                            Log.d("assist2",asist2);
 
-                    }
+                        }
                         //bbutton
                         if (data.get("allowToStartProgress").getAsBoolean()){
                             mstartprogress.setVisibility(View.VISIBLE);
@@ -1869,7 +1726,7 @@ DialogForm();
                                 }
                             }
 //                        previmpression.add(previmpress);
-                            ArrayAdapter arrayAdapter = new ArrayAdapter(DetailsST.this, R.layout.spinstatus_layout, snname);
+                            ArrayAdapter arrayAdapter = new ArrayAdapter(DetailsPM.this, R.layout.spinstatus_layout, snname);
                             arrayAdapter.setDropDownViewResource(R.layout.spinkategori);
                             arrayAdapter.notifyDataSetChanged();
                             mservicetypeST.setAdapter(arrayAdapter);
@@ -1907,7 +1764,7 @@ DialogForm();
                                     }
                                 }
 //                        previmpression.add(previmpress);
-                                ArrayAdapter arrayAdaptera = new ArrayAdapter(DetailsST.this, R.layout.spinstatus_layout, snnamea);
+                                ArrayAdapter arrayAdaptera = new ArrayAdapter(DetailsPM.this, R.layout.spinstatus_layout, snnamea);
                                 arrayAdaptera.setDropDownViewResource(R.layout.spinkategori);
                                 arrayAdaptera.notifyDataSetChanged();
                                 mstatusST.setAdapter(arrayAdaptera);
@@ -1956,7 +1813,7 @@ DialogForm();
                 }else {
                     sesionid();
                     loading.dismiss();
-                    Toast.makeText(DetailsST.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DetailsPM.this, errornya.toString(), Toast.LENGTH_SHORT).show();
 //                    if (MsessionExpired.equals("true")) {
 //                        Toast.makeText(DetailsST.this, errornya.toString(), Toast.LENGTH_SHORT).show();
 //                    }
@@ -1965,7 +1822,7 @@ DialogForm();
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                Toast.makeText(DetailsST.this, getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
+                Toast.makeText(DetailsPM.this, getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
                 cekInternet();
                 loading.dismiss();
 
@@ -2011,7 +1868,7 @@ DialogForm();
                     Type listType = new TypeToken<ArrayList<Sparepart_item>>() {
                     }.getType();
                     sparepart_items = gson.fromJson(listnotif.toString(), listType);
-                    sparepart_adapter = new Sparepart_adapter(DetailsST.this, sparepart_items);
+                    sparepart_adapter = new Sparepart_adapter(DetailsPM.this, sparepart_items);
                     mpartlist.setAdapter(sparepart_adapter);
                     Log.d("data4",homedata.toString());
                     loading.dismiss();
@@ -2022,7 +1879,7 @@ DialogForm();
                     mloadpart.setVisibility(View.GONE);
                     sesionid();
                     loading.dismiss();
-                    Toast.makeText(DetailsST.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DetailsPM.this, errornya.toString(), Toast.LENGTH_SHORT).show();
 //                    if (MsessionExpired.equals("true")) {
 //                        Toast.makeText(DetailsST.this, errornya.toString(), Toast.LENGTH_SHORT).show();
 //                    }
@@ -2031,7 +1888,7 @@ DialogForm();
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                Toast.makeText(DetailsST.this, getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
+                Toast.makeText(DetailsPM.this, getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
                 cekInternet();
                 loading.dismiss();
                 load=true;
@@ -2041,63 +1898,17 @@ DialogForm();
         });
         Log.d("sperpartnya",jsonObject.toString());
     }
-//    public void cancelreq(){
-//        loading = ProgressDialog.show(DetailsFormActivity.this, "", getString(R.string.title_loading), true);
-//        JsonObject jsonObject = new JsonObject();
-//        jsonObject.addProperty("sessionId",sesionid_new);
-//        jsonObject.addProperty("formRequestCd",noreq);
-//        jsonObject.addProperty("reason",mreason);
-//        jsonObject.addProperty("ver",ver);
-//        IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, baseurl);
-//        Call<JsonObject> panggilkomplek = jsonPostService.postRawJSONcancelform(jsonObject);
-//        panggilkomplek.enqueue(new Callback<JsonObject>() {
-//            @RequiresApi(api = Build.VERSION_CODES.N)
-//            @Override
-//            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-//
-//                String errornya = "";
-//                JsonObject homedata=response.body();
-//                String statusnya = homedata.get("status").getAsString();
-//                if (homedata.get("errorMessage").toString().equals("null")) {
-//
-//                }else {
-//                    errornya = homedata.get("errorMessage").getAsString();
-//                }
-//                MhaveToUpdate = homedata.get("haveToUpdate").toString();
-//                MsessionExpired = homedata.get("sessionExpired").toString();
-//                sesionid();
-//                if (statusnya.equals("OK")){
-//                    JsonObject data = homedata.getAsJsonObject("data");
-//                    String message = data.get("message").getAsString();
-//                    Toast.makeText(DetailsFormActivity.this, message,Toast.LENGTH_LONG).show();
-//                    onBackPressed();
-//                }else {
-//                    sesionid();
-//                    loading.dismiss();
-//                    Toast.makeText(DetailsFormActivity.this,errornya,Toast.LENGTH_LONG).show();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<JsonObject> call, Throwable t) {
-//                Toast.makeText(DetailsFormActivity.this,getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
-//                cekInternet();
-//                loading.dismiss();
-//
-//            }
-//        });
-//    }
     public void reopenreq(){
-        loading = ProgressDialog.show(DetailsST.this, "", "loading...", true);
+        loading = ProgressDialog.show(DetailsPM.this, "", "loading...", true);
         JsonObject jsonObject = new JsonObject();
 
         jsonObject.addProperty("sessionId",sesionid_new);
         jsonObject.addProperty("serviceTicketCd",noreq);
-        jsonObject.addProperty("serviceTypeCd",mpressId);
+//        jsonObject.addProperty("serviceTypeCd",mpressId);
         jsonObject.addProperty("notes",mdescripst.getText().toString());
         jsonObject.addProperty("ver",BuildConfig.VERSION_NAME);
         IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, baseurl);
-        Call<JsonObject> panggilkomplek = jsonPostService.startprog(jsonObject);
+        Call<JsonObject> panggilkomplek = jsonPostService.startprogrespm(jsonObject);
         panggilkomplek.enqueue(new Callback<JsonObject>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -2118,18 +1929,18 @@ DialogForm();
                 if (statusnya.equals("OK")){
                     JsonObject data = homedata.getAsJsonObject("data");
                     String message = data.get("message").getAsString();
-                    Toast.makeText(DetailsST.this, message,Toast.LENGTH_LONG).show();
+                    Toast.makeText(DetailsPM.this, message,Toast.LENGTH_LONG).show();
                     onBackPressed();
                 }else {
                     sesionid();
                     loading.dismiss();
-                    Toast.makeText(DetailsST.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DetailsPM.this, errornya.toString(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                Toast.makeText(DetailsST.this,getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
+                Toast.makeText(DetailsPM.this,getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
                 cekInternet();
                 loading.dismiss();
 
@@ -2138,7 +1949,7 @@ DialogForm();
         Log.d("jsonstart",jsonObject.toString());
     }
     public void startprogressschej(){
-        loading = ProgressDialog.show(DetailsST.this, "", "loading...", true);
+        loading = ProgressDialog.show(DetailsPM.this, "", "loading...", true);
         JsonObject jsonObject = new JsonObject();
 
         jsonObject.addProperty("sessionId",sesionid_new);
@@ -2168,18 +1979,18 @@ DialogForm();
                 if (statusnya.equals("OK")){
                     JsonObject data = homedata.getAsJsonObject("data");
                     String message = data.get("message").getAsString();
-                    Toast.makeText(DetailsST.this, message,Toast.LENGTH_LONG).show();
+                    Toast.makeText(DetailsPM.this, message,Toast.LENGTH_LONG).show();
                     onBackPressed();
                 }else {
                     sesionid();
                     loading.dismiss();
-                    Toast.makeText(DetailsST.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DetailsPM.this, errornya.toString(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                Toast.makeText(DetailsST.this,getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
+                Toast.makeText(DetailsPM.this,getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
                 cekInternet();
                 loading.dismiss();
 
@@ -2188,7 +1999,7 @@ DialogForm();
         Log.d("jsonstart2",jsonObject.toString());
     }
     public void changeestimatedate(){
-        loading = ProgressDialog.show(DetailsST.this, "", "loading...", true);
+        loading = ProgressDialog.show(DetailsPM.this, "", "loading...", true);
         JsonObject jsonObject = new JsonObject();
 
         jsonObject.addProperty("sessionId",sesionid_new);
@@ -2218,18 +2029,18 @@ DialogForm();
                 if (statusnya.equals("OK")){
                     JsonObject data = homedata.getAsJsonObject("data");
                     String message = data.get("message").getAsString();
-                    Toast.makeText(DetailsST.this, message,Toast.LENGTH_LONG).show();
+                    Toast.makeText(DetailsPM.this, message,Toast.LENGTH_LONG).show();
                     onBackPressed();
                 }else {
                     sesionid();
                     loading.dismiss();
-                    Toast.makeText(DetailsST.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DetailsPM.this, errornya.toString(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                Toast.makeText(DetailsST.this,getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
+                Toast.makeText(DetailsPM.this,getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
                 cekInternet();
                 loading.dismiss();
 
@@ -2243,7 +2054,7 @@ DialogForm();
         }else {
             checkboxsts=false;
         }
-        loading = ProgressDialog.show(DetailsST.this, "", "loading...", true);
+        loading = ProgressDialog.show(DetailsPM.this, "", "loading...", true);
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("sessionId",sesionid_new);
         jsonObject.addProperty("serviceTicketCd",noreq);
@@ -2271,13 +2082,13 @@ DialogForm();
                 if (statusnya.equals("OK")){
                     JsonObject data = homedata.getAsJsonObject("data");
                     String message = data.get("message").getAsString();
-                    Toast.makeText(DetailsST.this, message,Toast.LENGTH_LONG).show();
+                    Toast.makeText(DetailsPM.this, message,Toast.LENGTH_LONG).show();
                     onBackPressed();
 //                    loadData();
                 }else {
                     sesionid();
                     loading.dismiss();
-                    Toast.makeText(DetailsST.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DetailsPM.this, errornya.toString(), Toast.LENGTH_SHORT).show();
 //                    if (MsessionExpired.equals("true")) {
 //                        Toast.makeText(DetailsST.this, errornya.toString(), Toast.LENGTH_SHORT).show();
 //                    }
@@ -2286,7 +2097,7 @@ DialogForm();
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                Toast.makeText(DetailsST.this,getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
+                Toast.makeText(DetailsPM.this,getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
                 cekInternet();
                 loading.dismiss();
 
@@ -2301,22 +2112,22 @@ DialogForm();
         }else {
             checkboxsts=false;
         }
-        loading = ProgressDialog.show(DetailsST.this, "", "loading...", true);
+        loading = ProgressDialog.show(DetailsPM.this, "", "loading...", true);
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("sessionId",sesionid_new);
         jsonObject.addProperty("serviceTicketCd",noreq);
-        jsonObject.addProperty("serviceTypeCd",mpressId);
+//        jsonObject.addProperty("serviceTypeCd",mpressId);
         jsonObject.addProperty("statusCd",mpressIda);
         jsonObject.addProperty("lastImpression",mlastimpresiST.getText().toString());
         jsonObject.addProperty("notes",mdescripst.getText().toString());
-        jsonObject.addProperty("waitingEstimationDate",mdatestatus.getText().toString());
-        jsonObject.add("sparePart",myCustomArray);
-        jsonObject.addProperty("withReplacement",checkboxsts);
-        jsonObject.addProperty("ver",BuildConfig.VERSION_NAME);
-        jsonObject.addProperty("longitude",lati);
-        jsonObject.addProperty("latitude",longi);
+//        jsonObject.addProperty("waitingEstimationDate",mdatestatus.getText().toString());
+//        jsonObject.add("sparePart",myCustomArray);
+//        jsonObject.addProperty("withReplacement",checkboxsts);
+//        jsonObject.addProperty("ver",BuildConfig.VERSION_NAME);
+//        jsonObject.addProperty("longitude",lati);
+//        jsonObject.addProperty("latitude",longi);
         IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, baseurl);
-        Call<JsonObject> panggilkomplek = jsonPostService.updatea(jsonObject);
+        Call<JsonObject> panggilkomplek = jsonPostService.updatepm(jsonObject);
         panggilkomplek.enqueue(new Callback<JsonObject>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -2337,13 +2148,13 @@ DialogForm();
                 if (statusnya.equals("OK")){
                     JsonObject data = homedata.getAsJsonObject("data");
                     String message = data.get("message").getAsString();
-                    Toast.makeText(DetailsST.this, message,Toast.LENGTH_LONG).show();
+                    Toast.makeText(DetailsPM.this, message,Toast.LENGTH_LONG).show();
                     onBackPressed();
 //                    loadData();
                 }else {
                     sesionid();
                     loading.dismiss();
-                    Toast.makeText(DetailsST.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DetailsPM.this, errornya.toString(), Toast.LENGTH_SHORT).show();
 //                    if (MsessionExpired.equals("true")) {
 //                        Toast.makeText(DetailsST.this, errornya.toString(), Toast.LENGTH_SHORT).show();
 //                    }
@@ -2352,7 +2163,7 @@ DialogForm();
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                Toast.makeText(DetailsST.this,getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
+                Toast.makeText(DetailsPM.this,getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
                 cekInternet();
                 loading.dismiss();
 
@@ -2381,82 +2192,11 @@ DialogForm();
             }
 
         }else {
-            startActivity(new Intent(DetailsST.this, Login.class));
+            startActivity(new Intent(DetailsPM.this, Login.class));
             finish();
 //            Toast.makeText(DetailsST.this, getString(R.string.title_session_Expired),Toast.LENGTH_LONG).show();
         }
 
-    }
-    //    @Override
-
-    public boolean appInstalledOrNot(String string2) {
-        PackageManager packageManager = this.getPackageManager();
-
-        try {
-            packageManager.getPackageInfo(string2, packageManager.GET_ACTIVITIES);
-            installed = true;
-        }
-        catch (PackageManager.NameNotFoundException nameNotFoundException) {
-            installed = false;
-
-        }
-        return installed;
-    }
-    private void startTimer() {
-        if (seconds==0){
-
-        }else {
-            handler = new Handler() ;
-            StartTime = SystemClock.uptimeMillis();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    MillisecondTime = SystemClock.uptimeMillis() - StartTime;
-//            mest.setText(String.valueOf(MillisecondTime));
-
-
-                    Seconds = (int) (UpdateTime / 1000);
-                    Jam = (Seconds/60/60);
-                    if (TimeBuff>=3600000){
-                        Minutes = (Seconds/60)-(Jam*60);
-                    }else {
-                        Minutes = Seconds / 60;
-                    }
-                    Seconds = Seconds % 60;
-                    MilliSeconds = (int) (UpdateTime % 1000);
-
-                    mtimer.setText(String.format("%02d", Jam) + ":"
-                            + String.format("%02d", Minutes) + ":"
-                            + String.format("%02d", Seconds));
-
-
-
-                    handler.postDelayed(this, 1000);
-                }
-            }, 2000);
-        }
-
-//        mCountDownTimer = new CountDownTimer(mTimeLeftInMillis, 1000) {
-//            @Override
-//            public void onTick(long millisUntilFinished) {
-//                mTimeLeftInMillis = millisUntilFinished;
-////                updateCountDownText();
-//            }
-//
-//            @Override
-//            public void onFinish() {
-////                mtimerconfirm.setText("00:00:00");
-//
-//            }
-//        }.start();
-
-    }
-    private void updateCountDownText() {
-        int hours = (int) (mTimeLeftInMillis / 1000) / 3600;
-        int minutes = (int) ((mTimeLeftInMillis / 1000) % 3600) / 60;
-        int seconds = (int) (mTimeLeftInMillis / 1000) % 60;
-        String timeLeftFormatted = String.format(Locale.getDefault(), "%02d:%02d:%02d",hours, minutes, seconds);
-        mtimerconfirm.setText(getString(R.string.title_confirm)+" ("+timeLeftFormatted+")");
     }
     @SuppressLint("WrongConstant")
     public void dialogspar(){
@@ -2473,7 +2213,7 @@ DialogForm();
         mreasona = dialog.findViewById(R.id.reasona);
         meditebtna = dialog.findViewById(R.id.editebtna);
         mcodemanual = dialog.findViewById(R.id.codecda);
-        linearLayoutManager = new LinearLayoutManager(DetailsST.this, LinearLayout.VERTICAL,false);
+        linearLayoutManager = new LinearLayoutManager(DetailsPM.this, LinearLayout.VERTICAL,false);
 //        linearLayoutManager.setReverseLayout(true);
 //        linearLayoutManager.setStackFromEnd(true);
         mpartlist.setLayoutManager(linearLayoutManager);
@@ -2492,7 +2232,7 @@ DialogForm();
                         load=false;
                         sear = msearch.getText().toString();
 
-                       loadpartnya();
+                        loadpartnya();
 
                     }
                 }else {
@@ -2523,7 +2263,7 @@ DialogForm();
 
                     if (Integer.parseInt(mqtyspera.getText().toString())>99){
                         mqtyspera.setText("99");
-                        Toast.makeText(DetailsST.this, "Qty maksimal 99", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DetailsPM.this, "Qty maksimal 99", Toast.LENGTH_SHORT).show();
                     }else {
 
                     }
@@ -2553,7 +2293,7 @@ DialogForm();
                 tambahpart.setStsAllowDelete(true);
                 tambahpart.setStatusName("-");
                 tambahpart.setCaseID("-");
-                
+
                 tambahpart.setReason(mreasona.getText().toString());
                 tambahpart.setQuantity(Integer.parseInt(mqtyspera.getText().toString()));
 
@@ -2567,7 +2307,7 @@ DialogForm();
                 Log.d("sizecart_11", String.valueOf(sendsparepart_items.size()));
                 Log.d("sizecart_22", String.valueOf(jsonarayitem));
 ////////////////////// adapter di masukan ke recyler//
-                sendsparepart_adapter = new SendSparepart_adapter(DetailsST.this, sendsparepart_items);
+                sendsparepart_adapter = new SendSparepart_adapter(DetailsPM.this, sendsparepart_items);
                 msendpartlist.setAdapter(sendsparepart_adapter);
                 dialog.dismiss();
             }
@@ -2607,7 +2347,7 @@ DialogForm();
                 }else {
                     sesionid();
                     loading.dismiss();
-                    Toast.makeText(DetailsST.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DetailsPM.this, errornya.toString(), Toast.LENGTH_SHORT).show();
 //                    if (MsessionExpired.equals("true")) {
 //                        Toast.makeText(DetailsST.this, errornya.toString(), Toast.LENGTH_SHORT).show();
 //                    }
@@ -2616,7 +2356,7 @@ DialogForm();
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                Toast.makeText(DetailsST.this,getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
+                Toast.makeText(DetailsPM.this,getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
                 cekInternet();
                 loading.dismiss();
 
@@ -2624,6 +2364,7 @@ DialogForm();
         });
         Log.d("readnotif",jsonObject.toString());
     }
+    @SuppressLint("MissingSuperCall")
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
@@ -2632,7 +2373,7 @@ DialogForm();
                 == PackageManager.PERMISSION_GRANTED){
             Log.d("requestcodenya",String.valueOf(requestCode)+permissions[0]+
                     permissions[1]+grantResults[0]+grantResults[1]+PackageManager.PERMISSION_GRANTED);
-            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(DetailsST.this);
+            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(DetailsPM.this);
             getCurrentLocation();
 //            if (reopen){
 //                showDialogreopen();
@@ -2663,7 +2404,7 @@ DialogForm();
                         new DialogInterface.OnClickListener(){
                             public void onClick(DialogInterface dialog, int id){
 
-                                ActivityCompat.requestPermissions(DetailsST.this
+                                ActivityCompat.requestPermissions(DetailsPM.this
                                         , new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION
                                         },100);
 
@@ -2672,7 +2413,7 @@ DialogForm();
         alertDialogBuilder.setNegativeButton("Cancel",
                 new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int id){
-                        Toast.makeText(DetailsST.this, "Mohon aktifkan lokasi", Toast.LENGTH_LONG).show();
+                        Toast.makeText(DetailsPM.this, "Mohon aktifkan lokasi", Toast.LENGTH_LONG).show();
                         dialog.cancel();
 
                     }
@@ -2681,16 +2422,16 @@ DialogForm();
         alert.show();
     }
     private  void requestlokasi(){
-        if (ActivityCompat.checkSelfPermission(DetailsST.this, Manifest.permission.ACCESS_FINE_LOCATION)
+        if (ActivityCompat.checkSelfPermission(DetailsPM.this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(DetailsST.this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                ActivityCompat.checkSelfPermission(DetailsPM.this, Manifest.permission.ACCESS_COARSE_LOCATION)
                         != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(DetailsST.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION}, 100);
+            ActivityCompat.requestPermissions(DetailsPM.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION}, 100);
             return;
         }else{
             LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
             if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-                fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(DetailsST.this);
+                fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(DetailsPM.this);
                 getCurrentLocation();
                 lokasi=true;
 //                DialogForm();
@@ -2710,7 +2451,7 @@ DialogForm();
 
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
                 || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-            fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+            fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<android.location.Location>() {
                 @Override
                 public void onComplete(@NonNull Task<Location> task) {
 
@@ -2758,14 +2499,14 @@ DialogForm();
                 if (username==null){
                     if (check.checkhome==0){
                         if (check.checklistform==1){
-                            list2.clear();
-                            refresh=true;
+                            ServiceTicket.list2.clear();
+                            ServiceTicket.refresh=true;
                         }
                         super.onBackPressed();
                         finish();
                     }else {
-                        Intent back = new Intent(DetailsST.this,Home.class);
-                        back.putExtra("pos",valuefilter);
+                        Intent back = new Intent(DetailsPM.this,Home.class);
+                        back.putExtra("pos", ServiceTicket.valuefilter);
                         startActivity(back);
                         overridePendingTransition(R.anim.left_in, R.anim.right_out);
                         finish();
@@ -2773,22 +2514,22 @@ DialogForm();
 
 
                 }else {
-                    Intent back = new Intent(DetailsST.this,ServiceTicket.class);
-                    back.putExtra("pos",valuefilter);
+                    Intent back = new Intent(DetailsPM.this,PmList.class);
+                    back.putExtra("pos", ServiceTicket.valuefilter);
                     startActivity(back);
                     overridePendingTransition(R.anim.left_in, R.anim.right_out);
                     finish();
                 }
             }else {
-                Intent back = new Intent(DetailsST.this,Home.class);
-                back.putExtra("pos",valuefilter);
+                Intent back = new Intent(DetailsPM.this,Home.class);
+                back.putExtra("pos", ServiceTicket.valuefilter);
                 startActivity(back);
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
                 finish();
             }
         }else {
             if (home.equals("homes")){
-                Intent back = new Intent(DetailsST.this,Home.class);
+                Intent back = new Intent(DetailsPM.this,Home.class);
 //            back.putExtra("pos",valuefilter);
                 startActivity(back);
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
@@ -2797,8 +2538,8 @@ DialogForm();
                 if (check.checknotif==1){
                     if (username==null){
                         if (check.checklistform==1){
-                            list2.clear();
-                            refresh=true;
+                            ServiceTicket.list2.clear();
+                            ServiceTicket.refresh=true;
                         }
                         super.onBackPressed();
                         finish();
@@ -2806,15 +2547,15 @@ DialogForm();
                     }else {
                         super.onBackPressed();
 //            refresh=true;
-                        Intent back = new Intent(DetailsST.this,ServiceTicket.class);
-                        back.putExtra("pos",valuefilter);
+                        Intent back = new Intent(DetailsPM.this,PmList.class);
+                        back.putExtra("pos", ServiceTicket.valuefilter);
                         startActivity(back);
                         overridePendingTransition(R.anim.left_in, R.anim.right_out);
                         finish();
                     }
                 }else {
-                    Intent back = new Intent(DetailsST.this,Home.class);
-                    back.putExtra("pos",valuefilter);
+                    Intent back = new Intent(DetailsPM.this,Home.class);
+                    back.putExtra("pos", ServiceTicket.valuefilter);
                     startActivity(back);
                     overridePendingTransition(R.anim.left_in, R.anim.right_out);
                     finish();
@@ -2989,7 +2730,7 @@ DialogForm();
                     if (clocksts){
                         ;
                     }else {
-                        startActivity(new Intent(DetailsST.this, ClockInActivity.class));
+                        startActivity(new Intent(DetailsPM.this, ClockInActivity.class));
                         finish();
 //                        mcheck.setVisibility(View.VISIBLE)
 
@@ -3003,7 +2744,7 @@ DialogForm();
 //                    if (MsessionExpired.equals("true")) {
 //                        Toast.makeText(Home.this, errornya.toString(), Toast.LENGTH_SHORT).show();
 //                    }
-                    Toast.makeText(DetailsST.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DetailsPM.this, errornya.toString(), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -3011,7 +2752,7 @@ DialogForm();
             public void onFailure(Call<JsonObject> call, Throwable t) {
 //                mrefresh.setVisibility(View.VISIBLE);
 //                mcheck.setVisibility(View.GONE);
-                Toast.makeText(DetailsST.this, getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
+                Toast.makeText(DetailsPM.this, getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
                 cekInternet();
 //                loading.dismiss();
             }
@@ -3019,28 +2760,28 @@ DialogForm();
         Log.d("reqapi",jsonObject.toString());
 
     }
-//timer new up
-private void startTimernew()
-{
-    timerTask = new TimerTask()
+    //timer new up
+    private void startTimernew()
     {
-        @Override
-        public void run()
+        timerTask = new TimerTask()
         {
-            runOnUiThread(new Runnable()
+            @Override
+            public void run()
             {
-                @Override
-                public void run()
+                runOnUiThread(new Runnable()
                 {
-                    time++;
-                    mtimer.setText(getTimerText());
-                }
-            });
-        }
+                    @Override
+                    public void run()
+                    {
+                        time++;
+                        mtimer.setText(getTimerText());
+                    }
+                });
+            }
 
-    };
-    timer.scheduleAtFixedRate(timerTask, 0 ,1000);
-}
+        };
+        timer.scheduleAtFixedRate(timerTask, 0 ,1000);
+    }
     private String getTimerText()
     {
         int rounded = (int) Math.round(time);

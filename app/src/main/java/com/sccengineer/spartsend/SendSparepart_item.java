@@ -17,28 +17,12 @@ public class SendSparepart_item {
     public SendSparepart_item() {
     }
 
+    @Expose
+    @SerializedName("SparePartCodeAndName")
+    private String SparePartCodeAndName;
+
     public String getSparePartCodeAndName() {
         return SparePartCodeAndName;
-    }
-
-
-    public SendSparepart_item(String sparePartCodeAndName, String sparePartCd, String name, String sparePartName, String manualSparePartCd, String manualSparePartName, int quantity, String reason, String caseID, String installDate, String orderDate, boolean stsAllowEdit, boolean stsAllowUpdateInstallDate, String statusName, String statusTextColor, boolean stsAllowDelete) {
-        SparePartCodeAndName = sparePartCodeAndName;
-        SparePartCd = sparePartCd;
-        Name = name;
-        SparePartName = sparePartName;
-        ManualSparePartCd = manualSparePartCd;
-        ManualSparePartName = manualSparePartName;
-        Quantity = quantity;
-        Reason = reason;
-        CaseID = caseID;
-        InstallDate = installDate;
-        OrderDate = orderDate;
-        StsAllowEdit = stsAllowEdit;
-        StsAllowUpdateInstallDate = stsAllowUpdateInstallDate;
-        StatusName = statusName;
-        StatusTextColor = statusTextColor;
-        StsAllowDelete = stsAllowDelete;
     }
 
     public void setSparePartCodeAndName(String sparePartCodeAndName) {
@@ -165,9 +149,13 @@ public class SendSparepart_item {
         StsAllowDelete = stsAllowDelete;
     }
 
-    @Expose
-    @SerializedName("SparePartCodeAndName")
-    private String SparePartCodeAndName;
+    public Integer getNonReservedStock() {
+        return NonReservedStock;
+    }
+
+    public void setNonReservedStock(Integer nonReservedStock) {
+        NonReservedStock = nonReservedStock;
+    }
 
     @Expose
     @SerializedName("SparePartCd")
@@ -218,6 +206,30 @@ public class SendSparepart_item {
     @Expose
     @SerializedName("StsAllowDelete")
     private boolean StsAllowDelete;
+    @Expose
+    @SerializedName("NonReservedStock")
+    private Integer NonReservedStock;
+
+    public SendSparepart_item(String sparePartCodeAndName, String sparePartCd, String name, String sparePartName, String manualSparePartCd, String manualSparePartName, int quantity, String reason, String caseID, String installDate, String orderDate, boolean stsAllowEdit, boolean stsAllowUpdateInstallDate, String statusName, String statusTextColor, boolean stsAllowDelete, Integer nonReservedStock) {
+        SparePartCodeAndName = sparePartCodeAndName;
+        SparePartCd = sparePartCd;
+        Name = name;
+        SparePartName = sparePartName;
+        ManualSparePartCd = manualSparePartCd;
+        ManualSparePartName = manualSparePartName;
+        Quantity = quantity;
+        Reason = reason;
+        CaseID = caseID;
+        InstallDate = installDate;
+        OrderDate = orderDate;
+        StsAllowEdit = stsAllowEdit;
+        StsAllowUpdateInstallDate = stsAllowUpdateInstallDate;
+        StatusName = statusName;
+        StatusTextColor = statusTextColor;
+        StsAllowDelete = stsAllowDelete;
+        NonReservedStock = nonReservedStock;
+    }
+
 
 }
 

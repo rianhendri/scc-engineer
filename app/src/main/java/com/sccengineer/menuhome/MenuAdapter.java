@@ -47,6 +47,7 @@ import com.sccengineer.ClockinApprovList;
 import com.sccengineer.LiveChatList;
 import com.sccengineer.Location;
 import com.sccengineer.MapsActivity;
+import com.sccengineer.PmList;
 import com.sccengineer.R;
 import com.sccengineer.ServiceTicket;
 import com.sccengineer.Settings;
@@ -88,6 +89,10 @@ public class MenuAdapter  extends RecyclerView.Adapter<MenuAdapter.Myviewholder>
     public void onBindViewHolder(@NonNull Myviewholder myviewholder, int i) {
         String namemenu = myItem.get(i).getMenuname();
         if (namemenu.equals("Assignment")){
+            myviewholder.mdot.setVisibility(View.GONE);
+
+        }
+        if (namemenu.equals(context.getString(R.string.title_pmticket))){
             myviewholder.mdot.setVisibility(View.GONE);
 
         }
@@ -213,6 +218,14 @@ public class MenuAdapter  extends RecyclerView.Adapter<MenuAdapter.Myviewholder>
                     ((Activity)context).overridePendingTransition(R.anim.right_in, R.anim.left_out);
                     ((Activity)context).finish();
 //                    Toast.makeText(context, "setting", Toast.LENGTH_SHORT).show();
+
+                }
+                if (namemenu.equals(context.getString(R.string.title_pmticket))){
+                    myviewholder.mdot.setVisibility(View.GONE);
+                    Intent gotonews = new Intent(context, PmList.class);
+                    context.startActivity(gotonews);
+                    ((Activity)context).overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                    ((Activity)context).finish();
 
                 }
 //                if (namemenu.equals(context.getString(R.string.title_News))){

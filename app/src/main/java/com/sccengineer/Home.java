@@ -702,6 +702,7 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
                     MenuItem menuItem5 = new MenuItem();
                     MenuItem menuItem6 = new MenuItem();
                     MenuItem menuItem9 = new MenuItem();
+                    MenuItem menuItem10 = new MenuItem();
                     new MenuItem();
                     MenuItem menuItem7 = new MenuItem();
                     menuItemlist = new ArrayList();
@@ -750,7 +751,12 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
                         menuItem6.setShow(data.get("showCurrentLiveChatList").toString());
                         menuItemlist.add(menuItem6);
                     }
-
+                    if (data.get("showCurrentLiveChatList").getAsBoolean()){
+                        menuItem10.setMenuname(getString(R.string.title_pmticket));
+                        menuItem10.setImg(R.drawable.repairtools);
+//                        menuItem10.setShow(data.get("showCurrentLiveChatList").toString());
+                        menuItemlist.add(menuItem10);
+                    }
                     if (data.get("showApproval").getAsBoolean()){
                         menuItem2.setMenuname("Change Role Request");
                         menuItem2.setImg(R.drawable.ic_check);

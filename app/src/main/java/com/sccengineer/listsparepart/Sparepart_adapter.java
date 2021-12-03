@@ -133,6 +133,7 @@ extends RecyclerView.Adapter<Sparepart_adapter.Myviewholder> {
                             tambahpart.setStsAllowUpdateInstallDate(true);
                             tambahpart.setStsAllowDelete(true);
                             tambahpart.setStatusName("-");
+                            tambahpart.setNonReservedStock(addFoclistitem.get(i).getNonReservedStock());
                             tambahpart.setCaseID(myviewholder.mcaseid.getText().toString());
                             tambahpart.setReason(myviewholder.mreason.getText().toString());
                             tambahpart.setQuantity(Integer.parseInt(myviewholder.mqtysper.getText().toString()));

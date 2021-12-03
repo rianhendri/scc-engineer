@@ -188,6 +188,7 @@ public class ListChat extends AppCompatActivity {
    public static  boolean chatin = false;
     String noreq = "";
     String id = "";
+    int ping=0;
     String username = "";
     public static String modultrans="";
     TextView mfrnya, mstnya;
@@ -237,6 +238,7 @@ public class ListChat extends AppCompatActivity {
             noreq = bundle2.getString("id");
             scs = bundle2.getString("cs");
             id = bundle2.getString("page");
+            ping=bundle2.getInt("ping");
             stnya = bundle2.getString("stnya");
             username = bundle2.getString("user");
             chatin = bundle2.getBoolean("chat");
@@ -1160,17 +1162,33 @@ public class ListChat extends AppCompatActivity {
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
                 finish();
             }else{
-                Intent back = new Intent(ListChat.this,DetailsST.class);
-                back.putExtra("name",name);
-                back.putExtra("id",stnya);
-                back.putExtra("user",username);
-                back.putExtra("home", homes);
-                back.putExtra("xhori", xhori);
-                back.putExtra("yverti", yverti);
-                back.putExtra("scrolbawah","-");
-                startActivity(back);
-                overridePendingTransition(R.anim.left_in, R.anim.right_out);
-                finish();
+                if (ping==1) {
+                    Intent back = new Intent(ListChat.this, DetailsST.class);
+                    back.putExtra("name", name);
+                    back.putExtra("id", stnya);
+                    back.putExtra("user", username);
+                    back.putExtra("home", homes);
+                    back.putExtra("xhori", xhori);
+                    back.putExtra("yverti", yverti);
+                    back.putExtra("scrolbawah", "-");
+                    startActivity(back);
+                    overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                    finish();
+                }else {
+                    if (ping==2) {
+                        Intent back = new Intent(ListChat.this, DetailsPM.class);
+                        back.putExtra("name", name);
+                        back.putExtra("id", stnya);
+                        back.putExtra("user", username);
+                        back.putExtra("home", homes);
+                        back.putExtra("xhori", xhori);
+                        back.putExtra("yverti", yverti);
+                        back.putExtra("scrolbawah", "-");
+                        startActivity(back);
+                        overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                        finish();
+                    }
+                }
             }
 
 

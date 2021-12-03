@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="320dp"
-	android:layout_height="430dp"
+	android:layout_height="470dp"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	android:background="@color/dwhite"
 	android:orientation="vertical"
@@ -347,6 +347,7 @@
 			android:layout_margin="4dp"
 			android:background="@color/softgrey" />
 	</LinearLayout>
+
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
@@ -509,13 +510,46 @@
 			android:background="@color/softgrey" />
 	</LinearLayout>
 	<LinearLayout
-		android:layout_marginTop="24dp"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical" >
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:fontFamily="@font/seguisb"
+			android:paddingLeft="4dp"
+			android:text="Stock:"
+			android:textColor="@color/black"
+			android:textSize="12sp" />
+
+		<TextView
+			android:id="@+id/stockres"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:fontFamily="@font/segoeui"
+			android:paddingLeft="4dp"
+			android:inputType="number"
+			android:digits="0123456789"
+			android:text="-"
+			android:background="@color/transparent"
+			android:textColor="@color/black"
+			android:textSize="13sp" />
+
+		<View
+			android:layout_width="match_parent"
+			android:layout_height="1dp"
+			android:layout_margin="4dp"
+			android:background="@color/softgrey" />
+	</LinearLayout>
+	<LinearLayout
 		android:id="@+id/updateedit"
-		android:layout_marginRight="12dp"
 		android:layout_width="match_parent"
 		android:layout_height="30dp"
+		android:layout_marginTop="24dp"
+		android:layout_marginRight="12dp"
 		android:background="@drawable/bg_cornergrey"
-		android:gravity="center" >
+		android:gravity="center">
 
 		<TextView
 			android:layout_width="wrap_content"
@@ -525,4 +559,4 @@
 			android:textColor="@color/black"
 			android:textSize="13sp" />
 	</LinearLayout>
-	</LinearLayout>
+</LinearLayout>

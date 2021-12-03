@@ -1,9 +1,662 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DailyReportAct">
+    tools:context=".DailyReportAct"
+    android:orientation="vertical"
+    android:background="#f6f6f6">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/dwhite"
+        android:elevation="0dp"
+        android:orientation="horizontal" >
+        <LinearLayout
+            android:id="@+id/backbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <ImageView
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_width="25dp"
+                android:layout_height="80dp"
+                android:layout_gravity="left"
+                android:layout_marginLeft="7dp"
+                android:layout_marginRight="7dp"
+                android:layout_marginTop="0dp"
+                android:gravity="left"
+                android:rotation="180"
+                android:src="@drawable/back_black" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="64dp"
+                android:fontFamily="@font/segoeuib"
+                android:gravity="center_vertical"
+                android:text="Daily Report"
+                android:textColor="@color/black"
+                android:textSize="25sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+    <ScrollView
+        android:id="@+id/scrollnya"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        android:padding="12dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingBottom="50dp" >
+<!--contentform-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginRight="6dp"
+                    android:layout_weight="1">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/seguisb"
+                        android:textSize="13sp"
+                        android:textColor="@color/black"
+                        android:layout_marginBottom="4dp"
+                        android:text="@string/title_datetime"/>
+                    <TextView
+                        android:id="@+id/datetimea"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:background="@drawable/bgwhitecorner"
+                        android:enabled="false"
+                        android:fontFamily="@font/segoeui"
+                        android:gravity="center|left"
+                        android:inputType="textMultiLine"
+                        android:overScrollMode="always"
+                        android:padding="8dp"
+                        android:scrollbarAlwaysDrawVerticalTrack="true"
+                        android:scrollbarFadeDuration="0"
+                        android:scrollbars="vertical"
+                        android:scrollHorizontally="false"
+                        android:text="12 september"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/darkgrey2"
+                        android:textSize="13sp" />
+
+
+
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginLeft="6dp"
+                    android:layout_weight="1">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/seguisb"
+                        android:textSize="13sp"
+                        android:textColor="@color/black"
+                        android:layout_marginBottom="4dp"
+                        android:text=" "/>
+                    <TextView
+                        android:id="@+id/onsite"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:background="@drawable/bgwhitecorner"
+                        android:enabled="false"
+                        android:fontFamily="@font/segoeui"
+                        android:gravity="center|left"
+                        android:inputType="textMultiLine"
+                        android:overScrollMode="always"
+                        android:padding="8dp"
+                        android:scrollbarAlwaysDrawVerticalTrack="true"
+                        android:scrollbarFadeDuration="0"
+                        android:scrollbars="vertical"
+                        android:scrollHorizontally="false"
+                        android:text="OnSite"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/darkgrey2"
+                        android:textSize="13sp" />
+
+
+
+
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="6dp"
+                android:layout_weight="1">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/seguisb"
+                    android:textSize="13sp"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="4dp"
+                    android:text="Case ID:"/>
+                <EditText
+                    android:id="@+id/casiddr"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@drawable/bgwhitecorner"
+                    android:enabled="false"
+                    android:fontFamily="@font/segoeui"
+                    android:gravity="center|left"
+                    android:inputType="textMultiLine"
+                    android:overScrollMode="always"
+                    android:padding="8dp"
+                    android:scrollbarAlwaysDrawVerticalTrack="true"
+                    android:scrollbarFadeDuration="0"
+                    android:scrollbars="vertical"
+                    android:scrollHorizontally="false"
+                    android:text="textbok"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
+
+
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="6dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:fontFamily="@font/seguisb"
+                    android:text="Press Type:"
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
+
+                <EditText
+                    android:id="@+id/presstype"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@drawable/bgwhitecorner"
+                    android:enabled="false"
+                    android:fontFamily="@font/segoeui"
+                    android:gravity="center|left"
+                    android:inputType="textMultiLine"
+                    android:overScrollMode="always"
+                    android:padding="8dp"
+                    android:scrollbarAlwaysDrawVerticalTrack="true"
+                    android:scrollbarFadeDuration="0"
+                    android:scrollbars="vertical"
+                    android:scrollHorizontally="false"
+                    android:text="textbok"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
+
+
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="6dp"
+                android:layout_weight="1">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/seguisb"
+                    android:textSize="13sp"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="4dp"
+                    android:text="S/N:"/>
+                <EditText
+                    android:id="@+id/sndr"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@drawable/bgwhitecorner"
+                    android:enabled="false"
+                    android:fontFamily="@font/segoeui"
+                    android:gravity="center|left"
+                    android:inputType="textMultiLine"
+                    android:overScrollMode="always"
+                    android:padding="8dp"
+                    android:scrollbarAlwaysDrawVerticalTrack="true"
+                    android:scrollbarFadeDuration="0"
+                    android:scrollbars="vertical"
+                    android:scrollHorizontally="false"
+                    android:text="textbok"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
+
+
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="6dp"
+                android:layout_weight="1">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/seguisb"
+                    android:textSize="13sp"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="4dp"
+                    android:text="Case Progress:"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bgwhitecorner"
+                    android:orientation="vertical">
+                    <Spinner
+                        android:id="@+id/casprogress"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:enabled="false"
+                        android:fontFamily="@font/segoeui"
+                        android:gravity="center|left"
+                        android:inputType="textMultiLine"
+                        android:overScrollMode="always"
+                        android:padding="8dp"
+                        android:scrollbarAlwaysDrawVerticalTrack="true"
+                        android:scrollbarFadeDuration="0"
+                        android:scrollbars="vertical"
+                        android:scrollHorizontally="false"
+                        android:text="12 september"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/black"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+
+
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="6dp"
+                android:layout_weight="1">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/seguisb"
+                    android:textSize="13sp"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="4dp"
+                    android:text="Press Status:"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bgwhitecorner"
+                    android:orientation="vertical">
+                    <Spinner
+                        android:id="@+id/pressstatusdr"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:enabled="false"
+                        android:fontFamily="@font/segoeui"
+                        android:gravity="center|left"
+                        android:inputType="textMultiLine"
+                        android:overScrollMode="always"
+                        android:padding="8dp"
+                        android:scrollbarAlwaysDrawVerticalTrack="true"
+                        android:scrollbarFadeDuration="0"
+                        android:scrollbars="vertical"
+                        android:scrollHorizontally="false"
+                        android:text="12 september"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/black"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+
+
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="6dp"
+                android:layout_weight="1">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/seguisb"
+                    android:textSize="13sp"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="4dp"
+                    android:text="Ticket:"/>
+                <TextView
+                    android:id="@+id/ticket"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@drawable/bgwhitecorner"
+                    android:enabled="false"
+                    android:fontFamily="@font/segoeui"
+                    android:gravity="center|left"
+                    android:inputType="textMultiLine"
+                    android:overScrollMode="always"
+                    android:padding="8dp"
+                    android:scrollbarAlwaysDrawVerticalTrack="true"
+                    android:scrollbarFadeDuration="0"
+                    android:scrollbars="vertical"
+                    android:scrollHorizontally="false"
+                    android:text="Text View"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/darkgrey2"
+                    android:textSize="13sp" />
+
+
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="6dp"
+                android:layout_weight="1">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/seguisb"
+                    android:textSize="13sp"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="4dp"
+                    android:text="@string/title_findings"/>
+                <EditText
+                    android:id="@+id/findings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bgwhitecorner"
+                    android:enabled="false"
+                    android:fontFamily="@font/segoeui"
+                    android:gravity="top|left"
+                    android:inputType="textMultiLine"
+                    android:overScrollMode="always"
+                    android:padding="8dp"
+                    android:lines="4"
+                    android:scrollbarAlwaysDrawVerticalTrack="true"
+                    android:scrollbarFadeDuration="0"
+                    android:scrollbars="vertical"
+                    android:scrollHorizontally="false"
+                    android:text="textbok"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
+
+
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="6dp"
+                android:layout_weight="1">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/seguisb"
+                    android:textSize="13sp"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="4dp"
+                    android:text="@string/title_actiontaken"/>
+                <EditText
+                    android:id="@+id/actiontaken"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bgwhitecorner"
+                    android:enabled="false"
+                    android:fontFamily="@font/segoeui"
+                    android:gravity="top|left"
+                    android:inputType="textMultiLine"
+                    android:overScrollMode="always"
+                    android:padding="8dp"
+                    android:lines="4"
+                    android:scrollbarAlwaysDrawVerticalTrack="true"
+                    android:scrollbarFadeDuration="0"
+                    android:scrollbars="vertical"
+                    android:scrollHorizontally="false"
+                    android:text="textbok"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
+
+
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="6dp"
+                android:layout_weight="1">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/seguisb"
+                    android:textSize="13sp"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="4dp"
+                    android:text="@string/title_followupitems"/>
+                <EditText
+                    android:id="@+id/followupitems"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bgwhitecorner"
+                    android:enabled="false"
+                    android:fontFamily="@font/segoeui"
+                    android:gravity="top|left"
+                    android:inputType="textMultiLine"
+                    android:overScrollMode="always"
+                    android:padding="8dp"
+                    android:lines="4"
+                    android:scrollbarAlwaysDrawVerticalTrack="true"
+                    android:scrollbarFadeDuration="0"
+                    android:scrollbars="vertical"
+                    android:scrollHorizontally="false"
+                    android:text="textbok"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
+
+
+
+
+            </LinearLayout>
+            <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="6dp"
+            android:layout_weight="1">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/seguisb"
+                android:textSize="13sp"
+                android:textColor="@color/black"
+                android:layout_marginBottom="4dp"
+                android:text="Sparepart Orders:"/>
+            <TextView
+                android:id="@+id/sperpartorderdr"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="@drawable/bgwhitecorner"
+                android:enabled="false"
+                android:fontFamily="@font/segoeui"
+                android:gravity="center|left"
+                android:inputType="textMultiLine"
+                android:overScrollMode="always"
+                android:padding="8dp"
+                android:scrollbarAlwaysDrawVerticalTrack="true"
+                android:scrollbarFadeDuration="0"
+                android:scrollbars="vertical"
+                android:scrollHorizontally="false"
+                android:text="textview"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/darkgrey2"
+                android:textSize="13sp" />
+
+
+
+
+        </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="6dp"
+                android:layout_weight="1">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/seguisb"
+                    android:textSize="13sp"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="4dp"
+                    android:text="Notes:"/>
+                <EditText
+                    android:id="@+id/note"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bgwhitecorner"
+                    android:enabled="false"
+                    android:fontFamily="@font/segoeui"
+                    android:gravity="top|left"
+                    android:inputType="textMultiLine"
+                    android:overScrollMode="always"
+                    android:padding="8dp"
+                    android:lines="6"
+                    android:scrollbarAlwaysDrawVerticalTrack="true"
+                    android:scrollbarFadeDuration="0"
+                    android:scrollbars="vertical"
+                    android:scrollHorizontally="false"
+                    android:text="textbok"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
+
+
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="6dp"
+                android:layout_weight="1">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/seguisb"
+                    android:textSize="13sp"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="4dp"
+                    android:text="Prepared By:"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_weight="1">
+                    <TextView
+                        android:id="@+id/preparedby"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:enabled="false"
+                        android:fontFamily="@font/segoeui"
+                        android:gravity="center|left"
+                        android:overScrollMode="always"
+                        android:padding="8dp"
+                        android:scrollbarAlwaysDrawVerticalTrack="true"
+                        android:scrollbarFadeDuration="0"
+                        android:scrollbars="vertical"
+                        android:scrollHorizontally="false"
+                        android:text=" * Engineer1 \n * Assit"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/black"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+
+
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/startprogress"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="32dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:visibility="visible" >
+
+                <LinearLayout
+                    android:layout_width="250dp"
+                    android:layout_height="45dp"
+                    android:background="@drawable/bg_greencorener"
+                    android:gravity="center" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/seguisb"
+                        android:text="Send Report"
+                        android:textColor="@color/dwhite"
+                        android:textSize="17sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

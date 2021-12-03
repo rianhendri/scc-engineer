@@ -90,9 +90,11 @@ extends RecyclerView.Adapter<SendSparepart_adapter.Myviewholder> {
     String caseidedit="";
     String reasonedit="";
     int qtyedit=0;
+    Integer nonreserv=null;
+    Integer qtystc=null;
      Dialog dialogedit;
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
-    TextView mnamesparedit,mqtysperedit2,mcaseidedit2,mreasonedit2,morderdateedit,minstalldateedit, mstatusedit;
+    TextView mnamesparedit,mqtysperedit2,mcaseidedit2,mreasonedit2,morderdateedit,minstalldateedit, mstatusedit,mstockres;
     LinearLayout minstalldateedit2;
     final Calendar myCalendar = Calendar.getInstance();
     int posedit=0;
@@ -108,7 +110,7 @@ extends RecyclerView.Adapter<SendSparepart_adapter.Myviewholder> {
     @NonNull
     @Override
     public Myviewholder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        return new Myviewholder(LayoutInflater.from(context).inflate(R.layout.item_sparepart2,
+        return new Myviewholder(LayoutInflater.from(context).inflate(R.layout.item_sparepart2b,
                 viewGroup, false));
 
     }
@@ -205,6 +207,10 @@ extends RecyclerView.Adapter<SendSparepart_adapter.Myviewholder> {
         myviewholder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                nonreserv = addFoclistitem.get(i).getNonReservedStock();
+                qtystc = addFoclistitem.get(i).getQuantity();
+//                Toast.makeText(context, String.valueOf(nonreserv), Toast.LENGTH_SHORT).show();
+
                 stsedit = addFoclistitem.get(i).isStsAllowEdit();
                 if (addFoclistitem.get(i).getStatusName().equals("-")){
                         statuspar="-";
@@ -272,6 +278,9 @@ extends RecyclerView.Adapter<SendSparepart_adapter.Myviewholder> {
 
             }
         });
+
+
+
     }
 
     @Override
@@ -288,11 +297,12 @@ extends RecyclerView.Adapter<SendSparepart_adapter.Myviewholder> {
         LinearLayout mlayoutsperpart;
         TextView mnamespar;
         ImageView mdelete,mdelete2;
-        TextView mno,mcd,morderdate,minstalldate;
+        TextView mno,mcd,morderdate,minstalldate,mstockres;
         TextView mqtysper,mreason,mcaseid,mstatussper;
         public Myviewholder(@NonNull View itemView) {
             super(itemView);
             mnamespar = itemView.findViewById(R.id.namespar);
+
             mlayoutsperpart = itemView.findViewById(R.id.layoutsperpart);
             mdelete = itemView.findViewById(R.id.deletelist);
             mdelete2 = itemView.findViewById(R.id.deletelist2);
@@ -327,6 +337,7 @@ extends RecyclerView.Adapter<SendSparepart_adapter.Myviewholder> {
         minstalldateedit2 = dialogedit.findViewById(R.id.installdate2);
         mupdateeditedit = dialogedit.findViewById(R.id.updateedit);
         mstatusedit = dialogedit.findViewById(R.id.statusspernya);
+        mstockres = dialogedit.findViewById(R.id.stockres);
         DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
             @Override
@@ -340,7 +351,19 @@ extends RecyclerView.Adapter<SendSparepart_adapter.Myviewholder> {
             }
 
         };
+//        Toast.makeText(context, String.valueOf(nonreserv), Toast.LENGTH_SHORT).show();
+        if (nonreserv==null){
+            mstockres.setText("-");
+        }else {
+            if (nonreserv<qtystc){
+                mstockres.setText("Order");
+            }else {
+                if (nonreserv>qtystc){
+                    mstockres.setText("Reserve");
+                }
+            }
 
+        }
         minstalldateedit2.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -456,6 +479,21 @@ extends RecyclerView.Adapter<SendSparepart_adapter.Myviewholder> {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (mqtysperedit.length()>0){
+                    if (nonreserv==null){
+                        mstockres.setText("-");
+                    }else {
+                        if (nonreserv<Integer.parseInt(mqtysperedit.getText().toString())){
+                            mstockres.setText("Order");
+//                            Toast.makeText(context, String.valueOf(nonreserv<Integer.parseInt(mqtysperedit.getText().toString())), Toast.LENGTH_SHORT).show();
+                        }else {
+                            if (nonreserv>Integer.parseInt(mqtysperedit.getText().toString())){
+                                mstockres.setText("Reserve");
+//                                Toast.makeText(context, String.valueOf(nonreserv<Integer.parseInt(mqtysperedit.getText().toString())), Toast.LENGTH_SHORT).show();
+
+                            }
+                        }
+
+                    }
                     if (Integer.parseInt(mqtysperedit.getText().toString())>99){
                         mqtysperedit.setText("99");
                         Toast.makeText(context, "Qty maksimal 99", Toast.LENGTH_SHORT).show();
@@ -463,6 +501,7 @@ extends RecyclerView.Adapter<SendSparepart_adapter.Myviewholder> {
 
                     }
                 }
+
 
 
             }
@@ -508,6 +547,7 @@ extends RecyclerView.Adapter<SendSparepart_adapter.Myviewholder> {
                             myCustomArray = gson.toJsonTree(sendsparepart_items).getAsJsonArray();
                             jsonarayitem = myCustomArray.toString();
                             dialogedit.dismiss();
+                            Log.d("mycustomarray",myCustomArray.toString());
                         }
 
                     }
@@ -525,7 +565,7 @@ extends RecyclerView.Adapter<SendSparepart_adapter.Myviewholder> {
         dialogedit.show();
     }
     private void updateLabel() {
-        String myFormat = "yyyy-MM-dd"; //In which you need put here
+        String myFormat = "yyyy-MM-dd "; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
         minstalldateedit.setText(sdf.format(myCalendar.getTime()));
