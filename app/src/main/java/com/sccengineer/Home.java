@@ -757,6 +757,7 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
 //                        menuItem10.setShow(data.get("showCurrentLiveChatList").toString());
                         menuItemlist.add(menuItem10);
                     }
+
                     if (data.get("showApproval").getAsBoolean()){
                         menuItem2.setMenuname("Change Role Request");
                         menuItem2.setImg(R.drawable.ic_check);

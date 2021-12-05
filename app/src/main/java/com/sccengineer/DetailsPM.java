@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,7 +30,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.SystemClock;
 import android.provider.Settings;
 import android.text.Editable;
 import android.text.Html;
@@ -60,12 +58,8 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -76,7 +70,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-import com.kunzisoft.switchdatetime.SwitchDateTimeDialogFragment;
 import com.sccengineer.Chat.Adapterchat;
 import com.sccengineer.Chat.Itemchat;
 import com.sccengineer.apihelper.IRetrofit;
@@ -96,10 +89,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
-import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -113,9 +104,6 @@ import static com.sccengineer.apihelper.ServiceGenerator.baseurl;
 import static com.sccengineer.listsparepart.Sparepart_adapter.listpoact;
 import static com.sccengineer.listsparepart.Sparepart_adapter.tambahpart;
 import static com.sccengineer.messagecloud.check.tokennya2;
-import static com.sccengineer.PmList.valuefilter;
-import static com.sccengineer.PmList.list2;
-import static com.sccengineer.PmList.refresh;
 
 public class DetailsPM extends AppCompatActivity {
     CheckBox mcheckboxbtn;
@@ -420,7 +408,7 @@ public class DetailsPM extends AppCompatActivity {
         mdailyreport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent gotodaily = new Intent(DetailsPM.this,DailyReportAct.class);
+                Intent gotodaily = new Intent(DetailsPM.this, DetailsDailyReportAct.class);
                 startActivity(gotodaily);
             }
         });

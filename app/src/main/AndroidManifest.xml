@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.sccengineer">
@@ -36,6 +35,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".DailyreportList"></activity>
         <activity android:name=".DetailsPM">
             <intent-filter>
                 <action android:name="ENGPM" />
@@ -45,7 +45,7 @@
         </activity>
         <activity android:name=".PmList" />
         <activity android:name=".ListDailyReport" />
-        <activity android:name=".DailyReportAct" />
+        <activity android:name=".DetailsDailyReportAct" />
         <activity android:name=".LiveChatList" />
         <activity android:name=".DetailReclock" />
         <activity android:name=".ClockinApprovList" />
