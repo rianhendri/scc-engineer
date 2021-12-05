@@ -35,7 +35,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".DailyreportList"></activity>
+        <activity android:name=".DetailsDailyReport"></activity>
+        <activity android:name=".DailyReportAdd" />
+        <activity android:name=".DailyRepotlist2" />
+        <activity android:name=".DailyReportList" />
         <activity android:name=".DetailsPM">
             <intent-filter>
                 <action android:name="ENGPM" />

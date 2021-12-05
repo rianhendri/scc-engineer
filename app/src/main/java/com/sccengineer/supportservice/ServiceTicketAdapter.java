@@ -164,8 +164,6 @@ extends RecyclerView.Adapter<ServiceTicketAdapter.Myviewholder> implements Activ
                 intent.putExtra("pos", valuefilter);
                 intent.putExtra("user", addFromItem.get(i).getCreatedBy());
                 intent.putExtra("scrolbawah", "yes");
-
-
                 context.startActivity(intent);
                 ((Activity)context).overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 ((Activity)context).finish();

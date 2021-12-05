@@ -340,7 +340,7 @@ public class Home extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent gotonews = new Intent(Home.this, ServiceTicket.class);
-                gotonews.putExtra("filter", "Assigned");
+                gotonews.putExtra("pos", "Assigned");
                 gotonews.putExtra("home", "homes");
                 startActivity(gotonews);
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
@@ -351,7 +351,7 @@ public class Home extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent gotonews = new Intent(Home.this, ServiceTicket.class);
-                gotonews.putExtra("filter", "OnProgress");
+                gotonews.putExtra("pos", "OnProgress");
                 gotonews.putExtra("home", "homes");
                 startActivity(gotonews);
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
@@ -362,7 +362,7 @@ public class Home extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent gotonews = new Intent(Home.this, ServiceTicket.class);
-                gotonews.putExtra("filter", "ALLWAITING");
+                gotonews.putExtra("pos", "ALLWAITING");
                 gotonews.putExtra("home", "homes");
                 startActivity(gotonews);
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
@@ -703,6 +703,7 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
                     MenuItem menuItem6 = new MenuItem();
                     MenuItem menuItem9 = new MenuItem();
                     MenuItem menuItem10 = new MenuItem();
+                    MenuItem menuItem11 = new MenuItem();
                     new MenuItem();
                     MenuItem menuItem7 = new MenuItem();
                     menuItemlist = new ArrayList();
@@ -716,6 +717,18 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
                         menuItem.setImg(R.drawable.ic_ticket_sc);
                         menuItem.setShow(mshowServiceTicket);
                         menuItemlist.add(menuItem);
+                    }
+                    if (data.get("showDailyReport").getAsBoolean()){
+                        menuItem11.setMenuname(getString(R.string.title_dailyreport));
+                        menuItem11.setImg(R.drawable.clipboarddaily);
+                        menuItem11.setShow(data.get("showDailyReport").toString());
+                        menuItemlist.add(menuItem11);
+                    }
+                    if (data.get("showCurrentLiveChatList").getAsBoolean()){
+                        menuItem10.setMenuname(getString(R.string.title_pmticket));
+                        menuItem10.setImg(R.drawable.repairtools);
+//                        menuItem10.setShow(data.get("showCurrentLiveChatList").toString());
+                        menuItemlist.add(menuItem10);
                     }
                     if (data.get("showReClockInApproval").getAsBoolean()){
                         menuItem5.setMenuname("Clockin Approval");
@@ -751,12 +764,8 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
                         menuItem6.setShow(data.get("showCurrentLiveChatList").toString());
                         menuItemlist.add(menuItem6);
                     }
-                    if (data.get("showCurrentLiveChatList").getAsBoolean()){
-                        menuItem10.setMenuname(getString(R.string.title_pmticket));
-                        menuItem10.setImg(R.drawable.repairtools);
-//                        menuItem10.setShow(data.get("showCurrentLiveChatList").toString());
-                        menuItemlist.add(menuItem10);
-                    }
+
+
 
                     if (data.get("showApproval").getAsBoolean()){
                         menuItem2.setMenuname("Change Role Request");

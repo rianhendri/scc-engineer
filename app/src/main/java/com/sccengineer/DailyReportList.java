@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,11 +19,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,33 +31,35 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.sccengineer.apihelper.IRetrofit;
 import com.sccengineer.apihelper.ServiceGenerator;
+import com.sccengineer.daliyreport.DailyAdapter;
+import com.sccengineer.daliyreport.DailyItem;
 import com.sccengineer.messagecloud.check;
-import com.sccengineer.supportservice.ServiceTicketAdapter;
-import com.sccengineer.supportservice.ServiceTicketItems;
 
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.sccengineer.DetailsST.myCustomArray;
+import static com.sccengineer.ServiceTicket.valuefilter;
 import static com.sccengineer.apihelper.ServiceGenerator.baseurl;
-import static com.sccengineer.apihelper.ServiceGenerator.ver;
 
-public class ServiceTicket extends AppCompatActivity {
-    boolean load = true;
+public class DailyReportList extends AppCompatActivity {
     private static final String TAG = "FormActivity";
     public static boolean refresh = false;
     public static String valuefilter = "-";
     String MhaveToUpdate = "";
     String MsessionExpired = "";
-    ServiceTicketAdapter addFormAdapterAdapter;
+    DailyAdapter addFormAdapterAdapter;
     boolean internet = true;
     private LinearLayoutManager linearLayoutManager;
-    public static ArrayList<ServiceTicketItems> list2;
+    public static ArrayList<DailyItem> list2;
     JsonArray listformreq;
     List<String> listnamestatus = new ArrayList();
     JsonArray liststatus;
@@ -68,10 +69,11 @@ public class ServiceTicket extends AppCompatActivity {
     ProgressBar mfooterload;
     private LinearLayoutManager mlinear;
     NestedScrollView mnested;
-    TextView mrecord,mempetyreq;
-    Spinner mstatus_spin;
+    TextView mrecord, mempetyreq;
     RecyclerView myitem_place;
     int page = 1;
+    String startdate = "";
+    String enddate = "";
     int pos = 0;
     boolean refreshscroll = true;
     String sesionid_new = "";
@@ -80,22 +82,113 @@ public class ServiceTicket extends AppCompatActivity {
     int totalpage = 0;
     String totalrec = "";
     SwipeRefreshLayout mswip;
-
+    TextView mstartdate, menddate;
+    final Calendar myCalendar = Calendar.getInstance();
+    String noreq = "";
+    String home = "";
+    String guid = "";
+    String username = "";
+    String noticket = "";
+    String scrollnya = "";
+    Integer xhori = 0;
+    Integer yverti = 0;
+    TextView msttitle;
+    LinearLayout mlayoutdaterange;
+    boolean hide=false;
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_service_ticket);
+        setContentView(R.layout.activity_dailyreport_list);
         mrecord = findViewById(R.id.record);
+        mlayoutdaterange=findViewById(R.id.layoutdaterange);
+        msttitle = findViewById(R.id.sttitle);
+        mstartdate =findViewById(R.id.startdate);
+        menddate = findViewById(R.id.enddate);
         mfooterload = findViewById(R.id.footerload);
         mback = findViewById(R.id.backbtn);
         myitem_place = findViewById(R.id.formlist);
         maddform = findViewById(R.id.addform);
-        mstatus_spin = findViewById(R.id.spinstatus);
         mnested = findViewById(R.id.nestedscrol);
         mempetyreq = findViewById(R.id.norequest);
         mswip = findViewById(R.id.swiprefresh);
         check.checklistform=1;
+
+        Bundle bundle2 = getIntent().getExtras();
+        if (bundle2 != null) {
+            noreq = bundle2.getString("id");
+            home = bundle2.getString("home");
+            guid = bundle2.getString("guid");
+            username = bundle2.getString("user");
+            noticket = bundle2.getString("id");
+            valuefilter = bundle2.getString("pos");
+            scrollnya =   bundle2.getString("scrolbawah");
+            xhori=bundle2.getInt("xhori");
+            yverti=bundle2.getInt("yverti");
+            hide=true;
+
+        }else {
+            hide=false;
+        }
+        if (hide){
+            Log.d("noreqnya",noreq);
+            msttitle.setText("#"+noreq);
+            mlayoutdaterange.setVisibility(View.GONE);
+        }else {
+            mlayoutdaterange.setVisibility(View.VISIBLE);
+            msttitle.setText("");
+        }
+        String string2 = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        mstartdate.setText((CharSequence)string2);
+        menddate.setText((CharSequence)string2);
+        startdate = string2;
+        enddate = string2;
+        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                startatepick();
+            }
+
+        };
+        DatePickerDialog.OnDateSetListener date2 = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                endatepick();
+            }
+
+        };
+        mstartdate.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                new DatePickerDialog(DailyReportList.this, date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+        menddate.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                new DatePickerDialog(DailyReportList.this, date2, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
         //showadd
 //        if (showaddform.equals("false")){
 //            maddform.setVisibility(View.GONE);
@@ -105,25 +198,18 @@ public class ServiceTicket extends AppCompatActivity {
 //            myitem_place.setPadding(0,0,0,120);
 //
 //        }
-        Bundle bundle2 = this.getIntent().getExtras();
-        if (bundle2 != null) {
-            valuefilter = bundle2.getString("pos");
-
-//            Toast.makeText(DetailsNotification.this, guid,Toast.LENGTH_LONG).show();
-        }
         //setlayout recyler
-        linearLayoutManager = new LinearLayoutManager(ServiceTicket.this, LinearLayout.VERTICAL,false);
+        linearLayoutManager = new LinearLayoutManager(DailyReportList.this, LinearLayout.VERTICAL,false);
 //        linearLayoutManager.setReverseLayout(true);
 //        linearLayoutManager.setStackFromEnd(true);
         myitem_place.setLayoutManager(linearLayoutManager);
         myitem_place.setHasFixedSize(true);
-        list2 = new ArrayList<ServiceTicketItems>();
+        list2 = new ArrayList<DailyItem>();
         getSessionId();
         cekInternet();
-//        refreshnotif();
+        refreshnotif();
         if (internet){
-            reqApi();
-            loadSpin();
+            loadData();
         }else {
 
         }
@@ -161,10 +247,6 @@ public class ServiceTicket extends AppCompatActivity {
                             }
 
                         }else {
-                                    Toast.makeText(ServiceTicket.this, "Data Sudah di tampilkan semua", Toast.LENGTH_SHORT).show();
-//                                    mfooterload.setVisibility(View.GONE);
-//                                    mdatahabis.setVisibility(View.GONE);
-//                                    mrefreshcoba.setVisibility(View.VISIBLE);
 
                         }
 
@@ -183,32 +265,10 @@ public class ServiceTicket extends AppCompatActivity {
                 onBackPressed();
             }
         });
-        mstatus_spin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                refreshscroll = true;
-                page=1;
-                cekInternet();
-                for (int i = 0; i < listvalue.size(); ++i) {
-                    valuefilter = listvalue.get(position);
-                    if (internet) {
-                        loadData();
-                    }else {
-
-                    }
-
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-//        maddform.setOnClickListener(new View.OnClickListener() {
+        //        maddform.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
-//                Intent gotonews = new Intent(ServiceTicket.this, AddRequest.class);
+//                Intent gotonews = new Intent(DailyReportList.this, DetailsPM.class);
 //                startActivity(gotonews);
 //                finish();
 //                overridePendingTransition(R.anim.right_in, R.anim.left_out);
@@ -247,21 +307,34 @@ public class ServiceTicket extends AppCompatActivity {
             }
         });
     }
+    private void startatepick() {
+        String myFormat = "yyyy-MM-dd "; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+        mstartdate.setText(sdf.format(myCalendar.getTime()));
+        startdate=sdf.format(myCalendar.getTime());
+        loadData();
+    }
+    private void endatepick() {
+        String myFormat = "yyyy-MM-dd "; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+        menddate.setText(sdf.format(myCalendar.getTime()));
+        enddate=sdf.format(myCalendar.getTime());
+        loadData();
+    }
     public void loadData(){
         page=1;
-        if (load){
-            load = false;
-        }else {
-            mfooterload.setVisibility(View.VISIBLE);
-            load = true;
-        }
+        mfooterload.setVisibility(View.VISIBLE);
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("sessionId",sesionid_new);
         jsonObject.addProperty("page",page);
-        jsonObject.addProperty("status",valuefilter);
+        jsonObject.addProperty("startDate",startdate);
+        jsonObject.addProperty("endDate",enddate);
+        jsonObject.addProperty("serviceTicketCd",noreq);
         jsonObject.addProperty("ver",BuildConfig.VERSION_NAME);
         IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, baseurl);
-        Call<JsonObject> panggilkomplek = jsonPostService.ListST(jsonObject);
+        Call<JsonObject> panggilkomplek = jsonPostService.dailyrlist(jsonObject);
         panggilkomplek.enqueue(new Callback<JsonObject>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -279,15 +352,16 @@ public class ServiceTicket extends AppCompatActivity {
                 MsessionExpired = homedata.get("sessionExpired").toString();
                 if (statusnya.equals("OK")){
                     JsonObject data = homedata.getAsJsonObject("data");
+                    Log.d("dataload",data.toString());
                     totalpage = data.get("totalPage").getAsInt();
-                    listformreq = data.getAsJsonArray("frList");
-                    totalrec = data.get("totalRec").toString();
-                    mrecord.setText("Record: "+totalrec);
+                    listformreq = data.getAsJsonArray("dailyReportList");
+                    totalrec = data.get("totalRec").getAsString();
+//                    mrecord.setText("Record: "+totalrec);
                     Gson gson = new Gson();
-                    Type listType = new TypeToken<ArrayList<ServiceTicketItems>>() {
+                    Type listType = new TypeToken<ArrayList<DailyItem>>() {
                     }.getType();
                     list2 = gson.fromJson(listformreq.toString(), listType);
-                    addFormAdapterAdapter = new ServiceTicketAdapter(ServiceTicket.this, list2);
+                    addFormAdapterAdapter = new DailyAdapter(DailyReportList.this, list2);
 //                    addFormAdapterAdapter.notifyDataSetChanged();
                     myitem_place.setAdapter(addFormAdapterAdapter);
                     myitem_place.setVisibility(View.VISIBLE);
@@ -312,100 +386,32 @@ public class ServiceTicket extends AppCompatActivity {
                 }else {
                     sesionid();
                     mfooterload.setVisibility(View.GONE);
-                    if (MsessionExpired.equals("true")) {
-                        Toast.makeText(ServiceTicket.this, errornya.toString(), Toast.LENGTH_SHORT).show();
-                    }
+                    Toast.makeText(DailyReportList.this, errornya,Toast.LENGTH_LONG).show();
                 }
 
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                Toast.makeText(ServiceTicket.this, getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
+                Toast.makeText(DailyReportList.this, getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
                 cekInternet();
                 mfooterload.setVisibility(View.GONE);
 
             }
         });
-        Log.d("listst",jsonObject.toString());
-    }
-    public void loadSpin(){
-        mfooterload.setVisibility(View.VISIBLE);
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("sessionId",sesionid_new);
-        jsonObject.addProperty("page",page);
-        jsonObject.addProperty("status","-");
-        jsonObject.addProperty("ver",BuildConfig.VERSION_NAME);
-        IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, baseurl);
-        Call<JsonObject> panggilkomplek = jsonPostService.ListST(jsonObject);
-        panggilkomplek.enqueue(new Callback<JsonObject>() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-
-                String errornya = "";
-                JsonObject homedata=response.body();
-                String statusnya = homedata.get("status").getAsString();
-                if (homedata.get("errorMessage").toString().equals("null")) {
-
-                }else {
-                    errornya = homedata.get("errorMessage").getAsString();
-                }
-                MhaveToUpdate = homedata.get("haveToUpdate").toString();
-                MsessionExpired = homedata.get("sessionExpired").toString();
-                if (statusnya.equals("OK")){
-                    loadData();
-                    sesionid();
-                    JsonObject data = homedata.getAsJsonObject("data");
-                    listformreq = data.getAsJsonArray("frList");
-                    liststatus = data.getAsJsonArray("statusList");
-                    for (int i = 0; i < liststatus.size(); ++i) {
-                        JsonObject jsonObject3 = (JsonObject)liststatus.get(i);
-                        String string3 = jsonObject3.getAsJsonObject().get("Value").getAsString();
-                        String string4 = jsonObject3.getAsJsonObject().get("Text").getAsString();
-                        listvalue.add(string3);
-                        listnamestatus.add(string4);
-                        for (int j = 0; j < listvalue.size(); ++j) {
-                            if (listvalue.get(i).equals(valuefilter)){
-                                pos=j;
-                            }
-                        }
-                        final ArrayAdapter<String> kategori = new ArrayAdapter<String>(ServiceTicket.this, R.layout.spinstatus_layout,
-                                listnamestatus);
-                        kategori.setDropDownViewResource(R.layout.spinkategori);
-                        kategori.notifyDataSetChanged();
-                        mstatus_spin.setAdapter(kategori);
-                        mstatus_spin.setSelection(pos);
-                    }
-                } else {
-                    sesionid();
-//                    if (MsessionExpired.equals("true")) {
-////                        Toast.makeText(ServiceTicket.this, errornya.toString(), Toast.LENGTH_SHORT).show();
-////                    }
-                    Toast.makeText(ServiceTicket.this, errornya.toString(), Toast.LENGTH_SHORT).show();
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-                Toast.makeText(ServiceTicket.this, getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
-                cekInternet();
-                mfooterload.setVisibility(View.GONE);
-
-            }
-        });
-        Log.d("reqapilista",jsonObject.toString());
+        Log.d("reqlistfr",jsonObject.toString());
     }
     public void pagination(){
         mfooterload.setVisibility(View.VISIBLE);
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("sessionId",sesionid_new);
         jsonObject.addProperty("page",page);
-        jsonObject.addProperty("status",valuefilter);
+        jsonObject.addProperty("startDate",startdate);
+        jsonObject.addProperty("endDate",enddate);
+        jsonObject.addProperty("serviceTicketCd",noreq);
         jsonObject.addProperty("ver",BuildConfig.VERSION_NAME);
         IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, baseurl);
-        Call<JsonObject> panggilkomplek = jsonPostService.ListST(jsonObject);
+        Call<JsonObject> panggilkomplek = jsonPostService.dailyrlist(jsonObject);
         panggilkomplek.enqueue(new Callback<JsonObject>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -424,17 +430,17 @@ public class ServiceTicket extends AppCompatActivity {
                 if (statusnya.equals("OK")){
                     JsonObject data = homedata.getAsJsonObject("data");
                     totalpage = data.get("totalPage").getAsInt();
-                    listformreq = data.getAsJsonArray("frList");
+                    listformreq = data.getAsJsonArray("dailyReportList");
                     totalrec = data.get("totalRec").toString();
-                    mrecord.setText("Record: "+totalrec);
+//                    mrecord.setText("Record: "+totalrec);
                     Gson gson = new Gson();
-                    Type listType = new TypeToken<ArrayList<ServiceTicketItems>>() {
+                    Type listType = new TypeToken<ArrayList<DailyItem>>() {
                     }.getType();
-                    ArrayList<ServiceTicketItems> list;
+                    ArrayList<DailyItem> list;
                     list=new ArrayList<>();
                     list = gson.fromJson(listformreq.toString(), listType);
                     list2.addAll(list);
-                    addFormAdapterAdapter = new ServiceTicketAdapter(ServiceTicket.this, list2);
+                    addFormAdapterAdapter = new DailyAdapter(DailyReportList.this, list2);
                     myitem_place.setAdapter(addFormAdapterAdapter);
                     myitem_place.setVisibility(View.VISIBLE);
                     mfooterload.setVisibility(View.GONE);
@@ -446,23 +452,28 @@ public class ServiceTicket extends AppCompatActivity {
                     } else if (list2 != null) {
                         list2.size();
                     }
+                    if (listformreq.size() == 0) {
+                        myitem_place.setVisibility(View.GONE);
+                        mempetyreq.setVisibility(View.VISIBLE);
+
+                    }else {
+                        myitem_place.setVisibility(View.VISIBLE);
+                        mempetyreq.setVisibility(View.GONE);
+                    }
                     mfooterload.setVisibility(View.GONE);
 //                    page++;
                     refreshscroll=true;
                 }else {
 
                     mfooterload.setVisibility(View.GONE);
-//                    if (MsessionExpired.equals("true")) {
-//                        Toast.makeText(ServiceTicket.this, errornya.toString(), Toast.LENGTH_SHORT).show();
-//                    }
-                    Toast.makeText(ServiceTicket.this, errornya.toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DailyReportList.this, errornya,Toast.LENGTH_LONG).show();
                 }
 
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                Toast.makeText(ServiceTicket.this, getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
+                Toast.makeText(DailyReportList.this, getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
                 cekInternet();
                 mfooterload.setVisibility(View.GONE);
 
@@ -471,7 +482,7 @@ public class ServiceTicket extends AppCompatActivity {
     }
     public void cekInternet(){
         /// cek internet apakah internet terhubung atau tidak
-        ConnectivityManager connectivityManager = (ConnectivityManager) ServiceTicket.this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivityManager = (ConnectivityManager) DailyReportList.this.getSystemService(Context.CONNECTIVITY_SERVICE);
         if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
                 connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED)
         {
@@ -480,7 +491,7 @@ public class ServiceTicket extends AppCompatActivity {
 
         }else {
             internet=false;
-            Intent noconnection = new Intent(ServiceTicket.this, NoInternet.class);
+            Intent noconnection = new Intent(DailyReportList.this, NoInternet.class);
             startActivity(noconnection);
             finish();
         }
@@ -497,7 +508,7 @@ public class ServiceTicket extends AppCompatActivity {
 //        showaddform = show.getString("showaddform", "");
 //        mshowPurchaseOrderPO = show.getString("mshowPurchaseOrderPO", "");
 //        mshowPurchaseOrderFOC = show.getString("mshowPurchaseOrderFOC", "");
-
+//
 
     }
     public void sesionid() {
@@ -506,24 +517,41 @@ public class ServiceTicket extends AppCompatActivity {
 
 
             }else {
-//                Intent gotoupdate = new Intent(ServiceTicket.this, UpdateActivity.class);
+//                Intent gotoupdate = new Intent(DailyReportList.this, UpdateActivity.class);
 //                startActivity(gotoupdate);
 //                finish();
             }
 
         }else {
-            startActivity(new Intent(ServiceTicket.this, Login.class));
+            startActivity(new Intent(DailyReportList.this, Login.class));
             finish();
-//            Toast.makeText(ServiceTicket.this, getString(R.string.title_session_Expired),Toast.LENGTH_LONG).show();
+            Toast.makeText(DailyReportList.this, getString(R.string.title_session_Expired),Toast.LENGTH_LONG).show();
         }
 
     }
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent((Context)this, Home.class));
-        overridePendingTransition(R.anim.left_in, R.anim.right_out);
-        finish();
+        if (hide){
+            Intent back = new Intent(DailyReportList.this, DetailsST.class);
+            back.putExtra("id", noreq);
+            back.putExtra("home", home);
+            back.putExtra("guid", guid);
+            back.putExtra("user", username);
+            back.putExtra("id", noticket);
+            back.putExtra("pos", valuefilter);
+            back.putExtra("scrolbawah", scrollnya);
+            back.putExtra("xhori", xhori);
+            back.putExtra("yverti", yverti);
+            startActivity(back);
+            overridePendingTransition(R.anim.left_in, R.anim.right_out);
+            finish();
+        }else {
+            startActivity(new Intent((Context)this, Home.class));
+            overridePendingTransition(R.anim.left_in, R.anim.right_out);
+            finish();
+        }
+
     }
     public  void refreshnotif() {
         Handler handler = new Handler();
@@ -542,72 +570,7 @@ public class ServiceTicket extends AppCompatActivity {
                 }
 
             }
-        }, 100);
-
-    }
-    public void reqApi() {
-//        loading = ProgressDialog.show(this, "", "", true);
-
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("sessionId",sesionid_new);
-        jsonObject.addProperty("ver",BuildConfig.VERSION_NAME);
-        IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, baseurl);
-        Call<JsonObject> panggilkomplek = jsonPostService.postRawJSONconfig(jsonObject);
-        panggilkomplek.enqueue(new Callback<JsonObject>() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-
-                String errornya = "";
-                JsonObject homedata=response.body();
-                String statusnya = homedata.get("status").getAsString();
-                if (homedata.get("errorMessage").toString().equals("null")) {
-
-                }else {
-                    errornya = homedata.get("errorMessage").getAsString();
-                }
-                MhaveToUpdate = homedata.get("haveToUpdate").toString();
-                MsessionExpired = homedata.get("sessionExpired").toString();
-//                jsonObject.addProperty("ver",ver);
-                if (statusnya.equals("OK")) {
-
-//                    loading.dismiss();
-                    sesionid();
-                    JsonObject data = homedata.getAsJsonObject("data");
-
-                    boolean clocksts = data.get("alreadyClockIn").getAsBoolean();
-
-                    if (clocksts){
-                        ;
-                    }else {
-                        startActivity(new Intent(ServiceTicket.this, ClockInActivity.class));
-                        finish();
-//                        mcheck.setVisibility(View.VISIBLE)
-
-                    }
-                }else {
-//                    mrefresh.setVisibility(View.VISIBLE);
-//                    mcheck.setVisibility(View.GONE);
-                    sesionid();
-                    //// error message
-//                    loading.dismiss();
-//                    if (MsessionExpired.equals("true")) {
-//                        Toast.makeText(Home.this, errornya.toString(), Toast.LENGTH_SHORT).show();
-//                    }
-                    Toast.makeText(ServiceTicket.this, errornya.toString(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-//                mrefresh.setVisibility(View.VISIBLE);
-//                mcheck.setVisibility(View.GONE);
-                Toast.makeText(ServiceTicket.this, getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
-                cekInternet();
-//                loading.dismiss();
-            }
-        });
-        Log.d("reqapilist",jsonObject.toString());
+        }, 700);
 
     }
 }

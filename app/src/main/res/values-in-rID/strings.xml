@@ -70,4 +70,9 @@
     <string name="title_pmticket">PM Tiket</string>
     <string name="titile_resetlabel">" "</string>
     <string name="title_reasonrequired">please input the cancellation reason</string>
+    <string name="title_dailyreport">Report Harian</string>
+    <string name="tittle_temuan">Temuan</string>
+    <string name="titile_actiontakendaily">"Tindakan "</string>
+    <string name="title_followup">"Langkah Lanjutan "</string>
+    <string name="title_submitadddailymessage">Apakah anda ingin tambah report harian?</string>
 </resources>

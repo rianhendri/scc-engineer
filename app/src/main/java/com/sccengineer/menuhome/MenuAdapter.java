@@ -44,6 +44,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.sccengineer.ApprovalActivity;
 import com.sccengineer.AttendanceActivity;
 import com.sccengineer.ClockinApprovList;
+import com.sccengineer.DailyReportList;
 import com.sccengineer.LiveChatList;
 import com.sccengineer.Location;
 import com.sccengineer.MapsActivity;
@@ -143,6 +144,11 @@ public class MenuAdapter  extends RecyclerView.Adapter<MenuAdapter.Myviewholder>
 
 
         }
+        if (namemenu.equals(context.getString(R.string.title_dailyreport))){
+            myviewholder.mdot.setVisibility(View.GONE);
+
+
+        }
         int sd = R.drawable.ic_check;
         myviewholder.mnama_menu.setText(myItem.get(i).getMenuname());
         myviewholder.mimg_menu.setImageResource(myItem.get(i).getImg());
@@ -209,6 +215,13 @@ public class MenuAdapter  extends RecyclerView.Adapter<MenuAdapter.Myviewholder>
                     ((Activity)context).finish();
 //                    Toast.makeText(context, "attendance", Toast.LENGTH_SHORT).show();
 
+
+                }
+                if (namemenu.equals(context.getString(R.string.title_dailyreport))){
+                    Intent gotonews = new Intent(context, DailyReportList.class);
+                    context.startActivity(gotonews);
+                    ((Activity)context).overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                    ((Activity)context).finish();
 
                 }
                 if (namemenu.equals(context.getString(R.string.title_Setting))){

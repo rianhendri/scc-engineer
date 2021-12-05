@@ -102,7 +102,7 @@ import static com.sccengineer.ListChat.modultrans;
 import static com.sccengineer.ListChat.name;
 import static com.sccengineer.ServiceTicket.list2;
 import static com.sccengineer.ServiceTicket.refresh;
-import static com.sccengineer.ServiceTicket.valuefilter;
+import static com.sccengineer.DetailsST.valuefilter;
 import static com.sccengineer.apihelper.ServiceGenerator.baseurl;
 import static com.sccengineer.listsparepart.Sparepart_adapter.listpoact;
 import static com.sccengineer.listsparepart.Sparepart_adapter.tambahpart;
@@ -113,7 +113,7 @@ public class DetailsST extends AppCompatActivity {
     AlertDialog.Builder dialog2,dialog3;
     TextView mdatenya,mchngeesti,mdatechangeesti;
     String dateschedjul="";
-    LinearLayout mdatebtn,mlayoutupdateestimate;
+    LinearLayout mdatebtn,mlayoutupdateestimate, mlayoutadddaily;
     Calendar myCalendar = Calendar.getInstance();
     Spinner mrole;
     JsonArray rolejson;
@@ -191,7 +191,7 @@ public class DetailsST extends AppCompatActivity {
     public static String Nowaform = "0";
     //updatepanel;
     ImageView mprosbarr;
-    TextView mtextmhon,mlinkgenerate,mdatestatus,mlalbeldate,msupport,mbar1,mbar2,mbar3,mbar4,mactionprogress,mestimasi,mstarttime,mendtime,massigndate,mengineer,masengineer, mstatustick, mtimer;
+    TextView madddaily,mlistdailyst,mtextmhon,mlinkgenerate,mdatestatus,mlalbeldate,msupport,mbar1,mbar2,mbar3,mbar4,mactionprogress,mestimasi,mstarttime,mendtime,massigndate,mengineer,masengineer, mstatustick, mtimer;
     EditText mlastimpresiST, mdescripst;
     Spinner mservicetypeST, mstatusST;
     LinearLayout mstartprogresssched,mlayountlink,mlayoutdate,mlayoutsper,mlayestima,mstartprogress, mupdatebtn,mcancleassg, mlayoutimpress, mlayoutnote, mlayoutstatus, mlayoutservicest, mlayoutupdatepanel;
@@ -253,12 +253,15 @@ public class DetailsST extends AppCompatActivity {
     boolean lokasi = false;
 
     FirebaseAuth mAuth;
-
+    public static String valuefilter="";
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_s_t);
+        mlayoutadddaily = findViewById(R.id.layoutadddaily);
+        madddaily = findViewById(R.id.adddaily);
+        mlistdailyst = findViewById(R.id.listdailyst);
         mupdatespertbtn =findViewById(R.id.updatespertbtn);
         mcheckboxbtn = findViewById(R.id.checkboxbtn);
         mtextmhon = findViewById(R.id.textmhon);
@@ -384,7 +387,7 @@ public class DetailsST extends AppCompatActivity {
         if (bundle2 != null) {
 
             noreq = bundle2.getString("id");
-               home = bundle2.getString("home");
+            home = bundle2.getString("home");
             guid = bundle2.getString("guid");
             username = bundle2.getString("user");
             noticket = bundle2.getString("id");
@@ -532,6 +535,42 @@ DialogForm();
             @Override
             public void onClick(View v) {
                 dialogupdatesparepartbtn();
+            }
+        });
+        madddaily.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DetailsST.this, DailyReportAdd.class);
+//              intent.putExtra("id", (addFromItem.get(i).getFormRequestCd()));
+                intent.putExtra("home", "homesa");
+                intent.putExtra("pos", valuefilter);
+                intent.putExtra("id", noreq);
+                intent.putExtra("pos", valuefilter);
+                intent.putExtra("user", username);
+                intent.putExtra("scrolbawah", scrollnya);
+                intent.putExtra("xhori", xhori);
+                intent.putExtra("yverti", yverti);
+                startActivity(intent);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                finish();
+            }
+        });
+        mlistdailyst.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DetailsST.this, DailyReportList.class);
+//              intent.putExtra("id", (addFromItem.get(i).getFormRequestCd()));
+                intent.putExtra("home", "homesa");
+                intent.putExtra("pos", valuefilter);
+                intent.putExtra("id", noreq);
+                intent.putExtra("pos", valuefilter);
+                intent.putExtra("user", username);
+                intent.putExtra("scrolbawah", scrollnya);
+                intent.putExtra("xhori", xhori);
+                intent.putExtra("yverti", yverti);
+                startActivity(intent);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                finish();
             }
         });
 //        mcs.setOnClickListener(new View.OnClickListener() {
@@ -1181,6 +1220,23 @@ DialogForm();
 //                    sesionid();
                     Log.d("sessionId",MsessionExpired);
                    data = homedata.getAsJsonObject("data");
+                   //showadd daily
+                    if (data.get("showAddDailyReport").getAsBoolean()){
+                        madddaily.setVisibility(View.VISIBLE);
+                        madddaily.setText(data.get("addDailyReportButtonText").getAsString());
+                    }else {
+                        if (data.get("showViewSTDailyReport").getAsBoolean()){
+
+                        }else {
+                            mlayoutadddaily.setVisibility(View.GONE);
+                        }
+                    }
+                    if (data.get("showViewSTDailyReport").getAsBoolean()){
+                        mlistdailyst.setVisibility(View.VISIBLE);
+                        mlistdailyst.setText(data.get("stDailyReportButtonText").getAsString());
+                    }else {
+
+                    }
                    //showhide buttuon update sparepart
                     if(data.get("showUpdateSparePartButton").getAsBoolean()){
                         mupdatespertbtn.setVisibility(View.VISIBLE);
