@@ -33,6 +33,7 @@ package com.sccengineer.daliyreport;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,6 +51,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
+
+import static com.sccengineer.DailyReportList.enddate;
+import static com.sccengineer.DailyReportList.hide;
+import static com.sccengineer.DailyReportList.startdate;
+import static com.sccengineer.DailyReportList.valuefilter;
 
 //import static com.sccengineer.FormActivity.valuefilter;
 
@@ -89,28 +95,37 @@ extends RecyclerView.Adapter<DailyAdapter.Myviewholder> {
         catch (ParseException parseException) {
             parseException.printStackTrace();
         }
+
         myviewholder.mdatedaily.setText(newdate);
         myviewholder.mpresstypedaily.setText(addFromItem.get(i).getPressSN()+" ("+addFromItem.get(i).getPressTypeName()+")");
-        myviewholder.mpressstatudaily.setText(": "+addFromItem.get(i).getPressStatusName());
+        myviewholder.mpressstatudaily.setText(addFromItem.get(i).getPressStatusName());
+        if (addFromItem.get(i).getPressStatusName().equals("Mesin Tetap Produksi")){
+            myviewholder.mpressstatudaily.setTextColor(Color.parseColor("#0890cc"));
+        }else {
+            myviewholder.mpressstatudaily.setTextColor(Color.parseColor("#FF0000"));
+        }
 //        myviewholder.mpressstatudaily.setTextColor(Color.parseColor("#"+addFromItem.get(i).getStatusColorCode()));
         myviewholder.msndaily.setText(": "+addFromItem.get(i).getPressSN());
 //        myviewholder.mcaseiddaily.setText(addFromItem.get(i).getCaseProgressName());
-        myviewholder.mcaseprogressdaily.setText(": "+addFromItem.get(i).getCaseProgressName());
+        myviewholder.mcaseprogressdaily.setText(addFromItem.get(i).getCaseProgressName());
 //        if (addFromItem.get(i).isFlag()){
 //            myviewholder.mdot.setVisibility(View.GONE);
 //        }else {
 //            myviewholder.mdot.setVisibility(View.GONE);
 //        }
-        myviewholder.mcustomername.setText(": "+addFromItem.get(i).getCustomerName());
+        myviewholder.mcustomername.setText(addFromItem.get(i).getCustomerName());
         myviewholder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, DetailsDailyReport.class);
                 intent.putExtra("id", (addFromItem.get(i).getReportCd()));
                 intent.putExtra("noticket", (addFromItem.get(i)).getServiceTicketCd());
-//                intent.putExtra("pos", valuefilter);
+                intent.putExtra("pos", valuefilter);
                 intent.putExtra("user", addFromItem.get(i).getCustomerName());
                 intent.putExtra("scrolbawah", "yes");
+                intent.putExtra("startd", startdate);
+                intent.putExtra("endd", enddate);
+                intent.putExtra("hide", hide);
                 context.startActivity(intent);
                 ((Activity)context).overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 ((Activity)context).finish();

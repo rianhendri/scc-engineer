@@ -54,6 +54,8 @@ public class DailyReportList extends AppCompatActivity {
     private static final String TAG = "FormActivity";
     public static boolean refresh = false;
     public static String valuefilter = "-";
+    public static String startdate = "";
+    public static  String enddate="";
     String MhaveToUpdate = "";
     String MsessionExpired = "";
     DailyAdapter addFormAdapterAdapter;
@@ -72,8 +74,6 @@ public class DailyReportList extends AppCompatActivity {
     TextView mrecord, mempetyreq;
     RecyclerView myitem_place;
     int page = 1;
-    String startdate = "";
-    String enddate = "";
     int pos = 0;
     boolean refreshscroll = true;
     String sesionid_new = "";
@@ -94,7 +94,7 @@ public class DailyReportList extends AppCompatActivity {
     Integer yverti = 0;
     TextView msttitle;
     LinearLayout mlayoutdaterange;
-    boolean hide=false;
+    public static String hide="no";
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,19 +120,16 @@ public class DailyReportList extends AppCompatActivity {
             home = bundle2.getString("home");
             guid = bundle2.getString("guid");
             username = bundle2.getString("user");
-            noticket = bundle2.getString("id");
+            noticket = bundle2.getString("noticket");
             valuefilter = bundle2.getString("pos");
-            scrollnya =   bundle2.getString("scrolbawah");
-            xhori=bundle2.getInt("xhori");
-            yverti=bundle2.getInt("yverti");
-            hide=true;
-
-        }else {
-            hide=false;
+            scrollnya = bundle2.getString("scrolbawah");
+            xhori = bundle2.getInt("xhori");
+            yverti = bundle2.getInt("yverti");
+            hide = bundle2.getString("hide");
         }
-        if (hide){
-            Log.d("noreqnya",noreq);
-            msttitle.setText("#"+noreq);
+        if (hide.equals("yes")){
+//            Log.d("noreqnya",noreq);
+            msttitle.setText("#"+noticket);
             mlayoutdaterange.setVisibility(View.GONE);
         }else {
             mlayoutdaterange.setVisibility(View.VISIBLE);
@@ -331,7 +328,7 @@ public class DailyReportList extends AppCompatActivity {
         jsonObject.addProperty("page",page);
         jsonObject.addProperty("startDate",startdate);
         jsonObject.addProperty("endDate",enddate);
-        jsonObject.addProperty("serviceTicketCd",noreq);
+        jsonObject.addProperty("serviceTicketCd",noticket);
         jsonObject.addProperty("ver",BuildConfig.VERSION_NAME);
         IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, baseurl);
         Call<JsonObject> panggilkomplek = jsonPostService.dailyrlist(jsonObject);
@@ -532,9 +529,9 @@ public class DailyReportList extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if (hide){
+        if (hide.equals("yes")){
             Intent back = new Intent(DailyReportList.this, DetailsST.class);
-            back.putExtra("id", noreq);
+//            back.putExtra("id", noreq);
             back.putExtra("home", home);
             back.putExtra("guid", guid);
             back.putExtra("user", username);

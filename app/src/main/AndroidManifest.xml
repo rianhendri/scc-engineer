@@ -35,7 +35,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".DetailsDailyReport"></activity>
+        <activity android:name=".DetailsDailyReport">
+            <intent-filter>
+                <action android:name="ENGDR" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity android:name=".DailyReportAdd" />
         <activity android:name=".DailyRepotlist2" />
         <activity android:name=".DailyReportList" />
@@ -48,7 +54,9 @@
         </activity>
         <activity android:name=".PmList" />
         <activity android:name=".ListDailyReport" />
-        <activity android:name=".DetailsDailyReportAct" />
+        <activity android:name=".DetailsDailyReportAct" >
+
+        </activity>
         <activity android:name=".LiveChatList" />
         <activity android:name=".DetailReclock" />
         <activity android:name=".ClockinApprovList" />

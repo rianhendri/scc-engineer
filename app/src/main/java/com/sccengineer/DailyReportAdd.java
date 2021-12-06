@@ -217,7 +217,7 @@ public class DailyReportAdd extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (minputtemuan.length()==0){
-                    Toast.makeText(DailyReportAdd.this, "Qty tidak boleh kosong", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DailyReportAdd.this, "Text tidak boleh kosong", Toast.LENGTH_SHORT).show();
                 }else {
 
                         tambahpart1 = new AddDailyTemuanItem();
@@ -246,7 +246,7 @@ public class DailyReportAdd extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (minputaction.length()==0){
-                    Toast.makeText(DailyReportAdd.this, "Qty tidak boleh kosong", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DailyReportAdd.this, "Text tidak boleh kosong", Toast.LENGTH_SHORT).show();
                 }else {
 
                     tambahpart2 = new AddDailyActionItem();
@@ -275,7 +275,7 @@ public class DailyReportAdd extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (minputfollow.length()==0){
-                    Toast.makeText(DailyReportAdd.this, "Qty tidak boleh kosong", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DailyReportAdd.this, "Text tidak boleh kosong", Toast.LENGTH_SHORT).show();
                 }else {
                     tambahpart3 = new AddDailyFollowItem();
                     tambahpart3.setFollowUp(minputfollow.getText().toString());
@@ -316,7 +316,7 @@ public class DailyReportAdd extends AppCompatActivity {
         pressvalue.add("Down");
         pressspin.add("-pilih-");
         pressspin.add("Mesin Tetap Produksi");
-        pressspin.add("Masalah Sudah Selesai");
+        pressspin.add("Mesin Mati");
         final ArrayAdapter<String> kategori = new ArrayAdapter<String>(DailyReportAdd.this, R.layout.spinstatus_layout,
                 caseprogspin);
         kategori.setDropDownViewResource(R.layout.spinkategori);

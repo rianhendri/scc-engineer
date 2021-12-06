@@ -219,9 +219,15 @@ public class MenuAdapter  extends RecyclerView.Adapter<MenuAdapter.Myviewholder>
                 }
                 if (namemenu.equals(context.getString(R.string.title_dailyreport))){
                     Intent gotonews = new Intent(context, DailyReportList.class);
+                    gotonews.putExtra("hide","no");
+//                    gotonews.putExtra("mshowPurchaseOrderPO",mshowPurchaseOrderFOC);
+//                    gotonews.putExtra("showaddpo",showaddpo);
+//                    gotonews.putExtra("showaddfoc",showaddfoc);
+                    positab = 0;
                     context.startActivity(gotonews);
                     ((Activity)context).overridePendingTransition(R.anim.right_in, R.anim.left_out);
                     ((Activity)context).finish();
+//                    Toast.makeText(context, "attendanc
 
                 }
                 if (namemenu.equals(context.getString(R.string.title_Setting))){

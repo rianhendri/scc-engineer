@@ -122,15 +122,22 @@
 						android:text="Case Progress"
 						android:textColor="@color/black"
 						android:textSize="11sp" />
-
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:fontFamily="@font/seguisb"
+						android:text=" : "
+						android:textColor="@color/black"
+						android:textSize="11sp" />
 					<TextView
 						android:id="@+id/caseprogressdaily"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:layout_marginLeft="2dp"
 						android:layout_weight="1"
+						android:textAllCaps="true"
 						android:textColor="@color/black"
-						android:fontFamily="@font/seguisb"
+						android:fontFamily="@font/segoeuib"
 						android:textSize="11sp" />
 
 
@@ -234,14 +241,21 @@
 						android:textColor="@color/black"
 						android:textSize="11sp" />
 
-
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:fontFamily="@font/seguisb"
+						android:text=" : "
+						android:textColor="@color/black"
+						android:textSize="11sp" />
 					<TextView
 						android:id="@+id/pressstatusdaily"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:layout_marginLeft="2dp"
 						android:textColor="@color/black"
-						android:fontFamily="@font/seguisb"
+						android:textAllCaps="true"
+						android:fontFamily="@font/segoeuib"
 						android:text="asdasdasdasdasd"
 						android:textSize="11sp" />
 
