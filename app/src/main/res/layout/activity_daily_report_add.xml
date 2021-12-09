@@ -406,15 +406,11 @@
                     </LinearLayout>
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/temuanlist"
-                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:layout_constraintBottom_toTopOf="@+id/addform"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:scrollbars="none" >
+                        android:scrollbars="none"
+                        android:nestedScrollingEnabled="false" >
                     </androidx.recyclerview.widget.RecyclerView>
 
 
@@ -499,15 +495,11 @@
                     </LinearLayout>
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/tindakanlist"
-                        android:visibility="gone"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         app:layout_constraintBottom_toTopOf="@+id/addform"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:scrollbars="none" >
+                        android:scrollbars="none"
+                        android:nestedScrollingEnabled="false" >
                     </androidx.recyclerview.widget.RecyclerView>
 
 
@@ -593,15 +585,11 @@
                     </LinearLayout>
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/langkahlanjutanlist"
-                        android:visibility="gone"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         app:layout_constraintBottom_toTopOf="@+id/addform"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:scrollbars="none" >
+                        android:scrollbars="none"
+                        android:nestedScrollingEnabled="false" >
                     </androidx.recyclerview.widget.RecyclerView>
 
 

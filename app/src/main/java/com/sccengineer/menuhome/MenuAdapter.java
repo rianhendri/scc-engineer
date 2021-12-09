@@ -68,6 +68,7 @@ public class MenuAdapter  extends RecyclerView.Adapter<MenuAdapter.Myviewholder>
     public static Integer counter2 = 0;
     public static Integer counter3 = 0;
     public static Integer countSC = 0;
+    public static Integer counterpm = 0;
     Context context;
     ArrayList<MenuItem> myItem;
     public static int positem = 0;
@@ -94,7 +95,13 @@ public class MenuAdapter  extends RecyclerView.Adapter<MenuAdapter.Myviewholder>
 
         }
         if (namemenu.equals(context.getString(R.string.title_pmticket))){
-            myviewholder.mdot.setVisibility(View.GONE);
+            if (counterpm==0){
+                myviewholder.mdot.setVisibility(View.GONE);
+            }else {
+                myviewholder.mdot.setVisibility(View.VISIBLE);
+                myviewholder.mcount.setText(String.valueOf(counterpm));
+            }
+
 
         }
         if (namemenu.equals("Support Live Chat List")){

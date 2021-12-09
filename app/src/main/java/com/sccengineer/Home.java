@@ -711,6 +711,7 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
                     String mshowAttendance = data.get("showAttendance").toString();
                     String mshowSettings = data.get("showSettings").toString();
                     MenuAdapter.counter = data.get("showApprovalCounter").getAsInt();
+                    MenuAdapter.counterpm = data.get("showPMCounter").getAsInt();
 
                     if (mshowServiceTicket.equals("true")){
                         menuItem.setMenuname("Assignment");
@@ -724,7 +725,7 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
                         menuItem11.setShow(data.get("showDailyReport").toString());
                         menuItemlist.add(menuItem11);
                     }
-                    if (data.get("showCurrentLiveChatList").getAsBoolean()){
+                    if (data.get("showPM").getAsBoolean()){
                         menuItem10.setMenuname(getString(R.string.title_pmticket));
                         menuItem10.setImg(R.drawable.repairtools);
 //                        menuItem10.setShow(data.get("showCurrentLiveChatList").toString());
@@ -865,7 +866,7 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
 
             }
         });
-        Log.d("sessionnya",jsonObject.toString());
+        Log.d("reqapi",jsonObject.toString());
     }
     public void onBackPressed(){
         if (exit) {
