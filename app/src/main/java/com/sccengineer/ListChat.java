@@ -208,6 +208,7 @@ public class ListChat extends AppCompatActivity {
     ProgressBar mloadingchat;
     LinearLayout mmnodatas;
     String homes = "";
+    String chats = "";
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -233,6 +234,11 @@ public class ListChat extends AppCompatActivity {
 
         ///
         if (bundle2 != null) {
+            if (bundle2.getString("chats")!=null){
+                chats = "yes";
+            }else {
+                chats = "no";
+            }
             sessionnya = bundle2.getString("sessionnya");
             name = bundle2.getString("name");
             noreq = bundle2.getString("id");
@@ -250,14 +256,17 @@ public class ListChat extends AppCompatActivity {
             yverti=bundle2.getInt("yverti");
             titlenya=bundle2.getString("titlenya");
             titlelist=bundle2.getString("titlelist");
+            modultrans=bundle2.getString("moduletrans");
             module=bundle2.getString("module");
             scrollnya =   bundle2.getString("scrolbawah");
             homes =   bundle2.getString("home");
+            Log.d("idnya",id);
 //            Toast.makeText(this, id, Toast.LENGTH_SHORT).show();
 //            mfrnya.setText(noreq+" (Customer: "+custnmae+")");
             mfrnya.setText(titlenya);
             mloadingchat.setVisibility(View.VISIBLE);
 //                scs="no";
+//            modultrans="";
             if (id==null){
                 String currentString = noreq;
                 String[] separated = currentString.split("-");
@@ -277,7 +286,7 @@ public class ListChat extends AppCompatActivity {
         getEngas();
         getShowid();
             reqApi();
-        if (modultrans.equals("")){
+        if (modultrans.equals("kosong")){
             mstnya.setVisibility(GONE);
         }else {
             if (module.equals("ServiceSupport")){
@@ -341,6 +350,10 @@ public class ListChat extends AppCompatActivity {
                     gotonews.putExtra("chat",chatin);
                     gotonews.putExtra("user",name);
                     gotonews.putExtra("id",modultrans);
+                    gotonews.putExtra("titlelist",titlelist);
+                    gotonews.putExtra("titlenya",titlenya);
+                    gotonews.putExtra("viewdetails",noreq);
+                    gotonews.putExtra("chats","yes");
 //                gotonews.putExtra("tokennya",token);
                     gotonews.putExtra("engname", mcustname);
                     gotonews.putExtra("nofr", mformRequestCd);

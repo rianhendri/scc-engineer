@@ -100,6 +100,7 @@ import retrofit2.Response;
 
 import static com.sccengineer.ListChat.modultrans;
 import static com.sccengineer.ListChat.name;
+import static com.sccengineer.LiveChatList.titlenya;
 import static com.sccengineer.ServiceTicket.list2;
 import static com.sccengineer.ServiceTicket.refresh;
 import static com.sccengineer.DetailsST.valuefilter;
@@ -152,6 +153,9 @@ public class DetailsST extends AppCompatActivity {
             mstid, mtitle, munitcategory, mlocation, mtextalert, mrequestby, mreopeninfo;
     String mdateapi = "";
     public  static String mcustname="";
+    boolean chatin = false;
+    String sessionnya="";
+    String viewdetails="";
     String mdeskriptionapi = "";
     public  static String mformRequestCd = "";
     String mreopen = "";
@@ -176,6 +180,7 @@ public class DetailsST extends AppCompatActivity {
     String guid = "";
     String mreason="";
     public static String username = "";
+    String chats = "";
     boolean installed= true;
     //timer
     public static String assist="";
@@ -208,6 +213,7 @@ public class DetailsST extends AppCompatActivity {
     String mpressIda = "";
     boolean checkboxsts = false;
     String home="homesa";
+    String modultrans="";
     long MillisecondTime, StartTime, UpdateTime = 0L ;
     long TimeBuff = seconds ;
     Handler handler;
@@ -244,6 +250,9 @@ public class DetailsST extends AppCompatActivity {
     LinearLayout mdot,mdailyreport,mupdatespertbtn;
     TextView mnotif;
     String scrollnya = "no";
+    String titlenya = "";
+    String titlelist = "";
+    String moduletrans="";
     DatabaseReference databaseReference5;
     ScrollView mscroll;
     public static int yverti=0;
@@ -385,7 +394,25 @@ public class DetailsST extends AppCompatActivity {
         seconds=0;
         Bundle bundle2 = getIntent().getExtras();
         if (bundle2 != null) {
-
+            if (bundle2.getString("chats")!=null){
+                chats = "yes";
+            }else {
+                chats = "no";
+            }
+            if (bundle2.getString("chat")!=null){
+                chatin = bundle2.getBoolean("chat");
+            }else {
+//                chats = false;
+            }
+            chatin = bundle2.getBoolean("chat");
+            if (bundle2.getString("sessionnya")!=null){
+                sessionnya = bundle2.getString("sessionnya");
+            }else {
+//                chats = false;
+            }
+            titlelist=bundle2.getString("titlelist");
+            modultrans = bundle2.getString("id");
+            viewdetails = bundle2.getString("viewdetails");
             noreq = bundle2.getString("id");
             home = bundle2.getString("home");
             guid = bundle2.getString("guid");
@@ -395,6 +422,8 @@ public class DetailsST extends AppCompatActivity {
             scrollnya =   bundle2.getString("scrolbawah");
             xhori=bundle2.getInt("xhori");
             yverti=bundle2.getInt("yverti");
+            titlenya=bundle2.getString("titlenya");
+//            Log.d("viewdetails",viewdetails);
         }
         rolelist.add(getString(R.string.title_pleasechoose));
         rolecvalue.add("-");
@@ -2819,11 +2848,37 @@ DialogForm();
 
 
                 }else {
-                    Intent back = new Intent(DetailsST.this,ServiceTicket.class);
-                    back.putExtra("pos",valuefilter);
-                    startActivity(back);
-                    overridePendingTransition(R.anim.left_in, R.anim.right_out);
-                    finish();
+                    if (chats.equals("yes")){
+                        Intent back = new Intent(DetailsST.this,ListChat.class);
+                        back.putExtra("name",username);
+                        back.putExtra("sessionnya",sessionnya);
+                        back.putExtra("chat",chatin);
+                        back.putExtra("user",name);
+                        back.putExtra("page","listchat");
+                        back.putExtra("chats","yes");
+                        back.putExtra("id",viewdetails);
+                        back.putExtra("cs","no");
+                        back.putExtra("titlenya", titlenya);
+                        back.putExtra("module","ServiceSupport");
+//                gotonews.putExtra("tokennya",token);
+                        back.putExtra("engname", mcustname);
+                        back.putExtra("titlelist", titlelist);
+                        back.putExtra("nofr", mformRequestCd);
+                        back.putExtra("xhori", xhori);
+                        back.putExtra("yverti", yverti);
+                        back.putExtra("scrolbawah","-");
+                        back.putExtra("moduletrans", modultrans);
+                        startActivity(back);
+                        overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                        finish();
+                    }else {
+                        Intent back = new Intent(DetailsST.this,ServiceTicket.class);
+                        back.putExtra("pos",valuefilter);
+                        startActivity(back);
+                        overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                        finish();
+                    }
+
                 }
             }else {
                 Intent back = new Intent(DetailsST.this,Home.class);
@@ -2852,11 +2907,37 @@ DialogForm();
                     }else {
                         super.onBackPressed();
 //            refresh=true;
-                        Intent back = new Intent(DetailsST.this,ServiceTicket.class);
-                        back.putExtra("pos",valuefilter);
-                        startActivity(back);
-                        overridePendingTransition(R.anim.left_in, R.anim.right_out);
-                        finish();
+                        if (chats.equals("yes")){
+                            Intent back = new Intent(DetailsST.this,ListChat.class);
+                            back.putExtra("name",username);
+                            back.putExtra("sessionnya",sessionnya);
+                            back.putExtra("chat",chatin);
+                            back.putExtra("user",name);
+                            back.putExtra("page","listchat");
+                            back.putExtra("titlenya", titlenya);
+                            back.putExtra("titlelist", titlelist);
+                            back.putExtra("chats","yes");
+                            back.putExtra("id",viewdetails);
+                            back.putExtra("cs","no");
+                            back.putExtra("module","ServiceSupport");
+//                gotonews.putExtra("tokennya",token);
+                            back.putExtra("engname", mcustname);
+                            back.putExtra("nofr", mformRequestCd);
+                            back.putExtra("xhori", xhori);
+                            back.putExtra("yverti", yverti);
+                            back.putExtra("scrolbawah","-");
+                            back.putExtra("moduletrans", modultrans);
+                            startActivity(back);
+                            overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                            finish();
+
+                        }else {
+                            Intent back = new Intent(DetailsST.this,ServiceTicket.class);
+                            back.putExtra("pos",valuefilter);
+                            startActivity(back);
+                            overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                            finish();
+                        }
                     }
                 }else {
                     Intent back = new Intent(DetailsST.this,Home.class);

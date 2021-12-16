@@ -37,6 +37,7 @@ import com.google.gson.reflect.TypeToken;
 import com.sccengineer.apihelper.IRetrofit;
 import com.sccengineer.apihelper.ServiceGenerator;
 import com.sccengineer.dailyreportadd.AddDailyActionAdapter;
+import com.sccengineer.dailyreportadd.AddDailyActionAdaptera;
 import com.sccengineer.dailyreportadd.AddDailyActionItem;
 import com.sccengineer.dailyreportadd.AddDailyFollowAdapter;
 import com.sccengineer.dailyreportadd.AddDailyFollowItem;
@@ -70,10 +71,14 @@ import static com.sccengineer.apihelper.ServiceGenerator.baseurl;
 public class DailyReportAdd extends AppCompatActivity {
     String MhaveToUpdate = "";
     String MsessionExpired = "";
-    AddDailyTemuanAdapter addFormAdapterAdapter1;
-    AddDailyActionAdapter addFormAdapterAdapter2;
-    AddDailyFollowAdapter addFormAdapterAdapter3;
+    public static AddDailyTemuanAdapter addFormAdapterAdapter1;
+    public static AddDailyActionAdapter addFormAdapterAdapter2;
+    public  static AddDailyFollowAdapter addFormAdapterAdapter3;
     DetailsDailyAdapter4 addFormAdapterAdapter4;
+    AddDailyTemuanAdapter addFormAdapterAdapter1a;
+    AddDailyActionAdaptera addFormAdapterAdapter2a;
+    AddDailyFollowAdapter addFormAdapterAdapter3a;
+    DetailsDailyAdapter4 addFormAdapterAdapter4a;
     public static AddDailyTemuanItem tambahpart1;
     public static AddDailyActionItem tambahpart2;
     public static AddDailyFollowItem tambahpart3;
@@ -443,6 +448,16 @@ public class DailyReportAdd extends AppCompatActivity {
                     place_sperpart.setAdapter(addFormAdapterAdapter4);
                     place_sperpart.setVisibility(View.VISIBLE);
 
+                    Gson gsonact = new GsonBuilder().create();
+                    myaction = gsonact.toJsonTree(actionlist).getAsJsonArray();
+                    jsonaction = myaction.toString();
+                    Gson gsonfollow = new GsonBuilder().create();
+                    myfollow = gsonfollow.toJsonTree(followlist).getAsJsonArray();
+                    jsonfollow = myfollow.toString();
+                    Gson gsontemuan = new GsonBuilder().create();
+                    mytemuan = gsontemuan.toJsonTree(temuanlist).getAsJsonArray();
+                    jsontemuan = mytemuan.toString();
+
                 }else {
                     sesionid();
                     mfooterload.setVisibility(View.GONE);
@@ -515,7 +530,7 @@ public class DailyReportAdd extends AppCompatActivity {
 
             }
         });
-        Log.d("reqlistfr",jsonObject.toString());
+        Log.d("adddailyzss",jsonObject.toString());
     }
     private void showDialogrupdate() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(

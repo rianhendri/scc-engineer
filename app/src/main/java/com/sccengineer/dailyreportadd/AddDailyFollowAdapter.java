@@ -31,6 +31,8 @@
 package com.sccengineer.dailyreportadd;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,6 +51,7 @@ import com.sccengineer.R;
 import java.util.ArrayList;
 
 import static com.sccengineer.DailyReportAdd.actionlist;
+import static com.sccengineer.DailyReportAdd.addFormAdapterAdapter3;
 import static com.sccengineer.DailyReportAdd.followlist;
 import static com.sccengineer.DailyReportAdd.jsonaction;
 import static com.sccengineer.DailyReportAdd.jsonfollow;
@@ -81,6 +84,27 @@ extends RecyclerView.Adapter<AddDailyFollowAdapter.Myviewholder> {
     public void onBindViewHolder(@NonNull Myviewholder myviewholder, int i) {
 //        followlist.get(i).setText(addFromItem.get(i).getFollowUp());
         myviewholder.minput.setText(addFromItem.get(i).getFollowUp());
+
+        myviewholder.minput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                addFromItem.get(i).setFollowUp(myviewholder.minput.getText().toString());
+                Gson gson = new GsonBuilder().create();
+                myfollow = gson.toJsonTree(followlist).getAsJsonArray();
+                jsonfollow = myfollow.toString();
+                Log.d("jsonubah", String.valueOf(jsonfollow));
+            }
+        });
         myviewholder.mno.setText(String.valueOf(i+1));
         myviewholder.mdelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,7 +126,7 @@ extends RecyclerView.Adapter<AddDailyFollowAdapter.Myviewholder> {
                     if (followlist.size()==0){
                         place_follow.setVisibility(View.GONE);
                     }
-
+                    place_follow.setAdapter(addFormAdapterAdapter3);
 
 
                 }else {

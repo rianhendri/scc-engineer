@@ -31,6 +31,8 @@
 package com.sccengineer.dailyreportadd;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,12 +50,17 @@ import com.sccengineer.R;
 
 import java.util.ArrayList;
 
+import static com.sccengineer.DailyReportAdd.actionlist;
+import static com.sccengineer.DailyReportAdd.addFormAdapterAdapter1;
 import static com.sccengineer.DailyReportAdd.followlist;
+import static com.sccengineer.DailyReportAdd.jsonaction;
 import static com.sccengineer.DailyReportAdd.jsonfollow;
 import static com.sccengineer.DailyReportAdd.jsontemuan;
+import static com.sccengineer.DailyReportAdd.myaction;
 import static com.sccengineer.DailyReportAdd.myfollow;
 import static com.sccengineer.DailyReportAdd.mytemuan;
 import static com.sccengineer.DailyReportAdd.place_follow;
+import static com.sccengineer.DailyReportAdd.place_temuan;
 import static com.sccengineer.DailyReportAdd.temuanlist;
 
 public class AddDailyTemuanAdapter
@@ -81,6 +88,27 @@ extends RecyclerView.Adapter<AddDailyTemuanAdapter.Myviewholder> {
 //        followlist.get(i).setText(addFromItem.get(i).getFinding());
         myviewholder.minput.setText(addFromItem.get(i).getFinding());
         myviewholder.mno.setText(String.valueOf(i+1));
+
+        myviewholder.minput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                addFromItem.get(i).setFinding(myviewholder.minput.getText().toString());
+                Gson gson = new GsonBuilder().create();
+                mytemuan = gson.toJsonTree(temuanlist).getAsJsonArray();
+                jsontemuan = mytemuan.toString();
+                Log.d("jsonubah", String.valueOf(jsontemuan));
+            }
+        });
         myviewholder.mdelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,6 +130,7 @@ extends RecyclerView.Adapter<AddDailyTemuanAdapter.Myviewholder> {
                         place_follow.setVisibility(View.GONE);
                     }
 
+                    place_temuan.setAdapter(addFormAdapterAdapter1);
 
 
                 }else {
