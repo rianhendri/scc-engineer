@@ -21,6 +21,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -33,6 +34,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -130,6 +132,7 @@ public class Home extends AppCompatActivity {
     String uidnya="";
     FirebaseAuth mAuth;
     String emainya="";
+    LinearLayout mlayoutalert;
     String MhaveToUpdate = "";
     String MsessionExpired = "";
     Boolean internet = false;
@@ -150,7 +153,7 @@ public class Home extends AppCompatActivity {
     RecyclerView mymenu, mnotificationconfig;
     ArrayList<MenuItem> menuItemlist;
     MenuAdapter addmenu;
-    TextView mchangerole,mclockintime,mrolehome,mnotif2, mversion, mtotalprog,mtotalassigned,mtotalhistory, mnameprog,mnameasigned,mnamehistory, mnameeng, mnewnotif;
+    TextView malert,mchangerole,mclockintime,mrolehome,mnotif2, mversion, mtotalprog,mtotalassigned,mtotalhistory, mnameprog,mnameasigned,mnamehistory, mnameeng, mnewnotif;
     LinearLayout loading;
     SwipeRefreshLayout mswip;
     LinearLayout mnotif1;
@@ -175,6 +178,8 @@ public class Home extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         loading = findViewById(R.id.mloading);
+        mlayoutalert = findViewById(R.id.backgroundalert);
+        malert = findViewById(R.id.textalert);
         mclockout = findViewById(R.id.clockout);
         mchangerole = findViewById(R.id.changerole);
         mclockintime = findViewById(R.id.clockintime);
@@ -595,6 +600,26 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
                     loading .setVisibility(View.GONE);
                     sesionid();
                     JsonObject data = homedata.getAsJsonObject("data");
+                    if (data.get("showHomeNotes").getAsBoolean()){
+                        String background = data.get("homeNotesBackgroundColor").getAsString();
+                        String textcolor = data.get("homeNotesTextColor").getAsString();
+                        GradientDrawable shape =  new GradientDrawable();
+                        shape.setCornerRadius( 15 );
+                        shape.setColor(Color.parseColor("#"+background));
+                        mlayoutalert.setVisibility(View.VISIBLE);
+                        mlayoutalert.setBackground(shape);
+                        String text = data.get("homeNotesText").getAsString();
+                        malert.setTextColor(Color.parseColor("#"+textcolor));
+                        if (Build.VERSION.SDK_INT >= 24) {
+                            malert.setText((CharSequence) Html.fromHtml((String)text, Html.FROM_HTML_MODE_COMPACT));
+                            malert.setMovementMethod(LinkMovementMethod.getInstance());
+                        } else {
+                            malert.setText((CharSequence)Html.fromHtml((String)text));
+                            malert.setMovementMethod(LinkMovementMethod.getInstance());
+                        }
+                    }else {
+                        mlayoutalert.setVisibility(View.GONE);
+                    }
                     emainya=data.get("liveChatUserID").getAsString();
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                     if (user != null) {

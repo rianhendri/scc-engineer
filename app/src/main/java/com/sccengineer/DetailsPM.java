@@ -557,7 +557,7 @@ public class DetailsPM extends AppCompatActivity {
                         }
                     });
                     mlayoutdate.setVisibility(View.VISIBLE);
-                    String string2 = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+                    String string2 = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(new Date());
 //                    mdatestatus.setText((CharSequence)string2);
 //                    Log.d("date55", String.valueOf(newDate.getTime()));
                 }else {
@@ -780,13 +780,13 @@ public class DetailsPM extends AppCompatActivity {
         Date today = Calendar.getInstance().getTime();//getting date
         Calendar tomorroaw = Calendar.getInstance();
         tomorroaw.add(Calendar.DAY_OF_YEAR, 1);//getting date
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");//formating according to my need
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH);//formating according to my need
         String date3 = formatter.format(today);
         Date tomorrow = tomorroaw.getTime();
         String date4 = formatter.format(tomorrow);
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        SimpleDateFormat datefor = new SimpleDateFormat("yyyy-MMMM-dd", Locale.getDefault());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        SimpleDateFormat datefor = new SimpleDateFormat("yyyy-MMMM-dd", Locale.ENGLISH);
         String estima = mdatechangeesti.getText().toString();
         String estimadate = "";
         try {
@@ -859,7 +859,7 @@ public class DetailsPM extends AppCompatActivity {
         Date today = Calendar.getInstance().getTime();//getting date
         Calendar tomorroaw = Calendar.getInstance();
         tomorroaw.add(Calendar.DAY_OF_YEAR, 1);//getting date
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");//formating according to my need
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH);//formating according to my need
         String date3 = formatter.format(today);
         Date tomorrow = tomorroaw.getTime();
         String date4 = formatter.format(tomorrow);
@@ -1334,8 +1334,8 @@ public class DetailsPM extends AppCompatActivity {
                         }
 
                         String string7 = data.get("serviceTicketCreated").getAsString();
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
-                        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
+                        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
                         String string5 = null;
                         String string6="";
                         try {
@@ -1362,8 +1362,8 @@ public class DetailsPM extends AppCompatActivity {
                     }
                     String newdatew = "";
                     String oldadate = data.get("pmScheduledDateTime").getAsString();
-                    SimpleDateFormat simpleDateFormat7 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
-                    SimpleDateFormat simpleDateFormat20 = new SimpleDateFormat("dd-MM-yyyy  HH:mm", Locale.getDefault());
+                    SimpleDateFormat simpleDateFormat7 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
+                    SimpleDateFormat simpleDateFormat20 = new SimpleDateFormat("dd-MM-yyyy  HH:mm", Locale.ENGLISH);
                     try {
                         newdatew = simpleDateFormat20.format(simpleDateFormat7.parse(oldadate));
                         System.out.println(newdatew);
@@ -1396,8 +1396,8 @@ public class DetailsPM extends AppCompatActivity {
 //                    mtitle.setText("#"+noticket);
                     mreqno.setText(mformRequestCd);
                     String datenew = "";
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
-                    SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
+                    SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
                     try {
                         datenew = simpleDateFormat.format(simpleDateFormat.parse(mdateapi));
                         System.out.println(datenew);
@@ -1547,8 +1547,8 @@ public class DetailsPM extends AppCompatActivity {
                         stringBuilder.append(String.valueOf(updatepanel.get("Position").getAsInt()));
                         mstatustick.setText((CharSequence)stringBuilder.toString());
                         //date
-                        SimpleDateFormat simpleDateFormatx = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
-                        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault());
+                        SimpleDateFormat simpleDateFormatx = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
+                        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss",Locale.ENGLISH);
 
                         String startdate = "";
                         String enddate = "";
@@ -1559,7 +1559,7 @@ public class DetailsPM extends AppCompatActivity {
                             mlayestima.setVisibility(View.GONE);
                         }else {
                             mlayestima.setVisibility(View.VISIBLE);
-                            SimpleDateFormat datefor = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                            SimpleDateFormat datefor = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
                             String estima = updatepanel.get("WaitingEstimationDate").getAsString();
                             String estimadate = "";
                             try {
@@ -2583,7 +2583,7 @@ public class DetailsPM extends AppCompatActivity {
                 /**
                  * Update TextView dengan tanggal yang kita pilih
                  */
-                dateFormatter2 = new SimpleDateFormat("yyyy-MM-dd");
+                dateFormatter2 = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH);
                 mdatestatus.setText(dateFormatter2.format(newDate.getTime()));
                 Log.d("date55", String.valueOf(newDate.getTime()));
             }
@@ -2625,7 +2625,7 @@ public class DetailsPM extends AppCompatActivity {
                 /**
                  * Update TextView dengan tanggal yang kita pilih
                  */
-                dateFormatter2 = new SimpleDateFormat("yyyy-MM-dd");
+                dateFormatter2 = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH);
                 mdatestatus.setText(dateFormatter2.format(newDate.getTime()));
                 Log.d("date55", String.valueOf(newDate.getTime()));
             }
@@ -2667,7 +2667,7 @@ public class DetailsPM extends AppCompatActivity {
                 /**
                  * Update TextView dengan tanggal yang kita pilih GANTI MMMM
                  */
-                dateFormatter2 = new SimpleDateFormat("dd-MMMM-yyyy");
+                dateFormatter2 = new SimpleDateFormat("dd-MMMM-yyyy",Locale.ENGLISH);
                 mdatenya.setText(dateFormatter2.format(newDate.getTime()));
                 Log.d("date55", String.valueOf(newDate.getTime()));
             }

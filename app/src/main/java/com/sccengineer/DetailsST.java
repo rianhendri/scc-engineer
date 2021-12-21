@@ -41,6 +41,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -98,6 +99,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.sccengineer.DailyReportAdd.addFormAdapterAdapter3;
+import static com.sccengineer.DailyReportAdd.followlist;
+import static com.sccengineer.DailyReportAdd.jsonfollow;
+import static com.sccengineer.DailyReportAdd.myfollow;
 import static com.sccengineer.ListChat.modultrans;
 import static com.sccengineer.ListChat.name;
 import static com.sccengineer.LiveChatList.titlenya;
@@ -196,6 +201,7 @@ public class DetailsST extends AppCompatActivity {
     public static String Nowaform = "0";
     //updatepanel;
     ImageView mprosbarr;
+    String questdaily="";
     TextView madddaily,mlistdailyst,mtextmhon,mlinkgenerate,mdatestatus,mlalbeldate,msupport,mbar1,mbar2,mbar3,mbar4,mactionprogress,mestimasi,mstarttime,mendtime,massigndate,mengineer,masengineer, mstatustick, mtimer;
     EditText mlastimpresiST, mdescripst;
     Spinner mservicetypeST, mstatusST;
@@ -569,19 +575,8 @@ DialogForm();
         madddaily.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DetailsST.this, DailyReportAdd.class);
-//              intent.putExtra("id", (addFromItem.get(i).getFormRequestCd()));
-                intent.putExtra("home", "homesa");
-                intent.putExtra("pos", valuefilter);
-                intent.putExtra("id", noreq);
-                intent.putExtra("pos", valuefilter);
-                intent.putExtra("user", username);
-                intent.putExtra("scrolbawah", scrollnya);
-                intent.putExtra("xhori", xhori);
-                intent.putExtra("yverti", yverti);
-                startActivity(intent);
-                overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                finish();
+                dialogquestdaily();
+
             }
         });
         mlistdailyst.setOnClickListener(new View.OnClickListener() {
@@ -725,7 +720,7 @@ DialogForm();
                         }
                     });
                     mlayoutdate.setVisibility(View.VISIBLE);
-                    String string2 = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+                    String string2 = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(new Date());
 //                    mdatestatus.setText((CharSequence)string2);
 //                    Log.d("date55", String.valueOf(newDate.getTime()));
                 }else {
@@ -755,7 +750,54 @@ DialogForm();
             }
         });
     }
+    private void dialogquestdaily() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                this);
 
+        // set title dialog
+        alertDialogBuilder.setTitle("Add Daily Report");
+        // set pesan dari dialog
+        AlertDialog d = new AlertDialog.Builder(DetailsST.this)
+//                .setView(v)
+                .setMessage(questdaily)
+                .setPositiveButton(getString(R.string.title_yes), null) //Set to null. We override the onclick
+                .setNegativeButton(getString(R.string.title_no), null)
+                .create();
+        d.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                Button b = d.getButton(AlertDialog.BUTTON_POSITIVE);
+                Button C = d.getButton(AlertDialog.BUTTON_NEGATIVE);
+                b.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(DetailsST.this, DailyReportAdd.class);
+//              intent.putExtra("id", (addFromItem.get(i).getFormRequestCd()));
+                        intent.putExtra("home", "homesa");
+                        intent.putExtra("pos", valuefilter);
+                        intent.putExtra("id", noreq);
+                        intent.putExtra("pos", valuefilter);
+                        intent.putExtra("user", username);
+                        intent.putExtra("scrolbawah", scrollnya);
+                        intent.putExtra("xhori", xhori);
+                        intent.putExtra("yverti", yverti);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                        finish();
+                        d.dismiss();
+                    }
+                });
+                C.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        d.dismiss();
+                    }
+                });
+            }
+        });
+        d.show();
+
+    }
     private void dialogchangeesti() {
         dialog3 = new AlertDialog.Builder(DetailsST.this);
         inflater = getLayoutInflater();
@@ -771,13 +813,13 @@ DialogForm();
         Date today = Calendar.getInstance().getTime();//getting date
         Calendar tomorroaw = Calendar.getInstance();
         tomorroaw.add(Calendar.DAY_OF_YEAR, 1);//getting date
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");//formating according to my need
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);//formating according to my need
         String date3 = formatter.format(today);
         Date tomorrow = tomorroaw.getTime();
         String date4 = formatter.format(tomorrow);
         
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        SimpleDateFormat datefor = new SimpleDateFormat("yyyy-MMMM-dd", Locale.getDefault());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH);
+        SimpleDateFormat datefor = new SimpleDateFormat("yyyy-MMMM-dd", Locale.ENGLISH);
         String estima = mdatechangeesti.getText().toString();
         String estimadate = "";
         try {
@@ -931,7 +973,7 @@ DialogForm();
         Date today = Calendar.getInstance().getTime();//getting date
         Calendar tomorroaw = Calendar.getInstance();
         tomorroaw.add(Calendar.DAY_OF_YEAR, 1);//getting date
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");//formating according to my need
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH);//formating according to my need
         String date3 = formatter.format(today);
         Date tomorrow = tomorroaw.getTime();
         String date4 = formatter.format(tomorrow);
@@ -983,7 +1025,7 @@ DialogForm();
     }
     private void updateLabel() {
         String myFormat = "dd-MMMM-yyyy"; //In which you need put here
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat,Locale.ENGLISH);
 
         mdatenya.setText(sdf.format(myCalendar.getTime()));
     }
@@ -1251,6 +1293,7 @@ DialogForm();
                     Log.d("sessionId",MsessionExpired);
                    data = homedata.getAsJsonObject("data");
                    //showadd daily
+                        questdaily=data.get("addDailyReportQuestion").getAsString();
                     if (data.get("showAddDailyReport").getAsBoolean()){
                         madddaily.setVisibility(View.VISIBLE);
                         madddaily.setText(data.get("addDailyReportButtonText").getAsString());
@@ -1282,8 +1325,8 @@ DialogForm();
                     //show hide estimate update
                     if (data.get("allowToUpdateEstimationDate").getAsBoolean()){
                         mlayoutupdateestimate.setVisibility(View.VISIBLE);
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
-                        SimpleDateFormat datefor = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
+                        SimpleDateFormat datefor = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH);
                         String estima = data.get("defaultEstimationDate").getAsString();
                         String estimadate = "";
                         try {
@@ -1458,8 +1501,8 @@ DialogForm();
                         }
 
                         String string7 = data.get("serviceTicketCreated").getAsString();
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
-                        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
+                        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
                         String string5 = null;
                         String string6="";
                         try {
@@ -1513,8 +1556,8 @@ DialogForm();
                     mtitle.setText("#"+noticket);
                     mreqno.setText(mformRequestCd);
                     String datenew = "";
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
-                    SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
+                    SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
                     try {
                         datenew = simpleDateFormat.format(simpleDateFormat.parse(mdateapi));
                         System.out.println(datenew);
@@ -1777,8 +1820,8 @@ DialogForm();
                         stringBuilder.append(String.valueOf(updatepanel.get("Position").getAsInt()));
                         mstatustick.setText((CharSequence)stringBuilder.toString());
                         //date
-                        SimpleDateFormat simpleDateFormatx = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
-                        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault());
+                        SimpleDateFormat simpleDateFormatx = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
+                        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.ENGLISH);
 
                         String startdate = "";
                         String enddate = "";
@@ -1789,7 +1832,7 @@ DialogForm();
                             mlayestima.setVisibility(View.GONE);
                         }else {
                             mlayestima.setVisibility(View.VISIBLE);
-                            SimpleDateFormat datefor = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                            SimpleDateFormat datefor = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
                             String estima = updatepanel.get("WaitingEstimationDate").getAsString();
                             String estimadate = "";
                             try {
@@ -2981,7 +3024,7 @@ DialogForm();
                 /**
                  * Update TextView dengan tanggal yang kita pilih
                  */
-                dateFormatter2 = new SimpleDateFormat("yyyy-MM-dd");
+                dateFormatter2 = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH);
                 mdatestatus.setText(dateFormatter2.format(newDate.getTime()));
                 Log.d("date55", String.valueOf(newDate.getTime()));
             }
@@ -3023,7 +3066,7 @@ DialogForm();
                 /**
                  * Update TextView dengan tanggal yang kita pilih
                  */
-                dateFormatter2 = new SimpleDateFormat("yyyy-MM-dd");
+                dateFormatter2 = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
                 mdatestatus.setText(dateFormatter2.format(newDate.getTime()));
                 Log.d("date55", String.valueOf(newDate.getTime()));
             }
@@ -3065,7 +3108,7 @@ DialogForm();
                 /**
                  * Update TextView dengan tanggal yang kita pilih GANTI MMMM
                  */
-                dateFormatter2 = new SimpleDateFormat("dd-MMMM-yyyy");
+                dateFormatter2 = new SimpleDateFormat("dd-MMMM-yyyy",Locale.ENGLISH);
                 mdatenya.setText(dateFormatter2.format(newDate.getTime()));
                 Log.d("date55", String.valueOf(newDate.getTime()));
             }

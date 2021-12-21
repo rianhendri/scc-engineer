@@ -322,6 +322,29 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="24dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/seguisb"
+                        android:paddingLeft="4dp"
+                        android:text="Notes "
+                        android:textColor="@color/black"
+                        android:textSize="12sp" />
+                    <EditText
+                        android:id="@+id/notesdaily"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/segoeui"
+                        android:textSize="12sp"
+                        android:layout_marginRight="20dp"
+                        android:layout_weight="1"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical" >
 
                     <TextView
@@ -687,7 +710,15 @@
                         android:layout_marginBottom="12dp"
                         android:scrollbars="none" >
                     </androidx.recyclerview.widget.RecyclerView>
-
+                    <TextView
+                        android:id="@+id/tanpasper"
+                        android:layout_margin="12dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:fontFamily="@font/opensanslightitalic"
+                        android:textSize="12sp"
+                        android:text="Tanpa Sparepart"/>
 
                 </LinearLayout>
                 <TextView

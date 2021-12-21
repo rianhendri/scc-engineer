@@ -138,7 +138,8 @@ public class DailyReportAdd extends AppCompatActivity {
     List<String> pressspin = new ArrayList();
     String caseprog="";
     String pressstatus="";
-
+    EditText mnotesdaily;
+    TextView mtanpasper;
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,6 +147,8 @@ public class DailyReportAdd extends AppCompatActivity {
         setContentView(R.layout.activity_daily_report_add);
         mback = findViewById(R.id.backbtn);
         msend = findViewById(R.id.send);
+        mtanpasper = findViewById(R.id.tanpasper);
+        mnotesdaily = findViewById(R.id.notesdaily);
         minputtemuan = findViewById(R.id.inputtemuan);
         minputaction = findViewById(R.id.inputaction);
         minputfollow = findViewById(R.id.inputfollow);
@@ -387,7 +390,11 @@ public class DailyReportAdd extends AppCompatActivity {
                 MsessionExpired = homedata.get("sessionExpired").toString();
                 if (statusnya.equals("OK")){
                     JsonObject data = homedata.getAsJsonObject("data");
-
+                    if (data.get("notes").getAsString().equals("")){
+                        mnotesdaily.setText("");
+                    }else {
+                        mnotesdaily.setText(data.get("notes").getAsString());
+                    }
                     mcaseid.setText(data.get("caseID").getAsString());
 //                    mreportdate.setText(data.get("caseID").getAsString());
                     mpresssn.setText(data.get("pressSN").getAsString()+"("+data.get("pressType").getAsString()+")");
@@ -416,8 +423,11 @@ public class DailyReportAdd extends AppCompatActivity {
                     }else {
 
                     }
-
-
+                    if (data.getAsJsonArray("sparePartList").toString().equals("[]")){
+                        mtanpasper.setVisibility(View.VISIBLE);
+                    }else {
+                        mtanpasper.setVisibility(View.GONE);
+                    }
                     Gson gson = new Gson();
                     Type listType = new TypeToken<ArrayList<AddDailyTemuanItem>>() {
                     }.getType();
@@ -485,6 +495,7 @@ public class DailyReportAdd extends AppCompatActivity {
         jsonObject.addProperty("serviceTicketCd",noreq);
         jsonObject.addProperty("caseProgress",caseprog);
         jsonObject.addProperty("pressStatus",pressstatus);
+        jsonObject.addProperty("notes",mnotesdaily.getText().toString());
         jsonObject.add("findings",mytemuan);
         jsonObject.add("actions",myaction);
         jsonObject.add("followups",myfollow);
