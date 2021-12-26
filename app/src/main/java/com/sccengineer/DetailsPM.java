@@ -135,6 +135,7 @@ public class DetailsPM extends AppCompatActivity {
     String servicetypenya = "";
     String MhaveToUpdate = "";
     JsonObject data = null;
+    String questdaily="";
     String MsessionExpired = "";
     boolean internet = true;
     public static LinearLayoutManager linearLayoutManager,linearLayoutManager2;
@@ -145,7 +146,7 @@ public class DetailsPM extends AppCompatActivity {
     String mallowtoconfirm = "";
     ImageView mbanner;
     LinearLayout mcancel, mconfirm, mcs, mbackgroundalert,mback, mreopenbtn;
-    TextView mcreatedate, mdate, mdeskription, missu, moperator, mreqno, mservicetype, msn, mstatusdetail,
+    TextView mcreatedate,mlistdailyst,madddaily, mdate, mdeskription, missu, moperator, mreqno, mservicetype, msn, mstatusdetail,
             mstid, mtitle, munitcategory, mlocation, mtextalert, mrequestby, mreopeninfo;
     String mdateapi = "";
     public  static String mcustname="";
@@ -238,7 +239,7 @@ public class DetailsPM extends AppCompatActivity {
     LinearLayout mchactclik;
     String tokennya = "-";
     //    List<String> tokennya2= new ArrayList();
-    LinearLayout mdot,mdailyreport,mupdatespertbtn;
+    LinearLayout mdot,mdailyreport,mupdatespertbtn,mlayoutadddaily;
     TextView mnotif;
     String scrollnya = "no";
     DatabaseReference databaseReference5;
@@ -250,12 +251,15 @@ public class DetailsPM extends AppCompatActivity {
     boolean lokasi = false;
 
     FirebaseAuth mAuth;
-
+    public static String valuefilter="";
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_p_m);
+        mlayoutadddaily = findViewById(R.id.layoutadddaily);
+        madddaily = findViewById(R.id.adddaily);
+        mlistdailyst = findViewById(R.id.listdailyst);
         mvisitdate = findViewById(R.id.visitdate);
         mstpm = findViewById(R.id.stpm);
         mapprove = findViewById(R.id.approve);
@@ -600,6 +604,80 @@ public class DetailsPM extends AppCompatActivity {
                 rejectdialog();
             }
         });
+        madddaily.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogquestdaily();
+
+            }
+        });
+        mlistdailyst.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DetailsPM.this, DailiReportListPM.class);
+//              intent.putExtra("id", (addFromItem.get(i).getFormRequestCd()));
+                intent.putExtra("home", "homesa");
+                intent.putExtra("pos", valuefilter);
+                intent.putExtra("noticket", noreq);
+                intent.putExtra("pos", valuefilter);
+                intent.putExtra("user", username);
+                intent.putExtra("scrolbawah", scrollnya);
+                intent.putExtra("xhori", xhori);
+                intent.putExtra("yverti", yverti);
+                intent.putExtra("hide","yes");
+                startActivity(intent);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                finish();
+            }
+        });
+    }
+    private void dialogquestdaily() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                this);
+
+        // set title dialog
+        alertDialogBuilder.setTitle("Add Daily Report");
+        // set pesan dari dialog
+        AlertDialog d = new AlertDialog.Builder(DetailsPM.this)
+//                .setView(v)
+                .setMessage(questdaily)
+                .setPositiveButton(getString(R.string.title_yes), null) //Set to null. We override the onclick
+                .setNegativeButton(getString(R.string.title_no), null)
+                .create();
+        d.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                Button b = d.getButton(AlertDialog.BUTTON_POSITIVE);
+                Button C = d.getButton(AlertDialog.BUTTON_NEGATIVE);
+                b.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(DetailsPM.this, DailyReportAddPM.class);
+//              intent.putExtra("id", (addFromItem.get(i).getFormRequestCd()));
+                        intent.putExtra("home", "homesa");
+                        intent.putExtra("pos", valuefilter);
+                        intent.putExtra("id", noreq);
+                        intent.putExtra("pos", valuefilter);
+                        intent.putExtra("user", username);
+                        intent.putExtra("scrolbawah", scrollnya);
+                        intent.putExtra("xhori", xhori);
+                        intent.putExtra("yverti", yverti);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                        finish();
+                        d.dismiss();
+                    }
+                });
+                C.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        d.dismiss();
+                    }
+                });
+            }
+        });
+        d.show();
+
     }
     public void Approvereq(){
         loading = ProgressDialog.show(DetailsPM.this, "", "loading...", true);
@@ -1172,6 +1250,23 @@ public class DetailsPM extends AppCompatActivity {
 //                    sesionid();
                     Log.d("sessionId",MsessionExpired);
                     data = homedata.getAsJsonObject("data");
+                    questdaily=data.get("addDailyReportQuestion").getAsString();
+                    if (data.get("showAddDailyReport").getAsBoolean()){
+                        madddaily.setVisibility(View.VISIBLE);
+                        madddaily.setText(data.get("addDailyReportButtonText").getAsString());
+                    }else {
+                        if (data.get("showViewSTDailyReport").getAsBoolean()){
+
+                        }else {
+                            mlayoutadddaily.setVisibility(View.GONE);
+                        }
+                    }
+                    if (data.get("showViewSTDailyReport").getAsBoolean()){
+                        mlistdailyst.setVisibility(View.VISIBLE);
+                        mlistdailyst.setText(data.get("stDailyReportButtonText").getAsString());
+                    }else {
+
+                    }
                     //showhide buttuon update sparepart
 //                    if(data.get("showUpdateSparePartButton").getAsBoolean()){
 //                        mupdatespertbtn.setVisibility(View.VISIBLE);

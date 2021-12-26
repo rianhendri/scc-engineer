@@ -35,6 +35,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".DailiReportListPM"></activity>
+        <activity android:name=".DailyReportAddPM" />
         <activity android:name=".DetailsDailyReport">
             <intent-filter>
                 <action android:name="ENGDR" />
@@ -54,9 +56,7 @@
         </activity>
         <activity android:name=".PmList" />
         <activity android:name=".ListDailyReport" />
-        <activity android:name=".DetailsDailyReportAct" >
-
-        </activity>
+        <activity android:name=".DetailsDailyReportAct" />
         <activity android:name=".LiveChatList" />
         <activity android:name=".DetailReclock" />
         <activity android:name=".ClockinApprovList" />
