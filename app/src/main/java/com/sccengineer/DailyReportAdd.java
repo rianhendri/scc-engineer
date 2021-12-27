@@ -114,6 +114,7 @@ public class DailyReportAdd extends AppCompatActivity {
     TextView mrecord,mempetyreq,msend;
     Spinner mstatus_spin;
     public static RecyclerView place_temuan,place_action,place_follow,place_sperpart,myitem_place5;
+    String pages = "";
     int page = 1;
     int pos = 0;
     int pos2 = 0;
@@ -172,6 +173,7 @@ public class DailyReportAdd extends AppCompatActivity {
         Bundle bundle2 = getIntent().getExtras();
         if (bundle2 != null) {
             noreq = bundle2.getString("id");
+            pages = bundle2.getString("page2");
             home = bundle2.getString("home");
             guid = bundle2.getString("guid");
             username = bundle2.getString("user");
@@ -628,18 +630,35 @@ public class DailyReportAdd extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent back = new Intent(DailyReportAdd.this, DetailsST.class);
-        back.putExtra("id", noreq);
-        back.putExtra("home", home);
-        back.putExtra("guid", guid);
-        back.putExtra("user", username);
-        back.putExtra("id", noticket);
-        back.putExtra("pos", valuefilter);
-        back.putExtra("scrolbawah", scrollnya);
-        back.putExtra("xhori", xhori);
-        back.putExtra("yverti", yverti);
-        startActivity(back);
-        overridePendingTransition(R.anim.left_in, R.anim.right_out);
-        finish();
+        if (pages.equals("pm")){
+            Intent back = new Intent(DailyReportAdd.this, DetailsPM.class);
+            back.putExtra("id", noreq);
+            back.putExtra("home", home);
+            back.putExtra("guid", guid);
+            back.putExtra("user", username);
+            back.putExtra("id", noticket);
+            back.putExtra("pos", valuefilter);
+            back.putExtra("scrolbawah", scrollnya);
+            back.putExtra("xhori", xhori);
+            back.putExtra("yverti", yverti);
+            startActivity(back);
+            overridePendingTransition(R.anim.left_in, R.anim.right_out);
+            finish();
+        }else {
+            Intent back = new Intent(DailyReportAdd.this, DetailsST.class);
+            back.putExtra("id", noreq);
+            back.putExtra("home", home);
+            back.putExtra("guid", guid);
+            back.putExtra("user", username);
+            back.putExtra("id", noticket);
+            back.putExtra("pos", valuefilter);
+            back.putExtra("scrolbawah", scrollnya);
+            back.putExtra("xhori", xhori);
+            back.putExtra("yverti", yverti);
+            startActivity(back);
+            overridePendingTransition(R.anim.left_in, R.anim.right_out);
+            finish();
+        }
+
     }
 }

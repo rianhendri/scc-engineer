@@ -652,13 +652,14 @@ public class DetailsPM extends AppCompatActivity {
                 b.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(DetailsPM.this, DailyReportAddPM.class);
+                        Intent intent = new Intent(DetailsPM.this, DailyReportAdd.class);
 //              intent.putExtra("id", (addFromItem.get(i).getFormRequestCd()));
                         intent.putExtra("home", "homesa");
                         intent.putExtra("pos", valuefilter);
                         intent.putExtra("id", noreq);
                         intent.putExtra("pos", valuefilter);
                         intent.putExtra("user", username);
+                        intent.putExtra("page2", "pm");
                         intent.putExtra("scrolbawah", scrollnya);
                         intent.putExtra("xhori", xhori);
                         intent.putExtra("yverti", yverti);

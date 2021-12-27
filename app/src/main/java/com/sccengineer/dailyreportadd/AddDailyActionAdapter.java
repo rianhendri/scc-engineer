@@ -82,6 +82,7 @@ import static com.sccengineer.DailyReportAdd.jsonaction;
 import static com.sccengineer.DailyReportAdd.myaction;
 import static com.sccengineer.DailyReportAdd.actionlist;
 import static com.sccengineer.DailyReportAdd.place_action;
+//import static com.sccengineer.DailyReportAddPM.place_action2;
 import static com.sccengineer.DetailsST.jsonarayitem;
 import static com.sccengineer.DetailsST.msendpartlist;
 import static com.sccengineer.DetailsST.myCustomArray;
@@ -146,12 +147,8 @@ extends RecyclerView.Adapter<AddDailyActionAdapter.Myviewholder> {
 
                     }
 
-//                    if (actionlist.size()==0){
-//                        place_action.setVisibility(View.GONE);
-//                    }
-
                     place_action.setAdapter(addFormAdapterAdapter2);
-
+//                    place_action2.setAdapter(addFormAdapterAdapter2);
                 }else {
 //
                 }

@@ -776,6 +776,7 @@ DialogForm();
                         intent.putExtra("home", "homesa");
                         intent.putExtra("pos", valuefilter);
                         intent.putExtra("id", noreq);
+                        intent.putExtra("page2", "st");
                         intent.putExtra("pos", valuefilter);
                         intent.putExtra("user", username);
                         intent.putExtra("scrolbawah", scrollnya);

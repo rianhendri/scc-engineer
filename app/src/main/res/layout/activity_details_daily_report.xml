@@ -828,7 +828,7 @@
                     android:rotation="180"
                     android:src="@drawable/bgheaderb" />
             </LinearLayout>
-            
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
