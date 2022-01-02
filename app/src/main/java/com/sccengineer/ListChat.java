@@ -104,6 +104,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -152,6 +153,7 @@ public class ListChat extends AppCompatActivity {
     public static DatabaseReference databaseReference,databaseReference3,databaseReference4,databaseReference5;
     DatabaseReference dfr;
     DatabaseReference databaseReference2 = FirebaseDatabase.getInstance().getReference();
+    DatabaseReference databaseReferencechat = FirebaseDatabase.getInstance().getReference();
     LinearLayoutManager linearLayoutManager,linearLayoutManager2;
     LinearLayout mlayketk;
     public static String name="";
@@ -209,6 +211,7 @@ public class ListChat extends AppCompatActivity {
     LinearLayout mmnodatas;
     String homes = "";
     String chats = "";
+    boolean kirim = true;
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -759,6 +762,7 @@ public class ListChat extends AppCompatActivity {
 //                recyclerView.scrollToPosition(adapterchat.getItemCount());
                     mmnodatas.setVisibility(GONE);
                 mloadingchat.setVisibility(GONE);
+                readchat ();
                 }else {
                     mloadingchat.setVisibility(GONE);
                     mmnodatas.setVisibility(View.VISIBLE);
@@ -1365,5 +1369,46 @@ public class ListChat extends AppCompatActivity {
         });
         Log.d("reqapi",jsonObject.toString());
 
+    }
+    public void readchat (){
+        String keyread = "";
+        for (int v = 0; v < addFoclistreq.size(); ++v) {
+            if (name.equals(addFoclistreq.get(v).getName())){
+
+            }else {
+                if (addFoclistreq.get(v).getRead().equals("yes")){
+
+                }else {
+                    keyread = addFoclistreq.get(v).getKey();
+//                    kirim=false;
+                }
+            }
+        }
+        if (kirim){
+            kirim=false;
+            Log.d("testresdad",keyread);
+            if (keyread.equals("")){
+
+            }else {
+                HashMap hashMap = new HashMap();
+                hashMap.put("read","yes");
+                databaseReference2.child("chat").child(sessionnya).child("listchat").child(keyread).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        kirim=true;
+                        readchat();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        kirim=true;
+                        readchat();
+                    }
+                });
+            }
+
+        }else {
+
+        }
     }
 }

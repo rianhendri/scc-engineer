@@ -113,6 +113,7 @@ extends RecyclerView.Adapter<Adapterchat.Myviewholder>  {
     DatabaseReference databaseReference2 = FirebaseDatabase.getInstance().getReference();
     public static ArrayList<Itemchat> addFoclistreq;
     public static Integer prog=0;
+
     Context context;
     ImageView mimgpopup;
     String keynya = "";
@@ -521,26 +522,26 @@ extends RecyclerView.Adapter<Adapterchat.Myviewholder>  {
             myviewholder.myourname.setVisibility(View.VISIBLE);
         }
         //READ
-        if (name.equals(addFoclistreq.get(i).getName())){
-
-        }else {
-            int posnya = addFoclistreq.size();
-            keynya = addFoclistreq.get(i).getKey();
-
-            HashMap hashMap = new HashMap();
-            hashMap.put("read","yes");
-            databaseReference2.child("chat").child(sessionnya).child("listchat").child(keynya).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-
-                }
-            });
-        }
+//        if (name.equals(addFoclistreq.get(i).getName())){
+//
+//        }else {
+//            int posnya = addFoclistreq.size();
+//            keynya = addFoclistreq.get(i).getKey();
+//
+//            HashMap hashMap = new HashMap();
+//            hashMap.put("read","yes");
+//            databaseReference2.child("chat").child(sessionnya).child("listchat").child(keynya).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+//                @Override
+//                public void onSuccess(Void aVoid) {
+//
+//                }
+//            }).addOnFailureListener(new OnFailureListener() {
+//                @Override
+//                public void onFailure(@NonNull Exception e) {
+//
+//                }
+//            });
+//        }
         if (addFoclistreq.get(i).getRead().equals("yes")){
             myviewholder.mimg.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_doublecheckingwhite1));
         }else {

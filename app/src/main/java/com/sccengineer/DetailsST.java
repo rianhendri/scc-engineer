@@ -204,12 +204,16 @@ public class DetailsST extends AppCompatActivity {
     String questdaily="";
     TextView madddaily,mlistdailyst,mtextmhon,mlinkgenerate,mdatestatus,mlalbeldate,msupport,mbar1,mbar2,mbar3,mbar4,mactionprogress,mestimasi,mstarttime,mendtime,massigndate,mengineer,masengineer, mstatustick, mtimer;
     EditText mlastimpresiST, mdescripst;
-    Spinner mservicetypeST, mstatusST;
+    Spinner mservicetypeST, mstatusST, mstatuspress;
     LinearLayout mstartprogresssched,mlayountlink,mlayoutdate,mlayoutsper,mlayestima,mstartprogress, mupdatebtn,mcancleassg, mlayoutimpress, mlayoutnote, mlayoutstatus, mlayoutservicest, mlayoutupdatepanel;
     JsonArray listsn;
+    JsonArray listsn2;
     List<String> snid = new ArrayList();
+    List<String> snid2 = new ArrayList();
     List<String> snname = new ArrayList();
+    List<String> snname2 = new ArrayList();
     String mpressId = "";
+    String mpressId2 = "";
     JsonArray listsna;
     List<String> snida = new ArrayList();
     List<String> snnamea = new ArrayList();
@@ -253,7 +257,8 @@ public class DetailsST extends AppCompatActivity {
     LinearLayout mchactclik;
     String tokennya = "-";
 //    List<String> tokennya2= new ArrayList();
-    LinearLayout mdot,mdailyreport,mupdatespertbtn;
+    LinearLayout mdot,mdailyreport,mupdatespertbtn, mlayoutstatuspress;
+    boolean presstrue = false;
     TextView mnotif;
     String scrollnya = "no";
     String titlenya = "";
@@ -275,6 +280,7 @@ public class DetailsST extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_s_t);
         mlayoutadddaily = findViewById(R.id.layoutadddaily);
+        mlayoutstatuspress=findViewById(R.id.layoutstatuspress);
         madddaily = findViewById(R.id.adddaily);
         mlistdailyst = findViewById(R.id.listdailyst);
         mupdatespertbtn =findViewById(R.id.updatespertbtn);
@@ -324,6 +330,7 @@ public class DetailsST extends AppCompatActivity {
         mlastimpresiST = findViewById(R.id.lastimpress);
         mdescripst = findViewById(R.id.descripst);
         mservicetypeST = findViewById(R.id.servicetypeST);
+        mstatuspress = findViewById(R.id.statusSTpress);
         mstatusST = findViewById(R.id.statusST);
         mstartprogress = findViewById(R.id.startprogress);
         mupdatebtn = findViewById(R.id.updatebtn);
@@ -506,6 +513,7 @@ public class DetailsST extends AppCompatActivity {
         mupdatebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                presstrue=false;
                 // code baru
                 requestlokasi();
                 if (lokasi){
@@ -514,10 +522,31 @@ public class DetailsST extends AppCompatActivity {
                         if (mdatestatus.getText().toString().equals("-")){
                             Toast.makeText(DetailsST.this, "Tanggal due date wajib diisi", Toast.LENGTH_SHORT).show();
                         }else {
-                            showDialogrupdate();
+                            if (presstrue){
+                                if (mpressId2.equals("kosong")){
+                                    Toast.makeText(DetailsST.this, "Press Status wajib diisi", Toast.LENGTH_SHORT).show();
+
+                                }else {
+                                    showDialogrupdate();
+                                }
+                            }else {
+                                showDialogrupdate();
+                            }
+
+
                         }
                     }else {
-                        showDialogrupdate();
+                        if (presstrue){
+                            if (mpressId2.equals("kosong")){
+                                Toast.makeText(DetailsST.this, "Press Status wajib diisi", Toast.LENGTH_SHORT).show();
+
+                            }else {
+                                showDialogrupdate();
+                            }
+                        }else {
+                            showDialogrupdate();
+                        }
+
                     }
                 }else {
 
@@ -692,6 +721,20 @@ DialogForm();
 //                operatorname.clear();
 //                operatorcd.clear();
                 mpressId = snid.get(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        mstatuspress.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                operatorname.clear();
+//                operatorcd.clear();
+                mpressId2 = snid2.get(position);
+                Log.d("posimesin",mpressId2);
             }
 
             @Override
@@ -1293,6 +1336,48 @@ DialogForm();
 //                    sesionid();
                     Log.d("sessionId",MsessionExpired);
                    data = homedata.getAsJsonObject("data");
+                   //layout press status
+                    if (data.get("updatePanelShowPressStatusOptions").getAsBoolean()){
+                        presstrue=data.get("updatePanelShowPressStatusOptions").getAsBoolean();
+                        mlayoutstatuspress.setVisibility(View.VISIBLE);
+                        //serviceType
+                        JsonObject updatepanel = data.getAsJsonObject("updatePanelLatestAction");
+                        listsn2=data.getAsJsonArray("updatePanelPressStatusOptions");
+                        snname2.add("-pilih press status-");
+                        snid2.add("kosong");
+                        mpressId2 = updatepanel.get("PressStatusCd").getAsString();
+
+                        int pos = 0;
+                        for (int i = 0; i < listsn2.size(); ++i) {
+                            JsonObject jsonObject2 = (JsonObject)listsn2.get(i);
+                            String string4 = jsonObject2.getAsJsonObject().get("Text").getAsString();
+                            String string5 = "";
+                            if (jsonObject2.getAsJsonObject().get("Value").toString().equals("null")){
+                                string5 = "-";
+                            }else {
+                                string5 = jsonObject2.getAsJsonObject().get("Value").getAsString();
+                            }
+
+//                        Integer previmpress = jsonObject2.getAsJsonObject().get("previousImpression").getAsInt();
+                            snname2.add(string4);
+                            snid2.add(string5);
+
+                            for (int j = 0; j < snid2.size(); ++j) {
+                                if (snid2.get(j).equals(mpressId2)){
+                                    pos=j;
+                                }
+                            }
+//                        previmpression.add(previmpress);
+                            ArrayAdapter arrayAdapter = new ArrayAdapter(DetailsST.this, R.layout.spinstatus_layout, snname2);
+                            arrayAdapter.setDropDownViewResource(R.layout.spinkategori);
+                            arrayAdapter.notifyDataSetChanged();
+                            mstatuspress.setAdapter(arrayAdapter);
+                            mstatuspress.setSelection(pos);
+                            loading.dismiss();
+                        }
+                    }else {
+                        mlayoutstatuspress.setVisibility(View.GONE);
+                    }
                    //showadd daily
                         questdaily=data.get("addDailyReportQuestion").getAsString();
                     if (data.get("showAddDailyReport").getAsBoolean()){
@@ -1309,7 +1394,7 @@ DialogForm();
                         mlistdailyst.setVisibility(View.VISIBLE);
                         mlistdailyst.setText(data.get("stDailyReportButtonText").getAsString());
                     }else {
-
+                        mlistdailyst.setVisibility(View.GONE);
                     }
                    //showhide buttuon update sparepart
                     if(data.get("showUpdateSparePartButton").getAsBoolean()){
@@ -2426,6 +2511,7 @@ DialogForm();
         jsonObject.addProperty("serviceTicketCd",noreq);
         jsonObject.addProperty("serviceTypeCd",mpressId);
         jsonObject.addProperty("statusCd",mpressIda);
+        jsonObject.addProperty("pressStatusCd",mpressId2);
         jsonObject.addProperty("lastImpression",mlastimpresiST.getText().toString());
         jsonObject.addProperty("notes",mdescripst.getText().toString());
         jsonObject.addProperty("waitingEstimationDate",mdatestatus.getText().toString());

@@ -31,6 +31,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.sccengineer.apihelper.IRetrofit;
 import com.sccengineer.apihelper.ServiceGenerator;
+import com.sccengineer.dailyreport2.DailyAdapter2;
+import com.sccengineer.dailyreport2.DailyItem2;
 import com.sccengineer.daliyreport.DailyAdapter;
 import com.sccengineer.daliyreport.DailyItem;
 import com.sccengineer.messagecloud.check;
@@ -57,10 +59,10 @@ public class DailiReportListPM extends AppCompatActivity {
     public static  String enddate="";
     String MhaveToUpdate = "";
     String MsessionExpired = "";
-    DailyAdapter addFormAdapterAdapter;
+    DailyAdapter2 addFormAdapterAdapter;
     boolean internet = true;
     private LinearLayoutManager linearLayoutManager;
-    public static ArrayList<DailyItem> list2;
+    public static ArrayList<DailyItem2> list2;
     JsonArray listformreq;
     List<String> listnamestatus = new ArrayList();
     JsonArray liststatus;
@@ -200,7 +202,7 @@ public class DailiReportListPM extends AppCompatActivity {
 //        linearLayoutManager.setStackFromEnd(true);
         myitem_place.setLayoutManager(linearLayoutManager);
         myitem_place.setHasFixedSize(true);
-        list2 = new ArrayList<DailyItem>();
+        list2 = new ArrayList<DailyItem2>();
         getSessionId();
         cekInternet();
         refreshnotif();
@@ -354,10 +356,10 @@ public class DailiReportListPM extends AppCompatActivity {
                     totalrec = data.get("totalRec").getAsString();
 //                    mrecord.setText("Record: "+totalrec);
                     Gson gson = new Gson();
-                    Type listType = new TypeToken<ArrayList<DailyItem>>() {
+                    Type listType = new TypeToken<ArrayList<DailyItem2>>() {
                     }.getType();
                     list2 = gson.fromJson(listformreq.toString(), listType);
-                    addFormAdapterAdapter = new DailyAdapter(DailiReportListPM.this, list2);
+                    addFormAdapterAdapter = new DailyAdapter2(DailiReportListPM.this, list2);
 //                    addFormAdapterAdapter.notifyDataSetChanged();
                     myitem_place.setAdapter(addFormAdapterAdapter);
                     myitem_place.setVisibility(View.VISIBLE);
@@ -430,13 +432,13 @@ public class DailiReportListPM extends AppCompatActivity {
                     totalrec = data.get("totalRec").toString();
 //                    mrecord.setText("Record: "+totalrec);
                     Gson gson = new Gson();
-                    Type listType = new TypeToken<ArrayList<DailyItem>>() {
+                    Type listType = new TypeToken<ArrayList<DailyItem2>>() {
                     }.getType();
-                    ArrayList<DailyItem> list;
+                    ArrayList<DailyItem2> list;
                     list=new ArrayList<>();
                     list = gson.fromJson(listformreq.toString(), listType);
                     list2.addAll(list);
-                    addFormAdapterAdapter = new DailyAdapter(DailiReportListPM.this, list2);
+                    addFormAdapterAdapter = new DailyAdapter2(DailiReportListPM.this, list2);
                     myitem_place.setAdapter(addFormAdapterAdapter);
                     myitem_place.setVisibility(View.VISIBLE);
                     mfooterload.setVisibility(View.GONE);

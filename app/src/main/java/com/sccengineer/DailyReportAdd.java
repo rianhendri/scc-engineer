@@ -392,6 +392,20 @@ public class DailyReportAdd extends AppCompatActivity {
                 MsessionExpired = homedata.get("sessionExpired").toString();
                 if (statusnya.equals("OK")){
                     JsonObject data = homedata.getAsJsonObject("data");
+                    int pos=0;
+                    pressstatus= data.get("pressStatusCd").getAsString();
+                    for (int j = 0; j < pressvalue.size(); ++j) {
+                        if (pressvalue.get(j).equals(pressstatus)){
+                            pos=j;
+                        }
+                    }
+//                        previmpression.add(previmpress);
+                    ArrayAdapter arrayAdapter = new ArrayAdapter(DailyReportAdd.this, R.layout.spinstatus_layout, pressspin);
+                    arrayAdapter.setDropDownViewResource(R.layout.spinkategori);
+                    arrayAdapter.notifyDataSetChanged();
+                    mpressstatus.setAdapter(arrayAdapter);
+                    mpressstatus.setSelection(pos);
+//                    loading.dismiss();
                     if (data.get("notes").getAsString().equals("")){
                         mnotesdaily.setText("");
                     }else {

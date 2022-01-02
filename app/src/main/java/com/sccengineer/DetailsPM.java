@@ -191,12 +191,17 @@ public class DetailsPM extends AppCompatActivity {
     ImageView mprosbarr;
     TextView mpmstatus,mreasonpm,mstpm,mtextmhon,mlinkgenerate,mdatestatus,mlalbeldate,msupport,mbar1,mbar2,mbar3,mbar4,mactionprogress,mestimasi,mstarttime,mendtime,massigndate,mengineer,masengineer, mstatustick, mtimer;
     EditText mlastimpresiST, mdescripst;
-    Spinner mservicetypeST, mstatusST;
-    LinearLayout mlayreasonpm,mstartprogresssched,mlayountlink,mlayoutdate,mlayoutsper,mlayestima ,mstartprogress, mupdatebtn,mcancleassg, mlayoutimpress, mlayoutnote, mlayoutstatus, mlayoutservicest, mlayoutupdatepanel;
+    Spinner mservicetypeST, mstatusST,mstatuspress;
+    LinearLayout mlayoutstatuspress,mlayreasonpm,mstartprogresssched,mlayountlink,mlayoutdate,mlayoutsper,mlayestima ,mstartprogress, mupdatebtn,mcancleassg, mlayoutimpress, mlayoutnote, mlayoutstatus, mlayoutservicest, mlayoutupdatepanel;
     JsonArray listsn;
+    JsonArray listsn2;
+    boolean presstrue = false;
     List<String> snid = new ArrayList();
     List<String> snname = new ArrayList();
+    List<String> snid2 = new ArrayList();
+    List<String> snname2 = new ArrayList();
     String mpressId = "";
+    String mpressId2 = "";
     JsonArray listsna;
     List<String> snida = new ArrayList();
     List<String> snnamea = new ArrayList();
@@ -258,6 +263,8 @@ public class DetailsPM extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_p_m);
         mlayoutadddaily = findViewById(R.id.layoutadddaily);
+        mstatuspress = findViewById(R.id.statusSTpress);
+        mlayoutstatuspress = findViewById(R.id.layoutstatuspress);
         madddaily = findViewById(R.id.adddaily);
         mlistdailyst = findViewById(R.id.listdailyst);
         mvisitdate = findViewById(R.id.visitdate);
@@ -452,7 +459,44 @@ public class DetailsPM extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // code baru
-                showDialogrupdate();
+//                presstrue=false;
+                // code baru
+                requestlokasi();
+                if (lokasi){
+                    getCurrentLocation();
+                    if (cekdate){
+                        if (mdatestatus.getText().toString().equals("-")){
+                            Toast.makeText(DetailsPM.this, "Tanggal due date wajib diisi", Toast.LENGTH_SHORT).show();
+                        }else {
+                            if (presstrue){
+                                if (mpressId2.equals("kosong")){
+                                    Toast.makeText(DetailsPM.this, "Press Status wajib diisi", Toast.LENGTH_SHORT).show();
+
+                                }else {
+                                    showDialogrupdate();
+                                }
+                            }else {
+                                showDialogrupdate();
+                            }
+
+
+                        }
+                    }else {
+                        if (presstrue){
+                            if (mpressId2.equals("kosong")){
+                                Toast.makeText(DetailsPM.this, "Press Status wajib diisi", Toast.LENGTH_SHORT).show();
+
+                            }else {
+                                showDialogrupdate();
+                            }
+                        }else {
+                            showDialogrupdate();
+                        }
+
+                    }
+                }else {
+
+                }
 //                requestlokasi();
 //                if (lokasi){
 //                    getCurrentLocation();
@@ -628,6 +672,20 @@ public class DetailsPM extends AppCompatActivity {
                 startActivity(intent);
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 finish();
+            }
+        });
+        mstatuspress.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                operatorname.clear();
+//                operatorcd.clear();
+                mpressId2 = snid2.get(position);
+                Log.d("posimesin",mpressId2);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
     }
@@ -1251,6 +1309,48 @@ public class DetailsPM extends AppCompatActivity {
 //                    sesionid();
                     Log.d("sessionId",MsessionExpired);
                     data = homedata.getAsJsonObject("data");
+                    //layout press status
+                    if (data.get("updatePanelShowPressStatusOptions").getAsBoolean()){
+                        presstrue=data.get("updatePanelShowPressStatusOptions").getAsBoolean();
+                        mlayoutstatuspress.setVisibility(View.VISIBLE);
+                        //serviceType
+                        JsonObject updatepanel = data.getAsJsonObject("updatePanelLatestAction");
+                        listsn2=data.getAsJsonArray("updatePanelPressStatusOptions");
+                        snname2.add("-pilih press status-");
+                        snid2.add("kosong");
+                        mpressId2 = updatepanel.get("PressStatusCd").getAsString();
+
+                        int pos = 0;
+                        for (int i = 0; i < listsn2.size(); ++i) {
+                            JsonObject jsonObject2 = (JsonObject)listsn2.get(i);
+                            String string4 = jsonObject2.getAsJsonObject().get("Text").getAsString();
+                            String string5 = "";
+                            if (jsonObject2.getAsJsonObject().get("Value").toString().equals("null")){
+                                string5 = "-";
+                            }else {
+                                string5 = jsonObject2.getAsJsonObject().get("Value").getAsString();
+                            }
+
+//                        Integer previmpress = jsonObject2.getAsJsonObject().get("previousImpression").getAsInt();
+                            snname2.add(string4);
+                            snid2.add(string5);
+
+                            for (int j = 0; j < snid2.size(); ++j) {
+                                if (snid2.get(j).equals(mpressId2)){
+                                    pos=j;
+                                }
+                            }
+//                        previmpression.add(previmpress);
+                            ArrayAdapter arrayAdapter = new ArrayAdapter(DetailsPM.this, R.layout.spinstatus_layout, snname2);
+                            arrayAdapter.setDropDownViewResource(R.layout.spinkategori);
+                            arrayAdapter.notifyDataSetChanged();
+                            mstatuspress.setAdapter(arrayAdapter);
+                            mstatuspress.setSelection(pos);
+//                            loading.dismiss();
+                        }
+                    }else {
+                        mlayoutstatuspress.setVisibility(View.GONE);
+                    }
                     questdaily=data.get("addDailyReportQuestion").getAsString();
                     if (data.get("showAddDailyReport").getAsBoolean()){
                         madddaily.setVisibility(View.VISIBLE);
@@ -1266,7 +1366,7 @@ public class DetailsPM extends AppCompatActivity {
                         mlistdailyst.setVisibility(View.VISIBLE);
                         mlistdailyst.setText(data.get("stDailyReportButtonText").getAsString());
                     }else {
-
+                        mlistdailyst.setVisibility(View.GONE);
                     }
                     //showhide buttuon update sparepart
 //                    if(data.get("showUpdateSparePartButton").getAsBoolean()){
@@ -2202,6 +2302,7 @@ public class DetailsPM extends AppCompatActivity {
         jsonObject.addProperty("serviceTicketCd",noreq);
 //        jsonObject.addProperty("serviceTypeCd",mpressId);
         jsonObject.addProperty("statusCd",mpressIda);
+        jsonObject.addProperty("pressStatusCd",mpressId2);
         jsonObject.addProperty("lastImpression",mlastimpresiST.getText().toString());
         jsonObject.addProperty("notes",mdescripst.getText().toString());
 //        jsonObject.addProperty("waitingEstimationDate",mdatestatus.getText().toString());

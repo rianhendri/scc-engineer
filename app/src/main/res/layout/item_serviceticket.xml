@@ -631,6 +631,32 @@
 						android:textSize="11sp" />
 				</LinearLayout>
 				<LinearLayout
+					android:id="@+id/layouttypeser"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:gravity="end"
+					android:orientation="vertical"
+					android:layout_marginTop="0dp"
+					android:layout_marginBottom="0dp">
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:fontFamily="@font/segoeuib"
+						android:text="Press Status"
+						android:textColor="@color/black"
+						android:textSize="11sp" />
+					<TextView
+						android:id="@+id/statushistorypress"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:fontFamily="@font/segoeui"
+						android:text="-"
+						android:gravity="end"
+						android:textColor="@color/colorPrimaryDark"
+						android:textSize="11sp" />
+				</LinearLayout>
+				<LinearLayout
 					android:id="@+id/layoutstatuss"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"

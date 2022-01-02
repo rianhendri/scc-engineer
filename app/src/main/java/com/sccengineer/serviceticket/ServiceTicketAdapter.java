@@ -136,6 +136,11 @@ extends RecyclerView.Adapter<ServiceTicketAdapter.Myviewholder> {
     @SuppressLint("WrongConstant")
     @Override
     public void onBindViewHolder(@NonNull Myviewholder myviewholder, int i) {
+        if (myItem.get(i).getPressStatusCd().equals("")){
+            myviewholder.mpressstatus.setText("-");
+        }else {
+            myviewholder.mpressstatus.setText(myItem.get(i).getPressStatusCd());
+        }
         TextView textView = myviewholder.mstatustik;
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("#");
@@ -518,7 +523,7 @@ extends RecyclerView.Adapter<ServiceTicketAdapter.Myviewholder> {
         TextView massigndate,mstatus;
         TextView mbar1,mbar2,mbar3,mbar4,mcomment,mendtime,mengineer,mservicetype,mstarttime
                 ,mstatusservice,mstatustik;
-        TextView mnotif,mtimer,msupport,massengineer,mlastimpresi, mactionprogress, mfeedbackfoto, mestima, mreadmore, mnotes;
+        TextView mpressstatus,mnotif,mtimer,msupport,massengineer,mlastimpresi, mactionprogress, mfeedbackfoto, mestima, mreadmore, mnotes;
 //        ExpandableTextView mnotes;
         ImageView mposbar;
         RatingBar mrating;
@@ -529,7 +534,7 @@ extends RecyclerView.Adapter<ServiceTicketAdapter.Myviewholder> {
 
             mdot = view.findViewById(R.id.dot);
             mnotif = view.findViewById(R.id.newnotif);
-
+            mpressstatus = view.findViewById(R.id.statushistorypress);
             mchatclik = view.findViewById(R.id.chatclik);
             mlayouttypr = view.findViewById(R.id.layouttype);
 //            mlistspart = view.findViewById(R.id.listsper);

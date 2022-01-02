@@ -29,7 +29,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.sccengineer.apihelper.IRetrofit;
 import com.sccengineer.apihelper.ServiceGenerator;
-import com.sccengineer.detailsdailyreport.DetailsDailyItem4;
 import com.sccengineer.detailsdailyreport.DetailsDailyAdapter1;
 import com.sccengineer.detailsdailyreport.DetailsDailyAdapter2;
 import com.sccengineer.detailsdailyreport.DetailsDailyAdapter3;
@@ -38,6 +37,7 @@ import com.sccengineer.detailsdailyreport.DetailsDailyAdapter5;
 import com.sccengineer.detailsdailyreport.DetailsDailyItem1;
 import com.sccengineer.detailsdailyreport.DetailsDailyItem2;
 import com.sccengineer.detailsdailyreport.DetailsDailyItem3;
+import com.sccengineer.detailsdailyreport.DetailsDailyItem4;
 import com.sccengineer.detailsdailyreport.DetailsDailyItem5;
 import com.sccengineer.messagecloud.check;
 
@@ -52,12 +52,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.sccengineer.DailyReportList.valuefilter;
-import static com.sccengineer.DailyReportList.list2;
 import static com.sccengineer.DailyReportList.refresh;
+import static com.sccengineer.DailyReportList.valuefilter;
 import static com.sccengineer.apihelper.ServiceGenerator.baseurl;
 
-public class DetailsDailyReport extends AppCompatActivity {
+public class DetailsDailyReport2 extends AppCompatActivity {
     String noreq = "";
     String home = "";
     String guid = "";
@@ -105,7 +104,7 @@ public class DetailsDailyReport extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_details_daily_report);
+        setContentView(R.layout.activity_details_daily_report2);
         mrecord = findViewById(R.id.record);
         mnotesdal = findViewById(R.id.notesdal);
         mtanpasper=findViewById(R.id.tanpasper);
@@ -147,11 +146,11 @@ public class DetailsDailyReport extends AppCompatActivity {
 
         }
         //setlayout recyler
-        linearLayoutManager = new LinearLayoutManager(DetailsDailyReport.this, LinearLayout.VERTICAL,false);
-        linearLayoutManager2 = new LinearLayoutManager(DetailsDailyReport.this, LinearLayout.VERTICAL,false);
-        linearLayoutManager3 = new LinearLayoutManager(DetailsDailyReport.this, LinearLayout.VERTICAL,false);
-        linearLayoutManager4 = new LinearLayoutManager(DetailsDailyReport.this, LinearLayout.VERTICAL,false);
-        linearLayoutManager5 = new LinearLayoutManager(DetailsDailyReport.this, LinearLayout.VERTICAL,false);
+        linearLayoutManager = new LinearLayoutManager(DetailsDailyReport2.this, LinearLayout.VERTICAL,false);
+        linearLayoutManager2 = new LinearLayoutManager(DetailsDailyReport2.this, LinearLayout.VERTICAL,false);
+        linearLayoutManager3 = new LinearLayoutManager(DetailsDailyReport2.this, LinearLayout.VERTICAL,false);
+        linearLayoutManager4 = new LinearLayoutManager(DetailsDailyReport2.this, LinearLayout.VERTICAL,false);
+        linearLayoutManager5 = new LinearLayoutManager(DetailsDailyReport2.this, LinearLayout.VERTICAL,false);
 
         myitem_place1.setLayoutManager(linearLayoutManager);
         myitem_place1.setHasFixedSize(true);
@@ -258,7 +257,7 @@ public class DetailsDailyReport extends AppCompatActivity {
                         Type listType = new TypeToken<ArrayList<DetailsDailyItem1>>() {
                         }.getType();
                         list1 = gson.fromJson(listformreq.toString(), listType);
-                        addFormAdapterAdapter1 = new DetailsDailyAdapter1(DetailsDailyReport.this, list1);
+                        addFormAdapterAdapter1 = new DetailsDailyAdapter1(DetailsDailyReport2.this, list1);
                         myitem_place1.setAdapter(addFormAdapterAdapter1);
                         myitem_place1.setVisibility(View.VISIBLE);
                     }
@@ -271,7 +270,7 @@ public class DetailsDailyReport extends AppCompatActivity {
                         }.getType();
 
                         list2 = gson.fromJson(listformreq2.toString(), listType2);
-                        addFormAdapterAdapter2 = new DetailsDailyAdapter2(DetailsDailyReport.this, list2);
+                        addFormAdapterAdapter2 = new DetailsDailyAdapter2(DetailsDailyReport2.this, list2);
                         myitem_place2.setAdapter(addFormAdapterAdapter2);
                         myitem_place2.setVisibility(View.VISIBLE);
                     }
@@ -283,7 +282,7 @@ public class DetailsDailyReport extends AppCompatActivity {
                         Type listType3 = new TypeToken<ArrayList<DetailsDailyItem3>>() {
                         }.getType();
                         list3 = gson.fromJson(listformreq3.toString(), listType3);
-                        addFormAdapterAdapter3 = new DetailsDailyAdapter3(DetailsDailyReport.this, list3);
+                        addFormAdapterAdapter3 = new DetailsDailyAdapter3(DetailsDailyReport2.this, list3);
                         myitem_place3.setAdapter(addFormAdapterAdapter3);
                         myitem_place3.setVisibility(View.VISIBLE);
                     }
@@ -296,7 +295,7 @@ public class DetailsDailyReport extends AppCompatActivity {
                         }.getType();
 
                         list4 = gson.fromJson(listformreq4.toString(), listType4);
-                        addFormAdapterAdapter4 = new DetailsDailyAdapter4(DetailsDailyReport.this, list4);
+                        addFormAdapterAdapter4 = new DetailsDailyAdapter4(DetailsDailyReport2.this, list4);
                         myitem_place4.setAdapter(addFormAdapterAdapter4);
                         myitem_place4.setVisibility(View.VISIBLE);
                         mtanpasper.setVisibility(View.GONE);
@@ -309,7 +308,7 @@ public class DetailsDailyReport extends AppCompatActivity {
                         Type listType5 = new TypeToken<ArrayList<DetailsDailyItem5>>() {
                         }.getType();
                         list5 = gson.fromJson(listformreq5.toString(), listType5);
-                        addFormAdapterAdapter5 = new DetailsDailyAdapter5(DetailsDailyReport.this, list5);
+                        addFormAdapterAdapter5 = new DetailsDailyAdapter5(DetailsDailyReport2.this, list5);
                         myitem_place5.setAdapter(addFormAdapterAdapter5);
                         myitem_place5.setVisibility(View.VISIBLE);
 
@@ -370,14 +369,14 @@ public class DetailsDailyReport extends AppCompatActivity {
                 }else {
                     sesionid();
                     mfooterload.setVisibility(View.GONE);
-                    Toast.makeText(DetailsDailyReport.this, errornya,Toast.LENGTH_LONG).show();
+                    Toast.makeText(DetailsDailyReport2.this, errornya,Toast.LENGTH_LONG).show();
                 }
 
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                Toast.makeText(DetailsDailyReport.this, getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
+                Toast.makeText(DetailsDailyReport2.this, getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
                 cekInternet();
                 mfooterload.setVisibility(View.GONE);
 
@@ -387,7 +386,7 @@ public class DetailsDailyReport extends AppCompatActivity {
     }
     public void cekInternet(){
         /// cek internet apakah internet terhubung atau tidak
-        ConnectivityManager connectivityManager = (ConnectivityManager) DetailsDailyReport.this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivityManager = (ConnectivityManager) DetailsDailyReport2.this.getSystemService(Context.CONNECTIVITY_SERVICE);
         if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
                 connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED)
         {
@@ -396,7 +395,7 @@ public class DetailsDailyReport extends AppCompatActivity {
 
         }else {
             internet=false;
-            Intent noconnection = new Intent(DetailsDailyReport.this, NoInternet.class);
+            Intent noconnection = new Intent(DetailsDailyReport2.this, NoInternet.class);
             startActivity(noconnection);
             finish();
         }
@@ -428,156 +427,34 @@ public class DetailsDailyReport extends AppCompatActivity {
             }
 
         }else {
-            startActivity(new Intent(DetailsDailyReport.this, Login.class));
+            startActivity(new Intent(DetailsDailyReport2.this, Login.class));
             finish();
-            Toast.makeText(DetailsDailyReport.this, getString(R.string.title_session_Expired),Toast.LENGTH_LONG).show();
+            Toast.makeText(DetailsDailyReport2.this, getString(R.string.title_session_Expired),Toast.LENGTH_LONG).show();
         }
 
     }
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        super.onBackPressed();
-        if (home==null){
-            if (check.checknotif==1){
-                if (username==null){
-                    if (check.checkhome==0){
-                        if (check.checklistform==1){
-                            list2.clear();
-                            refresh=true;
-                        }
-                        super.onBackPressed();
-                        finish();
-                    }else {
-                        Intent back = new Intent(DetailsDailyReport.this,Home.class);
-                        back.putExtra("pos",valuefilter);
-                        startActivity(back);
-                        overridePendingTransition(R.anim.left_in, R.anim.right_out);
-                        finish();
-                    }
-
-
-                }else {
-                    if (hide.equals("yes")){
-                        Intent back = new Intent(DetailsDailyReport.this, DailyReportList.class);
-                        back.putExtra("home", home);
-                        back.putExtra("guid", guid);
-                        back.putExtra("user", username);
-                        back.putExtra("noticket", noticket);
-                        back.putExtra("pos", ServiceTicket.valuefilter);
-                        back.putExtra("scrolbawah", scrollnya);
-                        back.putExtra("xhori", xhori);
-                        back.putExtra("yverti", yverti);
-                        back.putExtra("pos",valuefilter);
-                        back.putExtra("startd",startdate);
-                        back.putExtra("endd",enddate);
-                        back.putExtra("hide",hide);
-                        startActivity(back);
-                        overridePendingTransition(R.anim.left_in, R.anim.right_out);
-                        finish();
-                        startActivity(back);
-                        overridePendingTransition(R.anim.left_in, R.anim.right_out);
-                        finish();
-                    }else {
-                        Intent back = new Intent(DetailsDailyReport.this, DailyReportList.class);
-                        back.putExtra("home", home);
-                        back.putExtra("guid", guid);
-                        back.putExtra("user", username);
-                        back.putExtra("id", noreq);
-                        back.putExtra("pos", ServiceTicket.valuefilter);
-                        back.putExtra("scrolbawah", scrollnya);
-                        back.putExtra("xhori", xhori);
-                        back.putExtra("yverti", yverti);
-                        back.putExtra("pos",valuefilter);
-                        back.putExtra("startd",startdate);
-                        back.putExtra("endd",enddate);
-                        back.putExtra("hide",hide);
-                        startActivity(back);
-                        overridePendingTransition(R.anim.left_in, R.anim.right_out);
-                        finish();
-                        startActivity(back);
-                        overridePendingTransition(R.anim.left_in, R.anim.right_out);
-                        finish();
-                    }
-                }
-            }else {
-                Intent back = new Intent(DetailsDailyReport.this,Home.class);
-                back.putExtra("pos",valuefilter);
-                startActivity(back);
-                overridePendingTransition(R.anim.left_in, R.anim.right_out);
-                finish();
-            }
-        }else {
-            if (home.equals("homes")){
-                Intent back = new Intent(DetailsDailyReport.this,Home.class);
-//            back.putExtra("pos",valuefilter);
-                startActivity(back);
-                overridePendingTransition(R.anim.left_in, R.anim.right_out);
-                finish();
-            }else {
-                if (check.checknotif==1){
-                    if (username==null){
-                        if (check.checklistform==1){
-                            list2.clear();
-                            refresh=true;
-                        }
-                        super.onBackPressed();
-                        finish();
-
-                    }else {
-                        super.onBackPressed();
-//            refresh=true;
-                        if (hide.equals("yes")){
-                            Intent back = new Intent(DetailsDailyReport.this, DailyReportList.class);
-                            back.putExtra("home", home);
-                            back.putExtra("guid", guid);
-                            back.putExtra("user", username);
-                            back.putExtra("noticket", noticket);
-                            back.putExtra("pos", ServiceTicket.valuefilter);
-                            back.putExtra("scrolbawah", scrollnya);
-                            back.putExtra("xhori", xhori);
-                            back.putExtra("yverti", yverti);
-                            back.putExtra("pos",valuefilter);
-                            back.putExtra("startd",startdate);
-                            back.putExtra("endd",enddate);
-                            back.putExtra("hide",hide);
-                            startActivity(back);
-                            overridePendingTransition(R.anim.left_in, R.anim.right_out);
-                            finish();
-                            startActivity(back);
-                            overridePendingTransition(R.anim.left_in, R.anim.right_out);
-                            finish();
-                        }else {
-                            Intent back = new Intent(DetailsDailyReport.this, DailyReportList.class);
-                            back.putExtra("home", home);
-                            back.putExtra("guid", guid);
-                            back.putExtra("user", username);
-                            back.putExtra("id", noreq);
-                            back.putExtra("pos", ServiceTicket.valuefilter);
-                            back.putExtra("scrolbawah", scrollnya);
-                            back.putExtra("xhori", xhori);
-                            back.putExtra("yverti", yverti);
-                            back.putExtra("pos",valuefilter);
-                            back.putExtra("startd",startdate);
-                            back.putExtra("endd",enddate);
-                            back.putExtra("hide",hide);
-                            startActivity(back);
-                            overridePendingTransition(R.anim.left_in, R.anim.right_out);
-                            finish();
-                            startActivity(back);
-                            overridePendingTransition(R.anim.left_in, R.anim.right_out);
-                            finish();
-                        }
-                    }
-                }else {
-                    Intent back = new Intent(DetailsDailyReport.this,Home.class);
-                    back.putExtra("pos",valuefilter);
-                    startActivity(back);
-                    overridePendingTransition(R.anim.left_in, R.anim.right_out);
-                    finish();
-                }
-            }
-        }
+        Intent back = new Intent(DetailsDailyReport2.this, DailiReportListPM.class);
+        back.putExtra("home", home);
+        back.putExtra("guid", guid);
+        back.putExtra("user", username);
+        back.putExtra("noticket", noticket);
+        back.putExtra("pos", ServiceTicket.valuefilter);
+        back.putExtra("scrolbawah", scrollnya);
+        back.putExtra("xhori", xhori);
+        back.putExtra("yverti", yverti);
+        back.putExtra("pos",valuefilter);
+        back.putExtra("startd",startdate);
+        back.putExtra("endd",enddate);
+        back.putExtra("hide","yes");
+        startActivity(back);
+        overridePendingTransition(R.anim.left_in, R.anim.right_out);
+        finish();
+        startActivity(back);
+        overridePendingTransition(R.anim.left_in, R.anim.right_out);
+        finish();
 
     }
 }
