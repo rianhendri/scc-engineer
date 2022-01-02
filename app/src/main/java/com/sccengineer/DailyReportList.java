@@ -126,6 +126,8 @@ public class DailyReportList extends AppCompatActivity {
             xhori = bundle2.getInt("xhori");
             yverti = bundle2.getInt("yverti");
             hide = bundle2.getString("hide");
+            startdate = bundle2.getString("startd");
+            enddate = bundle2.getString("endd");
         }
         if (hide.equals("yes")){
 //            Log.d("noreqnya",noreq);
@@ -135,11 +137,19 @@ public class DailyReportList extends AppCompatActivity {
             mlayoutdaterange.setVisibility(View.VISIBLE);
             msttitle.setText("");
         }
-        String string2 = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-        mstartdate.setText((CharSequence)string2);
-        menddate.setText((CharSequence)string2);
-        startdate = string2;
-        enddate = string2;
+        if (startdate==null) {
+            String string2 = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+            mstartdate.setText((CharSequence)string2);
+            menddate.setText((CharSequence)string2);
+            startdate = string2;
+            enddate = string2;
+//            reportcd = bundle2.getString("id");
+
+            mstartdate.setText(startdate);
+            menddate.setText(enddate);
+        }else {
+
+        }
         DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
             @Override

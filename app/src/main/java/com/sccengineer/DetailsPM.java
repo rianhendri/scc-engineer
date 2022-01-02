@@ -1502,49 +1502,56 @@ public class DetailsPM extends AppCompatActivity {
                     mstid.setText(": "+data.get("serviceTicketCd").getAsString());
                     xlocation = data.get("locationName").getAsString();
                     mlocation.setText(xlocation);
-                    if (mserviceTicketCd.equals("null")){
-                        mlayoutticket.setVisibility(View.GONE);
-                    }else {
+
+                    if (data.get("showAssignment").getAsBoolean()) {
                         mlayoutticket.setVisibility(View.VISIBLE);
-                        mserviceTicketHistory = data.getAsJsonArray("serviceTicketHistory");
+                        if (data.get("pmStatus").getAsString().equals("Request")){
+                            mlayoutticket.setVisibility(View.GONE);
+                        }else {
+                            mlayoutticket.setVisibility(View.VISIBLE);
+                            mserviceTicketHistory = data.getAsJsonArray("serviceTicketHistory");
 
-                        Gson gson = new Gson();
-                        Type type = new TypeToken<ArrayList<ServicesTicketItem>>(){}.getType();
-                        listticket = gson.fromJson(mserviceTicketHistory.toString(), type);
-                        ticketadapter = new ServiceTicketAdapter(DetailsPM.this,listticket);
-                        mservice_layout.setAdapter(ticketadapter);
-                        mservice_layout.setVisibility(View.VISIBLE);
-                        for (int i = 0; i < mserviceTicketHistory.size(); ++i) {
-                            String string6 = (mserviceTicketHistory.get(0)).getAsJsonObject().get("ServiceTicketCd").getAsString();
-                            mstid.setText(string6);
-                            String asist = "";
-                            JsonObject ass = mserviceTicketHistory.get(i).getAsJsonObject();
-                            massistengineer = ass.getAsJsonArray("Assists");
-                            for (int x = 0; x < massistengineer.size(); ++x){
-                                JsonObject assobj = massistengineer.get(x).getAsJsonObject();
-                                asist += assobj.get("Name").getAsString();
-                                asist += "\n";
-                                listticket.get(i).setAssist(asist);
+                            Gson gson = new Gson();
+                            Type type = new TypeToken<ArrayList<ServicesTicketItem>>(){}.getType();
+                            listticket = gson.fromJson(mserviceTicketHistory.toString(), type);
+                            ticketadapter = new ServiceTicketAdapter(DetailsPM.this,listticket);
+                            mservice_layout.setAdapter(ticketadapter);
+                            mservice_layout.setVisibility(View.VISIBLE);
+                            for (int i = 0; i < mserviceTicketHistory.size(); ++i) {
+                                String string6 = (mserviceTicketHistory.get(0)).getAsJsonObject().get("ServiceTicketCd").getAsString();
+                                mstid.setText(string6);
+                                String asist = "";
+                                JsonObject ass = mserviceTicketHistory.get(i).getAsJsonObject();
+                                massistengineer = ass.getAsJsonArray("Assists");
+                                for (int x = 0; x < massistengineer.size(); ++x){
+                                    JsonObject assobj = massistengineer.get(x).getAsJsonObject();
+                                    asist += assobj.get("Name").getAsString();
+                                    asist += "\n";
+                                    listticket.get(i).setAssist(asist);
 
+                                }
                             }
-                        }
 
-                        String string7 = data.get("serviceTicketCreated").getAsString();
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
-                        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
-                        String string5 = null;
-                        String string6="";
-                        try {
-                            string6 = simpleDateFormat2.format(simpleDateFormat.parse(string7));
-                            string5 = simpleDateFormat.format(simpleDateFormat.parse(string7));
-                        } catch (ParseException e) {
-                            e.printStackTrace();
+                            String string7 = data.get("serviceTicketCreated").getAsString();
+                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
+                            SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+                            String string5 = null;
+                            String string6="";
+                            try {
+                                string6 = simpleDateFormat2.format(simpleDateFormat.parse(string7));
+                                string5 = simpleDateFormat.format(simpleDateFormat.parse(string7));
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            String[] separated = string5.split("T");
+                            separated[0].trim();; // this will contain "Fruit"
+                            separated[1].trim();;
+                            mcreatedate.setText(separated[0]+" "+ separated[1]);
                         }
-                        String[] separated = string5.split("T");
-                        separated[0].trim();; // this will contain "Fruit"
-                        separated[1].trim();;
-                        mcreatedate.setText(separated[0]+" "+ separated[1]);
+                    }else {
+                        mlayoutticket.setVisibility(View.GONE);
                     }
+
                     if (data.get("issueCategoryName") == null) {
                         mlayoutunit3.setVisibility(View.GONE);
                     } else {
