@@ -66,6 +66,8 @@ public interface IRetrofit {
     public Call<JsonObject> livechastlist(@Body JsonObject var1);
     @POST("api/engineer/GetCurrentSupportLiveChatList")
     public Call<JsonObject> livecslist(@Body JsonObject var1);
+    @POST("api/engineer/SendInfo")
+    public Call<JsonObject> sendinfolocation(@Body JsonObject var1);
     @GET("chat.json")
     public Call<JsonObject> getchat(@Body JsonObject var1);
     @POST("api/serviceticket/FlagLiveChat")
@@ -88,6 +90,11 @@ public interface IRetrofit {
     public Call<JsonObject> changelanguage(@Body JsonObject var1);
     @POST("api/engineer/changepassword")
     public Call<JsonObject> changepassword(@Body JsonObject var1);
+
+    @POST("api/FOCOrder/Get")
+    public Call<JsonObject> vieworderfoc(@Body JsonObject var1);
+    @POST("api/Chargeable/Get")
+    public Call<JsonObject> viewchargeable(@Body JsonObject var1);
 
     @POST("api/engineer/ping")
     public Call<JsonObject> postRawJSONping(@Body JsonObject var1);

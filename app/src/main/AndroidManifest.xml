@@ -35,7 +35,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".DetailsDailyReport2"></activity>
+        <activity android:name=".DetailsOrderCharge"></activity>
+        <activity android:name=".DetailsOrderFoc" />
+
+        <receiver android:name=".MyLocation" />
+
+        <activity android:name=".GetLocationSync" />
+        <activity android:name=".DetailsDailyReport2" />
         <activity android:name=".DailiReportListPM" />
         <activity android:name=".DailyReportAddPM" />
         <activity android:name=".DetailsDailyReport">

@@ -296,7 +296,18 @@ public class ListChat extends AppCompatActivity {
                 mstnya.setText(Html.fromHtml("<u>"+getString(R.string.title_detailchatst)+"</u>"));
                 mstnya.setVisibility(View.VISIBLE);
             }else {
-                mstnya.setVisibility(GONE);
+                if (module.equals("FOC")){
+                    mstnya.setText(Html.fromHtml("<u>"+getString(R.string.title_detailchatst)+"</u>"));
+                    mstnya.setVisibility(View.VISIBLE);
+                }else {
+                    if (module.equals("Chargeable")) {
+                        mstnya.setText(Html.fromHtml("<u>" + getString(R.string.title_detailchatst) + "</u>"));
+                        mstnya.setVisibility(View.VISIBLE);
+                    }else {
+                        mstnya.setVisibility(GONE);
+                    }
+                }
+
             }
 
         }
@@ -367,6 +378,51 @@ public class ListChat extends AppCompatActivity {
                     overridePendingTransition(R.anim.right_in, R.anim.left_out);
                     finish();
                 }else {
+                    if (module.equals("FOC")){
+                        Intent gotonews = new Intent(ListChat.this, DetailsOrderFoc.class);
+                        gotonews.putExtra("name",username);
+                        gotonews.putExtra("sessionnya",sessionnya);
+                        gotonews.putExtra("chat",chatin);
+                        gotonews.putExtra("user",name);
+                        gotonews.putExtra("id",modultrans);
+                        gotonews.putExtra("titlelist",titlelist);
+                        gotonews.putExtra("titlenya",titlenya);
+                        gotonews.putExtra("viewdetails",noreq);
+                        gotonews.putExtra("chats","yes");
+//                gotonews.putExtra("tokennya",token);
+                        gotonews.putExtra("engname", mcustname);
+                        gotonews.putExtra("nofr", mformRequestCd);
+                        gotonews.putExtra("xhori", xhori);
+                        gotonews.putExtra("yverti", yverti);
+                        gotonews.putExtra("scrolbawah","-");
+                        startActivity(gotonews);
+                        overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                        finish();
+                    }else {
+                        if (module.equals("Chargeable")) {
+                            Intent gotonews = new Intent(ListChat.this, DetailsST.class);
+                            gotonews.putExtra("name",username);
+                            gotonews.putExtra("sessionnya",sessionnya);
+                            gotonews.putExtra("chat",chatin);
+                            gotonews.putExtra("user",name);
+                            gotonews.putExtra("id",modultrans);
+                            gotonews.putExtra("titlelist",titlelist);
+                            gotonews.putExtra("titlenya",titlenya);
+                            gotonews.putExtra("viewdetails",noreq);
+                            gotonews.putExtra("chats","yes");
+//                gotonews.putExtra("tokennya",token);
+                            gotonews.putExtra("engname", mcustname);
+                            gotonews.putExtra("nofr", mformRequestCd);
+                            gotonews.putExtra("xhori", xhori);
+                            gotonews.putExtra("yverti", yverti);
+                            gotonews.putExtra("scrolbawah","-");
+                            startActivity(gotonews);
+                            overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                            finish();
+                        }else {
+                            mstnya.setVisibility(GONE);
+                        }
+                    }
 
                 }
 

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -54,6 +55,12 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 import com.sccengineer.apihelper.IRetrofit;
 import com.sccengineer.apihelper.ServiceGenerator;
 import com.sccengineer.menuhome.MenuAdapter;
@@ -88,7 +95,7 @@ public class ClockInActivity extends AppCompatActivity {
     String MsessionExpired = "";
     Boolean internet = false;
     Boolean exit = false;
-    String sesionid_new = "";
+    public static String sesionid_new = "";
     TextView mclockin,mnewnotif;
     ArrayList<NotifclockItems> notifhomeItems;
     OnProghome_adapter onProghome_adapter;
@@ -115,6 +122,9 @@ public class ClockInActivity extends AppCompatActivity {
     String knownName = "";
     FusedLocationProviderClient fusedLocationProviderClient;
     TextView mlatesclock,mnotif2,maprov;
+
+
+    TextView mloca;
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,6 +148,9 @@ public class ClockInActivity extends AppCompatActivity {
         rolecvalue.add("-");
         cekInternet();
         getSessionId();
+
+
+
         check.checknotif=1;
         if (internet){
 //            if (ActivityCompat.checkSelfPermission(ClockInActivity.this,
@@ -234,6 +247,8 @@ public class ClockInActivity extends AppCompatActivity {
                 }
             }
         });
+
+
         }
     public void logout(){
         loading = ProgressDialog.show(ClockInActivity.this, "", "", true);
@@ -806,4 +821,14 @@ public class ClockInActivity extends AppCompatActivity {
         });
         Log.d("clockinjs",jsonObject.toString());
     }
+
+
+//    public void updateloca(final String locanya){
+//        MainActivity.this.runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                mloca.setText(locanya);
+//            }
+//        });
+//    }
 }

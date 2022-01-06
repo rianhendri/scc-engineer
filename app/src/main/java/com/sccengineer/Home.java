@@ -13,6 +13,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -67,6 +68,12 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 import com.sccengineer.Chat.ItemUid;
 import com.sccengineer.Chat.Itemchat2;
 import com.sccengineer.apihelper.IRetrofit;
@@ -116,6 +123,10 @@ import static com.sccengineer.menuhome.MenuAdapter.countSC;
 import static com.sccengineer.menuhome.MenuAdapter.counter3;
 
 public class Home extends AppCompatActivity {
+    //location
+    static Home instance;
+    LocationRequest locationRequest;
+    //    FusedLocationProviderClient fusedLocationProviderClient;
     //adapter count notif live chat
     ListLiveChatAdapter addFormAdapterAdapter;
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -218,6 +229,29 @@ public class Home extends AppCompatActivity {
         mnotificationconfig.setLayoutManager(linearLayoutManager3);
         mnotificationconfig.setHasFixedSize(true);
         notifhomeItems = new ArrayList<NotifhomeItems>();
+
+        //location
+//        mloca = findViewById(R.id.loca);
+        instance = this;
+        Dexter.withActivity(this)
+                .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                .withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response) {
+                        updatelocation();
+                    }
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response) {
+                        Toast.makeText(Home.this, "wajib izin", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+
+                    }
+                }).check();
+
         cekInternet();
         getSessionId();
         check.checknotif=1;
@@ -1355,5 +1389,34 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
         });
         Log.d("livechatlistreq",jsonObject.toString());
     }
+    //locationauto
+    private void updatelocation() {
+        buildlocationrequest();
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        fusedLocationProviderClient.requestLocationUpdates(locationRequest, getPendingIntent());
+    }
+    private PendingIntent getPendingIntent(){
+        Log.d("lokasinya","pendinginten");
+        Intent intent = new Intent(this, MyLocation.class);
+        intent.setAction(MyLocation.ACTION_PROCESS_UPDATE);
+        return PendingIntent.getBroadcast(this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+    }
 
+    private void buildlocationrequest() {
+        locationRequest = new LocationRequest();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(5000);
+        locationRequest.setFastestInterval(3000);
+        locationRequest.setSmallestDisplacement(10f);
+    }
 }
