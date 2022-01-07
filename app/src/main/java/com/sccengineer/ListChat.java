@@ -400,7 +400,7 @@ public class ListChat extends AppCompatActivity {
                         finish();
                     }else {
                         if (module.equals("Chargeable")) {
-                            Intent gotonews = new Intent(ListChat.this, DetailsST.class);
+                            Intent gotonews = new Intent(ListChat.this, DetailsOrderCharge.class);
                             gotonews.putExtra("name",username);
                             gotonews.putExtra("sessionnya",sessionnya);
                             gotonews.putExtra("chat",chatin);
