@@ -85,51 +85,87 @@ public class MyLocation extends BroadcastReceiver {
                         SharedPreferences sharedPreferences = context.getSharedPreferences("SESSION_ID",MODE_PRIVATE);
                         sesionid_new = sharedPreferences.getString("session_id", "");
                         Log.d("session",sesionid_new);
-                        reqApi();
-                        if (clokin){
-                            JsonObject jsonObject = new JsonObject();
-                            jsonObject.addProperty("sessionId",sesionid_new);
-                            jsonObject.addProperty("longitude",String.valueOf(location.getLongitude()));
-                            jsonObject.addProperty("latitude",String.valueOf(location.getLatitude()));
-                            jsonObject.addProperty("ver",BuildConfig.VERSION_NAME);
-                            IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, baseurl);
-                            Call<JsonObject> panggilkomplek = jsonPostService.sendinfolocation(jsonObject);
-                            panggilkomplek.enqueue(new Callback<JsonObject>() {
-                                @RequiresApi(api = Build.VERSION_CODES.N)
-                                @Override
-                                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                        JsonObject jsonObject = new JsonObject();
+                        jsonObject.addProperty("sessionId",sesionid_new);
+                        jsonObject.addProperty("ver",BuildConfig.VERSION_NAME);
+                        IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, baseurl);
+                        Call<JsonObject> panggilkomplek = jsonPostService.postRawJSONconfig(jsonObject);
+                        panggilkomplek.enqueue(new Callback<JsonObject>() {
+                            @RequiresApi(api = Build.VERSION_CODES.N)
+                            @Override
+                            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
-                                    String errornya = "";
-                                    JsonObject homedata=response.body();
-                                    String statusnya = homedata.get("status").getAsString();
-                                    if (homedata.get("errorMessage").toString().equals("null")) {
+                                String errornya = "";
+                                JsonObject homedata=response.body();
+                                String statusnya = homedata.get("status").getAsString();
+                                if (homedata.get("errorMessage").toString().equals("null")) {
 
-                                    }else {
-                                        errornya = homedata.get("errorMessage").getAsString();
-                                    }
+                                }else {
+                                    errornya = homedata.get("errorMessage").getAsString();
+                                }
+//                jsonObject.addProperty("ver",ver);
+                                if (statusnya.equals("OK")) {
+                                    JsonObject data = homedata.getAsJsonObject("data");
+
+                                    clokin= data.get("alreadyClockIn").getAsBoolean();
+                                    Log.d("clok",String.valueOf(clokin));
+                                    if (data.get("alreadyClockIn").getAsBoolean()){
+                                        JsonObject jsonObject = new JsonObject();
+                                        jsonObject.addProperty("sessionId",sesionid_new);
+                                        jsonObject.addProperty("longitude",String.valueOf(location.getLongitude()));
+                                        jsonObject.addProperty("latitude",String.valueOf(location.getLatitude()));
+                                        jsonObject.addProperty("ver",BuildConfig.VERSION_NAME);
+                                        IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, baseurl);
+                                        Call<JsonObject> panggilkomplek = jsonPostService.sendinfolocation(jsonObject);
+                                        panggilkomplek.enqueue(new Callback<JsonObject>() {
+                                            @RequiresApi(api = Build.VERSION_CODES.N)
+                                            @Override
+                                            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                                                String errornya = "";
+                                                JsonObject homedata=response.body();
+                                                String statusnya = homedata.get("status").getAsString();
+                                                if (homedata.get("errorMessage").toString().equals("null")) {
+
+                                                }else {
+                                                    errornya = homedata.get("errorMessage").getAsString();
+                                                }
 //                                MhaveToUpdate = homedata.get("haveToUpdate").toString();
 //                                MsessionExpired = homedata.get("sessionExpired").toString();
 //                jsonObject.addProperty("ver",ver);
-                                    if (statusnya.equals("OK")) {
-                                        JsonObject data = homedata.getAsJsonObject("data");
-                                        Log.d("lokasinyaok",String.valueOf(location.getLongitude())+"//"+String.valueOf(location.getLatitude()));
+                                                if (statusnya.equals("OK")) {
+                                                    JsonObject data = homedata.getAsJsonObject("data");
+                                                    Log.d("lokasinyaok",String.valueOf(location.getLongitude())+"//"+String.valueOf(location.getLatitude()));
 
+                                                }else {
+                                                    Log.d("lokasinya",String.valueOf(location.getLongitude())+"//"+String.valueOf(location.getLatitude()));
+                                                    Log.d("lokasinyadata",homedata.toString());
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<JsonObject> call, Throwable t) {
+                                                Log.d("lokasinya",String.valueOf(location.getLongitude())+"//"+String.valueOf(location.getLatitude()));
+                                            }
+                                        });
+                                        Log.d("reqlokasi",jsonObject.toString());
+                                        Log.d("lokasi2",city+"-"+state);
+//                                        Log.d("clock1",String.valueOf(clokin));
                                     }else {
-                                        Log.d("lokasinya",String.valueOf(location.getLongitude())+"//"+String.valueOf(location.getLatitude()));
-                                        Log.d("lokasinyadata",homedata.toString());
+                                        Log.d("lokasi3","clokout");
+                                        Log.d("clock2",String.valueOf(clokin));
                                     }
+                                }else {
+                                    Log.d("logout","log out akun");
                                 }
+                            }
 
-                                @Override
-                                public void onFailure(Call<JsonObject> call, Throwable t) {
-                                    Log.d("lokasinya",String.valueOf(location.getLongitude())+"//"+String.valueOf(location.getLatitude()));
-                                }
-                            });
-                            Log.d("reqlokasi",jsonObject.toString());
-                            Log.d("lokasi2",city+"-"+state);
-                        }else {
-                            Log.d("lokasi3","clokout");
-                        }
+                            @Override
+                            public void onFailure(Call<JsonObject> call, Throwable t) {
+                            }
+                        });
+                        Log.d("reqconfig",jsonObject.toString());
+
 
                     } catch (Exception e) {
 
@@ -138,47 +174,49 @@ public class MyLocation extends BroadcastReceiver {
             }
         }
     }
-    public void reqApi() {
-//        loading = ProgressDialog.show(this, "", "", true);
-
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("sessionId",sesionid_new);
-        jsonObject.addProperty("ver",BuildConfig.VERSION_NAME);
-        IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, baseurl);
-        Call<JsonObject> panggilkomplek = jsonPostService.postRawJSONconfig(jsonObject);
-        panggilkomplek.enqueue(new Callback<JsonObject>() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-
-                String errornya = "";
-                JsonObject homedata=response.body();
-                String statusnya = homedata.get("status").getAsString();
-                if (homedata.get("errorMessage").toString().equals("null")) {
-
-                }else {
-                    errornya = homedata.get("errorMessage").getAsString();
-                }
-//                jsonObject.addProperty("ver",ver);
-                if (statusnya.equals("OK")) {
-                    JsonObject data = homedata.getAsJsonObject("data");
-
-                    clokin= data.get("alreadyClockIn").getAsBoolean();
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-//                mrefresh.setVisibility(View.VISIBLE);
-//                mcheck.setVisibility(View.GONE);
-//                Toast.makeText(ClockInActivity.this, getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
-//                cekInternet();
-//                loading.dismiss();
-            }
-        });
-
-    }
+//    public void reqApi() {
+////        loading = ProgressDialog.show(this, "", "", true);
+//
+//        JsonObject jsonObject = new JsonObject();
+//        jsonObject.addProperty("sessionId",sesionid_new);
+//        jsonObject.addProperty("ver",BuildConfig.VERSION_NAME);
+//        IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, baseurl);
+//        Call<JsonObject> panggilkomplek = jsonPostService.postRawJSONconfig(jsonObject);
+//        panggilkomplek.enqueue(new Callback<JsonObject>() {
+//            @RequiresApi(api = Build.VERSION_CODES.N)
+//            @Override
+//            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+//
+//                String errornya = "";
+//                JsonObject homedata=response.body();
+//                String statusnya = homedata.get("status").getAsString();
+//                if (homedata.get("errorMessage").toString().equals("null")) {
+//
+//                }else {
+//                    errornya = homedata.get("errorMessage").getAsString();
+//                }
+////                jsonObject.addProperty("ver",ver);
+//                if (statusnya.equals("OK")) {
+//                    JsonObject data = homedata.getAsJsonObject("data");
+//
+//                    clokin= data.get("alreadyClockIn").getAsBoolean();
+//                    Log.d("clok",String.valueOf(clokin));
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<JsonObject> call, Throwable t) {
+////                mrefresh.setVisibility(View.VISIBLE);
+////                mcheck.setVisibility(View.GONE);
+////                Toast.makeText(ClockInActivity.this, getString(R.string.title_excpetation),Toast.LENGTH_LONG).show();
+////                cekInternet();
+////                loading.dismiss();
+//            }
+//        });
+//        Log.d("reqconfig",jsonObject.toString());
+//
+//    }
     public void getSessionId(){
 
 

@@ -1415,8 +1415,8 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
     private void buildlocationrequest() {
         locationRequest = new LocationRequest();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(5000);
-        locationRequest.setFastestInterval(3000);
+        locationRequest.setInterval(15000);
+        locationRequest.setFastestInterval(13000);
         locationRequest.setSmallestDisplacement(10f);
     }
 }

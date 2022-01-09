@@ -297,11 +297,11 @@ public class ListChat extends AppCompatActivity {
                 mstnya.setVisibility(View.VISIBLE);
             }else {
                 if (module.equals("FOC")){
-                    mstnya.setText(Html.fromHtml("<u>"+getString(R.string.title_detailchatst)+"</u>"));
+                    mstnya.setText(Html.fromHtml("<u>"+"View detail"+"</u>"));
                     mstnya.setVisibility(View.VISIBLE);
                 }else {
                     if (module.equals("Chargeable")) {
-                        mstnya.setText(Html.fromHtml("<u>" + getString(R.string.title_detailchatst) + "</u>"));
+                        mstnya.setText(Html.fromHtml("<u>" + "View detail"+ "</u>"));
                         mstnya.setVisibility(View.VISIBLE);
                     }else {
                         mstnya.setVisibility(GONE);

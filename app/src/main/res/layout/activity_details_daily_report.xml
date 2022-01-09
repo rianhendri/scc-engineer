@@ -748,13 +748,13 @@
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp">
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_marginBottom="8dp">
 
@@ -774,6 +774,7 @@
                         android:layout_alignParentBottom="true"
                         android:layout_marginBottom="2dp"
                         android:enabled="false"
+                        android:layout_marginTop="12dp"
                         android:fontFamily="@font/opensanslight"
                         android:gravity="top"
                         android:paddingLeft="4dp"
