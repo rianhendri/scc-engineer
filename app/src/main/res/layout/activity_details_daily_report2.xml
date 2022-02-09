@@ -712,6 +712,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Quantity"
+                            android:gravity="center"
                             android:textColor="@color/dwhite"
                             android:fontFamily="@font/opensansbold"
                             android:textSize="15sp"/>

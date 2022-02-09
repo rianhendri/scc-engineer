@@ -42,7 +42,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.sccengineer.R;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Currency;
 
 public class DetailsDailyAdapter4
 extends RecyclerView.Adapter<DetailsDailyAdapter4.Myviewholder> {
@@ -66,9 +70,12 @@ extends RecyclerView.Adapter<DetailsDailyAdapter4.Myviewholder> {
 
     @Override
     public void onBindViewHolder(@NonNull Myviewholder myviewholder, int i) {
+//        addFromItem.get(0).setTotal("$ 1,400.00");
+//        addFromItem.get(1).setTotal("$ 2,100.00");
         myviewholder.msparepartname.setText(addFromItem.get(i).getSparePartCd());
         myviewholder.mqty.setText(addFromItem.get(i).getQuantity());
         myviewholder.mno.setText(String.valueOf(i+1));
+//        myviewholder.mtotal.setText(addFromItem.get(i).getTotal());
     }
 
     @Override
@@ -78,13 +85,15 @@ extends RecyclerView.Adapter<DetailsDailyAdapter4.Myviewholder> {
 
     public class Myviewholder extends RecyclerView.ViewHolder{
 
-        TextView mdatedaily, msttitledaily,mpresstypedaily,mpressstatudaily,mhtml,msndaily,mcaseiddaily,mcaseprogressdaily,msparepartname,mqty,mno;
+        TextView mprice,mtotal,mdatedaily, msttitledaily,mpresstypedaily,mpressstatudaily,mhtml,msndaily,mcaseiddaily,mcaseprogressdaily,msparepartname,mqty,mno;
 
         public Myviewholder(@NonNull View itemView) {
             super(itemView);
             msparepartname = itemView.findViewById(R.id.sparepartname);
             mqty = itemView.findViewById(R.id.qty);
             mno = itemView.findViewById(R.id.nono);
+            mprice = itemView.findViewById(R.id.price);
+//            mtotal = itemView.findViewById(R.id.total);
 
         }
     }

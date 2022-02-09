@@ -713,9 +713,48 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Quantity"
+                            android:gravity="center"
                             android:textColor="@color/dwhite"
                             android:fontFamily="@font/opensansbold"
                             android:textSize="15sp"/>
+<!--                        <TextView-->
+<!--                            android:layout_width="30dp"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="No"-->
+<!--                            android:textColor="@color/dwhite"-->
+<!--                            android:fontFamily="@font/opensansbold"-->
+<!--                            android:textSize="15sp"/>-->
+<!--                        <TextView-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_weight="1"-->
+<!--                            android:text="Sparepart"-->
+<!--                            android:textColor="@color/dwhite"-->
+<!--                            android:fontFamily="@font/opensansbold"-->
+<!--                            android:textSize="15sp"/>-->
+<!--                        <TextView-->
+<!--                            android:layout_width="60sp"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="Price"-->
+<!--                            android:textColor="@color/dwhite"-->
+<!--                            android:fontFamily="@font/opensansbold"-->
+<!--                            android:textSize="15sp"/>-->
+<!--                        <TextView-->
+<!--                            android:layout_width="50dp"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="Qty"-->
+<!--                            android:gravity="center"-->
+<!--                            android:textColor="@color/dwhite"-->
+<!--                            android:fontFamily="@font/opensansbold"-->
+<!--                            android:textSize="15sp"/>-->
+<!--                        <TextView-->
+<!--                            android:layout_width="60dp"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="Total"-->
+<!--                            android:gravity="center"-->
+<!--                            android:textColor="@color/dwhite"-->
+<!--                            android:fontFamily="@font/opensansbold"-->
+<!--                            android:textSize="15sp"/>-->
 
                     </LinearLayout>
                     <TextView
@@ -743,7 +782,33 @@
                         android:scrollbars="none" >
                     </androidx.recyclerview.widget.RecyclerView>
 
-
+                    <LinearLayout
+                        android:visibility="gone"
+                        android:paddingLeft="24dp"
+                        android:paddingRight="24dp"
+                        android:paddingBottom="4dp"
+                        android:paddingTop="4dp"
+                        android:layout_marginBottom="24dp"
+                        android:background="@color/darkgrey"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Grand Total"
+                            android:layout_weight="1"
+                            android:textColor="@color/black"
+                            android:fontFamily="@font/opensansbold"
+                            android:textSize="15sp"/>
+                        <TextView
+                            android:layout_width="70dp"
+                            android:layout_height="wrap_content"
+                            android:text="$ 3,500.00"
+                            android:textColor="@color/black"
+                            android:fontFamily="@font/opensansbold"
+                            android:textSize="15sp"/>
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout

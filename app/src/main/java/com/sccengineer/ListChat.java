@@ -1213,13 +1213,36 @@ public class ListChat extends AppCompatActivity {
 
     }
     public void gallery( ) {
-        Intent mediaChooser = new Intent(Intent.ACTION_PICK);
+        if (Build.VERSION.SDK_INT < 25) {
+            Intent mediaChooser = new Intent(Intent.ACTION_PICK);
+//comma-separated MIME types
+            mediaChooser.setType("video/*, image/*");
+            startActivityForResult(mediaChooser, REQUEST_IMAGE_GALLERY);
+//        Intent imageIntentGallery = new Intent(Intent.ACTION_PICK,
+//                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//        startActivityForResult(imageIntentGallery, REQUEST_IMAGE_GALLERY);
+//            String[] mimetypes = {"image/*", "video/*"};
+//            mediaChooser.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);
+            photo_location=mediaChooser.getData();
+        } else {
+            Intent i = new Intent(Intent.ACTION_PICK);
+            i.setType("*/*");
 
-        mediaChooser.setType("video/*, image/*");
-        startActivityForResult(mediaChooser, REQUEST_IMAGE_GALLERY);
+            String[] mimetypes = {"image/*", "video/*"};
+            i.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);
+            startActivityForResult(i, REQUEST_IMAGE_GALLERY);
+            Log.d("urinya",String.valueOf(i.getData()));
+            photo_location=i.getData();
+        }
 
-
-        photo_location=mediaChooser.getData();
+//
+//        Intent mediaChooser = new Intent(Intent.ACTION_PICK);
+//
+//        mediaChooser.setType("video/*, image/*");
+//        startActivityForResult(mediaChooser, REQUEST_IMAGE_GALLERY);
+//
+//
+//        photo_location=mediaChooser.getData();
 
     }
     @Override
