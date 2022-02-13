@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="320dp"
-	android:layout_height="470dp"
+	android:layout_height="wrap_content"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	android:background="@color/dwhite"
 	android:orientation="vertical"
@@ -282,281 +282,353 @@
 
 <!--		</LinearLayout>-->
 <!--	</HorizontalScrollView>-->
-
+<ScrollView
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content">
 	<LinearLayout
-		android:layout_width="match_parent"
+		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:orientation="vertical" >
-
-		<TextView
+		android:orientation="vertical">
+		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:fontFamily="@font/seguisb"
-			android:paddingLeft="4dp"
-			android:text="Item:"
-			android:textColor="@color/black"
-			android:textSize="12sp" />
+			android:orientation="vertical" >
 
-		<TextView
-			android:id="@+id/namespar"
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:fontFamily="@font/seguisb"
+				android:paddingLeft="4dp"
+				android:text="Item:"
+				android:textColor="@color/black"
+				android:textSize="12sp" />
+
+			<TextView
+				android:id="@+id/namespar"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:enabled="false"
+				android:fontFamily="@font/segoeui"
+				android:paddingLeft="4dp"
+				android:text="-"
+				android:textColor="@color/black"
+				android:textSize="13sp" />
+
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:layout_margin="4dp"
+				android:background="@color/softgrey" />
+		</LinearLayout>
+		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:enabled="false"
-			android:fontFamily="@font/segoeui"
-			android:paddingLeft="4dp"
-			android:text="-"
-			android:textColor="@color/black"
-			android:textSize="13sp" />
+			android:orientation="vertical" >
 
-		<View
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:fontFamily="@font/seguisb"
+				android:paddingLeft="4dp"
+				android:text="Price:"
+				android:textColor="@color/black"
+				android:textSize="12sp" />
+
+			<EditText
+				android:id="@+id/pricedialog"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:fontFamily="@font/segoeui"
+				android:paddingLeft="4dp"
+				android:text="-"
+				android:background="@color/transparent"
+				android:textColor="@color/black"
+				android:textSize="13sp" />
+
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:layout_margin="4dp"
+				android:background="@color/softgrey" />
+		</LinearLayout>
+		<LinearLayout
 			android:layout_width="match_parent"
-			android:layout_height="1dp"
-			android:layout_margin="4dp"
-			android:background="@color/softgrey" />
+			android:layout_height="wrap_content"
+			android:orientation="vertical" >
+
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:fontFamily="@font/seguisb"
+				android:paddingLeft="4dp"
+				android:text="Qty:"
+				android:textColor="@color/black"
+				android:textSize="12sp" />
+
+			<EditText
+				android:id="@+id/qtysper"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:fontFamily="@font/segoeui"
+				android:paddingLeft="4dp"
+				android:inputType="number"
+				android:digits="0123456789"
+				android:text="-"
+				android:background="@color/transparent"
+				android:textColor="@color/black"
+				android:textSize="13sp" />
+
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:layout_margin="4dp"
+				android:background="@color/softgrey" />
+		</LinearLayout>
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical" >
+
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:fontFamily="@font/seguisb"
+				android:paddingLeft="4dp"
+				android:text="Total:"
+				android:textColor="@color/black"
+				android:textSize="12sp" />
+
+			<EditText
+				android:id="@+id/totaldialog"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:fontFamily="@font/segoeui"
+				android:paddingLeft="4dp"
+				android:text="-"
+				android:enabled="false"
+				android:background="@color/transparent"
+				android:textColor="@color/black"
+				android:textSize="13sp" />
+
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:layout_margin="4dp"
+				android:background="@color/softgrey" />
+		</LinearLayout>
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical" >
+
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:fontFamily="@font/seguisb"
+				android:paddingLeft="4dp"
+				android:text="Reason:"
+				android:textColor="@color/black"
+				android:textSize="12sp" />
+
+			<EditText
+				android:id="@+id/reason"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:fontFamily="@font/segoeui"
+				android:paddingLeft="4dp"
+				android:text="-"
+				android:maxLength="100"
+				android:background="@color/transparent"
+				android:textColor="@color/black"
+				android:textSize="13sp" />
+
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:layout_margin="4dp"
+				android:background="@color/softgrey" />
+		</LinearLayout>
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical" >
+
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:fontFamily="@font/seguisb"
+				android:paddingLeft="4dp"
+				android:text="Case ID:"
+				android:textColor="@color/black"
+				android:textSize="12sp" />
+
+			<EditText
+				android:id="@+id/caseid"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:fontFamily="@font/segoeui"
+				android:paddingLeft="4dp"
+				android:text="-"
+				android:maxLength="15"
+				android:background="@color/transparent"
+				android:textColor="@color/black"
+				android:textSize="13sp" />
+
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:layout_margin="4dp"
+				android:background="@color/softgrey" />
+		</LinearLayout>
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical" >
+
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:fontFamily="@font/seguisb"
+				android:paddingLeft="4dp"
+				android:text="Order date:"
+				android:textColor="@color/black"
+				android:textSize="12sp" />
+
+			<TextView
+				android:id="@+id/orderdate"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:enabled="false"
+				android:fontFamily="@font/segoeui"
+				android:paddingLeft="4dp"
+				android:text="-"
+				android:textColor="@color/black"
+				android:textSize="13sp" />
+
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:layout_margin="4dp"
+				android:background="@color/softgrey" />
+		</LinearLayout>
+		<LinearLayout
+			android:id="@+id/installdate2"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical" >
+
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:fontFamily="@font/seguisb"
+				android:paddingLeft="4dp"
+				android:text="Install date:"
+				android:textColor="@color/black"
+				android:textSize="12sp" />
+
+			<TextView
+				android:id="@+id/installdate"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:enabled="false"
+				android:fontFamily="@font/segoeui"
+				android:paddingLeft="4dp"
+				android:text="-"
+				android:background="@color/transparent"
+				android:textColor="@color/black"
+				android:textSize="13sp" />
+
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:layout_margin="4dp"
+				android:background="@color/softgrey" />
+		</LinearLayout>
+		<LinearLayout
+
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical" >
+
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:fontFamily="@font/seguisb"
+				android:paddingLeft="4dp"
+				android:text="Status"
+				android:textColor="@color/black"
+				android:textSize="12sp" />
+
+			<TextView
+				android:id="@+id/statusspernya"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:enabled="false"
+				android:fontFamily="@font/segoeui"
+				android:paddingLeft="4dp"
+				android:text="-"
+				android:background="@color/transparent"
+				android:textColor="@color/black"
+				android:textSize="13sp" />
+
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:layout_margin="4dp"
+				android:background="@color/softgrey" />
+		</LinearLayout>
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical" >
+
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:fontFamily="@font/seguisb"
+				android:paddingLeft="4dp"
+				android:text="Stock:"
+				android:textColor="@color/black"
+				android:textSize="12sp" />
+
+			<TextView
+				android:id="@+id/stockres"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:fontFamily="@font/segoeui"
+				android:paddingLeft="4dp"
+				android:inputType="number"
+				android:digits="0123456789"
+				android:text="-"
+				android:background="@color/transparent"
+				android:textColor="@color/black"
+				android:textSize="13sp" />
+
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:layout_margin="4dp"
+				android:background="@color/softgrey" />
+		</LinearLayout>
+		<LinearLayout
+			android:id="@+id/updateedit"
+			android:layout_width="match_parent"
+			android:layout_height="30dp"
+			android:layout_marginTop="24dp"
+			android:layout_marginRight="12dp"
+			android:layout_marginBottom="22dp"
+			android:background="@drawable/bg_cornergrey"
+			android:gravity="center">
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:fontFamily="@font/segoeui"
+				android:text="Change"
+				android:textColor="@color/black"
+				android:textSize="13sp" />
+		</LinearLayout>
 	</LinearLayout>
-	<LinearLayout
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:orientation="vertical" >
+</ScrollView>
 
-		<TextView
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:fontFamily="@font/seguisb"
-			android:paddingLeft="4dp"
-			android:text="Qty:"
-			android:textColor="@color/black"
-			android:textSize="12sp" />
-
-		<EditText
-			android:id="@+id/qtysper"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:fontFamily="@font/segoeui"
-			android:paddingLeft="4dp"
-			android:inputType="number"
-			android:digits="0123456789"
-			android:text="-"
-			android:background="@color/transparent"
-			android:textColor="@color/black"
-			android:textSize="13sp" />
-
-		<View
-			android:layout_width="match_parent"
-			android:layout_height="1dp"
-			android:layout_margin="4dp"
-			android:background="@color/softgrey" />
-	</LinearLayout>
-
-	<LinearLayout
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:orientation="vertical" >
-
-		<TextView
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:fontFamily="@font/seguisb"
-			android:paddingLeft="4dp"
-			android:text="Reason:"
-			android:textColor="@color/black"
-			android:textSize="12sp" />
-
-		<EditText
-			android:id="@+id/reason"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:fontFamily="@font/segoeui"
-			android:paddingLeft="4dp"
-			android:text="-"
-			android:maxLength="100"
-			android:background="@color/transparent"
-			android:textColor="@color/black"
-			android:textSize="13sp" />
-
-		<View
-			android:layout_width="match_parent"
-			android:layout_height="1dp"
-			android:layout_margin="4dp"
-			android:background="@color/softgrey" />
-	</LinearLayout>
-	<LinearLayout
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:orientation="vertical" >
-
-		<TextView
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:fontFamily="@font/seguisb"
-			android:paddingLeft="4dp"
-			android:text="Case ID:"
-			android:textColor="@color/black"
-			android:textSize="12sp" />
-
-		<EditText
-			android:id="@+id/caseid"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:fontFamily="@font/segoeui"
-			android:paddingLeft="4dp"
-			android:text="-"
-			android:maxLength="15"
-			android:background="@color/transparent"
-			android:textColor="@color/black"
-			android:textSize="13sp" />
-
-		<View
-			android:layout_width="match_parent"
-			android:layout_height="1dp"
-			android:layout_margin="4dp"
-			android:background="@color/softgrey" />
-	</LinearLayout>
-	<LinearLayout
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:orientation="vertical" >
-
-		<TextView
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:fontFamily="@font/seguisb"
-			android:paddingLeft="4dp"
-			android:text="Order date:"
-			android:textColor="@color/black"
-			android:textSize="12sp" />
-
-		<TextView
-			android:id="@+id/orderdate"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:enabled="false"
-			android:fontFamily="@font/segoeui"
-			android:paddingLeft="4dp"
-			android:text="-"
-			android:textColor="@color/black"
-			android:textSize="13sp" />
-
-		<View
-			android:layout_width="match_parent"
-			android:layout_height="1dp"
-			android:layout_margin="4dp"
-			android:background="@color/softgrey" />
-	</LinearLayout>
-	<LinearLayout
-		android:id="@+id/installdate2"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:orientation="vertical" >
-
-		<TextView
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:fontFamily="@font/seguisb"
-			android:paddingLeft="4dp"
-			android:text="Install date:"
-			android:textColor="@color/black"
-			android:textSize="12sp" />
-
-		<TextView
-			android:id="@+id/installdate"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:enabled="false"
-			android:fontFamily="@font/segoeui"
-			android:paddingLeft="4dp"
-			android:text="-"
-			android:background="@color/transparent"
-			android:textColor="@color/black"
-			android:textSize="13sp" />
-
-		<View
-			android:layout_width="match_parent"
-			android:layout_height="1dp"
-			android:layout_margin="4dp"
-			android:background="@color/softgrey" />
-	</LinearLayout>
-	<LinearLayout
-
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:orientation="vertical" >
-
-		<TextView
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:fontFamily="@font/seguisb"
-			android:paddingLeft="4dp"
-			android:text="Status"
-			android:textColor="@color/black"
-			android:textSize="12sp" />
-
-		<TextView
-			android:id="@+id/statusspernya"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:enabled="false"
-			android:fontFamily="@font/segoeui"
-			android:paddingLeft="4dp"
-			android:text="-"
-			android:background="@color/transparent"
-			android:textColor="@color/black"
-			android:textSize="13sp" />
-
-		<View
-			android:layout_width="match_parent"
-			android:layout_height="1dp"
-			android:layout_margin="4dp"
-			android:background="@color/softgrey" />
-	</LinearLayout>
-	<LinearLayout
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:orientation="vertical" >
-
-		<TextView
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:fontFamily="@font/seguisb"
-			android:paddingLeft="4dp"
-			android:text="Stock:"
-			android:textColor="@color/black"
-			android:textSize="12sp" />
-
-		<TextView
-			android:id="@+id/stockres"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:fontFamily="@font/segoeui"
-			android:paddingLeft="4dp"
-			android:inputType="number"
-			android:digits="0123456789"
-			android:text="-"
-			android:background="@color/transparent"
-			android:textColor="@color/black"
-			android:textSize="13sp" />
-
-		<View
-			android:layout_width="match_parent"
-			android:layout_height="1dp"
-			android:layout_margin="4dp"
-			android:background="@color/softgrey" />
-	</LinearLayout>
-	<LinearLayout
-		android:id="@+id/updateedit"
-		android:layout_width="match_parent"
-		android:layout_height="30dp"
-		android:layout_marginTop="24dp"
-		android:layout_marginRight="12dp"
-		android:background="@drawable/bg_cornergrey"
-		android:gravity="center">
-
-		<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:fontFamily="@font/segoeui"
-			android:text="Change"
-			android:textColor="@color/black"
-			android:textSize="13sp" />
-	</LinearLayout>
 </LinearLayout>

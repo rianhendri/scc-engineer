@@ -42,6 +42,7 @@ import com.sccengineer.detailsdailyreport.DetailsDailyItem5;
 import com.sccengineer.messagecloud.check;
 
 import java.lang.reflect.Type;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -93,6 +94,9 @@ public class DetailsDailyReport2 extends AppCompatActivity {
     RecyclerView myitem_place1,myitem_place2,myitem_place3,myitem_place4,myitem_place5;
     int page = 1;
     int pos = 0;
+    public static Double GRrandprie=0.0;
+    LinearLayout mlayoutgrandtotal;
+    public static TextView mgrandtotal2;
     boolean refreshscroll = true;
     String sesionid_new = "";
     String reportcd = "";
@@ -115,6 +119,8 @@ public class DetailsDailyReport2 extends AppCompatActivity {
         myitem_place2 = findViewById(R.id.tindakanlist);
         myitem_place3 = findViewById(R.id.langkahlanjutanlist);
         myitem_place4 = findViewById(R.id.sperpartdaily);
+        mgrandtotal2 = findViewById(R.id.grandtotal);
+        mlayoutgrandtotal = findViewById(R.id.layoutgrandtotal);
         myitem_place5 = findViewById(R.id.createdby);
 
         mcaseid = findViewById(R.id.caseid);
@@ -299,6 +305,9 @@ public class DetailsDailyReport2 extends AppCompatActivity {
                         myitem_place4.setAdapter(addFormAdapterAdapter4);
                         myitem_place4.setVisibility(View.VISIBLE);
                         mtanpasper.setVisibility(View.GONE);
+                        mlayoutgrandtotal.setVisibility(View.VISIBLE);
+                        Locale locale = new Locale("en", "US");
+                        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
                     }
                     if (data.getAsJsonArray("createdBy").toString().equals("[]")){
                         mtanpasper.setVisibility(View.VISIBLE);

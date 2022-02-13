@@ -8,8 +8,8 @@ android {
         applicationId "com.sccengineer"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 28
-        versionName "1.2.6"
+        versionCode 29
+        versionName "1.2.7"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

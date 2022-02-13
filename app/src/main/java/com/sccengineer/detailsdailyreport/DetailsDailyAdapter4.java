@@ -31,6 +31,7 @@
 package com.sccengineer.detailsdailyreport;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +48,12 @@ import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Currency;
+import java.util.Locale;
+
+import static com.sccengineer.DetailsDailyReport.GRrandprie;
+import static com.sccengineer.DetailsDailyReport.grand2;
+import static com.sccengineer.DetailsDailyReport.mgrandtotal;
+import static com.sccengineer.DetailsDailyReport2.mgrandtotal2;
 
 public class DetailsDailyAdapter4
 extends RecyclerView.Adapter<DetailsDailyAdapter4.Myviewholder> {
@@ -75,6 +82,33 @@ extends RecyclerView.Adapter<DetailsDailyAdapter4.Myviewholder> {
         myviewholder.msparepartname.setText(addFromItem.get(i).getSparePartCd());
         myviewholder.mqty.setText(addFromItem.get(i).getQuantity());
         myviewholder.mno.setText(String.valueOf(i+1));
+        //Price Total
+        if (addFromItem.get(i).getPricePerQty()==null){
+            myviewholder.mprice.setText("");
+            myviewholder.mtotal.setText("");
+        }else {
+            Locale locale = new Locale("en", "US");
+            NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
+            myviewholder.mprice.setText(currencyFormatter.format(Double.valueOf(addFromItem.get(i).getPricePerQty())));
+            Locale locale2 = new Locale("en", "US");
+            NumberFormat currencyFormatter2 = NumberFormat.getCurrencyInstance(locale2);
+            myviewholder.mtotal.setText(currencyFormatter2.format(Double.valueOf(addFromItem.get(i).getPricePerQty())*
+                    Integer.parseInt(myviewholder.mqty.getText().toString())));
+            GRrandprie += Double.valueOf(addFromItem.get(i).getPricePerQty())*
+                    Integer.parseInt(myviewholder.mqty.getText().toString());
+            mgrandtotal.setText(currencyFormatter.format(Double.valueOf(GRrandprie)));
+            if (grand2){
+                mgrandtotal2.setText(currencyFormatter.format(Double.valueOf(GRrandprie)));
+            }
+
+            Log.d("grandtotal",String.valueOf(GRrandprie));
+//            myviewholder.mpricea.setText("$"+String.valueOf(new DecimalFormat("##,###,###.00").format(Double.valueOf(addFoclistitem.get(i).getPricePerQty()))));
+//            myviewholder.mtotalpricea.setText("$"+String.valueOf(new DecimalFormat("##,###,###.00").format(Double.valueOf(addFoclistitem.get(i).getPricePerQty())*
+//                    Integer.parseInt(myviewholder.mqtysper.getText().toString()))));
+            if ( myviewholder.mtotal.getText().toString().equals("$,00")){
+                myviewholder.mtotal.setText("$0");
+            }
+        }
 //        myviewholder.mtotal.setText(addFromItem.get(i).getTotal());
     }
 
@@ -93,7 +127,7 @@ extends RecyclerView.Adapter<DetailsDailyAdapter4.Myviewholder> {
             mqty = itemView.findViewById(R.id.qty);
             mno = itemView.findViewById(R.id.nono);
             mprice = itemView.findViewById(R.id.price);
-//            mtotal = itemView.findViewById(R.id.total);
+            mtotal = itemView.findViewById(R.id.total);
 
         }
     }

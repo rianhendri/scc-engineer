@@ -57,15 +57,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.sccengineer.CurrencyEditText;
 import com.sccengineer.DetailsST;
 import com.sccengineer.R;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
+import static com.sccengineer.DetailsDailyReport.GRrandprie;
 import static com.sccengineer.DetailsST.dialog;
 import static com.sccengineer.DetailsST.jsonarayitem;
 import static com.sccengineer.DetailsST.mpartlist;
@@ -92,9 +96,12 @@ extends RecyclerView.Adapter<SendSparepart_adapter.Myviewholder> {
     int qtyedit=0;
     Integer nonreserv=null;
     Integer qtystc=null;
+    boolean editprice=false;
+    String price = "";
      Dialog dialogedit;
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
     TextView mnamesparedit,mqtysperedit2,mcaseidedit2,mreasonedit2,morderdateedit,minstalldateedit, mstatusedit,mstockres;
+    EditText mpricedialog,mtotaldialog;
     LinearLayout minstalldateedit2;
     final Calendar myCalendar = Calendar.getInstance();
     int posedit=0;
@@ -102,6 +109,8 @@ extends RecyclerView.Adapter<SendSparepart_adapter.Myviewholder> {
     LinearLayout mupdateeditedit;
     boolean stsS = true;
     boolean usingMatrix = true;
+    String priceconvert="0";
+    Double pricedbl=0.00;
     public SendSparepart_adapter(Context context, ArrayList<SendSparepart_item> addFoclistitem) {
         this.context = context;
         this.addFoclistitem = addFoclistitem;
@@ -209,6 +218,8 @@ extends RecyclerView.Adapter<SendSparepart_adapter.Myviewholder> {
             public void onClick(View v) {
                 nonreserv = addFoclistitem.get(i).getNonReservedStock();
                 qtystc = addFoclistitem.get(i).getQuantity();
+                editprice=addFoclistitem.get(i).isPriceedit();
+                price= String.valueOf(addFoclistitem.get(i).getPricePerQty());
 //                Toast.makeText(context, String.valueOf(nonreserv), Toast.LENGTH_SHORT).show();
 
                 stsedit = addFoclistitem.get(i).isStsAllowEdit();
@@ -243,6 +254,43 @@ extends RecyclerView.Adapter<SendSparepart_adapter.Myviewholder> {
 //                }
             }
         });
+        //Price Total
+        if (addFoclistitem.get(i).getPricePerQty()==null){
+            myviewholder.mpricea.setText("");
+            myviewholder.mtotalpricea.setText("");
+        }else {
+            Locale locale = new Locale("en", "US");
+            NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
+            myviewholder.mpricea.setText(currencyFormatter.format(Double.valueOf(addFoclistitem.get(i).getPricePerQty())));
+            Locale locale2 = new Locale("en", "US");
+            NumberFormat currencyFormatter2 = NumberFormat.getCurrencyInstance(locale2);
+            myviewholder.mtotalpricea.setText(currencyFormatter2.format(Double.valueOf(addFoclistitem.get(i).getPricePerQty())*
+                    Integer.parseInt(myviewholder.mqtysper.getText().toString())));
+
+//            myviewholder.mpricea.setText("$"+String.valueOf(new DecimalFormat("##,###,###.00").format(Double.valueOf(addFoclistitem.get(i).getPricePerQty()))));
+//            myviewholder.mtotalpricea.setText("$"+String.valueOf(new DecimalFormat("##,###,###.00").format(Double.valueOf(addFoclistitem.get(i).getPricePerQty())*
+//                    Integer.parseInt(myviewholder.mqtysper.getText().toString()))));
+            if ( myviewholder.mtotalpricea.getText().toString().equals("$,00")){
+                myviewholder.mtotalpricea.setText("$0");
+            }
+        }
+
+
+        // stock
+        nonreserv = addFoclistitem.get(i).getNonReservedStock();
+        qtystc = addFoclistitem.get(i).getQuantity();
+        if (addFoclistitem.get(i).getNonReservedStock()==null){
+            myviewholder.mstock.setText("-");
+        }else {
+            if (addFoclistitem.get(i).getNonReservedStock()<qtystc){
+                myviewholder.mstock.setText("Order");
+            }else {
+                if (nonreserv>qtystc){
+                    myviewholder.mstock.setText("Reserved");
+                }
+            }
+
+        }
         myviewholder.mdelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -295,14 +343,17 @@ extends RecyclerView.Adapter<SendSparepart_adapter.Myviewholder> {
 
     public static class Myviewholder extends RecyclerView.ViewHolder{
         LinearLayout mlayoutsperpart;
+        EditText mpricea,mtotalpricea;
         TextView mnamespar;
         ImageView mdelete,mdelete2;
-        TextView mno,mcd,morderdate,minstalldate,mstockres;
+        TextView mno,mcd,morderdate,minstalldate,mstockres,mstock;
         TextView mqtysper,mreason,mcaseid,mstatussper;
         public Myviewholder(@NonNull View itemView) {
             super(itemView);
             mnamespar = itemView.findViewById(R.id.namespar);
-
+            mstock = itemView.findViewById(R.id.stock);
+            mpricea = itemView.findViewById(R.id.pricea);
+            mtotalpricea = itemView.findViewById(R.id.totalpricea);
             mlayoutsperpart = itemView.findViewById(R.id.layoutsperpart);
             mdelete = itemView.findViewById(R.id.deletelist);
             mdelete2 = itemView.findViewById(R.id.deletelist2);
@@ -326,6 +377,8 @@ extends RecyclerView.Adapter<SendSparepart_adapter.Myviewholder> {
 //        msearch = dialog.findViewById(R.id.searchitem);
 //        mpartlist = dialog.findViewById(R.id.listadditemfoc);
         mnamesparedit = dialogedit.findViewById(R.id.namespar);
+        mpricedialog = dialogedit.findViewById(R.id.pricedialog);
+        mtotaldialog = dialogedit.findViewById(R.id.totaldialog);
 //        mqtysperedit2 = dialogedit.findViewById(R.id.qtysper2);
         mqtysperedit = dialogedit.findViewById(R.id.qtysper);
         mreasonedit = dialogedit.findViewById(R.id.reason);
@@ -352,6 +405,80 @@ extends RecyclerView.Adapter<SendSparepart_adapter.Myviewholder> {
 
         };
 //        Toast.makeText(context, String.valueOf(nonreserv), Toast.LENGTH_SHORT).show();
+
+//        mpricedialog.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                if (mpricedialog.getText().toString().equals("$")){
+//                    priceconvert="0";
+//                    mtotaldialog.setText("$0");
+//
+//                }
+//                if (mpricedialog.getText().toString().length()==1){
+//                    priceconvert="0";
+//                    mtotaldialog.setText("$0");
+//
+//                }else if (mpricedialog.getText().toString().length()==1){
+//                    priceconvert="0";
+//                    mtotaldialog.setText("$0");
+//                } else {
+//                    priceconvert=mpricedialog.getText().toString().replace("$","");
+//                    priceconvert=priceconvert.replace(",","");
+//                    if (priceconvert.equals("0")){
+//                        pricedbl=0.0;
+//                    }else {
+//                        if (priceconvert.isEmpty()){
+//                            pricedbl=0.0;
+//                        }else {
+//                            if (priceconvert.equals(".")){
+//
+//                            }else {
+//                                pricedbl = Double.valueOf(priceconvert);
+//                            }
+//
+//                        }
+//
+//                    }
+//
+//                    if (mqtysperedit.length()!=0){
+//                        if (mtotaldialog.getText().equals("$")){
+//                            mtotaldialog.setText("$0");
+//                        }else {
+//                            mtotaldialog.setText("$"+String.valueOf(new DecimalFormat("##.00").format(pricedbl*Integer.parseInt(mqtysperedit.getText().toString()))));
+//                            if (mtotaldialog.getText().toString().equals("$,00")){
+//                                mtotaldialog.setText("$0");
+//                            }
+//
+//
+//                        }
+//                    }else {
+//                        mtotaldialog.setText("$0");
+//                    }
+//
+//                }
+//                Log.d("convertaa",String.valueOf(pricedbl));
+//
+//
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+////                if (s.toString().length() == 2 && s.toString().startsWith(".")) {
+////                    s.clear();
+////                }
+//                if (mpricedialog.getText().toString().equals("$")){
+//                    priceconvert="0";
+//                    mtotaldialog.setText("$0");
+//
+//                }
+//            }
+//        });
         if (nonreserv==null){
             mstockres.setText("-");
         }else {
@@ -500,6 +627,68 @@ extends RecyclerView.Adapter<SendSparepart_adapter.Myviewholder> {
                     }else {
 
                     }
+                    if (mpricedialog.getText().toString().length()==1){
+                        priceconvert="0";
+                        mtotaldialog.setText("$0");
+                        if (mtotaldialog.getText().toString().equals("$,00")){
+                            mtotaldialog.setText("$0");
+                        }
+                    }else if (mpricedialog.getText().toString().length()==1){
+                        priceconvert="0";
+                        mtotaldialog.setText("$0");
+                        if (mtotaldialog.getText().toString().equals("$,00")){
+                            mtotaldialog.setText("$0");
+                        }
+                    } else {
+                        priceconvert=mpricedialog.getText().toString().replace("$","");
+                        priceconvert=priceconvert.replace(",","");
+                        if (priceconvert.equals("0")){
+                            pricedbl=0.0;
+                        }else {
+                            if (priceconvert.isEmpty()){
+                                pricedbl=0.0;
+                            }else {
+                                if (priceconvert.equals(".")){
+
+                                }else {
+                                    pricedbl = Double.valueOf(priceconvert);
+                                }
+
+                            }
+
+                        }
+
+                        if (mqtysperedit.length()!=0){
+                            if (mtotaldialog.getText().equals("$")){
+                                mtotaldialog.setText("$0");
+                            }
+                            else {
+//                                Locale locale = new Locale("en", "US");
+//                                NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
+//                                myviewholder.mpricea.setText(currencyFormatter.format(Double.valueOf(addFoclistitem.get(i).getPricePerQty())));
+                                Locale locale2 = new Locale("en", "US");
+                                NumberFormat currencyFormatter2 = NumberFormat.getCurrencyInstance(locale2);
+                                mtotaldialog.setText(currencyFormatter2.format(pricedbl*
+                                        Integer.parseInt(mqtysperedit.getText().toString())));
+//                                mtotaldialog.setText("$"+String.valueOf(new DecimalFormat("##,###,###.00").format(pricedbl*
+//                                        Integer.parseInt(mqtysperedit.getText().toString()))));
+                                if (mtotaldialog.getText().toString().equals("$,00")){
+                                    mtotaldialog.setText("$0");
+                                }
+
+
+                            }
+                        }else {
+                            mtotaldialog.setText("$0");
+                        }
+
+                    }
+                    Log.d("convertaa",String.valueOf(pricedbl));
+
+
+                }else {
+                    mtotaldialog.setText("$0");
+
                 }
 
 
@@ -526,28 +715,40 @@ extends RecyclerView.Adapter<SendSparepart_adapter.Myviewholder> {
                             Toast.makeText(context, "Reason tidak boleh kosong", Toast.LENGTH_SHORT).show();
 
                         }else {
-                            addFoclistitem.get(posedit).setQuantity(Integer.parseInt(mqtysperedit.getText().toString()));
-                            addFoclistitem.get(posedit).setReason(mreasonedit.getText().toString());
-                            addFoclistitem.get(posedit).setCaseID(mcaseidedit.getText().toString());
-                            if (minstalldateedit.getText().toString().equals("-")) {
-                                addFoclistitem.get(posedit).setInstallDate(null);
-                            } else {
-                                if (dateedit) {
-                                    addFoclistitem.get(posedit).setInstallDate(minstalldateedit.getText().toString());
-                                } else {
+                            if (mpricedialog.getText().toString().replace("$","").equals("")){
+                                Toast.makeText(context, "Price tidak boleh kosong", Toast.LENGTH_SHORT).show();
 
+                            }else {
+                                if (mpricedialog.getText().toString().replace("$.","").equals("")){
+                                    Toast.makeText(context, "Price tidak boleh kosong", Toast.LENGTH_SHORT).show();
+
+                                }else {
+                                    addFoclistitem.get(posedit).setQuantity(Integer.parseInt(mqtysperedit.getText().toString()));
+                                    addFoclistitem.get(posedit).setReason(mreasonedit.getText().toString());
+                                    addFoclistitem.get(posedit).setCaseID(mcaseidedit.getText().toString());
+//                                    addFoclistitem.get(posedit).setPricePerQty(mpricedialog.getText().toString().replace("$","").replace(",",""));
+                                    if (minstalldateedit.getText().toString().equals("-")) {
+                                        addFoclistitem.get(posedit).setInstallDate(null);
+                                    } else {
+                                        if (dateedit) {
+                                            addFoclistitem.get(posedit).setInstallDate(minstalldateedit.getText().toString());
+                                        } else {
+
+                                        }
+
+                                    }
+
+
+                                    sendsparepart_adapter = new SendSparepart_adapter(context, sendsparepart_items);
+                                    msendpartlist.setAdapter(sendsparepart_adapter);
+                                    Gson gson = new GsonBuilder().create();
+                                    myCustomArray = gson.toJsonTree(sendsparepart_items).getAsJsonArray();
+                                    jsonarayitem = myCustomArray.toString();
+                                    dialogedit.dismiss();
+                                    Log.d("mycustomarray",myCustomArray.toString());
                                 }
-
                             }
 
-
-                            sendsparepart_adapter = new SendSparepart_adapter(context, sendsparepart_items);
-                            msendpartlist.setAdapter(sendsparepart_adapter);
-                            Gson gson = new GsonBuilder().create();
-                            myCustomArray = gson.toJsonTree(sendsparepart_items).getAsJsonArray();
-                            jsonarayitem = myCustomArray.toString();
-                            dialogedit.dismiss();
-                            Log.d("mycustomarray",myCustomArray.toString());
                         }
 
                     }
@@ -562,6 +763,32 @@ extends RecyclerView.Adapter<SendSparepart_adapter.Myviewholder> {
                 }
             }
         });
+        //price
+        if (editprice){
+            mpricedialog.setEnabled(true);
+        }else {
+            mpricedialog.setEnabled(false);
+        }
+        if (price.equals("null")){
+            mpricedialog.setText("");
+            mtotaldialog.setText("");
+        }else {
+            Log.d("totalprice",price);
+            Locale locale = new Locale("en", "US");
+            NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
+            mpricedialog.setText(currencyFormatter.format(Double.valueOf(price)));
+            Locale locale2 = new Locale("en", "US");
+            NumberFormat currencyFormatter2 = NumberFormat.getCurrencyInstance(locale2);
+            mtotaldialog.setText(currencyFormatter2.format(Double.valueOf(price)*
+                    Integer.parseInt(mqtysperedit.getText().toString())));
+//            mpricedialog.setText("$"+String.valueOf(new DecimalFormat("##,###,###.00").format(Double.valueOf(price))));
+//            mtotaldialog.setText("$"+String.valueOf(new DecimalFormat("##,###,###.00").format(Double.valueOf(price)*
+//                    Integer.parseInt(mqtysperedit.getText().toString()))));
+        }
+
+        if ( mtotaldialog.getText().toString().equals("$,00")){
+            mtotaldialog.setText("$0");
+        }
         dialogedit.show();
     }
     private void updateLabel() {

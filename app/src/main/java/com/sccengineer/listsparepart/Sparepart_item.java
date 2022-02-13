@@ -17,8 +17,7 @@ public class Sparepart_item {
     public Sparepart_item() {
     }
 
-
-    public Sparepart_item(String sparePartCodeAndName, String sparePartCd, String name, String sparePartName, String manualSparePartCd, String manualSparePartName, Integer nonReservedStock) {
+    public Sparepart_item(String sparePartCodeAndName, String sparePartCd, String name, String sparePartName, String manualSparePartCd, String manualSparePartName, Integer nonReservedStock, String price) {
         SparePartCodeAndName = sparePartCodeAndName;
         SparePartCd = sparePartCd;
         Name = name;
@@ -26,6 +25,7 @@ public class Sparepart_item {
         ManualSparePartCd = manualSparePartCd;
         ManualSparePartName = manualSparePartName;
         NonReservedStock = nonReservedStock;
+        Price = price;
     }
 
     public String getSparePartCodeAndName() {
@@ -84,6 +84,14 @@ public class Sparepart_item {
         NonReservedStock = nonReservedStock;
     }
 
+    public String getPrice() {
+        return Price;
+    }
+
+    public void setPrice(String price) {
+        Price = price;
+    }
+
     @Expose
     @SerializedName("SparePartCodeAndName")
     private String SparePartCodeAndName;
@@ -108,6 +116,9 @@ public class Sparepart_item {
     @SerializedName("NonReservedStock")
     private Integer NonReservedStock;
 
+    @Expose
+    @SerializedName("Price")
+    private String Price;
 
 }
 

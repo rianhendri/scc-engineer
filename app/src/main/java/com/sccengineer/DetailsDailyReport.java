@@ -42,6 +42,7 @@ import com.sccengineer.detailsdailyreport.DetailsDailyItem5;
 import com.sccengineer.messagecloud.check;
 
 import java.lang.reflect.Type;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -92,6 +93,10 @@ public class DetailsDailyReport extends AppCompatActivity {
     TextView mrecord,mempetyreq;
     Spinner mstatus_spin;
     RecyclerView myitem_place1,myitem_place2,myitem_place3,myitem_place4,myitem_place5;
+    public static Double GRrandprie=0.0;
+    LinearLayout mlayoutgrandtotal;
+    public static TextView mgrandtotal;
+    public static boolean grand2=true;
     int page = 1;
     int pos = 0;
     boolean refreshscroll = true;
@@ -116,6 +121,8 @@ public class DetailsDailyReport extends AppCompatActivity {
         myitem_place2 = findViewById(R.id.tindakanlist);
         myitem_place3 = findViewById(R.id.langkahlanjutanlist);
         myitem_place4 = findViewById(R.id.sperpartdaily);
+        mgrandtotal = findViewById(R.id.grandtotal);
+        mlayoutgrandtotal = findViewById(R.id.layoutgrandtotal);
         myitem_place5 = findViewById(R.id.createdby);
 
         mcaseid = findViewById(R.id.caseid);
@@ -131,6 +138,7 @@ public class DetailsDailyReport extends AppCompatActivity {
         Bundle bundle2 = getIntent().getExtras();
         if (bundle2 != null) {
             noreq = bundle2.getString("id");
+            grand2 = bundle2.getBoolean("grand2");
             home = bundle2.getString("home");
             guid = bundle2.getString("guid");
             username = bundle2.getString("user");
@@ -185,6 +193,7 @@ public class DetailsDailyReport extends AppCompatActivity {
     }
 
     public void loadData(){
+        GRrandprie=0.0;
 //        page=1;
 //        mfooterload.setVisibility(View.VISIBLE);
         JsonObject jsonObject = new JsonObject();
@@ -289,6 +298,7 @@ public class DetailsDailyReport extends AppCompatActivity {
                     }
                     if (data.getAsJsonArray("sparePartList").toString().equals("[]")){
                         mtanpasper.setVisibility(View.VISIBLE);
+                        mlayoutgrandtotal.setVisibility(View.GONE);
                     }else {
                         listformreq4 = data.getAsJsonArray("sparePartList");
                         Gson gson = new Gson();
@@ -299,6 +309,11 @@ public class DetailsDailyReport extends AppCompatActivity {
                         addFormAdapterAdapter4 = new DetailsDailyAdapter4(DetailsDailyReport.this, list4);
                         myitem_place4.setAdapter(addFormAdapterAdapter4);
                         myitem_place4.setVisibility(View.VISIBLE);
+                        mlayoutgrandtotal.setVisibility(View.VISIBLE);
+                        Locale locale = new Locale("en", "US");
+                        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
+//                        mgrandtotal.setText(currencyFormatter.format(Double.valueOf(GRrandprie)));
+//                        mgrandtotal.setText();
                         mtanpasper.setVisibility(View.GONE);
                     }
                     if (data.getAsJsonArray("createdBy").toString().equals("[]")){

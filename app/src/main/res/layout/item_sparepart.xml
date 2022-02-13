@@ -63,8 +63,23 @@
 					android:text=""
 					android:textColor="@color/black"/>
 				<EditText
+					android:id="@+id/priceinput"
+					android:layout_width="70dp"
+					android:inputType="number"
+					android:enabled="false"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="4dp"
+					android:layout_marginRight="8dp"
+					android:layout_marginTop="2dp"
+					android:layout_marginBottom="2dp"
+					android:fontFamily="@font/segoeui"
+					android:textSize="11dp"
+					android:gravity="center"
+					android:text=""
+					android:textColor="@color/black"/>
+				<EditText
 					android:id="@+id/qtysper"
-					android:layout_width="50dp"
+					android:layout_width="30dp"
 					android:inputType="number"
 					android:digits="0123456789"
 					android:layout_height="wrap_content"
@@ -76,6 +91,20 @@
 					android:textSize="11dp"
 					android:gravity="center"
 					android:text=""
+					android:textColor="@color/black"/>
+				<EditText
+					android:id="@+id/totalinput"
+					android:layout_width="70dp"
+					android:enabled="false"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="4dp"
+					android:layout_marginRight="8dp"
+					android:layout_marginTop="2dp"
+					android:layout_marginBottom="2dp"
+					android:fontFamily="@font/segoeui"
+					android:textSize="11dp"
+					android:gravity="center"
+					android:text="$0"
 					android:textColor="@color/black"/>
 				<EditText
 					android:visibility="visible"

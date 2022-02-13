@@ -53,12 +53,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.sccengineer.CurrencyEditText;
 import com.sccengineer.DetailsST;
 import com.sccengineer.R;
 import com.sccengineer.spartsend.SendSparepart_adapter;
 import com.sccengineer.spartsend.SendSparepart_item;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import static com.sccengineer.DetailsST.dialog;
 import static com.sccengineer.DetailsST.linearLayoutManager2;
@@ -129,9 +133,11 @@ extends RecyclerView.Adapter<Sparepart_adapter.Myviewholder> {
                             tambahpart.setSparePartCd(addFoclistitem.get(i).getSparePartCd());
                             tambahpart.setInstallDate(null);
                             tambahpart.setOrderDate(null);
+                            tambahpart.setPricePerQty(Double.valueOf(addFoclistitem.get(i).getPrice()));
                             tambahpart.setStsAllowEdit(true);
                             tambahpart.setStsAllowUpdateInstallDate(true);
                             tambahpart.setStsAllowDelete(true);
+                            tambahpart.setPriceedit(true);
                             tambahpart.setStatusName("-");
                             tambahpart.setNonReservedStock(addFoclistitem.get(i).getNonReservedStock());
                             tambahpart.setCaseID(myviewholder.mcaseid.getText().toString());
@@ -169,16 +175,42 @@ extends RecyclerView.Adapter<Sparepart_adapter.Myviewholder> {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                if (myviewholder.mqtysper.length()>0){
+                if (myviewholder.mqtysper.length() > 0) {
 
-                    if (Integer.parseInt(myviewholder.mqtysper.getText().toString())>99){
+                    if (Integer.parseInt(myviewholder.mqtysper.getText().toString()) > 99) {
                         myviewholder.mqtysper.setText("99");
                         Toast.makeText(context, "Qty maksimal 99", Toast.LENGTH_SHORT).show();
-                    }else {
+                    } else {
 
                     }
                 }
+                if (addFoclistitem.get(i).getPrice()==null){
 
+                }else {
+                    if (myviewholder.mqtysper.length()!=0){
+                        if ( myviewholder.mtotalinput.getText().equals("$")){
+                            myviewholder.mtotalinput.setText("$0");
+                        }
+                        else {
+
+                            Locale locale = new Locale("en", "US");
+                            NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
+                            myviewholder.mtotalinput.setText(currencyFormatter.format(Double.valueOf(addFoclistitem.get(i).getPrice())*
+                                    Integer.parseInt(myviewholder.mqtysper.getText().toString())));
+
+//                            myviewholder.mtotalinput.setText("$"+String.valueOf(new DecimalFormat("##,###,###.00").format(Double.valueOf(addFoclistitem.get(i).getPrice())*
+//                                    Integer.parseInt(myviewholder.mqtysper.getText().toString()))));
+                            if ( myviewholder.mtotalinput.getText().toString().equals("$,00")){
+                                myviewholder.mtotalinput.setText("$0");
+                            }
+
+
+                        }
+                    }else {
+                        myviewholder.mtotalinput.setText("$0");
+                    }
+
+                }
             }
 
             @Override
@@ -188,6 +220,16 @@ extends RecyclerView.Adapter<Sparepart_adapter.Myviewholder> {
                 }
             }
         });
+        //price
+        if (addFoclistitem.get(i).getPrice()==null){
+            myviewholder.mpriceinput.setText("");
+        }else {
+            Locale locale = new Locale("en", "US");
+            NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
+            myviewholder.mpriceinput.setText(currencyFormatter.format(Double.valueOf(addFoclistitem.get(i).getPrice())));
+//            myviewholder.mpriceinput.setText("$"+String.valueOf(new DecimalFormat("##.00").format(Double.valueOf(addFoclistitem.get(i).getPrice()))));
+        }
+
     }
 
     @Override
@@ -204,6 +246,7 @@ extends RecyclerView.Adapter<Sparepart_adapter.Myviewholder> {
 
         TextView mnamespar,mno,mcd;
         EditText mqtysper,mreason,mcaseid;
+        EditText mpriceinput,mtotalinput;
 
         public Myviewholder(@NonNull View itemView) {
             super(itemView);
@@ -212,6 +255,8 @@ extends RecyclerView.Adapter<Sparepart_adapter.Myviewholder> {
             mqtysper = itemView.findViewById(R.id.qtysper);
             mreason = itemView.findViewById(R.id.reason);
             mcaseid = itemView.findViewById(R.id.caseid);
+            mpriceinput = itemView.findViewById(R.id.priceinput);
+            mtotalinput = itemView.findViewById(R.id.totalinput);
 
         }
     }

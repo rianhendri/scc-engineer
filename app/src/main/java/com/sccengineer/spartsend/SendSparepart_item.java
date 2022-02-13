@@ -17,9 +17,31 @@ public class SendSparepart_item {
     public SendSparepart_item() {
     }
 
-    @Expose
-    @SerializedName("SparePartCodeAndName")
-    private String SparePartCodeAndName;
+    public SendSparepart_item(String sparePartCodeAndName, String sparePartCd, String name, String sparePartName,
+                              String manualSparePartCd, String manualSparePartName, int quantity, String reason, String caseID,
+                              String installDate, String orderDate, boolean stsAllowEdit, boolean stsAllowUpdateInstallDate, String statusName,
+                              String statusTextColor,
+                              boolean stsAllowDelete, Integer nonReservedStock, Double pricePerQty, boolean priceedit) {
+        SparePartCodeAndName = sparePartCodeAndName;
+        SparePartCd = sparePartCd;
+        Name = name;
+        SparePartName = sparePartName;
+        ManualSparePartCd = manualSparePartCd;
+        ManualSparePartName = manualSparePartName;
+        Quantity = quantity;
+        Reason = reason;
+        CaseID = caseID;
+        InstallDate = installDate;
+        OrderDate = orderDate;
+        StsAllowEdit = stsAllowEdit;
+        StsAllowUpdateInstallDate = stsAllowUpdateInstallDate;
+        StatusName = statusName;
+        StatusTextColor = statusTextColor;
+        StsAllowDelete = stsAllowDelete;
+        NonReservedStock = nonReservedStock;
+        PricePerQty = pricePerQty;
+        Priceedit = priceedit;
+    }
 
     public String getSparePartCodeAndName() {
         return SparePartCodeAndName;
@@ -157,6 +179,26 @@ public class SendSparepart_item {
         NonReservedStock = nonReservedStock;
     }
 
+    public Double getPricePerQty() {
+        return PricePerQty;
+    }
+
+    public void setPricePerQty(Double pricePerQty) {
+        PricePerQty = pricePerQty;
+    }
+
+    public boolean isPriceedit() {
+        return Priceedit;
+    }
+
+    public void setPriceedit(boolean priceedit) {
+        Priceedit = priceedit;
+    }
+
+    @Expose
+    @SerializedName("SparePartCodeAndName")
+    private String SparePartCodeAndName;
+
     @Expose
     @SerializedName("SparePartCd")
     private String SparePartCd;
@@ -209,28 +251,12 @@ public class SendSparepart_item {
     @Expose
     @SerializedName("NonReservedStock")
     private Integer NonReservedStock;
-
-    public SendSparepart_item(String sparePartCodeAndName, String sparePartCd, String name, String sparePartName, String manualSparePartCd, String manualSparePartName, int quantity, String reason, String caseID, String installDate, String orderDate, boolean stsAllowEdit, boolean stsAllowUpdateInstallDate, String statusName, String statusTextColor, boolean stsAllowDelete, Integer nonReservedStock) {
-        SparePartCodeAndName = sparePartCodeAndName;
-        SparePartCd = sparePartCd;
-        Name = name;
-        SparePartName = sparePartName;
-        ManualSparePartCd = manualSparePartCd;
-        ManualSparePartName = manualSparePartName;
-        Quantity = quantity;
-        Reason = reason;
-        CaseID = caseID;
-        InstallDate = installDate;
-        OrderDate = orderDate;
-        StsAllowEdit = stsAllowEdit;
-        StsAllowUpdateInstallDate = stsAllowUpdateInstallDate;
-        StatusName = statusName;
-        StatusTextColor = statusTextColor;
-        StsAllowDelete = stsAllowDelete;
-        NonReservedStock = nonReservedStock;
-    }
-
-
+    @Expose
+    @SerializedName("PricePerQty")
+    private Double PricePerQty;
+    @Expose
+    @SerializedName("Priceedit")
+    private boolean Priceedit;
 }
 
 

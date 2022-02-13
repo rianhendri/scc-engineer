@@ -85,6 +85,8 @@ import com.sccengineer.spartsend.SendSparepart_item;
 import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Type;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -236,6 +238,9 @@ public class DetailsST extends AppCompatActivity {
 
     ProgressBar mloadpart;
     public static RecyclerView mpartlist, msendpartlist;
+    CurrencyEditText mpricedialog,mtotaldialog;
+    String priceconvert="0";
+    Double pricedbl=0.00;
     EditText msearch,mnamespara,mqtyspera,mreasona, mcodemanual;
     ImageView meditebtna;
     public static TextView msparenaem;
@@ -2675,6 +2680,8 @@ DialogForm();
         mloadpart = dialog.findViewById(R.id.loadingfooter);
         mnamespara = dialog.findViewById(R.id.namespara);
         mqtyspera = dialog.findViewById(R.id.qtyspera);
+        mpricedialog = dialog.findViewById(R.id.pricedialog);
+        mtotaldialog = dialog.findViewById(R.id.totaldialog);
         mreasona = dialog.findViewById(R.id.reasona);
         meditebtna = dialog.findViewById(R.id.editebtna);
         mcodemanual = dialog.findViewById(R.id.codecda);
@@ -2732,6 +2739,62 @@ DialogForm();
                     }else {
 
                     }
+                    if (mpricedialog.getText().toString().length()==1){
+                        priceconvert="0";
+                        mtotaldialog.setText("$0");
+                        if (mtotaldialog.getText().toString().equals("$,00")){
+                            mtotaldialog.setText("$0");
+                        }
+                    }else if (mpricedialog.getText().toString().length()==1){
+                        priceconvert="0";
+                        mtotaldialog.setText("$0");
+                        if (mtotaldialog.getText().toString().equals("$,00")){
+                            mtotaldialog.setText("$0");
+                        }
+                    } else {
+                        priceconvert=mpricedialog.getText().toString().replace("$","");
+                        priceconvert=priceconvert.replace(",","");
+                        if (priceconvert.equals("0")){
+                            pricedbl=0.0;
+                        }else {
+                            if (priceconvert.isEmpty()){
+                                pricedbl=0.0;
+                            }else {
+                                if (priceconvert.equals(".")){
+
+                                }else {
+                                    pricedbl = Double.valueOf(priceconvert);
+                                }
+
+                            }
+
+                        }
+
+                        if (mqtyspera.length()!=0){
+                            if (mtotaldialog.getText().equals("$")){
+                                mtotaldialog.setText("$0");
+                            }
+                            else {
+                                Locale locale2 = new Locale("en", "US");
+                                NumberFormat currencyFormatter2 = NumberFormat.getCurrencyInstance(locale2);
+                                mtotaldialog.setText(currencyFormatter2.format(pricedbl*Integer.parseInt(mqtyspera.getText().toString())));
+//                                mtotaldialog.setText("$"+String.valueOf(new DecimalFormat("##.00").format(pricedbl*Integer.parseInt(mqtyspera.getText().toString()))));
+                                if (mtotaldialog.getText().toString().equals("$,00")){
+                                    mtotaldialog.setText("$0");
+                                }
+
+
+                            }
+                        }else {
+                            mtotaldialog.setText("$0");
+                        }
+
+                    }
+                    Log.d("convertaa",String.valueOf(pricedbl));
+
+
+                }else {
+                    mtotaldialog.setText("$0");
                 }
 
             }
@@ -2743,38 +2806,124 @@ DialogForm();
                 }
             }
         });
+        mpricedialog.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (mpricedialog.getText().toString().equals("$")){
+                    priceconvert="0";
+                    mtotaldialog.setText("$0");
+
+                }
+                if (mpricedialog.getText().toString().length()==1){
+                    priceconvert="0";
+                    mtotaldialog.setText("$0");
+
+                }else if (mpricedialog.getText().toString().length()==1){
+                    priceconvert="0";
+                    mtotaldialog.setText("$0");
+                } else {
+                    priceconvert=mpricedialog.getText().toString().replace("$","");
+                    priceconvert=priceconvert.replace(",","");
+                    if (priceconvert.equals("0")){
+                        pricedbl=0.0;
+                    }else {
+                        if (priceconvert.isEmpty()){
+                            pricedbl=0.0;
+                        }else {
+                            if (priceconvert.equals(".")){
+
+                            }else {
+                                pricedbl = Double.valueOf(priceconvert);
+                            }
+
+                        }
+
+                    }
+
+                    if (mqtyspera.length()!=0){
+                        if (mtotaldialog.getText().equals("$")){
+                            mtotaldialog.setText("$0");
+                        }else {
+                            Locale locale2 = new Locale("en", "US");
+                            NumberFormat currencyFormatter2 = NumberFormat.getCurrencyInstance(locale2);
+                            mtotaldialog.setText(currencyFormatter2.format(pricedbl*Integer.parseInt(mqtyspera.getText().toString())));
+//                            mtotaldialog.setText("$"+String.valueOf(new DecimalFormat("##.00").format(pricedbl*Integer.parseInt(mqtyspera.getText().toString()))));
+                            if (mtotaldialog.getText().toString().equals("$,00")){
+                                mtotaldialog.setText("$0");
+                            }
+
+
+                        }
+                    }else {
+                        mtotaldialog.setText("$0");
+                    }
+
+                }
+                Log.d("convertaa",String.valueOf(pricedbl));
+
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+//                if (s.toString().length() == 2 && s.toString().startsWith(".")) {
+//                    s.clear();
+//                }
+                if (mpricedialog.getText().toString().equals("$")){
+                    priceconvert="0";
+                    mtotaldialog.setText("$0");
+
+                }
+            }
+        });
         meditebtna.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tambahpart = new SendSparepart_item();
-                tambahpart.setManualSparePartName(mnamespara.getText().toString());
-                tambahpart.setManualSparePartCd(mcodemanual.getText().toString());
-                tambahpart.setSparePartCd("");
-                tambahpart.setInstallDate(null);
-                tambahpart.setName(null);
-                tambahpart.setOrderDate(null);
-                tambahpart.setStsAllowEdit(true);
-                tambahpart.setStsAllowUpdateInstallDate(true);
-                tambahpart.setStsAllowDelete(true);
-                tambahpart.setStatusName("-");
-                tambahpart.setCaseID("-");
-                
-                tambahpart.setReason(mreasona.getText().toString());
-                tambahpart.setQuantity(Integer.parseInt(mqtyspera.getText().toString()));
+                if (mqtyspera.length()==0){
+                    Toast.makeText(DetailsST.this, "QTY Tidak Boleh Kosong", Toast.LENGTH_SHORT).show();
 
-                listpoact.add(tambahpart);
-                sendsparepart_items.addAll(listpoact);
-                Gson gson = new GsonBuilder().create();
-                myCustomArray = gson.toJsonTree(sendsparepart_items).getAsJsonArray();
-                jsonarayitem = myCustomArray.toString();
+                }else {
+                    if (mtotaldialog.getText().toString().equals("$0")){
+                        Toast.makeText(DetailsST.this, "Price tidak boleh kosong", Toast.LENGTH_SHORT).show();
+                    }else {
+                        tambahpart = new SendSparepart_item();
+                        tambahpart.setManualSparePartName(mnamespara.getText().toString());
+                        tambahpart.setManualSparePartCd(mcodemanual.getText().toString());
+                        tambahpart.setSparePartCd("");
+                        tambahpart.setInstallDate(null);
+                        tambahpart.setName(null);
+                        tambahpart.setOrderDate(null);
+                        tambahpart.setStsAllowEdit(true);
+                        tambahpart.setStsAllowUpdateInstallDate(true);
+                        tambahpart.setStsAllowDelete(true);
+                        tambahpart.setStatusName("-");
+                        tambahpart.setCaseID("-");
+                        tambahpart.setPricePerQty(pricedbl);
+                        tambahpart.setReason(mreasona.getText().toString());
+                        tambahpart.setQuantity(Integer.parseInt(mqtyspera.getText().toString()));
 
-                listpoact.clear();
-                Log.d("sizecart_11", String.valueOf(sendsparepart_items.size()));
-                Log.d("sizecart_22", String.valueOf(jsonarayitem));
+                        listpoact.add(tambahpart);
+                        sendsparepart_items.addAll(listpoact);
+                        Gson gson = new GsonBuilder().create();
+                        myCustomArray = gson.toJsonTree(sendsparepart_items).getAsJsonArray();
+                        jsonarayitem = myCustomArray.toString();
+
+                        listpoact.clear();
+                        Log.d("sizecart_11", String.valueOf(sendsparepart_items.size()));
+                        Log.d("sizecart_22", String.valueOf(jsonarayitem));
 ////////////////////// adapter di masukan ke recyler//
-                sendsparepart_adapter = new SendSparepart_adapter(DetailsST.this, sendsparepart_items);
-                msendpartlist.setAdapter(sendsparepart_adapter);
-                dialog.dismiss();
+                        sendsparepart_adapter = new SendSparepart_adapter(DetailsST.this, sendsparepart_items);
+                        msendpartlist.setAdapter(sendsparepart_adapter);
+                        dialog.dismiss();
+                    }
+                }
+
             }
         });
 

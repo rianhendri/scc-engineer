@@ -15,12 +15,13 @@ import com.google.gson.annotations.SerializedName;
 public class DetailsDailyItem4 {
 
 
-    public DetailsDailyItem4(String sparePartName, String sparePartCd, String quantity, String price, String total) {
+    public DetailsDailyItem4(String sparePartName, String sparePartCd, String quantity, String price, String total, Double pricePerQty) {
         SparePartName = sparePartName;
         SparePartCd = sparePartCd;
         Quantity = quantity;
         Price = price;
         Total = total;
+        PricePerQty = pricePerQty;
     }
 
     public String getSparePartName() {
@@ -63,6 +64,14 @@ public class DetailsDailyItem4 {
         Total = total;
     }
 
+    public Double getPricePerQty() {
+        return PricePerQty;
+    }
+
+    public void setPricePerQty(Double pricePerQty) {
+        PricePerQty = pricePerQty;
+    }
+
     @Expose
     @SerializedName("SparePartName")
     private String SparePartName;
@@ -78,7 +87,9 @@ public class DetailsDailyItem4 {
     @Expose
     @SerializedName("Total")
     private String Total;
-
+    @Expose
+    @SerializedName("PricePerQty")
+    private Double PricePerQty;
     public DetailsDailyItem4() {
 
     }

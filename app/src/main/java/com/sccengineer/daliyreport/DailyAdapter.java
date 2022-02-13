@@ -117,6 +117,7 @@ extends RecyclerView.Adapter<DailyAdapter.Myviewholder> {
         myviewholder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent = new Intent(context, DetailsDailyReport.class);
                 intent.putExtra("id", (addFromItem.get(i).getReportCd()));
                 intent.putExtra("noticket", (addFromItem.get(i)).getServiceTicketCd());
@@ -126,6 +127,7 @@ extends RecyclerView.Adapter<DailyAdapter.Myviewholder> {
                 intent.putExtra("startd", startdate);
                 intent.putExtra("endd", enddate);
                 intent.putExtra("hide", hide);
+                intent.putExtra("grand2", false);
                 context.startActivity(intent);
                 ((Activity)context).overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 ((Activity)context).finish();
