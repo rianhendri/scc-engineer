@@ -104,7 +104,7 @@ public class MenuAdapter  extends RecyclerView.Adapter<MenuAdapter.Myviewholder>
 
 
         }
-        if (namemenu.equals("Support Live Chat List")){
+        if (namemenu.equals("Chat With Support List")){
             if (countSC==0){
                 myviewholder.mdot.setVisibility(View.GONE);
             }else {
@@ -165,11 +165,11 @@ public class MenuAdapter  extends RecyclerView.Adapter<MenuAdapter.Myviewholder>
             @Override
             public void onClick(View v) {
                 String namemenu = myItem.get(i).getMenuname();
-                if (namemenu.equals("Support Live Chat List")){
+                if (namemenu.equals("Chat With Support List")){
                     Intent gotonews = new Intent(context, LiveChatList.class);
                     gotonews.putExtra("home", "homes");
                     gotonews.putExtra("cs", "yes");
-                    gotonews.putExtra("titlelist", "Support Live Chat List");
+                    gotonews.putExtra("titlelist", "Chat With Support List");
 //                    gotonews.putExtra("showaddform",showaddform);
                     context.startActivity(gotonews);
                     ((Activity)context).finish();

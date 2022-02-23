@@ -812,7 +812,7 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
                         menuItemlist.add(menuItem3);
                     }
                     if (data.get("showChatWithSupportList").getAsBoolean()){
-                        menuItem9.setMenuname("Support Live Chat List");
+                        menuItem9.setMenuname("Chat With Support List");
                         menuItem9.setImg(R.drawable.ic_supportchat);
                         menuItem9.setShow(data.get("showChatWithSupportList").toString());
                         menuItemlist.add(menuItem9);
