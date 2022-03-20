@@ -133,7 +133,12 @@ extends RecyclerView.Adapter<Sparepart_adapter.Myviewholder> {
                             tambahpart.setSparePartCd(addFoclistitem.get(i).getSparePartCd());
                             tambahpart.setInstallDate(null);
                             tambahpart.setOrderDate(null);
-                            tambahpart.setPricePerQty(Double.valueOf(addFoclistitem.get(i).getPrice()));
+                            if (addFoclistitem.get(i).getPrice()!=null){
+                                tambahpart.setPricePerQty(Double.valueOf(addFoclistitem.get(i).getPrice()));
+                            }else {
+                                tambahpart.setPricePerQty(Double.valueOf("0.0"));
+                            }
+
                             tambahpart.setStsAllowEdit(true);
                             tambahpart.setStsAllowUpdateInstallDate(true);
                             tambahpart.setStsAllowDelete(true);

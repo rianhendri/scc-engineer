@@ -36,7 +36,7 @@
                 android:layout_marginRight="64dp"
                 android:fontFamily="@font/seguisb"
                 android:gravity="center_vertical"
-                android:text="List Live Chat"
+                android:text="Live Chat List"
                 android:textColor="@color/dwhite"
                 android:textSize="15sp" />
         </LinearLayout>
