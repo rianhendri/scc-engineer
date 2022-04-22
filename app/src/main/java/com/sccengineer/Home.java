@@ -434,6 +434,7 @@ public class Home extends AppCompatActivity {
 //        return installed2;
 //    }
 final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
+@SuppressLint("MissingSuperCall")
 @Override
 public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                        @NonNull int[] grantResults) {
@@ -1415,8 +1416,8 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
     private void buildlocationrequest() {
         locationRequest = new LocationRequest();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(15000);
-        locationRequest.setFastestInterval(13000);
+        locationRequest.setInterval(900000);
+        locationRequest.setFastestInterval(900000);
         locationRequest.setSmallestDisplacement(10f);
     }
 }
