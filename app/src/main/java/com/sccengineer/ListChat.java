@@ -71,6 +71,7 @@ import com.sccengineer.SendNotificationPack.Client;
 import com.sccengineer.SendNotificationPack.Data;
 import com.sccengineer.SendNotificationPack.MyResponse;
 import com.sccengineer.SendNotificationPack.NotificationSender;
+import com.sccengineer.SendNotificationPack.Token;
 import com.sccengineer.apihelper.IRetrofit;
 import com.sccengineer.apihelper.ServiceGenerator;
 import com.sccengineer.generatechat.Adaptergeneratechat;
@@ -103,6 +104,7 @@ import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -212,6 +214,8 @@ public class ListChat extends AppCompatActivity {
     String homes = "";
     String chats = "";
     boolean kirim = true;
+    List<String> tokenlist;
+    JsonArray myCustomArray;
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -272,10 +276,16 @@ public class ListChat extends AppCompatActivity {
 //            modultrans="";
             if (id==null){
                 String currentString = noreq;
-                String[] separated = currentString.split("-");
+                String[] separated = currentString.split("/");
                 modultrans = separated[1];
                 module = separated[2];
                 idnotif = separated[0];
+                String token = separated[3];
+                tokenlist = new ArrayList<String>(Arrays.asList(token.split(",")));
+                Gson gson = new GsonBuilder().create();
+                myCustomArray = gson.toJsonTree(tokenlist).getAsJsonArray();
+                String jsonarayitem = myCustomArray.toString();
+                Log.d("tokesa",jsonarayitem);
             }else {
 
             }
@@ -333,6 +343,7 @@ public class ListChat extends AppCompatActivity {
 
 
         if (id==null){
+            Log.d("dsa3","nulls");
             if (module.equals("ChatWithSupport")){
                 reqnotif2();
                 scs="yes";
@@ -345,6 +356,11 @@ public class ListChat extends AppCompatActivity {
 
 
         }else {
+            Gson gson = new GsonBuilder().create();
+            myCustomArray = gson.toJsonTree(tokennya2).getAsJsonArray();
+            tokenlist = new ArrayList<>();
+            tokenlist.addAll(tokennya2);
+            Log.d("dsa1",tokenlist.toString());
             databaseReference= FirebaseDatabase.getInstance().getReference().child("chat").child(sessionnya).child("listchat");
             dfr= FirebaseDatabase.getInstance().getReference().child("akunregist");
             databaseReference3= FirebaseDatabase.getInstance().getReference().child("chat").child(sessionnya).child("listchat");
@@ -1307,9 +1323,12 @@ public class ListChat extends AppCompatActivity {
     }
     public void sendnotifchat(){
 //        loading = ProgressDialog.show(DetailsFormActivity.this, "", getString(R.string.title_loading), true);
-
-            JsonObject dataid = new JsonObject();
-            dataid.addProperty("id",sessionnya+"-"+modultrans+"-"+module);
+//        Gson gson = new GsonBuilder().create();
+//        JsonArray myCustomArray = gson.toJsonTree(tokennya2).getAsJsonArray();
+//        String jsonarayitem = myCustomArray.toString();
+//        Log.d("tokes",jsonarayitem);
+        JsonObject dataid = new JsonObject();
+        dataid.addProperty("id", sessionnya+"/"+modultrans+"/"+module+"/"+tokenlist);
 
             JsonObject notifikasidata = new JsonObject();
             notifikasidata.addProperty("title",noreq+"-"+name);
@@ -1317,7 +1336,8 @@ public class ListChat extends AppCompatActivity {
             notifikasidata.addProperty("click_action","notifchat");
 
             JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("to",tokennya2.get(tokenpos));
+//            jsonObject.addProperty("to",tokennya2.get(tokenpos));
+            jsonObject.add("registration_ids", myCustomArray);
             jsonObject.add("data",dataid);
             jsonObject.add("notification",notifikasidata);
 //        Toast.makeText(DetailsFormActivity.this,jsonObject.toString(), Toast.LENGTH_SHORT).show();
@@ -1330,12 +1350,12 @@ public class ListChat extends AppCompatActivity {
                     Log.d("tokenplusisze", String.valueOf(tokennya2.size()-1)+"=="+String.valueOf(tokenpos));
                     Log.d("tokenlist",tokennya2.get(tokenpos).toString());
                     Log.d("sizetoken", String.valueOf(tokennya2.size()));
-                    if (tokennya2.size()==tokenpos+1){
-                        tokenpos =0;
-                    }else {
-                        tokenpos +=1;
-                        sendnotifchat();
-                    }
+//                    if (tokennya2.size()==tokenpos+1){
+//                        tokenpos =0;
+//                    }else {
+//                        tokenpos +=1;
+//                        sendnotifchat();
+//                    }
                     String errornya = "";
                     JsonObject homedata = response.body();
                     int statusnya = homedata.get("success").getAsInt();

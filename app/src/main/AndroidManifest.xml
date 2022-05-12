@@ -51,6 +51,20 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity android:name=".ListChat">
+            <intent-filter>
+                <action android:name="CHTS" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+<!--        <activity android:name="">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="CHT" />-->
+
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
         <activity android:name=".DailyReportAdd" />
         <activity android:name=".DailyRepotlist2" />
         <activity android:name=".DailyReportList" />
@@ -95,13 +109,7 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <activity android:name=".ListChat">
-            <intent-filter>
-                <action android:name="notifchat" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
         <activity android:name=".FormCutiDetails" />
         <activity android:name=".FormCuti" />
         <activity
