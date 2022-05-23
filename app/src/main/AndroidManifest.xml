@@ -53,7 +53,7 @@
         </activity>
         <activity android:name=".ListChat">
             <intent-filter>
-                <action android:name="CHTS" />
+                <action android:name="notifchat" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

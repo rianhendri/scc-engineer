@@ -5,13 +5,11 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -19,11 +17,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.database.Cursor;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.drawable.GradientDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -31,12 +25,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Html;
-import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -46,8 +37,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -58,41 +47,19 @@ import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.sccengineer.Chat.Adapterchat;
 import com.sccengineer.Chat.Itemchat;
 import com.sccengineer.Chat.Itemchat2;
 import com.sccengineer.Chat.Itemchat4a;
 import com.sccengineer.SendNotificationPack.APIService;
-import com.sccengineer.SendNotificationPack.Client;
-import com.sccengineer.SendNotificationPack.Data;
-import com.sccengineer.SendNotificationPack.MyResponse;
-import com.sccengineer.SendNotificationPack.NotificationSender;
-import com.sccengineer.SendNotificationPack.Token;
 import com.sccengineer.apihelper.IRetrofit;
 import com.sccengineer.apihelper.ServiceGenerator;
 import com.sccengineer.generatechat.Adaptergeneratechat;
 import com.sccengineer.generatechat.Itemgeneratechat;
-import com.sccengineer.livechatlist.DetailsDate;
-import com.sccengineer.livechatlist.ListLiveChatAdapter;
-import com.sccengineer.livechatlist.ListLiveChatItem;
-import com.sccengineer.menuhome.MenuAdapter;
-import com.sccengineer.menuhome.MenuItem;
 import com.sccengineer.messagecloud.check;
-import com.sccengineer.notifikasihome.NotifhomeAdapter;
-import com.sccengineer.notifikasihome.NotifhomeItems;
-import com.sccengineer.onproghome.OnProgHome_items;
-import com.sccengineer.onproghome.OnProghome_adapter;
-import com.sccengineer.serviceticket.ServiceTicketAdapter;
-import com.sccengineer.serviceticket.ServicesTicketItem;
-import com.sccengineer.spartsend.SendSparepart_adapter;
-import com.sccengineer.spartsend.SendSparepart_item;
-import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -101,13 +68,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -117,19 +81,11 @@ import retrofit2.Response;
 
 import static android.view.View.GONE;
 import static com.sccengineer.Chat.Adapterchat.addFoclistreq;
-import static com.sccengineer.DetailsST.jsonarayitem;
 import static com.sccengineer.DetailsST.mcustname;
 import static com.sccengineer.DetailsST.mformRequestCd;
-import static com.sccengineer.DetailsST.noreq;
-import static com.sccengineer.DetailsST.username;
-import static com.sccengineer.DetailsST.xhori;
-import static com.sccengineer.DetailsST.yverti;
-import static com.sccengineer.LiveChatList.mfooterload;
-import static com.sccengineer.LiveChatList.myitem_place;
 import static com.sccengineer.apihelper.ServiceGenerator.baseurl;
 import static com.sccengineer.apihelper.ServiceGenerator.fcmbase;
 import static com.sccengineer.apihelper.ServiceGenerator.getchatnya;
-import static com.sccengineer.menuhome.MenuAdapter.countSC;
 import static com.sccengineer.messagecloud.check.tokennya2;
 import static com.sccengineer.LiveChatList.itemchat;
 
@@ -160,6 +116,7 @@ public class ListChat extends AppCompatActivity {
     LinearLayout mlayketk;
     public static String name="";
     String module = "";
+    String pagechat = "";
     String ModuleTransactionNo = "";
     String engas = "";
     String sendto="";
@@ -267,7 +224,7 @@ public class ListChat extends AppCompatActivity {
             module=bundle2.getString("module");
             scrollnya =   bundle2.getString("scrolbawah");
             homes =   bundle2.getString("home");
-            Log.d("idnya",id);
+//            Log.d("idnya",id);
 //            Toast.makeText(this, id, Toast.LENGTH_SHORT).show();
 //            mfrnya.setText(noreq+" (Customer: "+custnmae+")");
             mfrnya.setText(titlenya);
@@ -280,12 +237,13 @@ public class ListChat extends AppCompatActivity {
                 modultrans = separated[1];
                 module = separated[2];
                 idnotif = separated[0];
-                String token = separated[3];
-                tokenlist = new ArrayList<String>(Arrays.asList(token.split(",")));
-                Gson gson = new GsonBuilder().create();
-                myCustomArray = gson.toJsonTree(tokenlist).getAsJsonArray();
-                String jsonarayitem = myCustomArray.toString();
-                Log.d("tokesa",jsonarayitem);
+//                String token = separated[3];
+//                String token = separated[3].replace("[","").replace("]","");
+//                tokenlist = new ArrayList<String>(Arrays.asList(token.split(",")));
+//                Gson gson = new GsonBuilder().create();
+//                myCustomArray = gson.toJsonTree(tokenlist).getAsJsonArray();
+//                String jsonarayitem = myCustomArray.toString();
+//                Log.d("tokesa",jsonarayitem);
             }else {
 
             }
@@ -601,7 +559,11 @@ public class ListChat extends AppCompatActivity {
                             tokennya2.add(assobj2.get("Token").getAsString());
                         }
 
-                        Log.d("listToken", tokennya2.toString());
+                        Log.d("listTokennotif", tokennya2.toString());
+                        Gson gson = new GsonBuilder().create();
+                        myCustomArray = gson.toJsonTree(tokennya2).getAsJsonArray();
+                        tokenlist = new ArrayList<>();
+                        tokenlist.addAll(tokennya2);
                     }
                     id="listchat";
                     titlenya = data2.get("Title").getAsString();
@@ -703,7 +665,11 @@ public class ListChat extends AppCompatActivity {
                             tokennya2.add(assobj2.get("Token").getAsString());
                         }
 
-                        Log.d("listToken", tokennya2.toString());
+                        Log.d("listTokennotif", tokennya2.toString());
+                        Gson gson = new GsonBuilder().create();
+                        myCustomArray = gson.toJsonTree(tokennya2).getAsJsonArray();
+                        tokenlist = new ArrayList<>();
+                        tokenlist.addAll(tokennya2);
                     }
                     id="listchat";
                     titlenya = data2.get("Title").getAsString();
@@ -1025,7 +991,7 @@ public class ListChat extends AppCompatActivity {
     }
     public void cekInternet(){
         /// cek internet apakah internet terhubung atau tidak
-        ConnectivityManager connectivityManager = (ConnectivityManager)ListChat.this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivityManager = (ConnectivityManager) ListChat.this.getSystemService(Context.CONNECTIVITY_SERVICE);
         if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
                 connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED)
         {
@@ -1328,7 +1294,7 @@ public class ListChat extends AppCompatActivity {
 //        String jsonarayitem = myCustomArray.toString();
 //        Log.d("tokes",jsonarayitem);
         JsonObject dataid = new JsonObject();
-        dataid.addProperty("id", sessionnya+"/"+modultrans+"/"+module+"/"+tokenlist);
+        dataid.addProperty("id", sessionnya+"/"+modultrans+"/"+module+"/"+pagechat);
 
             JsonObject notifikasidata = new JsonObject();
             notifikasidata.addProperty("title",noreq+"-"+name);

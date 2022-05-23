@@ -85,7 +85,6 @@ import com.sccengineer.spartsend.SendSparepart_item;
 import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Type;
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -101,16 +100,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.sccengineer.DailyReportAdd.addFormAdapterAdapter3;
-import static com.sccengineer.DailyReportAdd.followlist;
-import static com.sccengineer.DailyReportAdd.jsonfollow;
-import static com.sccengineer.DailyReportAdd.myfollow;
-import static com.sccengineer.ListChat.modultrans;
 import static com.sccengineer.ListChat.name;
-import static com.sccengineer.LiveChatList.titlenya;
 import static com.sccengineer.ServiceTicket.list2;
 import static com.sccengineer.ServiceTicket.refresh;
-import static com.sccengineer.DetailsST.valuefilter;
 import static com.sccengineer.apihelper.ServiceGenerator.baseurl;
 import static com.sccengineer.listsparepart.Sparepart_adapter.listpoact;
 import static com.sccengineer.listsparepart.Sparepart_adapter.tambahpart;
@@ -3128,7 +3120,7 @@ DialogForm();
 
                 }else {
                     if (chats.equals("yes")){
-                        Intent back = new Intent(DetailsST.this,ListChat.class);
+                        Intent back = new Intent(DetailsST.this, ListChat.class);
                         back.putExtra("name",username);
                         back.putExtra("sessionnya",sessionnya);
                         back.putExtra("chat",chatin);
@@ -3187,7 +3179,7 @@ DialogForm();
                         super.onBackPressed();
 //            refresh=true;
                         if (chats.equals("yes")){
-                            Intent back = new Intent(DetailsST.this,ListChat.class);
+                            Intent back = new Intent(DetailsST.this, ListChat.class);
                             back.putExtra("name",username);
                             back.putExtra("sessionnya",sessionnya);
                             back.putExtra("chat",chatin);

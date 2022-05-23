@@ -53,7 +53,6 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -62,18 +61,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 import com.sccengineer.Chat.Adapterchat;
 import com.sccengineer.Chat.Itemchat;
-import com.sccengineer.DetailsST;
 import com.sccengineer.ListChat;
 import com.sccengineer.R;
 import com.squareup.picasso.Picasso;
 
-import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -81,16 +75,13 @@ import java.util.Locale;
 
 import static com.sccengineer.DetailsST.mcustname;
 import static com.sccengineer.DetailsST.mformRequestCd;
-import static com.sccengineer.DetailsST.msendpartlist;
 import static com.sccengineer.DetailsST.noreq;
 import static com.sccengineer.DetailsST.seconds;
 import static com.sccengineer.DetailsST.username;
 import static com.sccengineer.DetailsST.usetime;
 import static com.sccengineer.DetailsST.xhori;
 import static com.sccengineer.DetailsST.yverti;
-import static com.sccengineer.ListChat.databaseReference;
 import static com.sccengineer.ListChat.name;
-import static com.sccengineer.messagecloud.check.tokennya2;
 
 
 public class ServiceTicketAdapter

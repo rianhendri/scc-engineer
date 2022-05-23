@@ -31,13 +31,8 @@
 package com.sccengineer.reclockin;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,31 +40,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sccengineer.DetailReclock;
-import com.sccengineer.DetailsST;
-import com.sccengineer.ListChat;
 import com.sccengineer.R;
-import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
-
-import static android.content.Context.MODE_PRIVATE;
-import static com.sccengineer.DetailsST.mcustname;
-import static com.sccengineer.DetailsST.mformRequestCd;
-import static com.sccengineer.DetailsST.noreq;
-import static com.sccengineer.DetailsST.username;
-import static com.sccengineer.DetailsST.xhori;
-import static com.sccengineer.DetailsST.yverti;
-import static com.sccengineer.ServiceTicket.valuefilter;
 
 //import com.sccengineer.DetailsFormActivity;
 

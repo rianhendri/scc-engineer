@@ -1,20 +1,16 @@
 package com.sccengineer;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
@@ -32,11 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -62,9 +54,7 @@ import retrofit2.Response;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static com.sccengineer.ListChat.name;
 import static com.sccengineer.apihelper.ServiceGenerator.baseurl;
-import static com.sccengineer.messagecloud.check.tokennya2;
 
 public class DetailsOrderFoc extends AppCompatActivity {
     FirebaseAuth mAuth;
@@ -620,7 +610,7 @@ public class DetailsOrderFoc extends AppCompatActivity {
 //        super.onBackPressed();
         super.onBackPressed();
 //            refresh=true;
-        Intent back = new Intent(DetailsOrderFoc.this,ListChat.class);
+        Intent back = new Intent(DetailsOrderFoc.this, ListChat.class);
         back.putExtra("name",username);
         back.putExtra("sessionnya",sessionnya);
         back.putExtra("chat",chatin);

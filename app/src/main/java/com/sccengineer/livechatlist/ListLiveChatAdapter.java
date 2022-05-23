@@ -36,53 +36,24 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.sccengineer.Chat.Adapterchat;
-import com.sccengineer.Chat.Itemchat;
-import com.sccengineer.DetailApproved;
-import com.sccengineer.DetailsST;
 import com.sccengineer.ListChat;
-import com.sccengineer.LiveChatList;
 import com.sccengineer.R;
-import com.sccengineer.serviceticket.STSendSparepart_adapter;
-import com.sccengineer.serviceticket.STSendSparepart_item;
-import com.sccengineer.serviceticket.STType_item;
-import com.sccengineer.serviceticket.StType_adapter;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-import static android.content.Context.MODE_PRIVATE;
-import static com.sccengineer.DetailsST.seconds;
 import static com.sccengineer.ListChat.modultrans;
-import static com.sccengineer.ListChat.name;
-import static com.sccengineer.LiveChatList.list2;
-import static com.sccengineer.LiveChatList.myitem_place;
-import static com.sccengineer.LiveChatList.itemchat;
 import static com.sccengineer.LiveChatList.titlenya;
 import static com.sccengineer.messagecloud.check.tokennya2;
 

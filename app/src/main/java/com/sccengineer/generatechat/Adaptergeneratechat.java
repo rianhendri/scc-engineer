@@ -30,75 +30,22 @@
  */
 package com.sccengineer.generatechat;
 
-import android.app.AlertDialog;
-import android.app.DownloadManager;
-import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.media.MediaMetadataRetriever;
-import android.net.Uri;
-import android.os.Environment;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.Selection;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.MimeTypeMap;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.sccengineer.R;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Locale;
 
-import static android.content.Context.MODE_PRIVATE;
-import static android.os.Environment.DIRECTORY_DOWNLOADS;
-import static com.sccengineer.DownloadBroadcastReceiver.key;
-import static com.sccengineer.DownloadBroadcastReceiver.pathnya;
-import static com.sccengineer.DownloadBroadcastReceiver.urinya;
-import static com.sccengineer.ListChat.databaseReference3;
-import static com.sccengineer.ListChat.mback;
-import static com.sccengineer.ListChat.mcopy;
-import static com.sccengineer.ListChat.mcopylay;
-import static com.sccengineer.ListChat.mdelcop;
-import static com.sccengineer.ListChat.mdelet;
-import static com.sccengineer.ListChat.name;
 import static com.sccengineer.ListChat.sendtext;
-import static com.sccengineer.ListChat.sessionnya;
 
 
 //import static com.e.chatforscctest.ListChat.idhcat;

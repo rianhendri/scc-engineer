@@ -1,6 +1,5 @@
 package com.sccengineer;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -11,13 +10,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -38,11 +35,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -386,7 +379,7 @@ public class DetailsOrderCharge extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
 //            refresh=true;
-        Intent back = new Intent(DetailsOrderCharge.this,ListChat.class);
+        Intent back = new Intent(DetailsOrderCharge.this, ListChat.class);
         back.putExtra("name",username);
         back.putExtra("sessionnya",sessionnya);
         back.putExtra("chat",chatin);
