@@ -403,6 +403,7 @@ public class ListChat extends AppCompatActivity {
 
             }
         });
+
         msend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -427,7 +428,13 @@ public class ListChat extends AppCompatActivity {
                         show="no";
 //
                     }else {
-                        dateini= itemchat3.get(itemchat3.size()-1).getDate();
+                        if(itemchat3.size()==0){
+
+                        }else {
+                            Log.d("dateitemchat",String.valueOf(itemchat3.size()));
+                            dateini= itemchat3.get(itemchat3.size()-1).getDate();
+                        }
+
                         Log.d("dateini",dateini);
                         if(dateini.equals(date)){
                             show="no";
@@ -810,11 +817,13 @@ public class ListChat extends AppCompatActivity {
                         Itemchat fetchDatalist=ds.getValue(Itemchat.class);
                         fetchDatalist.setKey(ds.getKey());
                         itemchat3.add(fetchDatalist);
+
                     }
 
                     adapterchat=new Adapterchat(ListChat.this, itemchat3);
                     recyclerView.setAdapter(adapterchat);
                     recyclerView.scrollToPosition(adapterchat.getItemCount()-1);
+                    Log.d("dateitemchat",String.valueOf(itemchat3.size()));
 //                recyclerView.scrollToPosition(adapterchat.getItemCount());
                     mmnodatas.setVisibility(GONE);
                 mloadingchat.setVisibility(GONE);
