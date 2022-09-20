@@ -114,6 +114,7 @@ public class MyLocation extends BroadcastReceiver {
                                         jsonObject.addProperty("sessionId",sesionid_new);
                                         jsonObject.addProperty("longitude",String.valueOf(location.getLongitude()));
                                         jsonObject.addProperty("latitude",String.valueOf(location.getLatitude()));
+                                        jsonObject.addProperty("location",city+" "+state+" "+country+" "+postalCode+" "+knownName);
                                         jsonObject.addProperty("ver",BuildConfig.VERSION_NAME);
                                         IRetrofit jsonPostService = ServiceGenerator.createService(IRetrofit.class, baseurl);
                                         Call<JsonObject> panggilkomplek = jsonPostService.sendinfolocation(jsonObject);
@@ -149,7 +150,7 @@ public class MyLocation extends BroadcastReceiver {
                                             }
                                         });
                                         Log.d("reqlokasi",jsonObject.toString());
-                                        Log.d("lokasi2",city+"-"+state);
+                                        Log.d("lokasi2", city+" "+state+" "+country+" "+postalCode+" "+knownName);
 //                                        Log.d("clock1",String.valueOf(clokin));
                                     }else {
                                         Log.d("lokasi3","clokout");
